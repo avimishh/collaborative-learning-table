@@ -3,7 +3,18 @@ Create new node Project:
 2. new folder "src" for code files
 3. added new file ./src/index.js
 
+Git initiailze:
+1. created new github repository
+2. cloned repository in vscode
+3. first commit
+4. added ".gitignore" file
+5. added to "package.json" git repository
+
 
 
 to do:
+
+
+
+done:
 - git init
