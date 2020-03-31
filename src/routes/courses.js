@@ -1,66 +1,19 @@
-const debug = require('debug')('app:startup');
-const config = require('config');
-const morgan = require('morgan');
-const Joi = require('joi');
-const courses = require('./courses');
-// const logger = require('./logger');
 const express = require('express');
-const app = express(); // The server object
+const router = express.Router();
 
-console.log(`Application Name: ${config.get('name')}`);
-
-
-// console.log(`NODE_ENV: ${app.get('env')}`);  // 'development' by default
-app.use(express.json());    // a piece of middleware
-app.use(morgan('tiny'));
-// app.use(logger);
-
-if(app.get('env') === 'development') {
-    app.use(morgan('tiny'));
-    debug('Morgan enabled...');
-}
-
-// custom middleware
-app.use(function(req, res, next){
-    console.log('Authenticating...');
-    next();
-});
-
-const courses = [
-    { id: 1, name: 'course1' },
-    { id: 2, name: 'course2' },
-    { id: 3, name: 'course3' }
-];
-
-
-// GET
-app.get('/', (req,res) => {
-    console.log('inside "/"');      // DEBUG
-    res.send('Hello World');
-});
-
-app.get('/api/courses', (req,res) => {
+router.get('/api/courses', (req,res) => {
     console.log('inside "/api/courses"');      // DEBUG
     res.send(courses);
 });
 
-app.get('/api/courses/:id', (req,res) => {
+router.get('/api/courses/:id', (req,res) => {
     console.log('inside "/api/courses/:id"');      // DEBUG
     const course = courses.find(c => c.id === parseInt(req.params.id));
     if(!course) return res.status(404).send('The course with the given ID was not found'); // 404 Not Found
     res.send(course);
 });
 
-app.get('/api/posts/:year/:month', (req,res) => {
-    console.log('inside "/api/posts/:year/:month"');      // DEBUG
-    res.send(req.params);   /* api/posts/2018/1 */
-    // res.send(req.query);    /* api/posts/2018/1?sortBy=name */
-});
-
-
-
-// POST
-app.post('/api/courses', (req,res) => {
+router.post('/api/courses', (req,res) => {
     console.log('inside -post- "/api/courses"');      // DEBUG
     
     const { error } = validateCourse(req.body);     // validate input
@@ -75,9 +28,7 @@ app.post('/api/courses', (req,res) => {
     res.send(course);           // send back the course
 });
 
-
-// PUT
-app.put('/api/courses/:id', (req,res) => {
+router.put('/api/courses/:id', (req,res) => {
     console.log('inside -put- "/api/courses/:id"');      // DEBUG
     // look up the course
     const course = courses.find(c => c.id === parseInt(req.params.id));
@@ -99,9 +50,7 @@ app.put('/api/courses/:id', (req,res) => {
     res.status(200).send(course);
 });
 
-
-// DELETE
-app.delete('/api/courses/:id', (req,res) => {
+router.delete('/api/courses/:id', (req,res) => {
     console.log('inside -delete- "/api/courses/:id"');      // DEBUG
     // look up the course
     const course = courses.find(c => c.id === parseInt(req.params.id));
@@ -114,14 +63,4 @@ app.delete('/api/courses/:id', (req,res) => {
     res.send(course);
 });
 
-
-function validateCourse(course){
-    const schema = {                                // declare schema form for the input
-        name: Joi.string().min(3).required()
-    };
-    return Joi.validate(course, schema);   // validate and return
-}
-
-const port = process.env.PORT || 3000;
-console.log(`PORT:${process.env.PORT}`);
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+module.exports = router;

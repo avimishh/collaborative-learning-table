@@ -30,9 +30,28 @@ HTTP Methods: GET PUT POST DELETE
 11. http status: 200 OK, 404 Not Found, 400 Bad Request
 
 
+Express Advanced Topics:
+1. Middleware:  request => [Middleware1] -> [Middleware2] -> ... => response
+                express.json()
+2. created custom middleware: logger
+3. built-in middleware:  express.static('public')     
+4. 3rd-party middleware
+5. Enviroments: process.env
+                used app.get('env') in order getting the currently enviroment
+                wrap by using if the middlware used by 'development' enviroment
+                change the enviroment in terminal: 'development', 'production'
+6. Config: installed config package
+            Created 'config' folder with json files for each enviroment
+7. Debug: installed debug package
+            require for debug
+            change from 'console.log(...)' to 'debug(...)'
+            in terminal: $env:DEBUG='app:startup'
+8. 
 
 to do:
 npm joi - a package for validation
+check about 3rd-party middlewares: helmet, morgan 
+Configuration - not really understood
 
 
 done:
