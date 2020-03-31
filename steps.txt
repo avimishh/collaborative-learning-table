@@ -1,0 +1,9 @@
+Create new node Project:
+1. cmd: npm init => "package.json" file created
+2. new folder "src" for code files
+3. added new file ./src/index.js
+
+
+
+to do:
+- git init

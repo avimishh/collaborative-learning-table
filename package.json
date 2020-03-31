@@ -1,0 +1,11 @@
+{
+  "name": "collaborative-learning-table",
+  "version": "1.0.0",
+  "description": "Collaborative Learning Table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avi Mishayev",
+  "license": "ISC"
+}
