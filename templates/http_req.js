@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const app = express(); // The server object
 
+app.use(express.json());    // a piece of middleware
 
 const courses = [
     { id: 1, name: 'course1' },
@@ -9,24 +10,34 @@ const courses = [
 ];
 
 
-// GET [api/courses]
-router.get('/', (req,res) => {
+// GET
+app.get('/', (req,res) => {
+    console.log('inside "/"');      // DEBUG
+    res.send('Hello World');
+});
+
+app.get('/api/courses', (req,res) => {
     console.log('inside "/api/courses"');      // DEBUG
     res.send(courses);
 });
 
-
-// GET (:id) [api/courses/:id]
-router.get('/:id', (req,res) => {
+app.get('/api/courses/:id', (req,res) => {
     console.log('inside "/api/courses/:id"');      // DEBUG
     const course = courses.find(c => c.id === parseInt(req.params.id));
     if(!course) return res.status(404).send('The course with the given ID was not found'); // 404 Not Found
     res.send(course);
 });
 
+app.get('/api/posts/:year/:month', (req,res) => {
+    console.log('inside "/api/posts/:year/:month"');      // DEBUG
+    res.send(req.params);   /* api/posts/2018/1 */
+    // res.send(req.query);    /* api/posts/2018/1?sortBy=name */
+});
 
-// POST [api/courses]
-router.post('/', (req,res) => {
+
+
+// POST
+app.post('/api/courses', (req,res) => {
     console.log('inside -post- "/api/courses"');      // DEBUG
     
     const { error } = validateCourse(req.body);     // validate input
@@ -42,8 +53,8 @@ router.post('/', (req,res) => {
 });
 
 
-// PUT [api/courses/:id]
-router.put('/:id', (req,res) => {
+// PUT
+app.put('/api/courses/:id', (req,res) => {
     console.log('inside -put- "/api/courses/:id"');      // DEBUG
     // look up the course
     const course = courses.find(c => c.id === parseInt(req.params.id));
@@ -66,8 +77,8 @@ router.put('/:id', (req,res) => {
 });
 
 
-// DELETE [api/courses/:id]
-router.delete('/:id', (req,res) => {
+// DELETE
+app.delete('/api/courses/:id', (req,res) => {
     console.log('inside -delete- "/api/courses/:id"');      // DEBUG
     // look up the course
     const course = courses.find(c => c.id === parseInt(req.params.id));
@@ -88,4 +99,6 @@ function validateCourse(course){
     return Joi.validate(course, schema);   // validate and return
 }
 
-module.exports = router;
+const port = process.env.PORT || 3000;
+console.log(`PORT:${process.env.PORT}`);
+app.listen(port, () => console.log(`Listening on port ${port}...`));

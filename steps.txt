@@ -46,7 +46,14 @@ Express Advanced Topics:
             require for debug
             change from 'console.log(...)' to 'debug(...)'
             in terminal: $env:DEBUG='app:startup'
-8. 
+8. Structuring express application:
+        new folder: routes
+        moved all the handles related to courses into 'courses.js' inside routes folder
+        moved all the handles related to home into 'home.js' inside routes folder
+        add require for the specified route
+        add use for the route
+        than change all the routes inside the specified file
+
 
 to do:
 npm joi - a package for validation
