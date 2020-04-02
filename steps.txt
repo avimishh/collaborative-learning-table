@@ -55,10 +55,25 @@ Express Advanced Topics:
         than change all the routes inside the specified file
 
 
+DataBase:
+1. inside 'template' folder created template file for manupalating db
+2. installed mongoose
+3. connect to mongoDB by connection string
+4. create new schema inside code file
+5. create model from the schema (class)
+6. generate new object of this class, by entering specified values
+7. use async function in order create new object/document and saving it in DB
+8. refresh mongo compass and see the changes inside the collection
+9. querying documents
+10. file 'DB_queries.js' - templates manipulating queries
+11. 
+
+
 to do:
 npm joi - a package for validation
 check about 3rd-party middlewares: helmet, morgan 
 Configuration - not really understood
+asynchronous
 
 
 done:
