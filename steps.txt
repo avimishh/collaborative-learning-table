@@ -66,7 +66,7 @@ DataBase:
 8. refresh mongo compass and see the changes inside the collection
 9. querying documents
 10. file 'DB_queries.js' - templates manipulating queries
-11. 
+11. file 'DB_update.js' - templates updating documents
 
 
 to do:
@@ -74,7 +74,7 @@ npm joi - a package for validation
 check about 3rd-party middlewares: helmet, morgan 
 Configuration - not really understood
 asynchronous
-
+CRUD mongoose: 18 updating, 19 deleting
 
 done:
 - git init
