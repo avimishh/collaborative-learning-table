@@ -6,6 +6,7 @@ const Joi = require('joi');
 // Routes
 const courses = require('./routes/courses');
 const home = require('./routes/home');
+const customers = require('./routes/customers')
 // Express
 const express = require('express');
 const app = express(); // The server object
@@ -39,6 +40,7 @@ app.use(function(req, res, next){
 // Routes use
 app.use('/', home);
 app.use('/api/courses', courses);
+app.use('/api/customers', customers);
 
 
 // Server

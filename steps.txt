@@ -69,6 +69,10 @@ DataBase:
 11. file 'DB_update.js' - templates updating documents
 
 
+Data validation:
+1. use Joi for validate data recieved from the client
+2. new folder 'models' storing the various models
+
 to do:
 npm joi - a package for validation
 check about 3rd-party middlewares: helmet, morgan 
