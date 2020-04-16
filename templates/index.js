@@ -1,71 +1,49 @@
-const mongoose = require('mongoose');
+// packages
+const debug = require('debug')('app:startup');
+const config = require('config');
+const morgan = require('morgan');
+const Joi = require('joi');
+// Routes
+const courses = require('./routes/courses');
+const home = require('./routes/home');
+const customers = require('./routes/customers')
+// Express
+const express = require('express');
+const app = express(); // The server object
+
+// const logger = require('./logger');
 
 
-// Connect DB
-// hard coding connection string
-mongoose.connect('mongodb://localhost/playground',{useNewUrlParser: true, useUnifiedTopology:true})
-    .then(() => console.log('Connected to MongoDB...'))
-    .catch(err => console.err('Could not connect to MongoDB...', err));
+// Enviroment
+console.log(`Application Name: ${config.get('name')}`);
+
+// console.log(`NODE_ENV: ${app.get('env')}`);  // 'development' by default
 
 
-// New Schema
-const courseSchema = new mongoose.Schema({
-    name: String,
-    author: String,
-    tags: [String],
-    date: { type:Date, default: Date.now },
-    isPublished: Boolean
+// Middlewares use
+app.use(express.json());    // a piece of middleware
+// app.use(logger);
+
+
+if(app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    debug('Morgan enabled...');
+}
+
+// custom middleware
+app.use(function(req, res, next){
+    console.log('Authenticating...');
+    next();
 });
 
 
-// New Model of the above Schema
-const Course = mongoose.model('Course', courseSchema);
+// Routes use
+app.use('/', home);
+app.use('/api/courses', courses);
+app.use('/api/customers', customers);
 
 
-// creating new object and storing it inside the DB collection
-async function createCourse(){
-    const course = new Course({
-        name: 'Angular Course',
-        author: 'Mosh',
-        tags: ['angular', 'frontend'],
-        isPublished: true
-    });
-
-    const result = await course.save();
-    console.log(result);
-}
-
-// createCourse();
-
-
-// Querying objects from the DB
-async function getCourses(){
-    
-    /* Comparion Operators
-    // eq (equal)
-    // ne (not equal)
-    // gt (greater than)
-    // gte (greater than or equal to)
-    // lt (less than)
-    // lte (less than or equal to)
-    // in
-    // nin (not in)                 */
-
-
-
-    const courses = await Course
-        .find({ author:'Mosh', isPublished: true})
-        // .find({ price: { $gte: 10, $lte: 20 } })
-        // .find({ price: { $in: [10, 15, 20] } })
-        .limit(10)
-        .sort({ name: 1 })      // 1 Ascending -1 Descending
-        .select({ name: 1, tags: 1 });
-    
-    courses.forEach(c => {
-        console.log(c.name);   
-    });
-
-    console.log(courses);   
-}
-
-getCourses();
+// Server
+const port = process.env.PORT || 3000;
+debug(`PORT:${process.env.PORT}`);
+app.listen(port, () => console.log(`Listening on port ${port}...`));
