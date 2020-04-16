@@ -73,6 +73,15 @@ Data validation:
 1. use Joi for validate data recieved from the client
 2. new folder 'models' storing the various models
 
+
+Modeling Relationships:
+1. using refernces (normalization)
+2. using embedded documents (denormalization)
+3. trade off between query performance vs consistency
+4. (1) -> gives us consistency, (2) -> gives us performance
+5. Hybrid approach
+
+
 to do:
 npm joi - a package for validation
 check about 3rd-party middlewares: helmet, morgan 
