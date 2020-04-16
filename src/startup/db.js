@@ -8,7 +8,8 @@ module.exports = function() {
     // hard coding connection string
     mongoose.connect('mongodb://localhost/collearn', {
         useNewUrlParser: true,
-        useUnifiedTopology:true
+        useUnifiedTopology:true,
+        useCreateIndex: true
         })
         .then(() => logger.info('Connected to MongoDB...'))
         .catch(err => console.err('Could not connect to MongoDB...', err));
