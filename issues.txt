@@ -1,0 +1,2 @@
+startup/db.js
+- handle catch issue -> use exception
