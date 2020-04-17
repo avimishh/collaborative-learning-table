@@ -1,10 +1,8 @@
 // Express Import
 const express = require('express');
 // Routes Import
-// const genres = require('../routes/genres');
-// const customers = require('../routes/customers');
-// const movies = require('../routes/movies');
-// const rentals = require('../routes/rentals');
+const fields = require('../routes/fields');
+const games = require('../routes/games');
 const users = require('../routes/users');
 const auth = require('../routes/auth');
 // Error Middleware Import
@@ -14,10 +12,8 @@ const error = require('../middleware/error');
 // Main function
 module.exports = function(app) {
     app.use(express.json());
-    // app.use('/api/genres', genres);
-    // app.use('/api/customers', customers);
-    // app.use('/api/movies', movies);
-    // app.use('/api/rentals', rentals);
+    app.use('/api/fields', fields);
+    app.use('/api/games', games);
     app.use('/api/users', users);
     app.use('/api/auth', auth);
     app.use(error);
