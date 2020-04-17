@@ -1,4 +1,5 @@
 // requires jQuery
+// use email instead username
 const server = "http://localhost:3000/api";
 const usersApi = server + "/users";
 const authApi = server + "/auth";
@@ -65,11 +66,11 @@ function loginUser(username, password, successFunction, errorFunction, completeF
 
     let request = {
         contentType: "application/json",
-        url: authApi + "/login",
+        url: authApi,
         method: "POST",
         data: JSON.stringify({
-            Username: username,
-            Password: password
+            name: username,
+            password: password
         }),
         success: function (data, textStatus, jqXHR) {
             sessionStorage.setItem(tokenStorageKeyString, data.token);

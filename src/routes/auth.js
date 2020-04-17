@@ -8,7 +8,7 @@ const { User } = require('../models/user');
 
 // HTTP Handling
 
-// POST ['api/users']       -   Login
+// POST ['api/auth']       -   Login
 router.post('/', async (req,res) => {
     // Validate client input
     const { error } = validate(req.body);
