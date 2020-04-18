@@ -1,62 +1,55 @@
-// add get by field
-
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Game, validate } = require('../models/game');
-const {Field} = require('../models/field');
+const { Child, validate } = require('../models/child');
+// const admin = require('../middleware/admin');
 
 // HTTP Handling
 
-
-// GET ['api/games']
+// GET ['api/childs']
 router.get('/', async (req,res) => {
-    const games = await game.find().sort('name');
-    res.send(games);
+    const childs = await Child.find().sort('name');
+    res.send(childs);
 });
 
 
-// GET ['api/games/:id']
+// GET ['api/childs/:id']
 router.get('/:id', async (req,res) => {
     // Find
-    const game = await game.findById(req.params.id);
+    const child = await Child.findById(req.params.id);
     // Check if exist
-    if(!game) 
-        return res.status(404).send(`Game ${req.params.id} was not found.`);
+    if(!child) 
+        return res.status(404).send(`childs ${req.params.id} was not found.`);
     // Send to client
-    res.status(200).send(game);
+    res.status(200).send(child);
 });
 
 
-// POST ['api/games']
+// POST ['api/childs']
 router.post('/', async (req,res) => {
     // Validate client input
     const { error } = validate(req.body);
     // Assert validation
     if(error)
         return res.status(400).send(error.details[0].message);
-    // Validate field
-    const field = await Field.findById(req.body.fieldId);
-    if(!field) return res.status(400).send('Invalid field.');
-    
     // Create new document
-    const game = new Game( {
-        title: req.body.title,
-        field: {
-            _id: field._id,
-            name: field.name
-        },
-        numerInStock: req.body.numberInStock,
-        dailyRentalRate: req.body.dailyRentalRate
+    let child = new Child( {
+        name: req.body.name,
+        id: req.body.id,
+        gender: req.body.gender,
+        gamesPassword: req.body.gamesPassword,
+        address: req.body.address,
+        phone: req.body.phone,
+        level: req.body.level
     });
     // Save to DataBase
-    await game.save();
+    child = await child.save();
     // Send response to client
-    res.status(200).send(game);
+    res.status(200).send(child);
 });
 
 
-// PUT ['api/games/:id']
+// PUT ['api/childs/:id']
 router.put('/:id', async (req,res) => {
     // Validate client input
     const { error } = validate(req.body);
@@ -65,31 +58,31 @@ router.put('/:id', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     // Try to update the selected document
     try{
-        const game = await Game.findByIdAndUpdate(req.params.id, {name: req.body.name}, {
+        const child = await Child.findByIdAndUpdate(req.params.id, {name: req.body.name}, {
             new: true, useFindAndModify: false
         });
         // Assert update completed successfully
-        if(!game) 
-            return res.status(404).send(`Customer ${req.params.id} was not found.`);
+        if(!child) 
+            return res.status(404).send(`Childs ${req.params.id} was not found.`);
         // Send response to client
-        res.status(200).send(game); 
+        res.status(200).send(child); 
     }catch(ex){
         return res.status(404).send(`Failed to update.`);
     }
 });
 
 
-// DELETE ['api/games/:id']
+// DELETE ['api/childs/:id']
 router.delete('/:id', async (req,res) => {
     // Try to delete the selected document
     try{
-        const game = await Game.findByIdAndRemove(req.params.id);
+        const child = await Child.findByIdAndRemove(req.params.id);
         // Assert delete completed successfully
-        if(!game) 
-            return res.status(404).send(`Customer ${req.params.id} was not found.`);
+        if(!child) 
+            return res.status(404).send(`Childs ${req.params.id} was not found.`);
 
         // Send response to client
-        res.send(game);
+        res.send(child);
     }
     catch(ex){
         return res.status(404).send(`Faild to deleting.`); 

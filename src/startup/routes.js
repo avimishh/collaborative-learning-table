@@ -5,6 +5,8 @@ const fields = require('../routes/fields');
 const games = require('../routes/games');
 const users = require('../routes/users');
 const auth = require('../routes/auth');
+const childs = require('../routes/childs');
+
 // Error Middleware Import
 const error = require('../middleware/error');
 
@@ -16,5 +18,6 @@ module.exports = function(app) {
     app.use('/api/games', games);
     app.use('/api/users', users);
     app.use('/api/auth', auth);
+    app.use('/api/childs', childs);
     app.use(error);
 }

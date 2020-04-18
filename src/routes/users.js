@@ -10,7 +10,7 @@ const { User, validate } = require('../models/user');
 
 // GET ['api/users']
 router.get('/', async (req,res) => {
-    const users = await User.find().select('name email').sort('name');
+    const users = await User.find().select('userId name').sort('name');
     res.send(users);
 });
 
@@ -35,11 +35,11 @@ router.post('/', async (req,res) => {
     if(error)
         return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({email: req.body.email});
+    let user = await User.findOne({name: req.body.name});
     // Response 400 Bad Request if the user exist
     if(user) return res.status(400).send("User already registered.");
     // Create new document
-    user = new User( _.pick(req.body, ['name', 'email', 'password']));
+    user = new User( _.pick(req.body, ['userId', 'name', 'password']));
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
@@ -50,7 +50,7 @@ router.post('/', async (req,res) => {
     // In order login the user immidiately after registarion, use this
     // for crating token and send back to user with the header of the response
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'userId', 'name']));
     // Send response to client
     // res.status(200).send(_.pick(user, ['_id', 'name', 'email']));
 });

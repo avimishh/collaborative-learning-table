@@ -1,6 +1,6 @@
 // requires jQuery
 // use email instead username
-const server = "http://localhost:3000/api";
+const server = "http://localhost:3000/api/";
 const usersApi = server + "/users";
 const authApi = server + "/auth";
 
@@ -18,25 +18,30 @@ $.ajaxSetup({
     }
 });
 
+registerUser('3040506','abab22', reloadDataAndGames);
 
+
+function reloadDataAndGames(){
+
+}
 
 /**
  * Registers a new user.
- * @param {string}      username            The new user's username.
+ * @param {string}      userId            The new user's userId.
  * @param {string}      password            The new user's password.
  * @param {function=}   successFunction     Function to execute upon success.
  * @param {function=}   errorFunction       Function to execute upon failure.
  * @param {function=}   completeFunction    Function to execute upon completion.
  */
-function registerUser(username, password, successFunction, errorFunction, completeFunction) {
-    if (username === undefined || password === undefined || successFunction === undefined) return;
+function registerUser(userId, password, successFunction, errorFunction, completeFunction) {
+    if (userId === undefined || password === undefined || successFunction === undefined) return;
 
     let request = {
         contentType: "application/json",
         url: authApi + "/register",
         method: "POST",
         data: JSON.stringify({
-            Username: username,
+            userId: userId,
             Password: password
         }),
         success: function (data, textStatus, jqXHR) {
@@ -55,21 +60,21 @@ function registerUser(username, password, successFunction, errorFunction, comple
 
 /**
  * Signs a user in. (Gets an API token).
- * @param {string}      username            The new user's username.
+ * @param {string}      userId            The new user's userId.
  * @param {string}      password            The new user's password.
  * @param {function}    successFunction     Function to execute upon success.
  * @param {function=}   errorFunction       Function to execute upon failure.
  * @param {function=}   completeFunction    Function to execute upon completion.
  */
-function loginUser(username, password, successFunction, errorFunction, completeFunction) {
-    if (username === undefined || password === undefined || successFunction === undefined) return;
+function loginUser(userId, password, successFunction, errorFunction, completeFunction) {
+    if (userId === undefined || password === undefined || successFunction === undefined) return;
 
     let request = {
         contentType: "application/json",
         url: authApi,
         method: "POST",
         data: JSON.stringify({
-            name: username,
+            userId: userId,
             password: password
         }),
         success: function (data, textStatus, jqXHR) {
@@ -88,18 +93,18 @@ function loginUser(username, password, successFunction, errorFunction, completeF
 
 /**
  * Changes an existing user's password.
- * @param {string}      username            The existing user's username.
+ * @param {string}      userId            The existing user's userId.
  * @param {string}      oldPassword         The user's old password.
  * @param {string}      newPassword         The user's new password.
  * @param {function}    successFunction     Function to execute upon success.
  * @param {function=}   errorFunction       Function to execute upon failure.
  * @param {function=}   completeFunction    Function to execute upon completion.
  */
-function changePassword(username, oldPassword, newPassword, successFunction, errorFunction, completeFunction) {
-    if (username === undefined || oldPassword === undefined || newPassword === undefined) return;
+function changePassword(userId, oldPassword, newPassword, successFunction, errorFunction, completeFunction) {
+    if (userId === undefined || oldPassword === undefined || newPassword === undefined) return;
 
     let request = {
-        url: usersApi + "/" + username + "/password",
+        url: usersApi + "/" + userId + "/password",
         contentType: "application/json",
         headers: { "x-auth-token": sessionStorage.getItem(tokenStorageKeyString) },
         method: "PUT",

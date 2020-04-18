@@ -9,15 +9,17 @@ const app = express();
 
 // START UP
 const logger = require('./startup/logging');
+require('./startup/debug')(app);
+
 require('./startup/routes')(app);
 require('./startup/db')();
 // require('./startup/config')();
 require('./startup/validation')();
 
 // Debug
-if(app.get('env') === 'development') {
-    require('./startup/debug')(app);
-}
+// if(app.get('env') === 'development') {
+//     require('./startup/debug')(app);
+// }
 
 // Server
 const port = process.env.PORT || 3000;

@@ -16,7 +16,7 @@ router.post('/', async (req,res) => {
     if(error)
         return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({email: req.body.email});
+    let user = await User.findOne({name: req.body.name});
     // Response 400 Bad Request if the user exist
     if(!user) return res.status(400).send("Invalid email or password.");
     // Validate password, bcypt.comare missing await
@@ -32,7 +32,7 @@ router.post('/', async (req,res) => {
 // Essential functions
 function validate(req){
     const schema = {
-        email: Joi.string().min(3).max(255).required().email(),
+        name: Joi.string().min(3).max(255).required().email(),
         password: Joi.string().min(5).max(255).required()
     };
     return Joi.validate(req, schema);
