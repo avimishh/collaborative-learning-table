@@ -1,5 +1,7 @@
 // Express Import
 const express = require('express');
+const cors = require('cors');
+
 // Routes Import
 const fields = require('../routes/fields');
 const games = require('../routes/games');
@@ -13,6 +15,7 @@ const error = require('../middleware/error');
 
 // Main function
 module.exports = function(app) {
+    app.use(cors());
     app.use(express.json());
     app.use('/api/fields', fields);
     app.use('/api/games', games);

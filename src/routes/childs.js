@@ -13,13 +13,13 @@ router.get('/', async (req,res) => {
 });
 
 
-// GET ['api/childs/:id']
-router.get('/:id', async (req,res) => {
+// GET ['api/childs/:name']
+router.get('/:name', async (req,res) => {
     // Find
-    const child = await Child.findById(req.params.id);
+    const child = await Child.findOne({name:req.params.name});
     // Check if exist
     if(!child) 
-        return res.status(404).send(`childs ${req.params.id} was not found.`);
+        return res.status(404).send(`childs ${req.params.name} was not found.`);
     // Send to client
     res.status(200).send(child);
 });
