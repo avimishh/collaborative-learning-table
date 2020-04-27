@@ -1,9 +1,9 @@
 // Handle Errors
-const winston = require('winston');
+const logger = require('../startup/logging');
 
 module.exports = function(err, req, res, next){
     // Log the exception
-    winston.error(err.message, err);
+    // logger.error(err.message, err);
 
     // error
     // warn
@@ -11,6 +11,6 @@ module.exports = function(err, req, res, next){
     // verbose
     // debug
     // silly
-
+    console.log(err);
     res.status(500).send('Something failed.');
 }

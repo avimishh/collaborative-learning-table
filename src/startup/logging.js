@@ -39,7 +39,7 @@ require('express-async-errors');
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
-    defaultMeta: { service: 'user-service' },
+    // defaultMeta: { service: 'user-service' },
     transports: [
       //
       // - Write to all logs with level `info` and below to `combined.log` 
@@ -56,7 +56,8 @@ const logger = winston.createLogger({
 // 
 if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({
-        format: winston.format.simple()
+        format: winston.format.simple(),
+        level: 'info'
     }));
 }
 
