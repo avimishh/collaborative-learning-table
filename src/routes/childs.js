@@ -8,18 +8,18 @@ const { Child, validate } = require('../models/child');
 
 // GET ['api/childs']
 router.get('/', async (req,res) => {
-    const childs = await Child.find().sort('name');
+    const childs = await Child.find().sort('firstName');
     res.send(childs);
 });
 
 
-// GET ['api/childs/:name']
-router.get('/:name', async (req,res) => {
+// GET ['api/childs/:id']
+router.get('/:id', async (req,res) => {
     // Find
-    const child = await Child.findOne({name:req.params.name});
+    const child = await Child.findOne({id:req.params.id});
     // Check if exist
     if(!child) 
-        return res.status(404).send(`childs ${req.params.name} was not found.`);
+        return res.status(404).send(`childs ${req.params.id} was not found.`);
     // Send to client
     res.status(200).send(child);
 });
@@ -34,8 +34,10 @@ router.post('/', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     // Create new document
     let child = new Child( {
-        name: req.body.name,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         id: req.body.id,
+        birth: req.body.birth,
         gender: req.body.gender,
         gamesPassword: req.body.gamesPassword,
         address: req.body.address,
@@ -58,7 +60,17 @@ router.put('/:id', async (req,res) => {
         return res.status(400).send(error.details[0].message);
     // Try to update the selected document
     try{
-        const child = await Child.findByIdAndUpdate(req.params.id, {name: req.body.name}, {
+        const child = await Child.findOneAndUpdate({id:req.params.id}, {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            id: req.body.id,
+            birth: req.body.birth,
+            gender: req.body.gender,
+            gamesPassword: req.body.gamesPassword,
+            address: req.body.address,
+            phone: req.body.phone,
+            level: req.body.level
+        }, {
             new: true, useFindAndModify: false
         });
         // Assert update completed successfully

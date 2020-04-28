@@ -6,17 +6,23 @@ const mongoose = require('mongoose');
 
 // Schema
 const childSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
         required: true,
-        minlength: 3,
+        minlength: 2,
+        maxlength: 50
+    },
+    lastName: {
+        type: String,
+        required: true,
+        minlength: 2,
         maxlength: 50
     },
     id: {
         type: String,
         required: true,
         unique: true,
-        minlength: 3,
+        minlength: 2,
         maxlength: 255
     },
     birth: {
@@ -30,7 +36,7 @@ const childSchema = new mongoose.Schema({
     gamesPassword: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 3,
         maxlength: 1024
     },
     address: {
@@ -66,7 +72,7 @@ function validateChild(child){
     const schema = {
         // userId: Joi.string().min(3).max(50).required(),
         // email: Joi.string().min(3).max(255).required().email(),
-        name: Joi.string().min(3).max(255).required()
+        firstName: Joi.string().min(2).max(255).required()
         // password: Joi.string().min(5).max(255).required()
     };
     return true;
