@@ -11,21 +11,21 @@ const Field = mongoose.model('Field', new mongoose.Schema({
         required: true,
         minlength: 5,
         maxlength: 50
-        },
+    },
     description: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 1024
-        }
+    }
 }));
 
 
 // Validation
-function validateField(field){
+function validateField(field) {
     const schema = {
-        name: Joi.string().min(3).required(),
-        description: Joi.string().min(3).required()
+        name: Joi.string().min(5).max(50).required(),
+        description: Joi.string().min(5).max(1024).required()
     };
     return Joi.validate(field, schema);
 }

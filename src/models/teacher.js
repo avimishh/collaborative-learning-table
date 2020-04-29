@@ -9,7 +9,7 @@ const PHONE_LEN = [3, 12];
 
 
 // Schema
-const parentSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -34,19 +34,16 @@ const parentSchema = new mongoose.Schema({
         required: true,
         minlength: PHONE_LEN[0],
         maxlength: PHONE_LEN[1]
-    },
-    children: [{
-        type: String
-    }]
+    }
 });
 
 
 // Model
-const Parent = mongoose.model('Parent', parentSchema);
+const Teacher = mongoose.model('Teacher', teacherSchema);
 
 
 // Essential functions
-function validateParent(parent){
+function validateTeacher(teacher){
     const schema = {
         firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם פרטי')}),
         lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם משפחה')}),
@@ -54,7 +51,7 @@ function validateParent(parent){
         phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {return customError(errors, 'טלפון')})
     };
     // return true;
-    return Joi.validate(parent, schema);
+    return Joi.validate(teacher, schema);
 }
 
 
@@ -82,5 +79,5 @@ function customError(errors, key){
 
 
 // Module exports
-exports.Parent = Parent;
-exports.validate = validateParent;
+exports.Teacher = Teacher;
+exports.validate = validateTeacher;

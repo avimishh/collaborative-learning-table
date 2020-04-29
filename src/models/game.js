@@ -1,6 +1,11 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const Field = require('./field').Field;
+// const Field = require('./field').Field;
+
+
+// Const Lengths [min_length, max_length]
+const TITLE_LEN = [3, 50];
+const DESCRIPTION_LEN = [5, 1024];
 
 
 // Model
@@ -8,29 +13,31 @@ const Game = mongoose.model('Game', new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        trim: true,
-        minlength: 3,
-        maxlength: 50
-        },
+        // trim: true,
+        minlength: TITLE_LEN[0],
+        maxlength: TITLE_LEN[1]
+    },
     field: {
-        type: Field.schema,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Field',
         required: true
     },
     description: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 1024
-    }
+        minlength: DESCRIPTION_LEN[0],
+        maxlength: DESCRIPTION_LEN[1]
+    },
+    // level, link, picture of game
 }));
 
 
 // Essential functions
-function validateGame(game){
+function validateGame(game) {
     const schema = {
-        title: Joi.string().min(3).required(),
+        title: Joi.string().min(TITLE_LEN[0]).max(TITLE_LEN[1]).required(),
         fieldId: Joi.objectId().required(),
-        description: Joi.string().min(5).required(),
+        description: Joi.string().min(DESCRIPTION_LEN[0]).max(DESCRIPTION_LEN[1]).required(),
     };
     return Joi.validate(game, schema);
 }
