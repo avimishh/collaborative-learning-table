@@ -1,85 +1,89 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
+// Const Lengths [min_length, max_length]
+const NAME_LEN = [2, 50];
+const ID_LEN = [2, 9];
+const PASSWORD_LEN = [3, 1024];
+const ADDRESS_LEN = [3, 255];
+const PHONE_LEN = [3, 12];
+const LEVEL_ENUM = ['1', '2', '3']
+
+
 // Schema
-const childSchema = new mongoose.Schema({
+const parentSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        minlength: 2,
-        maxlength: 50
+        minlength: NAME_LEN[0],
+        maxlength: NAME_LEN[1]
     },
     lastName: {
         type: String,
         required: true,
-        minlength: 2,
-        maxlength: 50
+        minlength: NAME_LEN[0],
+        maxlength: NAME_LEN[1]
     },
     id: {
         type: String,
         required: true,
         unique: true,
-        minlength: 2,
-        maxlength: 255
-    },
-    birth: {
-        type: Date,
-        default: Date.now,
-        required: true,
-        minlength: 3,
-        maxlength: 255
-    },
-    gender: Boolean,
-    gamesPassword: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 1024
-    },
-    address: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 255
+        minlength: ID_LEN[0],
+        maxlength: ID_LEN[1]
     },
     phone: {
         type: String,
         required: true,
-        minlength: 3,
-        maxlength: 12
+        minlength: PHONE_LEN[0],
+        maxlength: PHONE_LEN[1]
     },
-    level: {
-        type: Number,
-        required: true
-    }
+    children: [{
+        type: String
+    }]
 });
-
-childSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
-    return token;
-}
 
 
 // Model
-const Child = mongoose.model('Child', childSchema);
+const Parent = mongoose.model('Parent', parentSchema);
 
 
 // Essential functions
-function validateChild(child){
+function validateParent(parent){
     const schema = {
-        // userId: Joi.string().min(3).max(50).required(),
-        // email: Joi.string().min(3).max(255).required().email(),
-        firstName: Joi.string().min(2).max(255).required()
-        // password: Joi.string().min(5).max(255).required()
+        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם פרטי')}),
+        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם משפחה')}),
+        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {return customError(errors, 'תעודת זהות')}),
+        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {return customError(errors, 'טלפון')})
     };
-    return true;
-    // return Joi.validate(child, schema);
+    // return true;
+    return Joi.validate(parent, schema);
+}
+
+
+function customError(errors, key){
+    errors.forEach(err => {
+        switch (err.type){
+            case 'any.empty':
+                err.message = `'${key}' לא יכול להיות ריק`;
+                break;
+            case 'any.required':
+                err.message = `'${key}' נדרש`;
+                break;
+            case 'string.min':
+                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
+                break;
+            case 'string.max':
+                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
+                break;
+            default:
+                break;
+        }
+    });
+    return errors;
 }
 
 
 // Module exports
-exports.Child = Child;
-exports.validate = validateChild;
+exports.Parent = Parent;
+exports.validate = validateParent;
