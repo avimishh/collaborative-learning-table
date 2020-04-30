@@ -13,13 +13,27 @@ const userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 50
     },
-    name: {
+    password: {
         type: String,
         required: true,
-        unique: true,
-        minlength: 3,
-        maxlength: 255
+        minlength: 5,
+        maxlength: 1024
     },
+    _teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teacher'
+    },
+    _parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Parent'
+    }
+    // name: {
+    //     type: String,
+    //     required: true,
+    //     unique: true,
+    //     minlength: 3,
+    //     maxlength: 255
+    // },
     // email: {
     //     type: String,
     //     required: true,
@@ -27,19 +41,15 @@ const userSchema = new mongoose.Schema({
     //     minlength: 3,
     //     maxlength: 255
     // },
-    password: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 1024
-    }
+
     // isTeacher: Boolean,
-    // roles: [],
+    // roles: ['Admin', 'Parent', 'Teacher'],
     // operations: []
 });
 
+//, isAdmin: this.isAdmin
 userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
+    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
     return token;
 }
 
@@ -53,7 +63,7 @@ function validateUser(user){
     const schema = {
         userId: Joi.string().min(3).max(50).required(),
         // email: Joi.string().min(3).max(255).required().email(),
-        name: Joi.string().min(3).max(255).required(),
+        // name: Joi.string().min(3).max(255).required(),
         password: Joi.string().min(5).max(255).required()
     };
     // let passwordValidation = passwordComplexity().validate(user.password);

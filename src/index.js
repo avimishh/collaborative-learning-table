@@ -13,7 +13,7 @@ require('./startup/debug')(app);
 
 require('./startup/routes')(app);
 require('./startup/db')();
-// require('./startup/config')();
+require('./startup/config')();
 require('./startup/validation')();
 
 // Debug

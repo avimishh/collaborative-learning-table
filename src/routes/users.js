@@ -8,13 +8,14 @@ const { User, validate } = require('../models/user');
 
 // HTTP Handling
 
+// need to remove or to give the permission only for admin
 // GET ['api/users']
 router.get('/', async (req,res) => {
     const users = await User.find().select('userId name').sort('name');
     res.send(users);
 });
 
-
+// change from byId to findOne and by userId/name
 // GET ['api/users/me']
 router.get('/me', auth, async (req,res) => {
     // Find
@@ -26,7 +27,7 @@ router.get('/me', auth, async (req,res) => {
     res.status(200).send(user);
 });
 
-
+// implementaion for user without teacher/parent
 // POST ['api/users']       -   Register
 router.post('/', async (req,res) => {
     // Validate client input
@@ -35,11 +36,11 @@ router.post('/', async (req,res) => {
     if(error)
         return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({name: req.body.name});
+    let user = await User.findOne({userId: req.body.userId});
     // Response 400 Bad Request if the user exist
     if(user) return res.status(400).send("User already registered.");
     // Create new document
-    user = new User( _.pick(req.body, ['userId', 'name', 'password']));
+    user = new User( _.pick(req.body, ['userId', 'password']));
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
@@ -50,12 +51,12 @@ router.post('/', async (req,res) => {
     // In order login the user immidiately after registarion, use this
     // for crating token and send back to user with the header of the response
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'userId', 'name']));
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'userId']));
     // Send response to client
     // res.status(200).send(_.pick(user, ['_id', 'name', 'email']));
 });
 
-
+// change user details? need auth middleware? parent add child? 
 // PUT ['api/users/:id']
 router.put('/:id', async (req,res) => {
     // Validate client input
@@ -78,7 +79,7 @@ router.put('/:id', async (req,res) => {
     }
 });
 
-
+// auth? permission admin?
 // DELETE ['api/users/:id']
 router.delete('/:id', async (req,res) => {
     // Try to delete the selected document

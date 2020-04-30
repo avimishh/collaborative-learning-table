@@ -11,12 +11,12 @@ const { User } = require('../models/user');
 // POST ['api/auth']       -   Login
 router.post('/', async (req,res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    // const { error } = validate(req.body);
     // Assert validation
-    if(error)
-        return res.status(400).send(error.details[0].message);
+    // if(error)
+    //     return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({name: req.body.name});
+    let user = await User.findOne({userId: req.body.userId});
     // Response 400 Bad Request if the user exist
     if(!user) return res.status(400).send("Invalid email or password.");
     // Validate password, bcypt.comare missing await
@@ -25,7 +25,7 @@ router.post('/', async (req,res) => {
     // Create JWT
     const token = user.generateAuthToken();
     // Send Response
-    res.send(token);
+    res.header('x-auth-token', token).send();
 });
 
 
