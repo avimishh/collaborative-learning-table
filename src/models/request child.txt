@@ -1,0 +1,13 @@
+on client: parent requesting (by entering id of child) a permission to track a child
+    - send new request to server (/api/parent/requestChild)
+on server: get the request, from body take the id of parent(auth? jwt) and id of child
+            create new request object and save it on db.
+             new parent field? (requestChild)
+             use method for saving in teacher requests?
+
+approve the request
+on client: teacher enter the requests page
+            get all the open requests from server
+on server: send the open requests
+on client: teacher can check who to approve and send back (api/teacher/approveRequestChild)
+on server: use method to add the child ref to parent object

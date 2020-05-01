@@ -53,6 +53,18 @@ userSchema.methods.generateAuthToken = function() {
     return token;
 }
 
+// Assign _parent objectId
+// userSchema.methods.assignParent = async function(userId, _parentObjectId) {
+//     try {
+//         await User.findByIdAndUpdate({ id: userId },
+//             {_parent: _parentObjectId}, {
+//            new: true, useFindAndModify: false
+//        }); 
+//     } catch (error) {
+//         return res.status(404).send(`Failed to update User.`);
+//     }
+// }
+
 
 // Model
 const User = mongoose.model('User', userSchema);

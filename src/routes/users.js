@@ -40,7 +40,13 @@ router.post('/', async (req,res) => {
     // Response 400 Bad Request if the user exist
     if(user) return res.status(400).send("User already registered.");
     // Create new document
-    user = new User( _.pick(req.body, ['userId', 'password']));
+    // user = new User( _.pick(req.body, ['userId', 'password']));
+    user = new User( {
+        userId: req.body.userId,
+        password: req.body.password
+        // _teacher: null,
+        // _parent: null
+    });
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);

@@ -7,23 +7,23 @@ const authApi = server + "/auth";
 const tokenStorageKeyString = "api-token";
 
 
-$.ajaxSetup({
-    statusCode: {
-        401: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.responseText !== "5") {
-                alert("Your session has expired, please login again.");
-                parent.logout();
-            }
-        }
-    }
-});
+// $.ajaxSetup({
+//     statusCode: {
+//         401: function (jqXHR, textStatus, errorThrown) {
+//             if (jqXHR.responseText !== "5") {
+//                 alert("Your session has expired, please login again.");
+//                 parent.logout();
+//             }
+//         }
+//     }
+// });
 
-registerUser('3040506','abab22', reloadDataAndGames);
+// registerUser('3040506','abab22', reloadDataAndGames);
 
 
-function reloadDataAndGames(){
+// function reloadDataAndGames(){
 
-}
+// }
 
 /**
  * Registers a new user.
@@ -38,15 +38,16 @@ function registerUser(userId, password, successFunction, errorFunction, complete
 
     let request = {
         contentType: "application/json",
-        url: authApi + "/register",
+        url: usersApi,
         method: "POST",
         data: JSON.stringify({
             userId: userId,
-            Password: password
+            password: password
         }),
         success: function (data, textStatus, jqXHR) {
-            sessionStorage.setItem(tokenStorageKeyString, data.token);
-            successFunction(data, textStatus, jqXHR);
+            console.log(data);
+            // sessionStorage.setItem(tokenStorageKeyString, data.token);
+            successFunction(data);//, textStatus, jqXHR);
         }
     };
 

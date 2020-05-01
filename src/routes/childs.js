@@ -88,7 +88,7 @@ router.put('/:id', async (req,res) => {
 router.delete('/:id', async (req,res) => {
     // Try to delete the selected document
     try{
-        const child = await Child.findByIdAndRemove(req.params.id);
+        const child = await Child.findOneAndRemove({ id: req.params.id });
         // Assert delete completed successfully
         if(!child) 
             return res.status(404).send(`Childs ${req.params.id} was not found.`);

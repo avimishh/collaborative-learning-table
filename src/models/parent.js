@@ -42,6 +42,17 @@ const parentSchema = new mongoose.Schema({
 });
 
 
+// parentSchema.methods.assignParent = async function(userId, _parentObjectId) {
+//     try {
+//         await User.findByIdAndUpdate({ id: userId },
+//             {_parent: _parentObjectId}, {
+//            new: true, useFindAndModify: false
+//        }); 
+//     } catch (error) {
+//         return res.status(404).send(`Failed to update User.`);
+//     }
+// }
+
 // Model
 const Parent = mongoose.model('Parent', parentSchema);
 
@@ -72,7 +83,7 @@ function customError(errors, key){
                 err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
                 break;
             case 'string.max':
-                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
+                err.message = `'${key}' נדרש להכיל פחות מ-${err.context.limit} תוים`;
                 break;
             default:
                 break;
