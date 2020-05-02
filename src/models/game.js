@@ -17,17 +17,21 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         minlength: TITLE_LEN[0],
         maxlength: TITLE_LEN[1]
     },
-    field: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Field',
-        required: true
-    },
+    // field: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Field',
+    //     required: true
+    // },
     description: {
         type: String,
         required: true,
         minlength: DESCRIPTION_LEN[0],
         maxlength: DESCRIPTION_LEN[1]
     },
+    link: {
+        type: String,
+        required: true
+    }
     // level, link, picture of game
 }));
 
@@ -36,8 +40,9 @@ const Game = mongoose.model('Game', new mongoose.Schema({
 function validateGame(game) {
     const schema = {
         title: Joi.string().min(TITLE_LEN[0]).max(TITLE_LEN[1]).required(),
-        fieldId: Joi.objectId().required(),
+        // fieldId: Joi.objectId().required(),
         description: Joi.string().min(DESCRIPTION_LEN[0]).max(DESCRIPTION_LEN[1]).required(),
+        link: Joi.string().required()
     };
     return Joi.validate(game, schema);
 }

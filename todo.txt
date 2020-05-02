@@ -1,0 +1,3 @@
+-check transctions
+
+-how read html and server socket 

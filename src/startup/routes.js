@@ -14,6 +14,7 @@ const parents = require('../routes/parents');
 // Error Middleware Import
 const error = require('../middleware/error');
 
+const publicPath = `${__dirname}/../public`
 
 // Main function
 module.exports = function(app) {
@@ -21,6 +22,8 @@ module.exports = function(app) {
         exposedHeaders: ['x-auth-token']
     }));
     app.use(express.json());
+    console.log(publicPath);
+    app.use('/static', express.static(publicPath))
     app.use('/api/fields', fields);
     app.use('/api/games', games);
     app.use('/api/users', users);

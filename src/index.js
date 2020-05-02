@@ -25,4 +25,7 @@ require('./startup/validation')();
 // Server
 const port = process.env.PORT || 3000;
 // debug(`PORT:${process.env.PORT}`);
-app.listen(port, () => logger.info(`Listening on port ${port}...`));
+const server = app.listen(port, () => logger.info(`Listening on port ${port}...`));
+// console.log(app.listen());
+require('./startup/socketio')(server);
+// require('./public/server_math/server')(server, app);
