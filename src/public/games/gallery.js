@@ -1,3 +1,5 @@
+// const sock = io();
+
 const server = "http://localhost:3000/api/";
 const serverStatic = "http://localhost:3000/static/"
 const gamesApi = server + "games/";
@@ -15,10 +17,9 @@ function childLogin(childId, successFunction, errorFunction, completeFunction) {
         //     gamesPassword: child.password
         // }),
         success: function (data, textStatus, xhr) {
+            // data._id = '5ea98c3556adcc84503d58ca';
+            console.log('child_id: ' + data._id);
             localStorage.setItem('child_id', data._id);
-            // console.log(localStorage.getItem('token'));
-            // sessionStorage.setItem(tokenStorageKeyString, data.token);
-            // successFunction(data);
         },
         error: function (xhr) {
             errorFunction(xhr.status, xhr.responseText);
@@ -57,19 +58,18 @@ function startGame(gameId, successFunction, errorFunction, completeFunction) {
         method: "POST",
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
         data: JSON.stringify({
-            child_id: '5ea97717caf7119aece7c00b',
-            game_id: gameId
+            child_id: localStorage.getItem('child_id'),
+            game_id: localStorage.getItem('game_id')
         }),
         success: function (data, textStatus, xhr) {
-            // successFunction();//, textStatus, jqXHR);
-            console.log('game load');
+            console.log(data);
+            localStorage.setItem('statsObject_id', data._id);
+            console.log('statsObject_id: ' + data._id);
         },
         error: function (xhr) {
             errorFunction(xhr.status, xhr.responseText);
         }
     };
-
-    // if (completeFunction !== undefined) request.complete = completeFunction;
 
     $.ajax(request);
 }
@@ -83,6 +83,11 @@ function init() {
     $('#getGames').on('click', () => {
         getGames(showResponse, showError);
     });
+    $('#childLogin').on('click', () => {
+        let childId = $('#childId').val();
+        console.log(childId);
+        childLogin(childId, showResponse, showError);
+    });
 }
 
 
@@ -91,7 +96,8 @@ function showGames(games) {
         let $btn = $('<button>').text(game.title).on('click', () => {
             localStorage.setItem('game_id', game._id);
             startGame(game._id);
-            $('#gameFrame').attr('src', serverStatic + game.link);
+            //serverStatic
+            $('#gameFrame').attr('src', game.link);
         });
         $('#gallery').append($btn);
     });
@@ -112,5 +118,3 @@ function showResponse(data) {
 function showError(status, responseText) {
     $('#error').text(`ERROR: ${status}, ${responseText}`);
 }
-
-// const sock = io();

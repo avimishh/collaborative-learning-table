@@ -4,22 +4,20 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const { Game, validate } = require('../models/game');
-const { startGame } = require('./../public/games/gameStarter');
 // const { Field } = require('../models/field');
 //https://mathgame12.herokuapp.com/
 // HTTP Handling
 
-// GET ['api/games/start']
-router.get('/start/:id', async (req, res) => {
-    const game = await Game.findById(req.params.id);
-    // Check if exist
-    if (!game)
-        return res.status(404).send(`Game ${req.params.id} was not found.`);
-    // const games = await Game.find().sort('name');
-    startGame(game.title);
-    res.status(200).send();
-});
-
+// // GET ['api/games/start']
+// router.get('/start/:id', async (req, res) => {
+//     const game = await Game.findById(req.params.id);
+//     // Check if exist
+//     if (!game)
+//         return res.status(404).send(`Game ${req.params.id} was not found.`);
+//     // const games = await Game.find().sort('name');
+//     setGameToPlay(game.title);
+//     res.status(200).send();
+// });
 
 
 // GET ['api/games']

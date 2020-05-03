@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const mathSheetSchema = new mongoose.Schema({
     number_of_questions: {
         type: Number,
-        required: true
+        // required: true
     },
     date: {
         type: Date,
@@ -16,22 +16,22 @@ const mathSheetSchema = new mongoose.Schema({
         operator: {
             type: String,
             enum: ['Plus', 'Minus', 'Multi'],
-            required: true
+            // required: true
         },
         asked: {
             type: Number,
-            required: true
+            // required: true
         },
         correct: {
             type: Number,
-            required: true
+            // required: true
         }
     }]
 })
 
 
 // Model
-const MathSheet = mongoose.model('MathSheet', MathSheetSchema);
+const MathSheet = mongoose.model('MathSheet', mathSheetSchema);
 
 
 // Module exports

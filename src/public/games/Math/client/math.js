@@ -8,6 +8,8 @@ $(document).ready(function() {
 
 // Game pad buttons initizalization
 function numbers_pad_init(){
+    sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
+    console.log(localStorage.getItem('statsObject_id'));
     var numbers_buttons = [];
 
     for(let i=0; i<10; i++){
@@ -110,6 +112,9 @@ const addButtonListeners = () => {
 
 // Socket work
 const sock = io();
+// console.log();
+// statsObject_id = ;
+
 
 sock.on('message', (text) => {
     messageEvent(text)
@@ -130,5 +135,7 @@ sock.on('disableOperators', (state) => {
 sock.on('gamePadState', (state) => {
     set_game_pad_state(state)
 });
+
+// console.log(window.parent.document);
 
 addButtonListeners();

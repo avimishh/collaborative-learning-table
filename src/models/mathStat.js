@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const {MathSheetSchema} = require('./mathSheet');
+const {mathSheetSchema} = require('./mathSheet');
 // const Field = require('./field').Field;
 
 
@@ -22,7 +22,7 @@ const MathStat = mongoose.model('MathStat', new mongoose.Schema({
         required: true
     },
     sheets: [{
-        type: MathSheetSchema
+        type: mathSheetSchema
     }]
     // date: {
     //     type: Date,
