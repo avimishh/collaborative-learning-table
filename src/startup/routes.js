@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 // Routes Import
+const home = require('../routes/home');
 const fields = require('../routes/fields');
 const games = require('../routes/games');
 const users = require('../routes/users');
@@ -14,7 +15,9 @@ const playGames = require('../routes/playGames');
 // Error Middleware Import
 const error = require('../middleware/error');
 
-const publicPath = `${__dirname}/../public`
+// const publicPath = `${__dirname}/../public`;
+const publicPath = `${__dirname}/../../client/`;
+
 
 // Main function
 module.exports = function(app) {
@@ -22,8 +25,9 @@ module.exports = function(app) {
         exposedHeaders: ['x-auth-token']
     }));
     app.use(express.json());
-    console.log(publicPath);
-    app.use('/static', express.static(publicPath))
+    // console.log(publicPath);
+    // app.use('/', home);
+    app.use('/', express.static(publicPath))
     app.use('/api/fields', fields);
     app.use('/api/games', games);
     app.use('/api/users', users);

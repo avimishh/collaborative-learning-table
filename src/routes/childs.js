@@ -25,6 +25,21 @@ router.get('/:id', async (req, res) => {
 });
 
 
+// GET ['api/childs/:id/:password']
+router.get('/:id/:password', async (req, res) => {
+    // Find
+    const child = await Child.findOne({ id: req.params.id });
+    // Check if password is correct
+    if (child.gamesPassword !== req.params.password)
+        return res.status(400).send(`childs ${req.params.password} is incorrect.`);
+    // Check if exist
+    if (!child)
+        return res.status(404).send(`childs ${req.params.id} was not found.`);
+    // Send to client
+    res.status(200).send(child);
+});
+
+
 // POST ['api/childs']
 router.post('/', async (req, res) => {
     // Validate client input

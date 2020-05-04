@@ -21,6 +21,9 @@ require('./startup/validation')();
 //     require('./startup/debug')(app);
 // }
 
+// app.get('/', async (req,res) =>{
+//     res.sendFile(__dirname + '/home.html');
+// });
 
 // Server
 const port = process.env.PORT || 3000;

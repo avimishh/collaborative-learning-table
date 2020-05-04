@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/StudentDetails_Child.css" rel="stylesheet" />
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body dir="rtl">
+    <div>
+        <h1 class="tittle">שולחן משחקים שיתופי</h1>
+        <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home" aria-hidden="true"></i></button>
+    </div>
+    <div class="form-box">
+        <h1>הצגת פרטים אישיים <span class="fullNameChild"></span></h1>
+
+        <div class="mess">
+            <table>
+                <!--1. First Name-->
+                <tr>
+                    <td>
+                        <span>שם פרטי:</span>
+                    </td>
+                    <td>
+                        <span id="firstName"></span>
+                    </td>
+                </tr>
+                <!--2. Last Name-->
+                <tr>
+                    <td>
+                        <span>שם משפחה:</span>
+                    </td>
+                    <td>
+                        <span id="lastName"></span>
+                    </td>
+                </tr>
+                <!--3. ID-->
+                <tr>
+                    <td>
+                        <span>תעודת זהות:</span>
+                    </td>
+                    <td>
+                        <span id="ID"></span>
+                    </td>
+                </tr>
+                <!--4. Birth Date-->
+                <tr>
+                    <td>
+                        <span>תאריך לידה:</span>
+                    </td>
+                    <td>
+                        <span id="birthDate"></span>
+                    </td>
+                </tr>
+                <!--5. Age-->
+                <tr>
+                    <td>
+                        <span>גיל:</span>
+                    </td>
+                    <td>
+                        <span id="age"></span>
+                    </td>
+                </tr>
+                <!--6. Gender-->
+                <tr>
+                    <td>
+                        <span>מין:</span>
+                    </td>
+                    <td>
+                        <span id="gender"></span>
+                    </td>
+                </tr>
+                <!--7. Address-->
+                <tr>
+                    <td>
+                        <span>כתובת:</span>
+                    </td>
+                    <td>
+                        <span id="address"></span>
+                    </td>
+                </tr>
+                <!--8. Phone Number-->
+                <tr>
+                    <td>
+                        <span>טלפון:</span>
+                    </td>
+                    <td>
+                        <span id="phoneNumber"></span>
+                    </td>
+                </tr>
+                <!--9. Class Number-->
+                <tr>
+                    <td>
+                        <span>מספר רמה/כיתה:</span>
+                    </td>
+                    <td>
+                        <span id="classNumber"></span>
+                    </td>
+                </tr>
+                <!--10. Password-->
+                <tr>
+                    <td>
+                        <span>סיסמא:</span>
+                    </td>
+                    <td>
+                        <span id="password"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { URL } from './consts.js';
+
+        $(document).ready(function () {
+            showStudentDetails();
+
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.CHILD_HOME);
+            });
+
+        });
+
+        function showStudentDetails() {
+            console.log(localStorage.getItem('child'));
+            let data = JSON.parse(localStorage.getItem('child'));
+            // birth and age
+            let year = Number(data.birth.substr(0, 4));
+            let month = Number(data.birth.substr(5, 2));
+            let day = Number(data.birth.substr(8, 2));
+            //console.log(day + "/" + month + "/" + year);
+            let today = new Date();
+            let age = today.getFullYear() - year;
+            if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {
+                age--;
+            }
+
+            $("#firstName").html(data.firstName);                   // firstName
+            $("#lastName").html(data.lastName);                     // lastName
+            $("#ID").html(data.id);                                 // id
+            $("#birthDate").html(day + "/" + month + "/" + year);   // birthDate
+            $("#age").html(age);                                    // age
+            $("#gender").html(data.gender ? "זכר" : "נקבה");       // gender
+            $("#address").html(data.address);                       // address
+            $("#phoneNumber").html(data.phone);                     // phoneNumber
+            $("#classNumber").html(data.level);                     // classNumber
+            $("#password").html(data.gamesPassword);                // password
+        }
+    </script>
+</body>
+
+</html>

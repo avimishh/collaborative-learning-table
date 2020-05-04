@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="./lib/jquery.js"></script>
+    <link href="./style/home.css" rel="stylesheet" />
+    <link href="./lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./lib/w3.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <h1>שולחן משחקים שיתופי</h1>
+    </header>
+
+    <main>
+        <div class="in_img w3-red">
+            <h1>PROTECT YOUR CHILD</h1>
+            <p>Use the power of digital advocacy to help protect children</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+
+            <div id="btn_Parent" class="w3-light-blue w3-text-white">
+                <span>הורה</span>
+            </div>
+            <div id="btn_Teacher" class="w3-red">
+                <span>מורה</span>
+            </div>
+            <div id="btn_Child" class="w3-green">
+                <span>משתמש רשום</span>
+            </div>
+            <!-- <div  class="w3-yellow w3-text-white"><span>משתמש
+                    אנונימי</span></div> -->
+        </div>
+    </footer>
+
+
+    <script type="module">
+        const URL = {
+            PARENT_SIGNIN: 'views/Parent/SignInScreen_Parent.html',
+            TEACHER_SIGNIN: 'views/Teacher/SignInScreen_Teacher.html',
+            CHILD_SIGNIN: 'views/Child/SignInScreen_Child.html'
+        }
+
+        $(document).ready(() => {
+            init();
+        });
+
+        function init() {
+            $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
+
+            $('#btn_Parent').on('click', () => {
+                location.replace(URL.PARENT_SIGNIN);
+            });
+
+            $('#btn_Teacher').on('click', () => {
+                location.replace(URL.TEACHER_SIGNIN);
+            });
+
+            $('#btn_Child').on('click', () => {
+                location.replace(URL.CHILD_SIGNIN);
+            });
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <script src="../../lib/jquery.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="./style/SignInScreen_Child.css" rel="stylesheet" />
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body dir="rtl">
+    <div>
+        <h1 class="tittle">שולחן משחקים שיתופי</h1>
+    </div>
+    <div class="form-box">
+        <h1>התחברות משתמש רשום</h1>
+
+        <div class="mess">
+            <span>נא העבר צ'יפ במקום המיועד </span>
+            <br />
+            <span>או הכנס תעודת זהות </span>
+            <br />
+            <span>ולאחר מכן לחץ על כניסה</span>
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-user"></i>
+            <input type="text" id="id_user" placeholder="תעודת זהות" />
+        </div>
+
+        <div class="input-box">
+            <i class="fa fa-key"></i>
+            <input type="text" placeholder="סיסמת משחקים" id="gamesPassword" />
+        </div>
+
+
+        <button type="button" class="login-btn" id="login">כניסה</button>
+
+    </div>
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import {childLoginRequest} from './api.js';
+        import {URL} from './consts.js';
+
+        $(document).ready(() => {
+            console.log('jquery work');
+            init();
+        });
+
+        function init() {
+            $('#login').on('click', () => {
+                console.log('work btn');
+                let child_id = $("#id_user").val();
+                let gamesPassword = $("#gamesPassword").val();
+                childLoginRequest(child_id, gamesPassword, loginSuccess);
+            });
+        }
+
+        function loginSuccess(child){
+            localStorage.setItem('child', JSON.stringify(child));
+            location.replace(URL.CHILD_HOME);
+        }
+    </script>
+</body>
+
+</html>
