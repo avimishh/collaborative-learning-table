@@ -1,15 +1,14 @@
 
 // Wait for jQuery to complete load
 $(document).ready(function() {
-    // console.log('DEBUG: jQuery Ready.');
     numbers_pad_init();
+    sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
+    // console.log(localStorage.getItem('statsObject_id'));
 });
 
 
 // Game pad buttons initizalization
 function numbers_pad_init(){
-    sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
-    console.log(localStorage.getItem('statsObject_id'));
     var numbers_buttons = [];
 
     for(let i=0; i<10; i++){
@@ -34,7 +33,6 @@ function numbers_pad_init(){
 
 // show question got from server to the player
 function ask_question(question_string){
-    // $('#question').empty();
     $('#question').text(question_string);
 }
 
@@ -112,9 +110,6 @@ const addButtonListeners = () => {
 
 // Socket work
 const sock = io();
-// console.log();
-// statsObject_id = ;
-
 
 sock.on('message', (text) => {
     messageEvent(text)
@@ -136,6 +131,5 @@ sock.on('gamePadState', (state) => {
     set_game_pad_state(state)
 });
 
-// console.log(window.parent.document);
 
 addButtonListeners();

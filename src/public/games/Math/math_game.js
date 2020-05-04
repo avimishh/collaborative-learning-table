@@ -1,45 +1,32 @@
 const saveData = require('./../gameStatsSaver');
-// saveData('p._statsObject_id', [
-//     { operator: 'Plus', asked: 3, correct: 0 },
-//     { operator: 'Minus', asked: 1, correct: 0 },
-//     { operator: 'Multi', asked: 1, correct: 0 }
-//   ]);
+
+
+var questions = [];
+// const
+const MAX_ROUNDS = 1;
+
 class MathGame {
     constructor(p0, p1) {
-        
-        // saveData('5ea97717caf7119aece7c00b','5eac638a732138f61c03e3b9',[
-        //     { operator: 'Plus', asked: 3, correct: 0 },
-        //     { operator: 'Minus', asked: 1, correct: 0 },
-        //     { operator: 'Multi', asked: 1, correct: 0 }
-        //   ]);
-        this._players = [new Player(p0.sock,p0.stats), new Player(p1.sock, p1.stats)];
+        console.log(p0.stats);
+        console.log(p1.stats);
+        this._players = [new Player(p0.sock, p0.stats), new Player(p1.sock, p1.stats)];
         this._whoseTurn = 0;    // By default player0 starts
         this._isPlayersAnswerCorrect = [null, null];
         this._roundCounter = 0;
 
         this._sendToPlayers('message', 'התחלנו לשחק');
 
-        // Add listener ask question
+
+        // Add listener 
         this._players.forEach((player, idx) => {
+            // after player chose operator create new question
             player._socket.on('math_op', (op) => {
                 this._askQuestion(idx, op);
             });
-        });
 
-        this._players.forEach((player, idx) => {
             player._socket.on('answer_submitted', (answer) => {
                 this._checkAnswer(idx, answer);
                 this._checkRoundOver();
-            });
-
-            // player._socket.on('setStatsObject', (statsObject_id) => {
-            //     player._statsObject_id = statsObject_id;
-            //     console.log(statsObject_id);
-            // });
-            player._socket.on('saveStatsInDB', () => {
-                console.log('a');
-                // saveData(player._id, '5eac638a732138f61c03e3b9', this._players[0]._stats);
-                saveData(player._statsObject_id, player._stats);
             });
         });
 
@@ -60,7 +47,6 @@ class MathGame {
 
     _startRound() {
         let idx_turn = this._determineTurn();
-
     }
 
     _determineTurn() {
@@ -84,6 +70,7 @@ class MathGame {
         this._players[playerIndex]._socket.emit('disableOperators', state);
     }
 
+    // numbers pad = where the player write his answer
     _setNumbersPadState(state) {
         this._sendToPlayers('gamePadState', state)
     }
@@ -96,13 +83,10 @@ class MathGame {
         this._players.forEach(p => p._updateAskedQuestion(op));
         questions.push(new_question);
         this._sendToPlayers('question', new_question.toString());
-        this._setNumbersPadState('enable');
+        this._setNumbersPadState('enable'); // set enable so player can answer
     }
 
-
     _checkAnswer(playerIndex, answer) {
-        // console.log(answer);
-        // console.log(questions[questions.length-1]);
         let asked_question = questions[questions.length - 1];
         if (asked_question._result === parseInt(answer)) {
             this._players[playerIndex]._addScore(asked_question._operator);
@@ -115,29 +99,27 @@ class MathGame {
         }
     }
 
+    // check round over after every answer one of the player made
     _checkRoundOver() {
         let isRoundEnd = true;
         this._isPlayersAnswerCorrect.forEach((a) => {
-            if (a === null) {
-                isRoundEnd = false;
-            }
+            if (a === null) isRoundEnd = false;
         });
         if (isRoundEnd === false) return;
-        // console.log(this._isPlayersAnswerCorrect);
+
         this._endRound();
     }
 
     _endRound() {
         this._statsUpdate();
-        this._isPlayersAnswerCorrect = [null, null]
+        this._isPlayersAnswerCorrect = [null, null];
         this._changeWhoseTurn();
-        // this._firstPlayerTurn = !this._firstPlayerTurn;
         this._roundCounter++;
 
-        if (this._roundCounter >= 2) {
+        if (this._roundCounter >= MAX_ROUNDS) {
             this._sendToPlayers('message', 'המשחק הסתיים');
             this._statsSaveInDB();
-            this._sendToPlayers('end');
+            // this._sendToPlayers('end');
             return;
         }
 
@@ -151,15 +133,8 @@ class MathGame {
 
     _statsSaveInDB() {
         this._players.forEach(p => {
-            // console.log(p._stats);
-            // p._socket.emit('saveStatsInDB');
-            saveData(p._statsObject_id, p._stats);
+            saveData(p._statsObject_id, p._stats, questions.length);
         });
-        // saveData('5ea97717caf7119aece7c00b','5eac638a732138f61c03e3b9',[
-        //     { operator: 'Plus', asked: 3, correct: 0 },
-        //     { operator: 'Minus', asked: 1, correct: 0 },
-        //     { operator: 'Multi', asked: 1, correct: 0 }
-        //   ]);
     }
 }
 
@@ -212,8 +187,6 @@ class Question {
 
         return `${this._oprnd1} ${op} ${this._oprnd2}`;
     }
-
-
 }
 
 
@@ -221,21 +194,6 @@ class Player {
     constructor(socket, stats) {
         this._socket = socket;
         this._statsObject_id = stats;
-        // this._stats = {
-        //     plus: {
-        //         asked: 0,
-        //         correct: 0
-        //     },
-        //     minus: {
-        //         asked: 0,
-        //         correct: 0
-        //     },
-        //     mult: {
-        //         asked: 0,
-        //         correct: 0
-        //     }
-        // }
-
         this._stats = [{
             operator: 'Plus',
             asked: 0,
@@ -254,7 +212,6 @@ class Player {
     }
 
     _addScore(operation) {
-        // console.log(operation);
         switch (operation) {
             case 'plus':
                 this._stats[0].correct++;
@@ -267,7 +224,6 @@ class Player {
                 break;
         }
     }
-
 
     _updateAskedQuestion(operation) {
         switch (operation) {
@@ -283,9 +239,6 @@ class Player {
         }
     }
 }
-
-
-var questions = [];
 
 
 module.exports = MathGame;
