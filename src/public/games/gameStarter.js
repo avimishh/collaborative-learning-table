@@ -12,6 +12,8 @@ var stat_id = '';
 function init(io) {
     io.on('connection', (sock) => {
         console.log('io connect');
+
+
         if (players[0].sock && players[1].sock) {
             sock.emit('message', 'יש כבר שני מתמודדים');
             sock.disconnect();
@@ -33,10 +35,16 @@ function init(io) {
             io.emit('message', text);
         });
 
-        sock.on('end', () => {
-            sock.disconnect();
+        sock.on('disconnect', (text) => {
+            console.log('io disconnect');
+            // io.emit('message', text);
+        });
+
+        sock.on('abcd', () => {
+            io.emit('message', 'hello');
             console.log('disconnect');
         });
+        sock.emit('abcd');
 
         sock.on('setStatsObject', (statsObject_id) => {
             if (players[0].sock === sock)

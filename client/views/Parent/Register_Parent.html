@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/SignInScreen_Parent.css" rel="stylesheet" />
+    <link href="./style/Register_Parent.css" rel="stylesheet" />
     <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 </head>
@@ -16,7 +16,7 @@
         <h1 class="tittle">שולחן משחקים שיתופי</h1>
     </div>
     <div class="form-box">
-        <h1>התחברות הורה</h1>
+        <h1>הרשמה הורה</h1>
 
         <div class="input-box">
             <i class="fa fa-user"></i>
@@ -32,17 +32,14 @@
             </span>
         </div>
 
-        <button type="button" class="login-btn" id="login">כניסה</button>
+        <button type="button" class="register-btn" id="register">הרשמה</button>
 
-        <div>
-            <button type="button" class="new-user-btn" id="register">משתמש חדש?</button>
-        </div>
     </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { userLoginRequest } from './api.js';
+        import { userRegisterRequest } from './api.js';
         import { URL } from './consts.js';
 
         $(document).ready(() => {
@@ -51,22 +48,20 @@
         });
 
         function init() {
-            $('#login').on('click', () => {
+            $('#register').on('click', () => {
                 console.log('work btn');
                 let userId = $("#user_id").val();
                 let userPassword = $("#user_password").val();
-                userLoginRequest(userId, userPassword, loginSuccess);
-            });
-
-            $('#register').on('click', () => {
-                location.replace(URL.PARENT_REGISTER);
+                userRegisterRequest(userId, userPassword, registerSuccess);
             });
         }
 
-        function loginSuccess(user) {
-            localStorage.setItem('parent_id', user._parent);
-            location.replace(URL.PARENT_HOME);
+        function registerSuccess(user) {
+            localStorage.setItem('user', user);
+            localStorage.removeItem('parent');
+            location.replace(URL.PARENT_DETAILS);
         }
+
     </script>
 </body>
 

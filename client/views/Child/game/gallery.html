@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games gallery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        #gameFrame{
+            width: 80%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h4>ראשית, התחבר:</h4>
+    <!-- <label for="childId">childId:</label><br>
+    <input type="text" id="childId"><br>
+    <label for="gamesPassword">gamesPassword:</label><br>
+    <input type="text" id="gamesPassword"><br> -->
+    <button id="childLogin">ילד התחבר</button><br><br>
+    <button id="socket_connect">socket connect</button><br><br>
+    <button id="socket_disconnect">socket disconnect</button><br><br>
+    <!-- https://mathgame12.herokuapp.com/ -->
+    <h4>גלריית משחקים</h4>
+    <button id="getGames">הבא משחקים</button><br><br>
+    <div id="gallery"></div>
+    <div>
+        <iframe id="gameFrame" src="" frameborder="1"></iframe>
+    </div>
+    <label for="response">response:</label><br>
+    <pre id="response"></pre>
+    <br><br><br><br>
+    <label for="error">error:</label><br>
+    <div id="error"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./gallery.js"></script>
+</body>
+</html>

@@ -24,7 +24,7 @@ table tr td {
     padding: 10px 30px;
 }
 
-#btn {
+#btn_update {
     font-size: 26px;
     width: 90px;
     height: 40px;
@@ -67,7 +67,7 @@ table tr td {
     box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
 }
 
-.answware {
+.answer {
     width: 220px;
     height: 26px;
     font-size: 24px;
@@ -145,7 +145,7 @@ table tr td {
         box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
     }
 
-    .answware {
+    .answer {
         width: 220px;
         height: 26px;
         font-size: 24px;

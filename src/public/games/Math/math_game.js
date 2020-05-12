@@ -7,8 +7,8 @@ const MAX_ROUNDS = 1;
 
 class MathGame {
     constructor(p0, p1) {
-        console.log(p0.stats);
-        console.log(p1.stats);
+        p0.sock.emit('end');
+        // console.log(p1.stats);
         this._players = [new Player(p0.sock, p0.stats), new Player(p1.sock, p1.stats)];
         this._whoseTurn = 0;    // By default player0 starts
         this._isPlayersAnswerCorrect = [null, null];
@@ -120,6 +120,8 @@ class MathGame {
             this._sendToPlayers('message', 'המשחק הסתיים');
             this._statsSaveInDB();
             // this._sendToPlayers('end');
+            // this._players[0]._socket.disconnect(true);
+            // this._players[1]._socket.disconnect(true);
             return;
         }
 

@@ -35,7 +35,7 @@
             <div id="btn_performance" class="w3-red" >
                 <span>הצגת ציונים וגרף התקדמות</span>
             </div>
-            <div class="w3-green"><span>שחק משחקים</span>
+            <div id="btn_game" class="w3-green"><span>שחק משחקים</span>
             </div>
 
         </div>
@@ -60,6 +60,10 @@
 
             $('#btn_performance').on('click', () => {
                 location.replace(URL.CHILD_PERFORMANCE);
+            });
+
+            $('#btn_game').on('click', () => {
+                location.replace(URL.CHILD_GAME);
             });
         }
     </script>

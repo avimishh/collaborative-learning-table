@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/Details_Parent.css" rel="stylesheet" />
+    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body dir="rtl">
+    <div>
+        <h1 class="tittle">שולחן משחקים שיתופי</h1>
+        <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home" aria-hidden="true"></i></button>
+    </div>
+    <div class="form-box">
+        <h1>עדכון פרטים אישיים <span class="fullNameChild"></span></h1>
+
+        <div class="mess">
+            <form>
+                <table>
+                    <!--1. First Name-->
+                    <tr>
+                        <td>
+                            <span>שם פרטי:</span>
+                        </td>
+                        <td>
+                            <input id="firstName" class="answer" />
+                        </td>
+
+                    </tr>
+                    <!--2. Last Name-->
+                    <tr>
+                        <td>
+                            <span>שם משפחה:</span>
+                        </td>
+                        <td>
+                            <input id="lastName" class="answer" />
+                        </td>
+                    </tr>
+                    <!--3. id parent-->
+                    <tr>
+                        <td>
+                            <span>תעודת זהות:</span>
+                        </td>
+                        <td>
+                            <input id="id_parent" class="answer" />
+                        </td>
+                    </tr>
+                    <!--4. Phone Number-->
+                    <tr>
+                        <td>
+                            <span>טלפון:</span>
+                        </td>
+                        <td>
+                            <input type="tel" id="phoneNumber" class="answer" />
+                        </td>
+                    </tr>
+                    <!--5. Password-->
+                    <tr>
+                        <td>
+                            <span>סיסמא:</span>
+                        </td>
+                        <td>
+                            <input type="password" id="password" class="answer" />
+                        </td>
+                    </tr>
+                    <!--6. Update-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="button" id="btn_update" value="עדכן" />
+                            <input type="reset" id="rst" value="נקה" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { updateParentRequest, firstDetailsParentRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(function () {
+            showParentDetails();
+
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.PARENT_HOME);
+            });
+
+            $('#btn_update').on('click', () => {
+                updateParentDetails();
+                // location.replace(URL.PARENT_HOME);
+            });
+        });
+
+        function updateParentDetails() {
+            let parent = JSON.parse(localStorage.getItem('parent'));
+            let updatedParent = {
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                id: $("#id_parent").val(),
+                phone: $("#phoneNumber").val()
+            };
+            if(parent !== null)
+                updateParentRequest(parent._id, updatedParent, showUpdatedDetails);
+            else
+                firstDetailsParentRequest(updatedParent, showUpdatedDetails);
+        }
+
+        function showParentDetails() {
+            // console.log(localStorage.getItem('user_parent'));
+            let data = JSON.parse(localStorage.getItem('parent'));
+            if ( data === null )
+                return;
+            console.log(data);
+            $("#firstName").val(data.firstName);                   // firstName
+            $("#lastName").val(data.lastName);                     // lastName
+            $("#id_parent").val(data.id);                          // id
+            $("#phoneNumber").val(data.phone);                     // phoneNumber
+            $("#password").val(data.password);                     // password
+        }
+
+        function showUpdatedDetails() {
+            // console.log(localStorage.getItem('user_parent'));
+            let data = JSON.parse(localStorage.getItem('parent'));
+            console.log(data);
+            $("#firstName").val(data.firstName);                   // firstName
+            $("#lastName").val(data.lastName);                     // lastName
+            $("#id_parent").val(data.id);                          // id
+            $("#phoneNumber").val(data.phone);                     // phoneNumber
+            $("#password").val(data.password);                     // password
+            $(".answer").attr('disabled',true);
+            setTimeout(() => {
+                location.replace(URL.PARENT_HOME);
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

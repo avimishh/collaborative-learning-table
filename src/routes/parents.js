@@ -19,7 +19,8 @@ router.get('/', async (req,res) => {
 // GET ['api/parents/:id']
 router.get('/:id', async (req,res) => {
     // Find
-    const parent = await Parent.findOne({id:req.params.id});
+    const parent = await Parent.findById(req.params.id);
+    // const parent = await Parent.findOne({id:req.params.id});
     // Check if exist
     if(!parent) 
         return res.status(404).send(`parents ${req.params.id} was not found.`);
@@ -47,8 +48,12 @@ router.post('/', auth, async (req,res) => {
     });
     // Save to DataBase
     parent = await parent.save();
+    // let user = req.user;
+    // user._parent = parent._id;
+    // await user.save();
     // Assign parent to his user
     // console.log(req.user);
+    console.log('a');
     assignParent(req.user._id, parent._id);
     // Send response to client
     res.status(200).send(parent);
@@ -64,7 +69,7 @@ router.put('/:id', auth, async (req,res) => {
         return res.status(400).send(error.details[0].message);
     // Try to update the selected document
     try{
-        const parent = await Parent.findOneAndUpdate({id:req.params.id}, {
+        const parent = await Parent.findByIdAndUpdate(req.params.id, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             id: req.body.id,

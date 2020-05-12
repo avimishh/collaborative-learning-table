@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body dir="rtl">
+    <div id="main_wrapper" class="w3-container w3-cell-row w3-center">
+        <div id="operations" class="w3-container w3-cell">
+            <ul id="events"></ul>
+            <br>
+            <button id="plus" class="math_btn w3-button w3-large w3-ripple w3-blue">+</button>
+            <button id="minus" class="math_btn w3-button w3-large w3-ripple w3-blue">-</button>
+            <button id="mult" class="math_btn w3-button w3-large w3-ripple w3-blue">X</button>
+        </div>
+        <div id="game_pad" class="cont w3-container w3-cell">
+            <div id="question">שאלה</div>
+            <br>
+            <br>
+            <div id="answer"></div>
+            <button id="submit_answer" onclick="submit_answer()">ok</button>
+            <br>
+            <br>
+            <div id="numbers_pad"></div>
+
+        </div>
+        <div id="stats" class="w3-card-4 w3-table-all w3-hoverable">
+            <table class="w3-table">
+                <tr>
+                    <th></th>
+                    <th>אתה</th>
+                    <th>חברך</th>
+                </tr>
+                <tr id='plus'>
+                    <td>+</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr id='minus'>
+                    <td>-</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr id='mult'>
+                    <td>X</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./math.js"></script>
+</body>
+</html>
