@@ -13,6 +13,16 @@ function init(io) {
     io.on('connection', (sock) => {
         console.log('io connect');
 
+        // sock.on("login", function(userdata) {
+        //     sock.handshake.session.userdata = userdata;
+        //     sock.handshake.session.save();
+        // });
+        // sock.on("logout", function(userdata) {
+        //     if (sock.handshake.session.userdata) {
+        //         delete sock.handshake.session.userdata;
+        //         sock.handshake.session.save();
+        //     }
+        // });        
 
         if (players[0].sock && players[1].sock) {
             sock.emit('message', 'יש כבר שני מתמודדים');

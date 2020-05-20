@@ -1,30 +1,31 @@
 
 // Wait for jQuery to complete load
-$(document).ready(function() {
+$(document).ready(function () {
     numbers_pad_init();
+    console.log(sock);
     sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
     // console.log(localStorage.getItem('statsObject_id'));
 });
 
 
 // Game pad buttons initizalization
-function numbers_pad_init(){
+function numbers_pad_init() {
     var numbers_buttons = [];
 
-    for(let i=0; i<10; i++){
+    for (let i = 0; i < 10; i++) {
         let $btn = $("<button>").text(i);
         // w3-css style
         $btn.addClass('w3-button w3-round-xxlarge');
-        $btn.on('click', function() {
+        $btn.on('click', function () {
             // console.log('DEBUG: ' + $(this).text());
             write_answer($(this).text());
         });
         numbers_buttons.push($btn);
     }
 
-    for(let i=0; i<10; i++){
+    for (let i = 0; i < 10; i++) {
         $("#numbers_pad").append(numbers_buttons[i]);
-        if( i === 4 ) $("#numbers_pad").append( $("<br>") );
+        if (i === 4) $("#numbers_pad").append($("<br>"));
     }
 
     set_game_pad_state('disable');
@@ -32,7 +33,7 @@ function numbers_pad_init(){
 
 
 // show question got from server to the player
-function ask_question(question_string){
+function ask_question(question_string) {
     $('#question').text(question_string);
 }
 
@@ -55,7 +56,7 @@ function submit_answer() {
 
 
 // updating statistics got from server on stats board
-function update_stats(playersStats){
+function update_stats(playersStats) {
     $('#plus td:nth-child(2)').text(playersStats[0].plus);    // player
     $('#plus td:nth-child(3)').text(playersStats[1].plus);    // friend
 
@@ -68,18 +69,18 @@ function update_stats(playersStats){
 
 
 // math operators disabled after player chose, enabled when new round started
-function set_math_operators_state(state){
-    if(state === 'disable')
-        $('.math_btn').attr('disabled','true');
+function set_math_operators_state(state) {
+    if (state === 'disable')
+        $('.math_btn').attr('disabled', 'true');
     else
         $('.math_btn').removeAttr('disabled');
 }
 
 
 // only enabled after question was asked
-function set_game_pad_state(state){
-    if(state === 'disable')
-        $('#game_pad button').attr('disabled','true');
+function set_game_pad_state(state) {
+    if (state === 'disable')
+        $('#game_pad button').attr('disabled', 'true');
     else
         $('#game_pad button').removeAttr('disabled');
 }
@@ -109,7 +110,9 @@ const addButtonListeners = () => {
 
 
 // Socket work
-const sock = io();
+const sock = parent.sock;
+// const sock = io();
+// const sock = JSON.parse( localStorage.getItem('mySock') );
 
 sock.on('message', (text) => {
     messageEvent(text)

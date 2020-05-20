@@ -16,7 +16,7 @@ const playGames = require('../routes/playGames');
 const error = require('../middleware/error');
 
 // const publicPath = `${__dirname}/../public`;
-const publicPath = `${__dirname}/../../client/`;
+// const publicPath = `${__dirname}/../../client/`;
 
 
 // Main function
@@ -27,7 +27,7 @@ module.exports = function(app) {
     app.use(express.json());
     // console.log(publicPath);
     // app.use('/', home);
-    app.use('/', express.static(publicPath))
+    // app.use('/', express.static(publicPath))
     app.use('/api/fields', fields);
     app.use('/api/games', games);
     app.use('/api/users', users);

@@ -91,6 +91,8 @@ function init() {
     $('#socket_connect').on('click', () => {
         console.log('socket connect');
         sock = io();
+        console.log(sock);
+        // window.document.socket = sock;
     });
     $('#socket_disconnect').on('click', () => {
         console.log('socket disconnect');

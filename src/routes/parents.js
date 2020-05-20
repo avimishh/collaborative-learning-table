@@ -48,12 +48,7 @@ router.post('/', auth, async (req,res) => {
     });
     // Save to DataBase
     parent = await parent.save();
-    // let user = req.user;
-    // user._parent = parent._id;
-    // await user.save();
-    // Assign parent to his user
-    // console.log(req.user);
-    console.log('a');
+
     assignParent(req.user._id, parent._id);
     // Send response to client
     res.status(200).send(parent);

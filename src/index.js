@@ -9,8 +9,13 @@ const app = express();
 
 // START UP
 const logger = require('./startup/logging');
-require('./startup/debug')(app);
 
+// moved to here for debug comfort. need to use it inside startup/routes
+const publicPath = `${__dirname}/./../client/`;
+app.use('/', express.static(publicPath));
+
+
+require('./startup/debug')(app);
 require('./startup/routes')(app);
 require('./startup/db')();
 require('./startup/config')();
@@ -30,5 +35,5 @@ const port = process.env.PORT || 3000;
 // debug(`PORT:${process.env.PORT}`);
 const server = app.listen(port, () => logger.info(`Listening on port ${port}...`));
 // console.log(app.listen());
-require('./startup/socketio')(server);
+require('./startup/socketio')(server, app);
 // require('./public/server_math/server')(server, app);
