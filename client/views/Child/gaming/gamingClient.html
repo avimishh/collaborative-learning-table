@@ -1,30 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games gallery</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <style>
-        #gameFrame{
+        #gameFrame {
             width: 80%;
             height: 500px;
         }
-        .label {
-  color: white;
-  padding: 8px;
-  width: 150px;
-  border: 1px black solid;
-}
-.p_con {background-color: #4CAF50;} /* Green */
-.p_ncon {background-color: #f44336;} /* Red */
 
+        .label {
+            color: white;
+            padding: 8px;
+            width: 150px;
+            border: 1px black solid;
+        }
+
+        .p_con {
+            background-color: #4CAF50;
+        }
+
+        /* Green */
+        .p_ncon {
+            background-color: #f44336;
+        }
+
+        /* Red */
+
+        div.thicker {
+            font-weight: 900;
+        }
+
+        #chat {
+            width: 300px;
+            margin-right: 500px;
+            margin-top: 0px;
+        }
+
+        #events {
+            flex-grow: 1;
+            list-style: none;
+            margin: auto;
+            padding: 0;
+            border-bottom: 1px solid lightgrey;
+            overflow-y: scroll;
+            /* overflow: hidden; */
+            height: 100px;
+        }
+
+        #events li {
+            padding: 10px 10px 10px 10px;
+        }
+
+        #players_status, #chat{
+            display: inline-block;
+            margin-top: 0px;
+        }
     </style>
 </head>
+
 <body dir="rtl">
     <div id="players_status">
-        <div id="host_player" class="label p_ncon">שחקן מארח: לא מחובר</div>
-        <div id="guest_player" class="label p_ncon">שחקן אורח: לא מחובר</div>
+        <div id="host_player" class="label">שחקן מארח: לא מחובר</div>
+        <div id="guest_player" class="label">שחקן אורח: לא מחובר</div>
+    </div>
+
+
+    <div id="chat" class="w3-container w3-cell">
+        <ul id="events"></ul>
     </div>
     <!-- <h4>ראשית, התחבר:</h4> -->
     <!-- <label for="childId">childId:</label><br>
@@ -49,5 +96,59 @@
     <div id="error"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./gamingClient.js"></script>
+
+    <!-- <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        // import { childLoginRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(() => {
+            init();
+        });
+
+        var sock = null;
+
+        function init() {
+            $('#getGames').on('click', () => {
+                $('#gameFrame').attr('src', URL.GAMES_GALLERY);
+            });
+            $('#childLogin').on('click', () => {
+                let childId = $('#childId').val();
+                console.log(childId);
+                childLogin(childId, showResponse, showError);
+            });
+            $('#socket_connect').on('click', () => {
+                console.log('socket connected');
+                sock = io();
+                sock.emit('conn_status');
+                sock.on('toClient_conn_status', (status0, status1) => {
+                    player_status_update(status0, status1);
+                });
+            });
+            $('#socket_disconnect').on('click', () => {
+                // sock.emit('conn_status');
+                console.log('socket disconnected');
+                sock.disconnect(true);
+            });
+        }
+
+
+        function player_status_update(status0, status1) {
+            let $host_div = $('#host_player');
+            let $guest_div = $('#guest_player');
+            $host_div.text('').removeClass('p_con').removeClass('p_ncon');
+            $guest_div.text('').removeClass('p_con').removeClass('p_ncon');
+            if (status0 === 'disconnect')
+                $host_div.text(`שחקן מארח: לא מחובר`).addClass('p_ncon');
+            else if (status0 === 'connect')
+                $host_div.text(`שחקן מארח: מחובר`).addClass('p_con');
+            if (status1 === 'disconnect')
+                $guest_div.text(`שחקן אורח: לא מחובר`).addClass('p_ncon');
+            else if (status1 === 'connect')
+                $guest_div.text(`שחקן אורח: מחובר`).addClass('p_con');
+        }
+    </script> -->
 </body>
+
 </html>

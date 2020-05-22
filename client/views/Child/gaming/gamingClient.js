@@ -1,86 +1,13 @@
-const server = "http://localhost:3000/api/";
-const serverStatic = "http://localhost:3000/static/"
-const gamesApi = server + "games/";
-const childsApi = server + "childs/";
-const playGamesApi = server + "playGames/";
-
-
-function childLogin(childId, successFunction, errorFunction, completeFunction) {
-    let request = {
-        contentType: "application/json",
-        url: childsApi + childId,
-        method: "GET",
-        // data: JSON.stringify({
-        //     id: child.id,
-        //     gamesPassword: child.password
-        // }),
-        success: function (data, textStatus, xhr) {
-            // data._id = '5ea98c3556adcc84503d58ca';
-            console.log('child_id: ' + data._id);
-            localStorage.setItem('child_id', data._id);
-        },
-        error: function (xhr) {
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
-}
-
-
-// function getGames(successFunction, errorFunction, completeFunction) {
-//     let request = {
-//         contentType: "application/json",
-//         url: gamesApi,
-//         method: "GET",
-//         // headers: { 'x-auth-token' : localStorage.getItem('token') },
-//         // data: JSON.stringify(parent),
-//         success: function (data, textStatus, xhr) {
-//             successFunction(data);//, textStatus, jqXHR);
-//             showGames(data);
-//         },
-//         error: function (xhr) {
-//             errorFunction(xhr.status, xhr.responseText);
-//         }
-//     };
-
-//     // if (completeFunction !== undefined) request.complete = completeFunction;
-
-//     $.ajax(request);
-// }
-
-
-// function startGame(gameId, successFunction, errorFunction, completeFunction) {
-//     let request = {
-//         contentType: "application/json",
-//         url: playGamesApi + "start/",
-//         method: "POST",
-//         // headers: { 'x-auth-token' : localStorage.getItem('token') },
-//         data: JSON.stringify({
-//             child_id: localStorage.getItem('child_id'),
-//             game_id: localStorage.getItem('game_id')
-//         }),
-//         success: function (data, textStatus, xhr) {
-//             // console.log(data);
-//             localStorage.setItem('statsObject_id', data._id);
-//             console.log('statsObject_id: ' + data._id);
-//         },
-//         error: function (xhr) {
-//             errorFunction(xhr.status, xhr.responseText);
-//         }
-//     };
-
-//     $.ajax(request);
-// }
-
 $(document).ready(() => {
     init();
 });
 
 var sock = null;
+var isHost = false;
 
 function init() {
     $('#getGames').on('click', () => {
-        $('#gameFrame').attr('src', './gamesGallery/gamesGallery.html');
+        $('#gameFrame').attr('src', 'gamesGallery.html');
     });
     $('#childLogin').on('click', () => {
         let childId = $('#childId').val();
@@ -90,35 +17,80 @@ function init() {
     $('#socket_connect').on('click', () => {
         console.log('socket connected');
         sock = io();
+        sock.emit('conn_status');
+        sock.on('toClient_conn_status', (status0, status1) => {
+            player_status_update(status0, status1);
+        });
+        sock.on('set_player_role', (role) => {
+            if (role === 'Host') {
+                console.log('host');
+                isHost = true;
+                $('#host_player').addClass('thicker');
+                // setHostEvents();
+            }
+            else{
+                console.log('guest');
+                $('#guest_player').addClass('thicker');
+            }
+        });
+        sock.on('players_ready_choose_game', () => {
+            getGames();
+            // if(isHost) getGames();
+            // else waitForHost();
+        });
+        sock.on('message', (text) => {
+            messageEvent(text)
+        });
     });
     $('#socket_disconnect').on('click', () => {
+        player_status_update('','');
         console.log('socket disconnected');
         sock.disconnect(true);
     });
 }
 
 
-// function showGames(games) {
-//     games.forEach(game => {
-//         let $btn = $('<button>').text(game.title).on('click', () => {
-//             localStorage.setItem('game_id', game._id);
-//             startGame(game._id);
-//             //serverStatic
-//             $('#gameFrame').attr('src', game.link);
-//         });
-//         let $img = $('<img>').attr('src', game.icon).css({'width':'30px', 'height':'30px'});
-//         $('#gallery').append($btn);
-//         $('#gallery').append($img)
+
+
+
+// function setHostEvents(){
+//     sock.on('players_ready_choose_game', () => {
+//         if(isHost) getGames();
+//         else waitForHost();
 //     });
 // }
 
 
-function showResponse(data) {
-    console.log(data);
-    $('#response').text(JSON.stringify(data, null, 2));
+function getGames(){
+    $('#gameFrame').attr('src', 'gamesGallery.html');
 }
 
 
-function showError(status, responseText) {
-    $('#error').text(`ERROR: ${status}, ${responseText}`);
+function waitForHost(){
+    // $('#gameFrame').attr('src');
 }
+
+function player_status_update(status0, status1) {
+    let $host_div = $('#host_player');
+    let $guest_div = $('#guest_player');
+    $host_div.text('').removeClass('p_con').removeClass('p_ncon');
+    $guest_div.text('').removeClass('p_con').removeClass('p_ncon');
+    if (status0 === 'disconnect')
+        $host_div.text(`שחקן מארח: לא מחובר`).addClass('p_ncon');
+    else if (status0 === 'connect')
+        $host_div.text(`שחקן מארח: מחובר`).addClass('p_con');
+    if (status1 === 'disconnect')
+        $guest_div.text(`שחקן אורח: לא מחובר`).addClass('p_ncon');
+    else if (status1 === 'connect')
+        $guest_div.text(`שחקן אורח: מחובר`).addClass('p_con');
+}
+
+
+// print messages to player from server
+var msg_counter = 0;
+const messageEvent = (text) => {
+    let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
+    $('#events').prepend($new_li);
+    msg_counter++;
+};
+

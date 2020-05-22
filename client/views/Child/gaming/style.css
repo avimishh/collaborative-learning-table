@@ -36,7 +36,7 @@
     border-bottom: 1px solid lightgrey;
     overflow-y: scroll;
     /* overflow: hidden; */
-    height: 200px;
+    height: 100px;
   }
   
   #events li {

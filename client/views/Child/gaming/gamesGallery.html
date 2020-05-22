@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f1f1f1;
+            padding: 20px;
+            font-family: Arial;
+        }
+
+        /* Center website */
+        .main {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 50px;
+            word-break: break-all;
+        }
+
+        .row {
+            margin: 8px -16px;
+        }
+
+        /* Add padding BETWEEN each column (if you want) */
+        .row,
+        .row>.column {
+            padding: 8px;
+        }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+        }
+
+        /* Clear floats after rows */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Content */
+        .content {
+            background-color: white;
+            padding: 10px;
+        }
+
+        /* Responsive layout - makes a two column-layout instead of four columns */
+        @media screen and (max-width: 900px) {
+            .column {
+                width: 50%;
+            }
+        }
+
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <!-- MAIN (Center website) -->
+    <div class="main">
+
+        <h1 id="msg">בחר משחק: </h1>
+        <hr>
+        <!-- Gallery Grid -->
+        <div id='row_div' class="row">
+        </div>
+
+        <!-- END MAIN -->
+    </div>
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { getGamesRequest, startGameRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        var sock = parent.sock;
+        var isHost = parent.isHost;
+
+        $(document).ready(() => {
+            console.log('jqeury work');
+            init();
+            sock.on('open_game_page', (game_url) =>{
+                location.replace(game_url);
+            });
+            // console.log(sock);
+            // var referrer = document.referrer;
+            // console.log(referrer);
+            // console.log(referrer.sock);
+        });
+
+
+        function init() {
+            if(isHost) getGamesRequest(showGames);
+            else $('#msg').text('המתן לחברך בבחירת משחק');
+        }
+
+
+        function showGames(games) {
+            games.forEach(game => {
+                let $div1 = $('<div>').addClass('column');
+                let $div2 = $('<div>').addClass('content');
+                let $img = $('<img>').attr('src', game.icon).css({ 'width': '100px', 'height': '100px' });
+                let $h3 = $('<h3>').text(game.title);
+                let $p = $('<p>').text(game.description);
+                let $btn = $('<button>').text(game.title).on('click', () => {
+                    localStorage.setItem('game_id', game._id);
+                    startGameRequest(game._id);
+                    sock.emit('request_game_url_replace', game.link);
+                });
+                $div2.append($img, $h3, $p, $btn);
+                $div1.append($div2);
+                $('#row_div').append($div1);
+            });
+        }
+    </script>
+</body>
+
+</html>

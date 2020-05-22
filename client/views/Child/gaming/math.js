@@ -4,6 +4,8 @@ $(document).ready(function () {
     numbers_pad_init();
     sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
     // console.log(localStorage.getItem('statsObject_id'));
+    sock.emit('start_game', 'Math');
+    console.log('run');
 });
 
 
@@ -51,6 +53,7 @@ function submit_answer() {
     $('#answer').empty();
     sock.emit('answer_submitted', answer);
     set_game_pad_state('disable');
+
 }
 
 
@@ -106,11 +109,9 @@ const addButtonListeners = () => {
 };
 
 
-
-
 // Socket work
 const sock = parent.sock;
-console.log(sock);
+// console.log(parent.sock);
 sock.on('message', (text) => {
     messageEvent(text)
 });
