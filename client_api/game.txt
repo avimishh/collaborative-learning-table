@@ -1,7 +1,0 @@
-game gallery
-- html page
-    - js code to load array of games (recieved from ajax) to table/container
-- ajax script to get games from server
-
-
-click on game will open frame with of the game.
