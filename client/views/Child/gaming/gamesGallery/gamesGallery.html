@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f1f1f1;
+            padding: 20px;
+            font-family: Arial;
+        }
+
+        /* Center website */
+        .main {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 50px;
+            word-break: break-all;
+        }
+
+        .row {
+            margin: 8px -16px;
+        }
+
+        /* Add padding BETWEEN each column (if you want) */
+        .row,
+        .row>.column {
+            padding: 8px;
+        }
+
+        /* Create four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+        }
+
+        /* Clear floats after rows */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Content */
+        .content {
+            background-color: white;
+            padding: 10px;
+        }
+
+        /* Responsive layout - makes a two column-layout instead of four columns */
+        @media screen and (max-width: 900px) {
+            .column {
+                width: 50%;
+            }
+        }
+
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <!-- MAIN (Center website) -->
+    <div class="main">
+
+        <h1>בחר משחק: </h1>
+        <hr>
+        <!-- Gallery Grid -->
+        <div id='row_div' class="row">
+            <!-- <div class="column">
+                <div class="content">
+                    <img src="mountains.jpg" alt="Mountains" style="width:100%">
+                    <h3>My Work</h3>
+                    <p>Lorem ipsum..</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                    <img src="lights.jpg" alt="Lights" style="width:100%">
+                    <h3>My Work</h3>
+                    <p>Lorem ipsum..</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                    <img src="nature.jpg" alt="Nature" style="width:100%">
+                    <h3>My Work</h3>
+                    <p>Lorem ipsum..</p>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+                    <img src="mountains.jpg" alt="Mountains" style="width:100%">
+                    <h3>My Work</h3>
+                    <p>Lorem ipsum..</p>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- <div class="content">
+            <img src="bear.jpg" alt="Bear" style="width:100%">
+            <h3>Some Other Work</h3>
+            <p>Lorem ipsum..</p>
+        </div> -->
+
+        <!-- END MAIN -->
+    </div>
+    <script>
+        const server = "http://localhost:3000/api/";
+        const serverStatic = "http://localhost:3000/static/"
+        const gamesApi = server + "games/";
+        const playGamesApi = server + "playGames/";
+
+        $(document).ready(() => {
+            console.log('jqeury work');
+            init();
+        });
+
+        function getGames(successFunction, errorFunction, completeFunction) {
+            let request = {
+                contentType: "application/json",
+                url: gamesApi,
+                method: "GET",
+                // headers: { 'x-auth-token' : localStorage.getItem('token') },
+                // data: JSON.stringify(parent),
+                success: function (data, textStatus, xhr) {
+                    // successFunction(data);//, textStatus, jqXHR);
+                    showGames(data);
+                },
+                error: function (xhr) {
+                    // errorFunction(xhr.status, xhr.responseText);
+                }
+            };
+
+            // if (completeFunction !== undefined) request.complete = completeFunction;
+
+            $.ajax(request);
+        }
+
+        function startGame(gameId, successFunction, errorFunction, completeFunction) {
+            let request = {
+                contentType: "application/json",
+                url: playGamesApi + "start/",
+                method: "POST",
+                // headers: { 'x-auth-token' : localStorage.getItem('token') },
+                data: JSON.stringify({
+                    child_id: localStorage.getItem('child_id'),
+                    game_id: localStorage.getItem('game_id')
+                }),
+                success: function (data, textStatus, xhr) {
+                    // console.log(data);
+                    localStorage.setItem('statsObject_id', data._id);
+                    console.log('statsObject_id: ' + data._id);
+                },
+                error: function (xhr) {
+                    errorFunction(xhr.status, xhr.responseText);
+                }
+            };
+
+            $.ajax(request);
+        }
+
+
+        function init() {
+            getGames();
+        }
+
+        // <div class="column">
+        //                 <div class="content">
+        //                     <img src="mountains.jpg" alt="Mountains" style="width:100%">
+        //                     <h3>My Work</h3>
+        //                     <p>Lorem ipsum..</p>
+        //                 </div>
+        //             </div>
+        function showGames(games) {
+            games.forEach(game => {
+                let $div1 = $('<div>').addClass('column');
+                let $div2 = $('<div>').addClass('content');
+                let $img = $('<img>').attr('src', game.icon).css({ 'width': '100px', 'height': '100px' });
+                let $h3 = $('<h3>').text(game.title);
+                let $p = $('<p>').text(game.description);
+                let $btn = $('<button>').text(game.title).on('click', () => {
+                    localStorage.setItem('game_id', game._id);
+                    startGame(game._id);
+                    location.replace(game.link);
+                });
+                $div2.append($img, $h3, $p, $btn);
+                // $('#gallery').append($btn);
+                // $('#gallery').append($img);
+                $div1.append($div2);
+                $('#row_div').append($div1);
+            });
+        }
+    </script>
+</body>
+
+</html>

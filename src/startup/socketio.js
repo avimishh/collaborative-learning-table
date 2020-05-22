@@ -14,6 +14,6 @@ module.exports = function (server, app) {
     // app.use(session);
     
     console.log('io is on');
-    require('./../public/games/gameStarter').init(io);
+    require('./../public/games/gamingServer').init(io);
     // require('./../public/server_math/server')(io);
 }

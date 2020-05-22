@@ -2,7 +2,6 @@
 // Wait for jQuery to complete load
 $(document).ready(function () {
     numbers_pad_init();
-    console.log(sock);
     sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
     // console.log(localStorage.getItem('statsObject_id'));
 });
@@ -111,9 +110,7 @@ const addButtonListeners = () => {
 
 // Socket work
 const sock = parent.sock;
-// const sock = io();
-// const sock = JSON.parse( localStorage.getItem('mySock') );
-
+console.log(sock);
 sock.on('message', (text) => {
     messageEvent(text)
 });

@@ -10,15 +10,29 @@
             width: 80%;
             height: 500px;
         }
+        .label {
+  color: white;
+  padding: 8px;
+  width: 150px;
+  border: 1px black solid;
+}
+.p_con {background-color: #4CAF50;} /* Green */
+.p_ncon {background-color: #f44336;} /* Red */
+
     </style>
 </head>
-<body>
-    <h4>ראשית, התחבר:</h4>
+<body dir="rtl">
+    <div id="players_status">
+        <div id="host_player" class="label p_ncon">שחקן מארח: לא מחובר</div>
+        <div id="guest_player" class="label p_ncon">שחקן אורח: לא מחובר</div>
+    </div>
+    <!-- <h4>ראשית, התחבר:</h4> -->
     <!-- <label for="childId">childId:</label><br>
     <input type="text" id="childId"><br>
     <label for="gamesPassword">gamesPassword:</label><br>
     <input type="text" id="gamesPassword"><br> -->
-    <button id="childLogin">ילד התחבר</button><br><br>
+    <!-- <button id="childLogin">ילד התחבר</button><br><br> -->
+    <br><br>
     <button id="socket_connect">socket connect</button><br><br>
     <button id="socket_disconnect">socket disconnect</button><br><br>
     <!-- https://mathgame12.herokuapp.com/ -->
@@ -34,6 +48,6 @@
     <label for="error">error:</label><br>
     <div id="error"></div>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./gallery.js"></script>
+    <script src="./gamingClient.js"></script>
 </body>
 </html>

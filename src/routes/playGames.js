@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Game, validate } = require('../models/game');
 const { MathStat } = require('../models/mathStat');
-const { setGameToPlay, startGame } = require('./../public/games/gameStarter');
+const { setGameToPlay, startGame } = require('./../public/games/gamingServer');
 
 
 // POST ['api/playGames/start']
