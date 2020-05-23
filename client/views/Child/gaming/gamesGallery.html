@@ -96,8 +96,11 @@
         $(document).ready(() => {
             console.log('jqeury work');
             init();
-            sock.on('open_game_page', (game_url) =>{
-                location.replace(game_url);
+            sock.on('open_game_page', (this_game_url, game_id) =>{
+                console.log('b');
+                game_url = this_game_url;
+                startGameRequest(game_id, open_game_page);
+                // location.replace(game_url);
             });
             // console.log(sock);
             // var referrer = document.referrer;
@@ -105,6 +108,11 @@
             // console.log(referrer.sock);
         });
 
+        var game_url = "";
+        // var game_id = "";
+        function open_game_page(){
+            location.replace(game_url);
+        }
 
         function init() {
             if(isHost) getGamesRequest(showGames);
@@ -121,8 +129,9 @@
                 let $p = $('<p>').text(game.description);
                 let $btn = $('<button>').text(game.title).on('click', () => {
                     localStorage.setItem('game_id', game._id);
-                    startGameRequest(game._id);
-                    sock.emit('request_game_url_replace', game.link);
+                    // game_id = game._id;
+                    // startGameRequest(game._id);
+                    sock.emit('request_game_url_replace', game.link, game._id);
                 });
                 $div2.append($img, $h3, $p, $btn);
                 $div1.append($div2);

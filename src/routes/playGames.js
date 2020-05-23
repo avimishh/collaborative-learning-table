@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Game, validate } = require('../models/game');
 const { MathStat } = require('../models/mathStat');
-const { setGameToPlay, startGame } = require('./../public/games/gamingServer');
+// const { setGameToPlay, startGame } = require('./../public/games/gamingServer');
 
 
 // POST ['api/playGames/start']
@@ -12,7 +12,9 @@ router.post('/start', async (req, res) => {
     if (!game)
         return res.status(404).send(`Game ${req.body.game_id} was not found.`);
     let mathStat = await createNewStatsObject(req.body.child_id, req.body.game_id);
-    setGameToPlay(game.title);
+    console.log(req.body.game_id);
+    console.log(req.body.child_id);
+    // setGameToPlay(game.title);
     res.status(200).send(mathStat);
 });
 

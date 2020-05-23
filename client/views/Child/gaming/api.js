@@ -41,6 +41,7 @@ export function startGameRequest(gameId, successFunction, errorFunction, complet
             // console.log(data);
             localStorage.setItem('statsObject_id', data._id);
             console.log('statsObject_id: ' + data._id);
+            successFunction();
         },
         error: function (xhr) {
             errorFunction(xhr.status, xhr.responseText);

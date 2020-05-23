@@ -38,7 +38,7 @@ function init() {
             // if(isHost) getGames();
             // else waitForHost();
         });
-        sock.on('message', (text) => {
+        sock.on('init_msg', (text) => {
             messageEvent(text)
         });
     });
