@@ -6,5 +6,5 @@ function idUser() {
         id: $("#id_user").val()
     });
     sessionStorage.setItem("user", userObj);
-    window.location.href = '../../../User/Student details User/StudentDetails_User.html'
+    window.location.href = '../../../Child/Details_Child.html'
 }

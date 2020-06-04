@@ -19,7 +19,7 @@ router.get('/', async (req,res) => {
 // GET ['api/users/me']
 router.get('/me', auth, async (req,res) => {
     // Find
-    const user = await User.findById(req.user._id).populate('parent').select('-password');
+    const user = await User.findById(req.user._id).populate('parent teacher').select('-password');
     // Check if exist? User exist beacuse was authorization at first
     // if(!user) 
         // return res.status(404).send(`User ${req.params.id} was not found.`);

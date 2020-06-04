@@ -12,6 +12,8 @@ var status1 = 'disconnect';
 
 
 function init(io) {
+    // io.eio.pingTimeout = 100;
+    // io.eio.pingInterval = 10;
     io.on('connection', (sock) => {
         console.log('player connected');
 
@@ -115,6 +117,7 @@ function init_Guest_player(io, sock){
 }
 
 const MathGame = require('./Math/math_game');
+const EnglishGame = require('./English/english_game');
 
 // game code as parameter
 function startGame() {
@@ -126,6 +129,9 @@ function startGame() {
     // Start a game
     if (gameTitle === 'Math') {
         new MathGame(players[0], players[1]);
+    }
+    if (gameTitle === 'English') {
+        new EnglishGame(players[0], players[1]);
     }
 }
 

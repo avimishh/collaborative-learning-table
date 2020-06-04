@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>English</title>
+    <style>
+        #message_div {
+            text-align: center;
+        }
+
+        #message_box {
+            width: 300px;
+            height: 40px;
+            border: black 1px solid;
+            margin: 10px auto;
+        }
+
+        #cards_div {
+            text-align: center;
+            height: 150px;
+            padding-top: 20px;
+        }
+
+        #cards_div button {
+            margin: 10px;
+            width: 80px;
+        }
+
+        #answers_div {
+            text-align: center;
+            height: 150px;
+            padding-top: 20px;
+        }
+
+        #answers_div button {
+            margin: 10px;
+            width: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="w3-container" id="message_div">
+        <h4 id="message_box">message</h4>
+    </div>
+    <div class="w3-container" id="cards_div">
+
+    </div>
+    <div class="w3-container" id="answers_div">
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(document).ready(function () {
+            words_pad_init();
+            answers_pad_init();
+            sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
+            sock.emit('start_game', 'English');
+        });
+
+        var words = ['Apple', 'House', 'Dog', 'Sun', 'Ball'];
+        var answers = ['תפוח', 'בית', 'כלב', 'שמש', 'כדור'];
+
+
+        // Game pad buttons initizalization
+        function words_pad_init() {
+            var words_buttons = [];
+            for (let i = 0; i < words.length; i++) {
+                let $btn = $("<button>").text(words[i]);
+                // w3-css style
+                $btn.addClass('w3-button w3-card');
+                $btn.on('click', function () {
+                    $(this).hide();
+                    // console.log('DEBUG: ' + words[i]);
+                    // choose_card(words[i]);
+                    sock.emit('english_word', words[i], answers[i]);
+                });
+                words_buttons.push($btn);
+            }
+
+            for (let i = 0; i < words.length; i++) {
+                $("#cards_div").append(words_buttons[i]);
+                if (i === 2) $("#cards_div").append($("<br>"));
+            }
+
+            set_words_pad_state('disable');
+        }
+
+
+        // Game pad buttons initizalization
+        function answers_pad_init() {
+            var answers_buttons = [];
+            for (let i = 0; i < answers.length; i++) {
+                let $btn = $("<button>").text(answers[i]);
+                // w3-css style
+                $btn.addClass('w3-button w3-card');
+                $btn.on('click', function () {
+                    $(this).hide();
+                    // console.log('DEBUG: ' + words[i]);
+                    sock.emit('answer_submitted', answers[i]);
+                });
+                answers_buttons.push($btn);
+            }
+
+            for (let i = 0; i < answers.length; i++) {
+                $("#answers_div").append(answers_buttons[i]);
+                if (i === 2) $("#answers_div").append($("<br>"));
+            }
+
+            set_answers_pad_state('disable');
+        }
+
+
+        // only enabled after question was asked
+        function set_answers_pad_state(state) {
+            if (state === 'disable')
+                $('#answers_div button').attr('disabled', 'true');
+            else
+                $('#answers_div button').removeAttr('disabled');
+        }
+
+        // print messages to player from server
+        var msg_counter = 0;
+        const messageEvent = (text) => {
+            $('#message_box').text(`${msg_counter}: ${text}`);
+            // let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
+            // $('#events').prepend($new_li);
+            msg_counter++;
+        };
+
+        // math operators disabled after player chose, enabled when new round started
+        function set_words_pad_state(state) {
+            if (state === 'disable')
+                $('#cards_div button').attr('disabled', 'true');
+            else
+                $('#cards_div button').removeAttr('disabled');
+        }
+
+        // Socket work
+        const sock = parent.sock;
+        sock.on('message', (text) => {
+            messageEvent(text)
+        });
+
+        sock.on('question', (text) => {
+            messageEvent(text)
+        });
+
+        sock.on('chooseWordScreen', (state) => {
+            set_words_pad_state(state)
+        });
+
+        sock.on('stats', (playersStats) => {
+            update_stats(playersStats)
+        });
+
+        sock.on('gamePadState', (state) => {
+            set_answers_pad_state(state)
+        });
+    </script>
+</body>
+
+</html>
