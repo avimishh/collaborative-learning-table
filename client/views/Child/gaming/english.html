@@ -41,12 +41,29 @@
             margin: 10px;
             width: 80px;
         }
+
+        #stats {
+            width: 100px;
+            float: left;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="w3-container" id="message_div">
+        <div id="stats" class="w3-table-all">
+            <table class="w3-table">
+                <tr>
+                    <th>אתה</th>
+                    <th>חברך</th>
+                </tr>
+                <tr id='score'>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
         <h4 id="message_box">message</h4>
     </div>
     <div class="w3-container" id="cards_div">
@@ -60,71 +77,78 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         $(document).ready(function () {
-            words_pad_init();
-            answers_pad_init();
+            init_game_pad();
             sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
             sock.emit('start_game', 'English');
         });
 
-        var words = ['Apple', 'House', 'Dog', 'Sun', 'Ball'];
-        var answers = ['תפוח', 'בית', 'כלב', 'שמש', 'כדור'];
+        // var words = ['Apple', 'House', 'Dog', 'Sun', 'Ball'];
+        // var answers = ['תפוח', 'בית', 'כלב', 'שמש', 'כדור'];
+        var questions = [];
 
-
+        function init_game_pad(){
+            words_pad_init();
+            answers_pad_init();
+        }
         // Game pad buttons initizalization
         function words_pad_init() {
+            $("#cards_div").empty();
             var words_buttons = [];
-            for (let i = 0; i < words.length; i++) {
-                let $btn = $("<button>").text(words[i]);
+            for (let i = 0; i < questions.length; i++) {
+                let $btn = $("<button>").text(questions[i]._word);
                 // w3-css style
                 $btn.addClass('w3-button w3-card');
                 $btn.on('click', function () {
                     $(this).hide();
                     // console.log('DEBUG: ' + words[i]);
-                    // choose_card(words[i]);
-                    sock.emit('english_word', words[i], answers[i]);
+                    sock.emit('player_chose_word', questions[i]);
                 });
                 words_buttons.push($btn);
             }
 
-            for (let i = 0; i < words.length; i++) {
+            for (let i = 0; i < words_buttons.length; i++) {
                 $("#cards_div").append(words_buttons[i]);
                 if (i === 2) $("#cards_div").append($("<br>"));
             }
-
             set_words_pad_state('disable');
         }
 
 
         // Game pad buttons initizalization
         function answers_pad_init() {
+            $("#answers_div").empty();
             var answers_buttons = [];
-            for (let i = 0; i < answers.length; i++) {
-                let $btn = $("<button>").text(answers[i]);
+            for (let i = 0; i < questions.length; i++) {
+                let $btn = $("<button>").text(questions[i]._answer);
                 // w3-css style
                 $btn.addClass('w3-button w3-card');
                 $btn.on('click', function () {
                     $(this).hide();
                     // console.log('DEBUG: ' + words[i]);
-                    sock.emit('answer_submitted', answers[i]);
+                    sock.emit('answer_submitted', questions[i]);
+                    set_answers_pad_state('disable');
                 });
                 answers_buttons.push($btn);
             }
 
-            for (let i = 0; i < answers.length; i++) {
+            for (let i = 0; i < answers_buttons.length; i++) {
                 $("#answers_div").append(answers_buttons[i]);
                 if (i === 2) $("#answers_div").append($("<br>"));
             }
-
             set_answers_pad_state('disable');
         }
 
 
         // only enabled after question was asked
         function set_answers_pad_state(state) {
-            if (state === 'disable')
+            if (state === 'disable') {
+                $('#answers_div').hide();
                 $('#answers_div button').attr('disabled', 'true');
-            else
+            }
+            else {
                 $('#answers_div button').removeAttr('disabled');
+                $('#answers_div').show();
+            }
         }
 
         // print messages to player from server
@@ -138,18 +162,33 @@
 
         // math operators disabled after player chose, enabled when new round started
         function set_words_pad_state(state) {
-            if (state === 'disable')
+            if (state === 'disable') {
+                $('#cards_div').hide();
                 $('#cards_div button').attr('disabled', 'true');
-            else
+            }
+            else {
+                $('#cards_div').show();
                 $('#cards_div button').removeAttr('disabled');
+            }
         }
+
+        // updating statistics got from server on stats board
+        function update_stats(playersStats) {
+            console.log(playersStats);
+            $('#score td:nth-child(1)').text(playersStats[0].correct);    // player
+            $('#score td:nth-child(2)').text(playersStats[1].correct);    // friend
+        }
+
 
         // Socket work
         const sock = parent.sock;
         sock.on('message', (text) => {
             messageEvent(text)
         });
-
+        sock.on('set_questions', (new_questions) => {
+            questions = new_questions;
+            init_game_pad();
+        });
         sock.on('question', (text) => {
             messageEvent(text)
         });

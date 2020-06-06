@@ -1,9 +1,10 @@
 const saveData = require('./../gameStatsSaver');
 
 
-var questions = [];
 // const
-const MAX_ROUNDS = 1;
+const MAX_ROUNDS = 3;
+var questions = [];
+var askedQuestions = [];
 
 class EnglishGame {
     constructor(p0, p1) {
@@ -13,17 +14,17 @@ class EnglishGame {
         this._roundCounter = 0;
 
         this._sendToPlayers('message', 'התחלנו לשחק');
-
+        this._generate_questions();
 
         // Add listener 
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player._socket.on('english_word', (word, answer) => {
-                this._askQuestion(idx, word, answer);
+            player._socket.on('player_chose_word', (question) => {
+                this._askQuestion(idx, question);
             });
 
-            player._socket.on('answer_submitted', (answer) => {
-                this._checkAnswer(idx, answer);
+            player._socket.on('answer_submitted', (question) => {
+                this._checkAnswer(idx, question);
                 this._checkRoundOver();
             });
         });
@@ -44,6 +45,7 @@ class EnglishGame {
     }
 
     _startRound() {
+        this._sendToPlayers('set_questions', questions);
         let idx_turn = this._determineTurn();
     }
 
@@ -73,20 +75,21 @@ class EnglishGame {
         this._sendToPlayers('gamePadState', state)
     }
 
-    _askQuestion(playerIndex, word, answer) {
+    _askQuestion(playerIndex, question) {
         // After player chose operator disable his game operators
         this._setPlayerToAsk(playerIndex, 'disable');
-
-        var new_question = new Question(word, answer);
-        this._players.forEach(p => p._updateAskedQuestion(word));
-        questions.push(new_question);
-        this._sendToPlayers('question', new_question.toString());
+        this._players.forEach(p => p._updateAskedQuestion());
+        // Remove question from original array
+        let qIdx = questions.findIndex(q => q._word === question._word);
+        if (qIdx !== -1) askedQuestions.push(questions.splice(qIdx, 1));
+        ////
+        this._sendToPlayers('question', question._word);
         this._setAnswersPadState('enable'); // set enable so player can answer
     }
 
-    _checkAnswer(playerIndex, answer) {
-        let asked_question = questions[questions.length - 1];
-        if (asked_question._answer === String(answer)) {
+    _checkAnswer(playerIndex, player_answer_question) {
+        let asked_question = askedQuestions[askedQuestions.length - 1];
+        if (asked_question[0]._word === player_answer_question._word) {
             this._players[playerIndex]._addScore();
             this._isPlayersAnswerCorrect[playerIndex] = true;
             return true;
@@ -135,6 +138,14 @@ class EnglishGame {
         this._players.forEach(p => {
             saveData(p._statsObject_id, p._stats, questions.length);
         });
+    }
+
+    _generate_questions(){
+        questions = [
+            new Question('Apple', 'תפוח'), new Question('House', 'בית'), 
+            new Question('Dog', 'כלב'), new Question('Sun', 'שמש'),
+            new Question('Ball', 'כדור')
+        ];
     }
 }
 
@@ -204,7 +215,7 @@ class Player {
         // }]
     }
 
-    _addScore(operation) {
+    _addScore() {
         this._stats.correct++;
         // switch (operation) {
         //     case 'plus':
@@ -219,7 +230,7 @@ class Player {
         // }
     }
 
-    _updateAskedQuestion(operation) {
+    _updateAskedQuestion() {
         this._stats.asked++;
         // switch (operation) {
         //     case 'plus':
