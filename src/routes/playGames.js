@@ -7,13 +7,13 @@ const { MathStat } = require('../models/mathStat');
 
 // POST ['api/playGames/start']
 router.post('/start', async (req, res) => {
+    // console.log(req.body.game_id);
+    // console.log(req.body.child_id);
     const game = await Game.findById(req.body.game_id);
     // Check if exist
     if (!game)
         return res.status(404).send(`Game ${req.body.game_id} was not found.`);
     let mathStat = await createNewStatsObject(req.body.child_id, req.body.game_id);
-    console.log(req.body.game_id);
-    console.log(req.body.child_id);
     // setGameToPlay(game.title);
     res.status(200).send(mathStat);
 });

@@ -80,13 +80,16 @@ footer {
     
 .in_img {
     width: 32%;
-    height: 32%;
+    height: 24%;
     z-index:1;
     box-sizing: border-box;
     font-size: 40px;
     position: absolute;
     right: 9%;
     top: 20%;
+    text-align: center;
+    background-color: mediumseagreen;
+    color: whitesmoke;
 }
 
 /*tablets*/

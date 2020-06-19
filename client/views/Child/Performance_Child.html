@@ -1,27 +1,93 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <script src="../../lib/jquery.js"></script>
     <link href="./style/StudentPerformance_Child.css" rel="stylesheet" />
     <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
+        rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
 
+        th,
+        td {
+            text-align: center;
+            padding: 16px;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+        }
+
+        /* tr:nth-child(even) {
+            background-color: #f2f2f2
+        } */
+
+        .fa-check {
+            color: green;
+        }
+
+        .fa-remove {
+            color: red;
+        }
+    </style>
 </head>
+
 <body dir="rtl">
     <div>
         <h1 class="tittle">שולחן משחקים שיתופי</h1>
     </div>
+
     <div class="form-box">
         <h1>הצגת ציונים וגרף התקדמות <span class="fullNameChild"></span></h1>
 
-        <div class="mess">
-            
+        <div class="mess" id="data">
+
         </div>
 
     </div>
 
+    <script type="module" src="api.js"></script>
+    <script type="module">
+        import { getStatsRequest } from './api.js';
 
+        $(document).ready(() => {
+            console.log('jquery work');
+            // init();
+            let child_id = JSON.parse(localStorage.getItem('child'))._id;
+            getStatsRequest(child_id, setData);
+        });
+
+        function setData(data) {
+            let $h_tr = $('<tr>').append($('<th>').text('תאריך'), $('<th>').text('סך הכל שאלות'),
+                $('<th>').text('חיבור'), $('<th>').text('חיסור'), $('<th>').text('כפל'));
+            let $table = $('<table>').append($h_tr);
+            let sheets = data[0].sheets;
+            for (let i = 0; i < sheets.length; i++) {
+                console.log(sheets[i]);
+                let $td0 = $('<td>').text(sheets[i].date.substr(0,10));
+                let $td1 = $('<td>').text(sheets[i].number_of_questions);
+                let $td2 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
+                let $td3 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
+                let $td4 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
+                
+                $table.append( $('<tr>').append($td0, $td1, $td2, $td3, $td4) );
+            }
+            $('#data').append($table);
+            console.log();
+        }
+
+    </script>
 </body>
+
 </html>

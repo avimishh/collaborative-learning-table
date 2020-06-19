@@ -46,11 +46,16 @@
             width: 100px;
             float: left;
         }
+
+        .img_answers {
+            margin: 10px;
+            width: 100px;
+            height: 100px;
+        }
     </style>
 </head>
 
 <body>
-
     <div class="w3-container" id="message_div">
         <div id="stats" class="w3-table-all">
             <table class="w3-table">
@@ -76,6 +81,8 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        var imagesPath = './images/';
+
         $(document).ready(function () {
             init_game_pad();
             sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
@@ -86,9 +93,9 @@
         // var answers = ['תפוח', 'בית', 'כלב', 'שמש', 'כדור'];
         var questions = [];
 
-        function init_game_pad(){
+        function init_game_pad() {
             words_pad_init();
-            answers_pad_init();
+            answers_pad_init_images();
         }
         // Game pad buttons initizalization
         function words_pad_init() {
@@ -138,6 +145,30 @@
             set_answers_pad_state('disable');
         }
 
+        // <input type="image" class="img_answers" src="./images/apple.png">
+        // Game pad buttons initizalization
+        function answers_pad_init_images() {
+            $("#answers_div").empty();
+            var answers_buttons = [];
+            for (let i = 0; i < questions.length; i++) {
+                let $btn = $("<input>").attr('type','image').attr('src', imagesPath + questions[i]._word + '.png');
+                // w3-css style
+                $btn.addClass('w3-button w3-card img_answers');
+                $btn.on('click', function () {
+                    $(this).hide();
+                    // console.log('DEBUG: ' + words[i]);
+                    sock.emit('answer_submitted', questions[i]);
+                    set_answers_pad_state('disable');
+                });
+                answers_buttons.push($btn);
+            }
+
+            for (let i = 0; i < answers_buttons.length; i++) {
+                $("#answers_div").append(answers_buttons[i]);
+                if (i === 2) $("#answers_div").append($("<br>"));
+            }
+            set_answers_pad_state('disable');
+        }
 
         // only enabled after question was asked
         function set_answers_pad_state(state) {

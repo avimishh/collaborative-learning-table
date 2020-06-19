@@ -29,6 +29,10 @@ table tr td {
     margin-bottom: 30px;
 }
 
+#chartContainer{
+    margin: auto;
+}
+
 .tittle {
     margin-top: 20px;
     color: #7c795d;

@@ -11,6 +11,7 @@ const auth = require('../routes/auth');
 const childs = require('../routes/childs');
 const parents = require('../routes/parents');
 const playGames = require('../routes/playGames');
+const mathStats = require('../routes/mathStats');
 
 // Error Middleware Import
 const error = require('../middleware/error');
@@ -35,5 +36,6 @@ module.exports = function(app) {
     app.use('/api/childs', childs);
     app.use('/api/parents', parents);
     app.use('/api/playGames', playGames);
+    app.use('/api/mathStats', mathStats);
     app.use(error);
 }
