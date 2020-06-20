@@ -16,7 +16,7 @@ router.post('/', async (req,res) => {
     // if(error)
     //     return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({userId: req.body.userId});
+    let user = await User.findOne({userId: req.body.userId})).populate('_parent');
     // Response 400 Bad Request if the user exist
     if(!user) return res.status(400).send("Invalid email or password.");
     // Validate password, bcypt.comare missing await

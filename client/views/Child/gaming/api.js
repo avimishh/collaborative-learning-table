@@ -34,7 +34,7 @@ export function startGameRequest(gameId, successFunction, errorFunction, complet
         method: "POST",
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
         data: JSON.stringify({
-            child_id: JSON.parse(localStorage.getItem('child'))._id,
+            child_id: JSON.parse(localStorage.getItem('child')).id,
             game_id: gameId
         }),
         success: function (data, textStatus, xhr) {

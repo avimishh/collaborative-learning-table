@@ -21,14 +21,14 @@ router.post('/start', async (req, res) => {
 
 async function createNewStatsObject(child_id, game_id) {
     let mathStat = await MathStat.findOne({
-        child: child_id,
+        child_id: child_id,
         game: game_id
     });
     // Response 400 Bad Request if the user exist
     if (!mathStat) {
         // Create new document
         mathStat = new MathStat({
-            child: child_id,
+            child_id: child_id,
             game: game_id,
             sheets: []
         });

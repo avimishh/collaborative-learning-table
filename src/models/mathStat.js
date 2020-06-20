@@ -11,10 +11,12 @@ const DESCRIPTION_LEN = [5, 1024];
 
 // Model
 const MathStat = mongoose.model('MathStat', new mongoose.Schema({
-    child: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Child',
+    child_id: {
+        type: String,
         required: true
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Child',
+        // required: true
     },
     game: {
         type: mongoose.Schema.Types.ObjectId,

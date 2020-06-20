@@ -19,7 +19,7 @@ router.get('/', async (req, res, next) => {
 
 // GET 'api/fields/:id'
 router.get('/:id', async (req, res) => {
-    const mathStats = await MathStat.find({ child: req.params.id });
+    const mathStats = await MathStat.find({ child_id: req.params.id });
 
     if (!mathStats) return res.status(404).send(`Field ${req.params.id} was not found.`);
 
