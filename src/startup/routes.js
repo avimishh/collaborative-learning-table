@@ -10,8 +10,10 @@ const users = require('../routes/users');
 const auth = require('../routes/auth');
 const childs = require('../routes/childs');
 const parents = require('../routes/parents');
+const teachers = require('../routes/teachers');
 const playGames = require('../routes/playGames');
 const mathStats = require('../routes/mathStats');
+const notes = require('../routes/notes');
 
 // Error Middleware Import
 const error = require('../middleware/error');
@@ -35,7 +37,9 @@ module.exports = function(app) {
     app.use('/api/auth', auth);
     app.use('/api/childs', childs);
     app.use('/api/parents', parents);
+    app.use('/api/teachers', teachers);
     app.use('/api/playGames', playGames);
     app.use('/api/mathStats', mathStats);
+    app.use('/api/notes', notes);
     app.use(error);
 }

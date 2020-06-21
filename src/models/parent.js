@@ -36,11 +36,11 @@ const parentSchema = new mongoose.Schema({
         maxlength: PHONE_LEN[1]
     },
     children: [{
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Child'
     }]
-    // children: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Child'
+        // children: [{
+    //     type: String
     // }]
 });
 

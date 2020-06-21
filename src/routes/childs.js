@@ -8,7 +8,7 @@ const { Child, validate } = require('../models/child');
 
 // GET ['api/childs']
 router.get('/', async (req, res) => {
-    const childs = await Child.find().sort('firstName');
+    const childs = await Child.find().select('-notes').sort('firstName');
     res.send(childs);
 });
 
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // GET ['api/childs/:id']
 router.get('/:id', async (req, res) => {
     // Find
-    const child = await Child.findOne({ id: req.params.id });
+    const child = await Child.findOne({ id: req.params.id }).select('-notes');
     // Check if exist
     if (!child)
         return res.status(404).send(`childs ${req.params.id} was not found.`);

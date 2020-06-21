@@ -64,7 +64,8 @@
         }
 
         function loginSuccess(user) {
-            localStorage.setItem('parent_id', user._parent);
+            // console.log(user);
+            localStorage.setItem('parent_id', user._parent._id);
             location.replace(URL.PARENT_HOME);
         }
     </script>

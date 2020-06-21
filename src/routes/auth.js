@@ -9,16 +9,22 @@ const { User } = require('../models/user');
 // HTTP Handling
 
 // POST ['api/auth']       -   Login
-router.post('/', async (req,res) => {
+router.post('/', async (req, res) => {
     // Validate client input
     // const { error } = validate(req.body);
     // Assert validation
     // if(error)
     //     return res.status(400).send(error.details[0].message);
     // Check if the user exist
-    let user = await User.findOne({userId: req.body.userId})).populate('_parent');
+    let user = await User.findOne({ userId: req.body.userId }).populate({
+        path: '_parent',
+        populate: {
+            path: 'children',
+            select: '_id id firstName lastName'
+        }
+    });
     // Response 400 Bad Request if the user exist
-    if(!user) return res.status(400).send("Invalid email or password.");
+    if (!user) return res.status(400).send("Invalid email or password.");
     // Validate password, bcypt.comare missing await
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Invalid email or password.");
@@ -29,9 +35,30 @@ router.post('/', async (req,res) => {
     res.send(_.pick(user, ['_id', 'userId', '_parent']));
 });
 
+// POST ['api/auth/teacher']       -   Login
+router.post('/teacher', async (req, res) => {
+    // Validate client input
+    // const { error } = validate(req.body);
+    // Assert validation
+    // if(error)
+    //     return res.status(400).send(error.details[0].message);
+    // Check if the user exist
+    let user = await User.findOne({ userId: req.body.userId }).populate('teacher');
+    // Response 400 Bad Request if the user exist
+    if (!user) return res.status(400).send("Invalid email or password.");
+    // Validate password, bcypt.comare missing await
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) return res.status(400).send("Invalid email or password.");
+    // Create JWT
+    const token = user.generateAuthToken();
+    // Send Response
+    res.header('x-auth-token', token);
+    res.send(_.pick(user, ['_id', 'userId', '_teacher']));
+});
+
 
 // Essential functions
-function validate(req){
+function validate(req) {
     const schema = {
         name: Joi.string().min(3).max(255).required().email(),
         password: Joi.string().min(5).max(255).required()

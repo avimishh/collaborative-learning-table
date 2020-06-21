@@ -101,7 +101,7 @@ router.delete('/:id', async (req, res) => {
         const game = await Game.findByIdAndRemove(req.params.id);
         // Assert delete completed successfully
         if (!game)
-            return res.status(404).send(`Customer ${req.params.id} was not found.`);
+            return res.status(404).send(`Game ${req.params.id} was not found.`);
 
         // Send response to client
         res.send(game);

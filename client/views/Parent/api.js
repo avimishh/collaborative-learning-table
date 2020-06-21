@@ -16,6 +16,7 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
             password: userPassword
         }),
         success: function (data, textStatus, xhr) {
+            // console.log(data);
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
             // console.log(localStorage.getItem('token'));
             // console.log(data);

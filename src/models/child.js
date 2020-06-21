@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { noteSchema } = require('./note');
 
 
 // Const Lengths [min_length, max_length]
@@ -64,7 +65,10 @@ const childSchema = new mongoose.Schema({
         required: true,
         minlength: PASSWORD_LEN[0],
         maxlength: PASSWORD_LEN[1]
-    }
+    },
+    notes: [{
+        type: noteSchema
+    }]
 });
 
 

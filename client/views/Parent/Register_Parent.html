@@ -57,6 +57,7 @@
         }
 
         function registerSuccess(user) {
+            localStorage.setItem('parent_id', user._parent);
             localStorage.setItem('user', user);
             localStorage.removeItem('parent');
             location.replace(URL.PARENT_DETAILS);

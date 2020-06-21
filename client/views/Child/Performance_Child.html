@@ -64,7 +64,7 @@
         $(document).ready(() => {
             console.log('jquery work');
             // init();
-            let child_id = JSON.parse(localStorage.getItem('child'))._id;
+            let child_id = JSON.parse(localStorage.getItem('child')).id;
             getStatsRequest(child_id, setData);
         });
 
