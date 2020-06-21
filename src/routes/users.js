@@ -83,13 +83,13 @@ router.post('/parent', async (req, res) => {
 // PUT ['api/users/:id']
 router.put('/:id', async (req, res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    const { error } = validateUser(req.body);
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
     // Try to update the selected document
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { name: req.body.name, email: req.body.email, password: req.body.password }, {
+        const user = await User.findOneAndUpdate({userId:req.params.id}, { name: req.body.name, password: req.body.password }, {
             new: true, useFindAndModify: false
         });
         // Assert update completed successfully
