@@ -86,4 +86,4 @@ function validateUser(user){
 
 // Module exports
 exports.User = User;
-exports.validate = validateUser;
+exports.validateUser = validateUser;

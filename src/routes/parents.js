@@ -19,7 +19,7 @@ router.get('/', async (req,res) => {
 // GET ['api/parents/:id']
 router.get('/:id', async (req,res) => {
     // Find
-    const parent = await Parent.findById(req.params.id);
+    const parent = await Parent.findById(req.params.id).populate('children','_id id firstName lastName');
     // const parent = await Parent.findOne({id:req.params.id});
     // Check if exist
     if(!parent) 
@@ -71,7 +71,7 @@ router.put('/:id', auth, async (req,res) => {
             phone: req.body.phone
         }, {
             new: true, useFindAndModify: false
-        });
+        }).populate('children','_id id firstName lastName');
         // Assert update completed successfully
         if(!parent) 
             return res.status(404).send(`Parents ${req.params.id} was not found.`);

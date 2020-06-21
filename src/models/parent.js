@@ -98,4 +98,4 @@ function customError(errors, key){
 
 // Module exports
 exports.Parent = Parent;
-exports.validate = validateParent;
+exports.validateParent = validateParent;

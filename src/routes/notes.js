@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
     // const note = await Note.findById(req.params.id);
     // const note = await Note.find({child:req.params.id});
     // var notes = list();
-    const child = await Child.findOne({id:req.params.id});
+    const child = await Child.findOne({id:req.params.id}).populate('notes.teacher','_id firstName lastName');
     // Check if exist
     if (!child)
         return res.status(404).send(`Child ${req.params.id} was not found.`);
