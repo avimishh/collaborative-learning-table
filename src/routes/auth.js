@@ -24,10 +24,10 @@ router.post('/', async (req, res) => {
         }
     });
     // Response 400 Bad Request if the user exist
-    if (!user) return res.status(400).send("Invalid email or password.");
+    if (!user) return res.status(400).send("Invalid id or password.");
     // Validate password, bcypt.comare missing await
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send("Invalid email or password.");
+    if (!validPassword) return res.status(400).send("Invalid id or password.");
     // Create JWT
     const token = user.generateAuthToken();
     // Send Response

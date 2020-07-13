@@ -39,7 +39,7 @@ const parentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Child'
     }]
-        // children: [{
+    // children: [{
     //     type: String
     // }]
 });
@@ -61,21 +61,22 @@ const Parent = mongoose.model('Parent', parentSchema);
 
 
 // Essential functions
-function validateParent(parent){
-    const schema = {
-        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם פרטי')}),
-        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם משפחה')}),
-        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {return customError(errors, 'תעודת זהות')}),
-        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {return customError(errors, 'טלפון')})
-    };
+function validateParent(parent) {
+    const schema = Joi.object().keys({
+        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
+        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
+        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
+        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') })
+    }).unknown(true);
+
     // return true;
     return Joi.validate(parent, schema);
 }
 
 
-function customError(errors, key){
+function customError(errors, key) {
     errors.forEach(err => {
-        switch (err.type){
+        switch (err.type) {
             case 'any.empty':
                 err.message = `'${key}' לא יכול להיות ריק`;
                 break;
