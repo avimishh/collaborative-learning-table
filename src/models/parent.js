@@ -1,11 +1,14 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 
 // Const Lengths [min_length, max_length]
 const NAME_LEN = [2, 50];
 const ID_LEN = [2, 9];
 const PHONE_LEN = [3, 12];
+const PASSWORD_LEN = [5, 1024];
 
 
 // Schema
@@ -29,6 +32,12 @@ const parentSchema = new mongoose.Schema({
         minlength: ID_LEN[0],
         maxlength: ID_LEN[1]
     },
+    password: {
+        type: String,
+        required: true,
+        minlength: PASSWORD_LEN[0],
+        maxlength: PASSWORD_LEN[1]
+    },
     phone: {
         type: String,
         required: true,
@@ -44,6 +53,11 @@ const parentSchema = new mongoose.Schema({
     // }]
 });
 
+
+parentSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+    return token;
+}
 
 // parentSchema.methods.assignParent = async function(userId, _parentObjectId) {
 //     try {
@@ -66,6 +80,7 @@ function validateParent(parent) {
         firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
         lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
         id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
+        password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמה') }),
         phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') })
     }).unknown(true);
 

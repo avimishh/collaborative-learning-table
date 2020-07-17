@@ -9,8 +9,8 @@ const ID_LEN = [2, 9];
 const PASSWORD_LEN = [3, 1024];
 const ADDRESS_LEN = [3, 255];
 const PHONE_LEN = [9, 10];
-const LEVEL_ENUM = ['1', '2', '3']
-
+const LEVEL_ENUM = ['א', 'ב', 'ג'];
+const GENDER_ENUM = ['זכר', 'נקבה'];
 
 // Schema
 const childSchema = new mongoose.Schema({
@@ -36,11 +36,14 @@ const childSchema = new mongoose.Schema({
     birth: {
         type: Date,
         default: new Date(Date.now()),
-        // required: true
+        required: true
     },
     gender: {
-        type: Boolean,
-        default: true
+        type: String,
+        enum: GENDER_ENUM,
+        required: true
+        // type: Boolean,
+        // default: true
     },
     address: {
         type: String,
@@ -68,7 +71,12 @@ const childSchema = new mongoose.Schema({
     },
     notes: [{
         type: noteSchema
-    }]
+    }],
+    stats: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Stat',
+        required: true
+    }
 });
 
 
@@ -82,11 +90,11 @@ function validateChild(child) {
         firstName: Joi.string().regex(/^[א-ת]+$/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
         lastName: Joi.string().regex(/[א-ת]{2,50}/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
         id: Joi.string().regex(/[0-9]{2,9}/).min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
-        birth: Joi.date(),      // YYYY-MM-DD
-        gender: Joi.bool(),
+        birth: Joi.date().required(),      // YYYY-MM-DD
+        gender: Joi.string().valid(...GENDER_ENUM).error(errors => { return customError(errors, 'מין') }),
         address: Joi.string().min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => { return customError(errors, 'כתובת') }),
         phone: Joi.string().regex(/0[1-9][0-9]{7}|05[0-9]{8}/).min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') }),
-        level: Joi.string().regex(/[1-3]{1}/).valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
+        level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
         gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמת משחקים') })
     };
     // return true;
@@ -96,9 +104,9 @@ function validateChild(child) {
 
 function customError(errors, key) {
     errors.forEach(err => {
-        console.log(err);
-        console.log(key);
-        console.log(err.context.key);
+        // console.log(err);
+        // console.log(key);
+        // console.log(err.context.key);
         switch (err.type) {
             case 'any.empty':
                 err.message = `'${key}' לא יכול להיות ריק`;
