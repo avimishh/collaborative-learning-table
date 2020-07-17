@@ -6,26 +6,26 @@ const { Child, validate } = require('../models/child');
 
 // HTTP Handling
 
-// GET ['api/childs']
+// GET ['api/childs'] - only DEV, auth, admin
 router.get('/', async (req, res) => {
-    const childs = await Child.find().select('-notes').sort('firstName');
+    const childs = await Child.find().select('-notes -stats').sort('firstName');
     res.send(childs);
 });
 
 
-// GET ['api/childs/:id']
+// GET ['api/childs/:id'] - auth
 router.get('/:id', async (req, res) => {
     // Find
-    const child = await Child.findOne({ id: req.params.id }).select('-notes');
+    const child = await Child.findOne({ id: req.params.id }).select('-notes -stats');
     // Check if exist
     if (!child)
-        return res.status(404).send(`childs ${req.params.id} was not found.`);
+        return res.status(404).send(`ילד בעל ת"ז ${req.params.id} אינו קיים במערכת.`);
     // Send to client
     res.status(200).send(child);
 });
 
 
-// GET ['api/childs/:id/:password']
+// GET ['api/childs/:id/:password'] - Login
 router.get('/:id/:password', async (req, res) => {
     // Find
     const child = await Child.findOne({ id: req.params.id });
@@ -99,7 +99,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-// DELETE ['api/childs/:id']
+// DELETE ['api/childs/:id'] - admin, teacher
 router.delete('/:id', async (req, res) => {
     // Try to delete the selected document
     try {

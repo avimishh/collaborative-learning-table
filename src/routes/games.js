@@ -4,21 +4,9 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const { Game, validate } = require('../models/game');
-// const { Field } = require('../models/field');
-//https://mathgame12.herokuapp.com/
+const { Field } = require('../models/field');
+
 // HTTP Handling
-
-// // GET ['api/games/start']
-// router.get('/start/:id', async (req, res) => {
-//     const game = await Game.findById(req.params.id);
-//     // Check if exist
-//     if (!game)
-//         return res.status(404).send(`Game ${req.params.id} was not found.`);
-//     // const games = await Game.find().sort('name');
-//     setGameToPlay(game.title);
-//     res.status(200).send();
-// });
-
 
 // GET ['api/games']
 router.get('/', async (req, res) => {
@@ -39,6 +27,18 @@ router.get('/:id', async (req, res) => {
 });
 
 
+// GET ['api/games/:field'] - get games by field
+router.get('/:field', async (req, res) => {
+    // Find
+    const games = await Game.find({ field: req.params.field });
+    // Check if exist
+    if (!games)
+        return res.status(404).send(`Games with the field ${req.params.field} was not found.`);
+    // Send to client
+    res.status(200).send(game);
+});
+
+
 // POST ['api/games']
 router.post('/', async (req, res) => {
     // Validate client input
@@ -46,19 +46,18 @@ router.post('/', async (req, res) => {
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
-    // Validate game
-    // let game = await Game.findById(req.body._id);
-    // if (!game) return res.status(400).send('Invalid game.');
-
+    // Validate field
+    const field = await Field.findOne({ name: req.body.field });
+    if (!field) return res.status(400).send(`תחום הלימודים ${req.body.field} אינו קיים במערכת.`);
     // Create new document
     let game = new Game({
         title: req.body.title,
         description: req.body.description,
+        field: {
+            _id: field._id,
+            name: field.name
+        },
         link: req.body.link
-        // field: {
-        //     _id: field._id,
-        //     name: field.name
-        // },
     });
     // Save to DataBase
     await game.save();
@@ -74,11 +73,18 @@ router.put('/:id', async (req, res) => {
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
+    // Validate field
+    const field = await Field.findOne({ name: req.body.field });
+    if (!field) return res.status(400).send(`תחום הלימודים ${req.body.field} אינו קיים במערכת.`);
     // Try to update the selected document
     try {
         const game = await Game.findByIdAndUpdate(req.params.id, {
             title: req.body.title,
             description: req.body.description,
+            field: {
+                _id: field._id,
+                name: field.name
+            },
             link: req.body.link
         }, {
             new: true, useFindAndModify: false

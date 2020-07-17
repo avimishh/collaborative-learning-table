@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-// const Field = require('./field').Field;
+const { Field, fieldSchema } = require('./field');
 
 
 // Const Lengths [min_length, max_length]
@@ -24,8 +24,8 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         maxlength: DESCRIPTION_LEN[1]
     },
     field: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Field',
+        type: fieldSchema,
+        // ref: 'Field',
         required: true
     },
     link: {
@@ -43,7 +43,7 @@ function validateGame(game) {
     const schema = {
         title: Joi.string().min(TITLE_LEN[0]).max(TITLE_LEN[1]).required().error(errors => { return customError(errors, 'שם המשחק') }),
         description: Joi.string().min(DESCRIPTION_LEN[0]).max(DESCRIPTION_LEN[1]).required().error(errors => { return customError(errors, 'תיאור המשחק') }),
-        field: Joi.objectId().required(),
+        // field: Joi.objectId().required(),
         link: Joi.string().min(LINK_LEN[0]).max(LINK_LEN[1]).required()
     };
     return Joi.validate(game, schema);

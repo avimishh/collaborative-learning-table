@@ -88,4 +88,5 @@ function customError(errors, key){
 
 // Module exports
 exports.Teacher = Teacher;
+exports.teacherSchema = teacherSchema;
 exports.validate = validateTeacher;

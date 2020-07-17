@@ -2,8 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
-// Model
-const Field = mongoose.model('Field', new mongoose.Schema({
+const fieldSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -16,7 +15,10 @@ const Field = mongoose.model('Field', new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     }
-}));
+});
+
+// Model
+const Field = mongoose.model('Field', fieldSchema);
 
 
 // Validation
@@ -31,4 +33,5 @@ function validateField(field) {
 
 // Module exports
 exports.Field = Field;
+exports.fieldSchema = fieldSchema;
 exports.validate = validateField;

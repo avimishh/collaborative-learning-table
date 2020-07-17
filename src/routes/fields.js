@@ -12,30 +12,29 @@ router.get('/', async (req, res, next) => {
     // DEBUG
     // throw new Error('Could not get the fields.');
 
-    const fields = await Fields.find().sort('name');
-    res.send(fields);    
+    const fields = await Field.find().select('-__v').sort('name');
+    res.send(fields);
 });
 
 
 // GET 'api/fields/:id'
-router.get('/:id', async (req,res) => {
+router.get('/:id', async (req, res) => {
     const field = await Field.findById(req.params.id);
 
-    if(!field) return res.status(404).send(`Field ${req.params.id} was not found.`);
+    if (!field) return res.status(404).send(`Field ${req.params.id} was not found.`);
 
     res.send(field);
 });
 
 
 // POST
-router.post('/', [auth,admin], async (req,res) => {
+// router.post('/', [auth,admin], async (req,res) => {
+router.post('/', async (req, res) => {
     // validate input
     const { error } = validate(req.body);
-    if(error)
-        return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send(error.details[0].message);
 
-
-    let field = new Field( {
+    let field = new Field({
         name: req.body.name,
         description: req.body.description
     });
@@ -46,25 +45,25 @@ router.post('/', [auth,admin], async (req,res) => {
 
 
 // PUT
-router.put('/:id', async (req,res) => {
+router.put('/:id', async (req, res) => {
     const { error } = validate(req.body);
-    if(error)
+    if (error)
         return res.status(400).send(error.details[0].message);
-    
-    try{
+
+    try {
         const field = await Field.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
             description: req.body.description
-        }, 
-        {
-            new: true,
-            usefindAndModify: false
-        });
+        },
+            {
+                new: true,
+                usefindAndModify: false
+            });
 
-        if(!field) 
+        if (!field)
             return res.status(404).send(`Field ${req.params.id} was not found.`);
 
-    }catch(ex){
+    } catch (ex) {
         return res.status(404).send(`Failed to update.`);
     }
 
@@ -74,10 +73,10 @@ router.put('/:id', async (req,res) => {
 
 
 // DELETE
-router.delete('/:id', [auth,admin], async (req,res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     const field = await Field.findByIdAndRemove(req.params.id);
 
-    if(!field) 
+    if (!field)
         return res.status(404).send(`Field ${req.params.id} was not found.`);
 
     res.send(field);
