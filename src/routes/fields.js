@@ -1,6 +1,7 @@
 // const asyncMiddleware = require('../middleware/async');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -18,9 +19,8 @@ router.get('/', async (req, res, next) => {
 
 
 // GET 'api/fields/:id'
-router.get('/:id', async (req, res) => {
+router.get('/:id', validateObjectId, async (req, res) => {
     const field = await Field.findById(req.params.id);
-
     if (!field) return res.status(404).send(`Field ${req.params.id} was not found.`);
 
     res.send(field);
