@@ -1,9 +1,10 @@
-const { User } = require('../../../models/user');
+const { Parent } = require('../../../models/parent');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-describe('user.generateAuthToken', () => {
+
+describe('parent.generateAuthToken', () => {
     it('should return a valid JWT', () => {
         // payload depends on what jwt.sign encoding
         const payload = {
@@ -11,11 +12,12 @@ describe('user.generateAuthToken', () => {
             // userId: "12345",
             // password: "12345"
         };
-        const user = new User(payload);
-        const token = user.generateAuthToken();
-        // if valid decoded holds the user properties, else if fail will throw an exception
+        const parent = new Parent(payload);
+        const token = parent.generateAuthToken();
+        // if valid decoded holds the user properties,
+        // else if fail will throw an exception
         const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-        console.log(decoded);
+        // console.log(decoded);
         expect(decoded).toMatchObject(payload);
     });
 });

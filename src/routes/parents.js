@@ -107,7 +107,7 @@ router.put('/:id', auth, async (req, res) => {
         if (!parent)
             return res.status(404).send(`Parents ${req.params.id} was not found.`);
         // Send response to client
-        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']);
+        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
     } catch (ex) {
         return res.status(404).send(`Failed to update.`);
     }

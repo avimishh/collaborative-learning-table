@@ -1,0 +1,61 @@
+1 install jest:
+    npm i jest --save-dev
+    inside package.json change scripts => "jest --watchAll"
+2 add new folder tests
+3 create new file: "lib.test.js"
+    require the js file holds the functions need to be tested
+    make a group of test with describe("name of tests", () => {});
+    in the arrow function add it functions for each specified test
+4 test numbers:
+    it('input: positive => positive', () => {
+        const result = lib.absolute(1);
+        expect(result).toBe(1);
+    });
+5 test strings:
+    describe('greet', () => {
+        it('assert user name', () => {
+            const result = lib.greet('Mosh');
+            expect(result).toMatch(/Mosh/);
+            expect(result).toContain('Mosh');
+        });
+    });
+6 test arrays:
+    describe('getCurrencies', () => {
+        it('Should return supported currencies', () => {
+            const result = lib.getCurrencies();
+            expect(result).toEqual(expect.arrayContaining(['EUR','AUD','USD']));
+        });
+    });
+7 test objects:
+    describe('getProduct', () => {
+        it('Should return product with the given id', () => {
+            const result = lib.getProduct(1);
+            expect(result).toEqual({ id: 1, price: 10 });
+            expect(result).toMatchObject({ id: 1, price: 10 });
+            expect(result).toHaveProperty('id', 1);
+        });
+    });
+8 test exceptions:
+    describe('registerUser', () => {
+        it('Should throw if username is falsy', () => {
+            // Null, undefined, NaN, '', 0, false
+            const args = [null, undefined, NaN, '', 0, false];
+            args.forEach(a => {
+                expect(() => { lib.registerUser(a) }).toThrow();
+            });
+        });
+        it('should register user if the username is valid', () => {
+            const result = lib.registerUser('mosh');
+            expect(result).toMatchObject({ username: 'mosh'});
+            expect(result.id).toBeGreaterThan(0);
+        });
+    });
+
+
+
+Integration tests:
+1. preparing the app
+    add --watchAll --Verbose in package.json, scripts, test
+    disable on logging.js the winston-mongodb
+2. setting up the test db
+3. install package supertest

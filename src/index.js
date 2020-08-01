@@ -37,3 +37,5 @@ const server = app.listen(port, () => logger.info(`Listening on port ${port}...`
 // console.log(app.listen());
 require('./startup/socketio')(server, app);
 // require('./public/server_math/server')(server, app);
+
+module.exports = server;

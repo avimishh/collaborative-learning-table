@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 const logger = require('./logging');
-
+const config = require('config');
 
 // Main Export
 module.exports = function() {
     // Connect DB
-    // hard coding connection string
-    mongoose.connect('mongodb://localhost/collearn', {
+    const db = config.get('db');
+    mongoose.connect(db, {
         useNewUrlParser: true,
         useUnifiedTopology:true,
         useCreateIndex: true
         })
-        .then(() => logger.info('Connected to MongoDB...'))
+        .then(() => logger.info(`Connected to ${db}...`))
         .catch(err => console.err('Could not connect to MongoDB...', err));
 }

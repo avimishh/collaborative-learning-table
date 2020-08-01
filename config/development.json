@@ -1,3 +1,4 @@
 {
-    "name": "My Express App - Development"
+    "name": "My Express App - Development",
+    "db":"mongodb://localhost/collearn"
 }
