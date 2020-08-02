@@ -6,10 +6,11 @@ let server;
 
 const { Field } = require('../../models/field');
 const mongoose = require('mongoose');
+const { User } = require('../../models/user');
 
 describe('/api/fields', () => {
     before(() => { server = require('../../index'); });
-    afterEach(async () =>{
+    afterEach(async () => {
         await Field.deleteMany({});
     });
     after(async () => {
@@ -56,4 +57,76 @@ describe('/api/fields', () => {
         });
     });
 
+    describe('POST /', () => {
+        
+        // Define the happy path, and then in each test, we change
+        // one parameter that clearly aligns with the name of the
+        // test.
+        let token;
+        let name;
+
+        const exec = async () => {
+            let newField = {
+                name,
+                description: 'field1_description'
+            };
+            return await request(server)
+                .post('/api/fields/')
+                .set('x-auth-token', token)
+                .send(newField);
+        }
+
+        beforeEach(() => {
+            token = new User().generateAuthToken();
+            name = 'field1';
+        });
+
+        it('should return 401 error if client is not logged in', async () => {
+            token = '';
+
+            const res = await exec();
+
+            expect(res.status).to.equal(401);
+        });
+
+        it('should return 400 error if field.name is less than 5 charcters', async () => {
+            name = '1234';
+            
+            const res = await exec();
+            
+            expect(res.status).to.equal(400);
+            // console.log(res.text);
+        });
+
+        it('should return 400 error if field.name is more than 50 charcters', async () => {
+            name = Array(52).join('a');
+
+            const res = await exec();
+
+            expect(res.status).to.equal(400);
+            // console.log(res.text);
+        });
+
+        it('should save the field if it is valid', async () => {
+            await exec();
+
+            const field = await Field.find({
+                name: 'field1',
+                description: 'field1_description'
+            });
+
+            expect(field).to.lengthOf(1);
+        });
+
+
+        it('should return the field if it is valid', async () => {
+            const res = await exec();
+
+            expect(res.status).to.equal(200);
+            expect(res.body).to.have.property('_id');
+            expect(res.body).to.have.property('name', 'field1');
+        });
+    });
+
 });
+
