@@ -6,6 +6,7 @@
   "scripts": {
     "env": "$env:jwtPrivateKey='mySecureKey'",
     "test": "mocha ./src/test/**/*.test.js --exit",
+    "test-with-coverage": "nyc --reporter=text mocha ./src/test/**/*.test.js --exit",
     "start": "nodemon ./src/index.js"
   },
   "repository": {
@@ -35,6 +36,7 @@
     "chai": "^4.2.0",
     "jest": "^26.1.0",
     "mocha": "^8.1.0",
+    "nyc": "^15.1.0",
     "supertest": "^4.0.2"
   }
 }
