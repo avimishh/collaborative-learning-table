@@ -55,8 +55,10 @@ router.post('/', async (req, res) => {
         description: req.body.description,
         field: {
             _id: field._id,
-            name: field.name
+            name: field.name,
+            description: field.description
         },
+        icon: req.body.icon,
         link: req.body.link
     });
     // Save to DataBase
@@ -83,8 +85,10 @@ router.put('/:id', async (req, res) => {
             description: req.body.description,
             field: {
                 _id: field._id,
-                name: field.name
+                name: field.name,
+                description: field.description
             },
+            icon: req.body.icon,
             link: req.body.link
         }, {
             new: true, useFindAndModify: false

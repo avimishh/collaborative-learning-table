@@ -105,13 +105,12 @@ async function createField(name, description) {
     field = await field.save();
 }
 
-async function createGame(title, description, fieldName, link) {
+async function createGame(title, description, fieldName, icon, link) {
     // Validate field
     const field = await Field.findOne({ name: fieldName });
     if (!field) return console.log(`תחום הלימודים ${fieldName} אינו קיים במערכת.`);
-    console.log(field);
     // Validate client input
-    const { error } = validateGame({ title, description, field, link });
+    const { error } = validateGame({ title, description, field, icon, link });
     // Assert validation
     if (error)
         return console.log(error.details[0].message);
@@ -124,6 +123,7 @@ async function createGame(title, description, fieldName, link) {
             name: field.name,
             description: field.description
         },
+        icon,
         link
     });
     // Save to DataBase
@@ -142,8 +142,5 @@ createField('חשבון', 'תרגול פעולות חשבון בסיסיות: ח
 createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית');
 createField('צבעים', 'תרגול הכרת צבעים');
 
-createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', './math.html');
-
-// function createGames(){
-//     let field = await Field.findOne({name:'חשבון'});
-// }
+createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', 'icons/math_icon.jpg', './math.html' );
+createGame('התאמת תמונות למילים', 'התאם תמונות למילים באנגלית', 'אנגלית', 'icons/english_icon.jpg', './english.html' );

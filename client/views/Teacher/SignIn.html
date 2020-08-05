@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/SignIn.css" rel="stylesheet" />
+    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1,
+        .login-btn,
+        .new-user-btn,
+        #user_id {
+            font-family: 'Varela Round', sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/cactus.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        img {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 20%;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            transition: background-color 5000s ease-in-out 0s;
+            -webkit-text-fill-color: #ccc;
+        }
+
+        input:-webkit-autofill::first-line {
+            font-size: 16px;
+            font-family: 'Varela Round', sans-serif;
+        }
+    </style>
+    <script>
+        function passwordToggle() {
+            var x = document.getElementById("user_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+</head>
+
+<body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+        </div>
+        <div class="form-box w3-display-middle">
+            <h1>התחברות מורה</h1>
+
+            <div class="input-box">
+                <i class="fa fa-user"></i>
+                <input type="text" id="user_id" placeholder="תעודת זהות" />
+            </div>
+
+            <div class="input-box">
+                <i class="fa fa-key"></i>
+                <input type="password" placeholder="סיסמא" id="user_password" />
+                <span class="eye" onclick="passwordToggle()">
+                    <i id="hide1" class="fa fa-eye"></i>
+                    <i id="hide2" class="fa fa-eye-slash"></i>
+                </span>
+            </div>
+
+            <button type="button" class="login-btn" id="login">כניסה</button>
+
+            <div>
+                <!-- <button type="button" class="new-user-btn" id="register">משתמש חדש?</button> -->
+                <button type="button" class="homeBtn" id="btn_goToHome">
+                    <img src="../../pics/homeBtn.png" alt="">
+                </button>
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            Make Learning Fun
+        </div>
+    </div>
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { userLoginRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(() => {
+            console.log('jquery work');
+            init();
+        });
+
+        function init() {
+            $('#login').on('click', () => {
+                console.log('work btn');
+                let userId = $("#user_id").val();
+                let userPassword = $("#user_password").val();
+                userLoginRequest(userId, userPassword, loginSuccess);
+            });
+
+            // $('#register').on('click', () => {
+            //     location.replace(URL.TEACHER_REGISTER);
+            // });
+
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.HOME);
+            });
+        }
+
+        function loginSuccess(teacher) {
+            localStorage.setItem('teacher', JSON.stringify(teacher));
+            location.replace(URL.TEACHER_HOME);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -6,48 +6,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="./lib/jquery.js"></script>
-    <link href="./style/home.css" rel="stylesheet" />
+    <!-- <link href="./style/home.css" rel="stylesheet" /> -->
     <link href="./lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="./lib/w3.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Suez+One&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1 {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
 
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/c.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 700px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+        margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 34px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        img {
+            width: auto;
+            height: 150px;
+            display: block;
+        }
+
+        .tooltip {
+            position: relative;
+            /* display: inline-block; */
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            /* visibility: hidden; */
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+        }
+    </style>
 </head>
 
-<body>
-    <header>
-        <!-- <h1>שולחן משחקים שיתופי</h1> -->
-    </header>
+<body dir="rtl">
 
-    <main>
-        <div class="in_img">
-            <h1>שולחן משחקים שיתופי</h1>
-            <p>Make Learning Fun</p>
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            Logo
         </div>
-    </main>
+        <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
+            <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שולחן משחקים שיתופי</h1>
+            <hr class="w3-border-grey" style="margin:auto;width:40%">
+            <p class="w3-large w3-center">ברוכים הבאים!</p>
 
-    <footer>
-        <div class="container">
-
-            <div id="btn_Parent" class="w3-light-blue w3-text-white">
-                <span>הורה</span>
-            </div>
-            <div id="btn_Teacher" class="w3-red">
-                <span>מורה</span>
-            </div>
-            <div id="btn_Child" class="w3-green">
-                <span>משתמש רשום</span>
-            </div>
-            <!-- <div  class="w3-yellow w3-text-white"><span>משתמש
-                    אנונימי</span></div> -->
         </div>
-    </footer>
+        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
 
+            <div id="btn_Parent" class="w3-light-blue w3-text-white tooltip">
+                <img src="../../pics/parents.png" alt="">
+                <span class="tooltiptext">הורים</span>
+            </div>
+            <div id="btn_Teacher" class="w3-red tooltip">
+                <img src="../../pics/teacher.png" alt="">
+                <span class="tooltiptext">מורים</span>
+            </div>
+            <div id="btn_Child" class="w3-green tooltip">
+                <img src="../../pics/kid.png" alt="">
+                <span class="tooltiptext">ילדים</span>
+            </div>
+        </div>
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            Make Learning Fun
+        </div>
+    </div>
 
     <script type="module">
         const URL = {
-            PARENT_SIGNIN: 'views/Parent/SignInScreen_Parent.html',
-            TEACHER_SIGNIN: 'views/Teacher/Sign in screen Teacher/SignInScreen_Teacher.html',
-            CHILD_SIGNIN: 'views/Child/SignInScreen_Child.html'
+            PARENT_SIGNIN: 'views/Parent/SignIn.html',
+            TEACHER_SIGNIN: 'views/Teacher/SignIn.html',
+            CHILD_SIGNIN: 'views/Child/SignIn.html'
         }
 
         $(document).ready(() => {

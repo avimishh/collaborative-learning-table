@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/Details_Parent.css" rel="stylesheet" />
+    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
+        rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+    <style>
+        body,
+        h1 {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/background/homeParents.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+                border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 1000px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+            margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        img {
+            width: auto;
+            height: 150px;
+            display: block;
+        }
+
+        .tooltip {
+            position: relative;
+            /* display: inline-block; */
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            /* visibility: hidden; */
+            width: 120px;
+            background-color: grey;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        /* .tooltip:hover .tooltiptext {
+                visibility: visible;
+            } */
+    </style>
+</head>
+
+<body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+        </div>
+
+        <div class="form-box">
+            <h1>עדכון פרטים אישיים <span class="fullNameChild"></span></h1>
+
+            <div class="mess">
+                <form>
+                    <table>
+                        <!--1. First Name-->
+                        <tr>
+                            <td>
+                                <span>שם פרטי:</span>
+                            </td>
+                            <td>
+                                <input id="firstName" class="answer" />
+                            </td>
+
+                        </tr>
+                        <!--2. Last Name-->
+                        <tr>
+                            <td>
+                                <span>שם משפחה:</span>
+                            </td>
+                            <td>
+                                <input id="lastName" class="answer" />
+                            </td>
+                        </tr>
+                        <!--3. id parent-->
+                        <tr>
+                            <td>
+                                <span>תעודת זהות:</span>
+                            </td>
+                            <td>
+                                <input id="id_parent" class="answer" />
+                            </td>
+                        </tr>
+                        <!--4. Phone Number-->
+                        <tr>
+                            <td>
+                                <span>טלפון:</span>
+                            </td>
+                            <td>
+                                <input type="tel" id="phoneNumber" class="answer" />
+                            </td>
+                        </tr>
+                        <!--5. Password-->
+                        <tr>
+                            <td>
+                                <span>סיסמא:</span>
+                            </td>
+                            <td>
+                                <input type="password" id="password" class="answer" />
+                            </td>
+                        </tr>
+                        <!--6. Update-->
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="button" id="btn_update" value="עדכן" />
+                                <input type="reset" id="rst" value="נקה" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
+
+        </div>
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home"
+                    aria-hidden="true"></i></button>
+            Make Learning Fun
+        </div>
+    </div>
+
+    <!-- <div>
+        <h1 class="tittle">שולחן משחקים שיתופי</h1>
+    </div>
+ 
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { updateParentRequest, firstDetailsParentRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(function () {
+            showParentDetails();
+
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.PARENT_HOME);
+            });
+
+            $('#btn_update').on('click', () => {
+                updateParentDetails();
+                // location.replace(URL.PARENT_HOME);
+            });
+        });
+
+        function updateParentDetails() {
+            let parent = JSON.parse(localStorage.getItem('parent'));
+            let updatedParent = {
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                id: $("#id_parent").val(),
+                phone: $("#phoneNumber").val()
+            };
+            if(parent !== null)
+                updateParentRequest(parent._id, updatedParent, showUpdatedDetails);
+            else
+                firstDetailsParentRequest(updatedParent, showUpdatedDetails);
+        }
+
+        function showParentDetails() {
+            // console.log(localStorage.getItem('user_parent'));
+            let data = JSON.parse(localStorage.getItem('parent'));
+            if ( data === null )
+                return;
+            console.log(data);
+            $("#firstName").val(data.firstName);                   // firstName
+            $("#lastName").val(data.lastName);                     // lastName
+            $("#id_parent").val(data.id);                          // id
+            $("#phoneNumber").val(data.phone);                     // phoneNumber
+            $("#password").val(data.password);                     // password
+        }
+
+        function showUpdatedDetails() {
+            // console.log(localStorage.getItem('user_parent'));
+            let data = JSON.parse(localStorage.getItem('parent'));
+            console.log(data);
+            $("#firstName").val(data.firstName);                   // firstName
+            $("#lastName").val(data.lastName);                     // lastName
+            $("#id_parent").val(data.id);                          // id
+            $("#phoneNumber").val(data.phone);                     // phoneNumber
+            $("#password").val(data.password);                     // password
+            $(".answer").attr('disabled',true);
+            setTimeout(() => {
+                location.replace(URL.PARENT_HOME);
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

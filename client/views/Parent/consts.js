@@ -1,10 +1,11 @@
 // Pages
 export const URL = {
-    PARENT_HOME: 'HomeScreen_Parent.html',
-    PARENT_NOTES: 'ReadNotesToParent.html',
-    PARENT_SIGNIN: 'SignInScreen_Parent.html',
-    PARENT_DETAILS: 'Details_Parent.html',
-    PARENT_REGISTER: 'Register_Parent.html',
-    CHILD_DETAILS: '../Child/Details_Child.html',
-    CHILD_PERFORMANCE: '../Child/Performance_Child.html',
+    HOME: '../../home.html',
+    PARENT_HOME: 'HomeScreen.html',
+    PARENT_NOTES: 'notes.html',
+    PARENT_SIGNIN: 'SignIn.html',
+    PARENT_DETAILS: 'Details.html',
+    PARENT_REGISTER: 'Register.html',
+    CHILD_DETAILS: '../Child/Details.html',
+    CHILD_PERFORMANCE: '../Child/Performance.html',
 }

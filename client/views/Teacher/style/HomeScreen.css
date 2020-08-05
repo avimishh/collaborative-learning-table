@@ -3,9 +3,6 @@
     padding: 0;
 }
 
-body {
-}
-
 header {
     text-align: center;
     background-color: #fcfcfc;
@@ -93,9 +90,6 @@ footer {
     * {
         margin: 0;
         padding: 0;
-    }
-
-    body {
     }
 
     header {

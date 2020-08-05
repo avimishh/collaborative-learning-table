@@ -1,7 +1,7 @@
 // Pages
 export const URL = {
-    CHILD_HOME: 'HomeScreen_Child.html',
-    CHILD_DETAILS: 'Details_Child.html',
-    CHILD_PERFORMANCE: 'Performance_Child.html',
+    CHILD_HOME: 'HomeScreen.html',
+    CHILD_DETAILS: 'Details.html',
+    CHILD_PERFORMANCE: 'Performance.html',
     CHILD_GAME: 'gaming/gamingClient.html'
 }

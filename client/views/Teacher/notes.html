@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/notes.css" rel="stylesheet" />
+    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../lib/w3.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1 {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/book.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+                border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 1100px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+            margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* img {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        } */
+
+        .tooltip {
+            position: relative;
+            /* display: inline-block; */
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            /* visibility: hidden; */
+            width: 120px;
+            background-color: grey;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 50px;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        #homeImg {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        /* .tooltip:hover .tooltiptext {
+                visibility: visible;
+            } */
+    </style>
+    <script>
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+    </script>
+</head>
+
+<body dir="rtl">
+    
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+
+        <div class="form-box">
+            <br>
+            <h1>כתיבת הערות להורי הילד<span></span></h1>
+
+            <div class="mess">
+                <form>
+                    <table>
+                        <!--1. First Name-->
+                        <tr>
+                            <td>
+                                <span>שם פרטי:</span>
+                            </td>
+                            <td>
+                                <span id="firstName"></span>
+                            </td>
+
+                        </tr>
+                        <!--2. Last Name-->
+                        <tr>
+                            <td>
+                                <span>שם משפחה:</span>
+                            </td>
+                            <td>
+                                <span id="lastName"></span>
+                            </td>
+                        </tr>
+                        <!--3. ID-->
+                        <tr>
+                            <td>
+                                <span>תעודת זהות:</span>
+                            </td>
+                            <td>
+                                <span id="ID"></span>
+                            </td>
+                        </tr>
+                        <!--4. Notes Date-->
+                        <tr>
+                            <td>
+                                <span>תאריך ההערות:</span>
+                            </td>
+                            <td>
+                                <span id="notesDate"></span>
+                            </td>
+                        </tr>
+                        <!--5. Notes-->
+                        <tr>
+                            <td colspan="2">
+                                <span>הערות</span>
+                                <br>
+                                <!-- </td> -->
+                                <!-- <td> -->
+                                <textarea rows="5" cols="35" id="notes"></textarea>
+                            </td>
+                        </tr>
+                        <!--6. Approval-->
+                        <!-- <tr>
+                            <td>
+                                <span>אני מאשר שכל הנתונים נכונים</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="approval" class="answware" />
+                            </td>
+                        </tr> -->
+                        <!--11. Update-->
+                        <tr>
+                            <!-- <td></td> -->
+                            <td colspan="2" style="text-align: center;">
+                                <input type="button" id="btn" value="שלח"
+                                    onclick="window.location.href = 'Notes Message/NotesMessage.html'" />
+                                <input type="reset" id="rst" value="נקה" />
+
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            Make Learning Fun
+            <!-- <button type="button" class="new-user-btn" id="register">משתמש חדש?</button> -->
+            <!-- <button type="button" class="homeBtn" id="btn_goToHome">
+                    <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+                </button> -->
+        </div>
+    </div>
+
+
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { getChildRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(() => {
+            console.log('jquery work');
+            init();
+            getChildRequest('1001', showStudentDetails);
+        });
+
+        function init() {
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.TEACHER_HOME);
+            });
+
+        }
+
+        function showStudentDetails(data) {
+            $("#firstName").html(data.firstName);                   // firstName
+            $("#lastName").html(data.lastName);                     // lastName
+            $("#ID").html(data.id);                                 // id
+            $("#notesDate").text(formatDate(new Date()));
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('-');
+        }
+
+    </script>
+</body>
+
+</html>

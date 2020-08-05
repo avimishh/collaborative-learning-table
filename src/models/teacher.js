@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 // Const Lengths [min_length, max_length]
 const NAME_LEN = [2, 50];
@@ -44,6 +45,11 @@ const teacherSchema = new mongoose.Schema({
     }
 });
 
+
+teacherSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+    return token;
+}
 
 // Model
 const Teacher = mongoose.model('Teacher', teacherSchema);

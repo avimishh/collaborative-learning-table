@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="../../lib/jquery.js"></script>
+    <link href="./style/HomeScreen.css" rel="stylesheet" />
+    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../../lib/w3.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1 {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/background/homeParents.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+                border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 1100px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+            margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        img {
+            width: auto;
+            height: 150px;
+            display: block;
+        }
+
+        .tooltip {
+            position: relative;
+            /* display: inline-block; */
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            /* visibility: hidden; */
+            width: 120px;
+            background-color: grey;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 50px;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        #homeImg {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        /* .tooltip:hover .tooltiptext {
+                visibility: visible;
+            } */
+    </style>
+</head>
+<body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+        <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
+            <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שלום <span id="teacherName"></span></h1>
+            <hr class="w3-border-grey" style="margin:auto;width:40%">
+            <!-- <p class="w3-large w3-center">ברוכים הבאים!</p> -->
+
+        </div>
+        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
+
+            <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
+                <img src="../../pics/kidid.png" alt="">
+                <span class="tooltiptext">פרטי הילדים</span>
+            </div>
+            <div id="btn_child_performance" class="w3-red tooltip">
+                <img src="../../pics/grades.png" alt="">
+                <span class="tooltiptext">הצגת ציונים</span>
+            </div>
+            <div id="btn_notes" class="w3-green tooltip">
+                <img src="../../pics/report.png" alt="">
+                <span class="tooltiptext">כתיבת הערות</span>
+            </div>
+            <div id="btn_details" class="w3-yellow w3-text-white tooltip">
+                <img src="../../pics/idcard.png" alt="">
+                <span class="tooltiptext">פרטים אישיים</span>
+            </div>
+
+            <div id="btn_details" class="box w3-pink w3-text-white tooltip">
+                <img src="../../pics/kid.png" alt="">
+                <span class="tooltiptext">עדכון ילד</span>
+            </div>
+        </div>
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            Make Learning Fun
+        </div>
+    </div>
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { getUserRequest, getTeacherRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        $(document).ready(() => {
+            console.log('jquery work');
+            init();
+        });
+
+        function init() {
+            $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
+
+            $('#btn_child_details').on('click', () => {
+                location.replace(URL.CHILD_DETAILS);
+            });
+
+            $('#btn_child_performance').on('click', () => {
+                location.replace(URL.CHILD_PERFORMANCE);
+            });
+
+            $('#btn_notes').on('click', () => {
+                location.replace(URL.TEACHER_NOTES);
+            });
+
+            $('#btn_details').on('click', () => {
+                location.replace(URL.TEACHER_DETAILS);
+            });
+
+            $('#btn_goToHome').on('click', () => {
+                location.replace(URL.HOME);
+            });
+
+            let teacher = JSON.parse(localStorage.getItem('teacher'));
+            $('#teacherName').text(`${teacher.firstName} ${teacher.lastName}`);
+        }
+    </script>
+</body>
+</html>

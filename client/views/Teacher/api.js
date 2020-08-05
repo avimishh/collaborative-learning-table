@@ -1,8 +1,28 @@
 const server = "http://localhost:3000/api/";
-const authApi = server + "auth/parent/";
+const authApi = server + "auth/teacher/";
 const usersApi = server + "users/";
-const parentsApi = server + "parents/";
+const teachersApi = server + "teachers/";
+const childsApi = server + "childs/";
 
+
+export function getChildRequest(childId, successFunction, errorFunction, completeFunction) {
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: childsApi + childId,
+        method: "GET",
+        headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify({}),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
 
 export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
     console.log('work api');
@@ -18,8 +38,6 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
         success: function (data, textStatus, xhr) {
             // console.log(data);
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-            // console.log(localStorage.getItem('token'));
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -34,7 +52,7 @@ export function userRegisterRequest(userId, userPassword, successFunction, error
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: usersApi,
+        url: teachersApi,
         method: "POST",
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
         data: JSON.stringify({
@@ -43,7 +61,6 @@ export function userRegisterRequest(userId, userPassword, successFunction, error
         }),
         success: function (data, textStatus, xhr) {
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-            // console.log(localStorage.getItem('token'));
             // console.log(data);
             successFunction(data);
         },
@@ -59,7 +76,7 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: usersApi + "me/",
+        url: teachersApi + "me/",
         method: "GET",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
@@ -75,12 +92,12 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
 }
 
 
-export function getParentRequest(parent_id, successFunction, errorFunction, completeFunction) {
-    console.log(parent_id);
+export function getTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
+    console.log(teacher_id);
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: parentsApi + parent_id,
+        url: teachersApi + teacher_id,
         method: "GET",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
@@ -96,17 +113,17 @@ export function getParentRequest(parent_id, successFunction, errorFunction, comp
 }
 
 
-export function updateParentRequest(parent_id, parentToUpdate, successFunction, errorFunction, completeFunction) {
-    // console.log(parentToUpdate);
+export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunction, errorFunction, completeFunction) {
+    // console.log(teacherToUpdate);
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: parentsApi + parent_id,
+        url: teachersApi + teacher_id,
         method: "PUT",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify(parentToUpdate),
+        data: JSON.stringify(teacherToUpdate),
         success: function (data, textStatus, xhr) {
-            localStorage.setItem('parent', JSON.stringify(data));
+            localStorage.setItem('teacher', JSON.stringify(data));
             // console.log(data);
             successFunction();
         },
@@ -118,16 +135,16 @@ export function updateParentRequest(parent_id, parentToUpdate, successFunction, 
 }
 
 
-export function firstDetailsParentRequest(parentToUpdate, successFunction, errorFunction, completeFunction) {
+export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, errorFunction, completeFunction) {
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: parentsApi,
+        url: teachersApi,
         method: "POST",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify(parentToUpdate),
+        data: JSON.stringify(teacherToUpdate),
         success: function (data, textStatus, xhr) {
-            localStorage.setItem('parent', JSON.stringify(data));
+            localStorage.setItem('teacher', JSON.stringify(data));
             // console.log(data);
             successFunction();
         },
