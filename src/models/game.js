@@ -24,9 +24,9 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         maxlength: DESCRIPTION_LEN[1]
     },
     field: {
-        type: fieldSchema,
+        type: fieldSchema
         // ref: 'Field',
-        required: true
+        // required: true
     },
     link: {
         type: String,
@@ -40,12 +40,12 @@ const Game = mongoose.model('Game', new mongoose.Schema({
 
 // Essential functions
 function validateGame(game) {
-    const schema = {
+    const schema = Joi.object().keys({
         title: Joi.string().min(TITLE_LEN[0]).max(TITLE_LEN[1]).required().error(errors => { return customError(errors, 'שם המשחק') }),
         description: Joi.string().min(DESCRIPTION_LEN[0]).max(DESCRIPTION_LEN[1]).required().error(errors => { return customError(errors, 'תיאור המשחק') }),
-        // field: Joi.objectId().required(),
+        // field: Joi.,
         link: Joi.string().min(LINK_LEN[0]).max(LINK_LEN[1]).required()
-    };
+    }).unknown(true);
     return Joi.validate(game, schema);
 }
 
@@ -80,4 +80,4 @@ function customError(errors, key) {
 
 // Module exports
 exports.Game = Game;
-exports.validate = validateGame;
+exports.validateGame = validateGame;

@@ -26,6 +26,11 @@ if (app.get('env') === 'development') {
     require('./startup/debug')(app);
 }
 
+// models Driver
+if (app.get('env') === 'development') {
+    require('./models/assets/models_driver');
+}
+
 // app.get('/', async (req,res) =>{
 //     res.sendFile(__dirname + '/home.html');
 // });

@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
     if (error)
         return res.status(400).send(error.details[0].message);
     // Check if the parent exist
-    let parent = await parent.findOne({ id: req.body.id });
+    let parent = await Parent.findOne({ id: req.body.id });
     // Response 400 Bad Request if the parent exist
     if (parent) return res.status(400).send(`הורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
     // Create new document

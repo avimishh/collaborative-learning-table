@@ -6,7 +6,7 @@ const { noteSchema } = require('./note');
 // Const Lengths [min_length, max_length]
 const NAME_LEN = [2, 50];
 const ID_LEN = [2, 9];
-const PASSWORD_LEN = [3, 1024];
+const PASSWORD_LEN = [2, 10];
 const ADDRESS_LEN = [3, 255];
 const PHONE_LEN = [9, 10];
 const LEVEL_ENUM = ['א', 'ב', 'ג'];
@@ -74,8 +74,8 @@ const childSchema = new mongoose.Schema({
     }],
     stats: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Stat',
-        required: true
+        ref: 'Stat'
+        // required: true
     }
 });
 
@@ -133,4 +133,4 @@ function customError(errors, key) {
 
 // Module exports
 exports.Child = Child;
-exports.validate = validateChild;
+exports.validateChild = validateChild;

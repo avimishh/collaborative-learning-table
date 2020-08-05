@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Child, validate } = require('../models/child');
+const { Child, validateChild } = require('../models/child');
 // const admin = require('../middleware/admin');
 
 // HTTP Handling
@@ -43,7 +43,7 @@ router.get('/:id/:password', async (req, res) => {
 // POST ['api/childs']
 router.post('/', async (req, res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    const { error } = validateChild(req.body);
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
 // PUT ['api/childs/:id']
 router.put('/:id', async (req, res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    const { error } = validateChild(req.body);
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);

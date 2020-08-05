@@ -34,4 +34,4 @@ function validateField(field) {
 // Module exports
 exports.Field = Field;
 exports.fieldSchema = fieldSchema;
-exports.validate = validateField;
+exports.validateField = validateField;

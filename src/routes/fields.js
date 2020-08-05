@@ -5,7 +5,7 @@ const validateObjectId = require('../middleware/validateObjectId');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Field, validate } = require('../models/field');
+const { Field, validateField } = require('../models/field');
 
 
 // GET 'api/fields'
@@ -31,7 +31,7 @@ router.get('/:id', validateObjectId, async (req, res) => {
 // router.post('/', [auth,admin], async (req,res) => {
 router.post('/', auth, async (req, res) => {
     // validate input
-    const { error } = validate(req.body);
+    const { error } = validateField(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     let field = new Field({
@@ -46,7 +46,7 @@ router.post('/', auth, async (req, res) => {
 
 // PUT
 router.put('/:id', async (req, res) => {
-    const { error } = validate(req.body);
+    const { error } = validateField(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
 

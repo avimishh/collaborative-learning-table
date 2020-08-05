@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Game, validate } = require('../models/game');
+const { Game, validateGame } = require('../models/game');
 const { Field } = require('../models/field');
 
 // HTTP Handling
@@ -42,7 +42,7 @@ router.get('/:field', async (req, res) => {
 // POST ['api/games']
 router.post('/', async (req, res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    const { error } = validateGame(req.body);
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
@@ -69,7 +69,7 @@ router.post('/', async (req, res) => {
 // PUT ['api/games/:id']
 router.put('/:id', async (req, res) => {
     // Validate client input
-    const { error } = validate(req.body);
+    const { error } = validateGame(req.body);
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
