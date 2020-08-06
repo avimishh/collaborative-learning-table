@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 
 // Routes Import
+const admin = require('../routes/admin');
 const home = require('../routes/home');
 const fields = require('../routes/fields');
 const games = require('../routes/games');
@@ -31,6 +32,7 @@ module.exports = function(app) {
     // console.log(publicPath);
     app.use('/', home);
     // app.use('/', express.static(publicPath))
+    app.use('/admin', admin);
     app.use('/api/fields', fields);
     app.use('/api/games', games);
     // app.use('/api/users', users);
