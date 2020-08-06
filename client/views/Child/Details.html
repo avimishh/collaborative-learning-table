@@ -6,117 +6,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/StudentDetails_Child.css" rel="stylesheet" />
+    <link href="./style/Details.css" rel="stylesheet" />
+    <link href="../../lib/w3.css" rel="stylesheet" />
     <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1,
+        p,
+        div {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
 
+        body,
+        html {
+            height: 100%;
+            /* text-align: left; */
+        }
+
+        .bgimg {
+            background-image: url('../../pics/back3.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 700px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            /* text-align: center; */
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+                    margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 50px;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #000;
+            cursor: pointer;
+            background: transparent;
+            color: #000;
+            font-size: 12px;
+        }
+
+        #homeImg {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        #btnDiv, #bottomDiv {
+            color: black;
+        }
+    </style>
 </head>
 
 <body dir="rtl">
-    <div>
-        <h1 class="tittle">שולחן משחקים שיתופי</h1>
-        <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home" aria-hidden="true"></i></button>
-    </div>
-    <div class="form-box">
-        <h1>הצגת פרטים אישיים <span class="fullNameChild"></span></h1>
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
+            שולחן משחקים שיתופי
+            <br>
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+        <div class="form-box w3-display-middle">
+            <h1>הצגת פרטים אישיים <span class="fullNameChild"></span></h1>
 
-        <div class="mess">
-            <table>
-                <!--1. First Name-->
-                <tr>
-                    <td>
-                        <span>שם פרטי:</span>
-                    </td>
-                    <td>
-                        <span id="firstName"></span>
-                    </td>
-                </tr>
-                <!--2. Last Name-->
-                <tr>
-                    <td>
-                        <span>שם משפחה:</span>
-                    </td>
-                    <td>
-                        <span id="lastName"></span>
-                    </td>
-                </tr>
-                <!--3. ID-->
-                <tr>
-                    <td>
-                        <span>תעודת זהות:</span>
-                    </td>
-                    <td>
-                        <span id="ID"></span>
-                    </td>
-                </tr>
-                <!--4. Birth Date-->
-                <tr>
-                    <td>
-                        <span>תאריך לידה:</span>
-                    </td>
-                    <td>
-                        <span id="birthDate"></span>
-                    </td>
-                </tr>
-                <!--5. Age-->
-                <tr>
+            <div class="mess">
+                <table>
+                    <!--1. First Name-->
+                    <tr>
+                        <td>
+                            <span>שם פרטי:</span>
+                        </td>
+                        <td>
+                            <span id="firstName"></span>
+                        </td>
+                        <!-- </tr> -->
+                        <!--2. Last Name-->
+                        <!-- <tr> -->
+                        <td>
+                            <span>שם משפחה:</span>
+                        </td>
+                        <td>
+                            <span id="lastName"></span>
+                        </td>
+                    </tr>
+                    <!--3. ID-->
+                    <tr>
+                        <td>
+                            <span>תעודת זהות:</span>
+                        </td>
+                        <td>
+                            <span id="ID"></span>
+                        </td>
+                        <!-- </tr> -->
+                        <!--4. Birth Date-->
+                        <!-- <tr> -->
+                        <td>
+                            <span>תאריך לידה:</span>
+                        </td>
+                        <td>
+                            <span id="birthDate"></span>
+                        </td>
+                    </tr>
+                    <!--5. Age-->
+                    <!-- <tr> -->
                     <td>
                         <span>גיל:</span>
                     </td>
                     <td>
                         <span id="age"></span>
                     </td>
-                </tr>
-                <!--6. Gender-->
-                <tr>
+                    <!-- </tr> -->
+                    <!--6. Gender-->
+                    <!-- <tr> -->
                     <td>
                         <span>מין:</span>
                     </td>
                     <td>
                         <span id="gender"></span>
                     </td>
-                </tr>
-                <!--7. Address-->
-                <tr>
-                    <td>
-                        <span>כתובת:</span>
-                    </td>
-                    <td>
-                        <span id="address"></span>
-                    </td>
-                </tr>
-                <!--8. Phone Number-->
-                <tr>
-                    <td>
-                        <span>טלפון:</span>
-                    </td>
-                    <td>
-                        <span id="phoneNumber"></span>
-                    </td>
-                </tr>
-                <!--9. Class Number-->
-                <tr>
-                    <td>
-                        <span>מספר רמה/כיתה:</span>
-                    </td>
-                    <td>
-                        <span id="classNumber"></span>
-                    </td>
-                </tr>
-                <!--10. Password-->
-                <tr>
-                    <td>
-                        <span>סיסמא:</span>
-                    </td>
-                    <td>
-                        <span id="password"></span>
-                    </td>
-                </tr>
-            </table>
+                    </tr>
+                    <!--7. Address-->
+                    <tr>
+                        <td>
+                            <span>כתובת:</span>
+                        </td>
+                        <td>
+                            <span id="address"></span>
+                        </td>
+                        <!-- </tr> -->
+                        <!--8. Phone Number-->
+                        <!-- <tr> -->
+                        <td>
+                            <span>טלפון:</span>
+                        </td>
+                        <td>
+                            <span id="phoneNumber"></span>
+                        </td>
+                    </tr>
+                    <!--9. Class Number-->
+                    <tr>
+                        <td>
+                            <span>מספר רמה/כיתה:</span>
+                        </td>
+                        <td>
+                            <span id="classNumber"></span>
+                        </td>
+                        <!-- </tr> -->
+                        <!--10. Password-->
+                        <!-- <tr> -->
+                        <td>
+                            <span>סיסמא:</span>
+                        </td>
+                        <td>
+                            <span id="password"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
 
+        <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
+            Make Learning Fun
+        </div>
     </div>
+
+
 
     <script type="module" src="consts.js"></script>
     <script type="module">
@@ -126,13 +214,15 @@
             showStudentDetails();
 
             $('#btn_goToHome').on('click', () => {
-                location.replace(URL.CHILD_HOME);
+                window.location.href = URL.CHILD_HOME;
             });
 
+            $('td:nth-child(2)').css('border', '1px solid white');
+            $('td:nth-child(4)').css('border', '1px solid white');
         });
 
         function showStudentDetails() {
-            console.log(localStorage.getItem('child'));
+            // console.log(localStorage.getItem('child'));
             let data = JSON.parse(localStorage.getItem('child'));
             // birth and age
             let year = Number(data.birth.substr(0, 4));
@@ -155,6 +245,20 @@
             $("#phoneNumber").html(data.phone);                     // phoneNumber
             $("#classNumber").html(data.level);                     // classNumber
             $("#password").html(data.gamesPassword);                // password
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('-');
         }
     </script>
 </body>

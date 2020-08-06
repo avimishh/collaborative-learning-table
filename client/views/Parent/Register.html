@@ -6,35 +6,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/Register_Parent.css" rel="stylesheet" />
-    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../lib/w3.css" rel="stylesheet" />
+    <link href="./style/Register.css" rel="stylesheet" />
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body,
+        h1 {
+            font-family: 'Varela Round', sans-serif;
+        }
 
+        body,
+        html {
+            height: 100%;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/cactus.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        img {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 20%;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        #err_text {
+            color: red;
+            /* font-size: 12px; */
+            text-align: center;
+            height: 22px;
+        }
+    </style>
+    <script>
+        function passwordToggle() {
+            var x = document.getElementById("user_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 </head>
 
 <body dir="rtl">
-    <div>
-        <h1 class="tittle">שולחן משחקים שיתופי</h1>
-    </div>
-    <div class="form-box">
-        <h1>הרשמה הורה</h1>
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+        </div>
 
+    </div>
+    <div class="form-box w3-display-topmiddle">
+        <h1>הרשמה הורה</h1>
+        <div class="input-box">
+            <i class="fa fa-address-card"></i>
+            <input type="text" id="user_fname" placeholder="שם פרטי" />
+        </div>
+        <div class="input-box">
+            <i class="fa fa-address-card"></i>
+            <input type="text" id="user_lname" placeholder="שם משפחה" />
+        </div>
+        <div class="input-box">
+            <i class="fa fa-phone"></i>
+            <input type="text" id="user_phone" placeholder="טלפון" />
+        </div>
         <div class="input-box">
             <i class="fa fa-user"></i>
-            <input type="text" id="user_id" placeholder="תעודת זהות" />
+            <input type="text" id="user_id" placeholder="תעודת זהות" autocomplete="off" />
         </div>
 
         <div class="input-box">
             <i class="fa fa-key"></i>
-            <input type="password" placeholder="סיסמא" id="user_password" />
-            <span class="eye" onclick="myFunction()">
+            <input type="text" placeholder="סיסמא" id="user_password" autocomplete="off" />
+            <span class="eye" onclick="passwordToggle()">
                 <i id="hide1" class="fa fa-eye"></i>
                 <i id="hide2" class="fa fa-eye-slash"></i>
             </span>
         </div>
+        <div id="err_text"></div>
 
         <button type="button" class="register-btn" id="register">הרשמה</button>
 
+        <div>
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+
     </div>
+
+    <div class="w3-display-bottomleft w3-padding-large">
+        Make Learning Fun
+    </div>
+    </div>
+
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
@@ -45,22 +130,39 @@
         $(document).ready(() => {
             console.log('jquery work');
             init();
+            $("#user_id").text('');
         });
 
         function init() {
             $('#register').on('click', () => {
                 console.log('work btn');
-                let userId = $("#user_id").val();
-                let userPassword = $("#user_password").val();
-                userRegisterRequest(userId, userPassword, registerSuccess);
+                let newUser = {};
+                newUser.firstName = $("#user_fname").val();
+                newUser.lastName = $("#user_lname").val();
+                newUser.phone = $("#user_phone").val();
+                newUser.id = $("#user_id").val();
+                newUser.password = $("#user_password").val();
+                userRegisterRequest(newUser, registerSuccess, printErrorToUser);
+            });
+
+            $('#btn_goToHome').on('click', () => {
+                window.location.href = URL.HOME;
+            });
+
+            $('#user_password').on('focus', () => {
+                $('#user_password').attr('type', 'password');
             });
         }
 
-        function registerSuccess(user) {
-            localStorage.setItem('parent_id', user._parent);
-            localStorage.setItem('user', user);
-            localStorage.removeItem('parent');
-            location.replace(URL.PARENT_DETAILS);
+        function registerSuccess(parent) {
+            localStorage.setItem('parent', JSON.stringify(parent));
+            // localStorage.removeItem('parent');
+            // location.replace(URL.PARENT_HOME);
+            window.location.href = URL.PARENT_HOME;
+        }
+
+        function printErrorToUser(code, err) {
+            $('#err_text').text(err);
         }
 
     </script>

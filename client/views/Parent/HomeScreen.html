@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/HomeScreen_Parent.css" rel="stylesheet" />
+    <link href="./style/HomeScreen.css" rel="stylesheet" />
     <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="../../../lib/w3.css" rel="stylesheet" />
     <link rel="stylesheet"
@@ -160,19 +160,19 @@
             $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
 
             $('#btn_child_details').on('click', () => {
-                location.replace(URL.CHILD_DETAILS);
+                window.location.href = URL.CHILD_DETAILS;
             });
 
             $('#btn_child_performance').on('click', () => {
-                location.replace(URL.CHILD_PERFORMANCE);
+                window.location.href = URL.CHILD_PERFORMANCE;
             });
 
             $('#btn_notes').on('click', () => {
-                location.replace(URL.PARENT_NOTES);
+                window.location.href = URL.PARENT_NOTES;
             });
 
             $('#btn_details').on('click', () => {
-                location.replace(URL.PARENT_DETAILS);
+                window.location.href = URL.PARENT_DETAILS;
             });
 
             let parent = JSON.parse(localStorage.getItem('parent'));

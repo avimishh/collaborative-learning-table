@@ -1,3 +1,4 @@
 {
-    "name": "My Express App - Production"
+    "name": "My Express App - Production",
+    "jwtPrivateKey": "mySecureKey"
 }

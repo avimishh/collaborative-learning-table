@@ -5,9 +5,9 @@
 
 body {
     background: no-repeat center center fixed;
-    background-image: url('../../../pics/background_learn.png');
+    /* background-image: url('../../../pics/background_learn.png'); */
     background-size: cover;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
 }
 
 h1 {
@@ -16,12 +16,21 @@ h1 {
 }
 
 span {
-    font-family: 'Comic Neue', cursive;
-    font-size: 26px;
+    /* font-family: 'Comic Neue', cursive; */
+    font-size: 16px;
 }
 
-table tr td {
+table tr td{
     padding: 10px 30px;
+}
+
+table{
+    border-collapse:separate; 
+border-spacing:10px;
+}
+
+tr{
+    margin:10px;
 }
 
 .mess {
@@ -29,38 +38,34 @@ table tr td {
     margin-bottom: 30px;
 }
 
-#chartContainer{
-    margin: auto;
-}
-
 .tittle {
     margin-top: 20px;
     color: #7c795d;
     font-size: 75px;
-    font-family: 'Playfair Display', serif;
+    /* font-family: 'Playfair Display', serif; */
 }
 
 .fullNameChild {
     font-size: 32px;
     font-weight: bold;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
 }
 
 .form-box {
-    width: 600px;
+    width: 800px;
     background: rgba(0,0,0,0.7);
-    margin: 6% auto 1% auto;
-    padding: 50px 0;
+    margin: 2% auto 1% auto;
+    padding: 30px 20px;
     color: #fff;
-    box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px 2px rgba(200,200,0,1);
 }
 
-.answware {
+.answware{
     text-decoration: underline;
 }
 
 /*tablets*/
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px){
     * {
         margin: 0;
         padding: 0;
@@ -68,9 +73,9 @@ table tr td {
 
     body {
         background: no-repeat center center fixed;
-        background-image: url('../../../pics/background_learn.png');
+        /* background-image: url('../../../pics/background_learn.png'); */
         background-size: cover;
-        font-family: sans-serif;
+        /* font-family: sans-serif; */
     }
 
     h1 {
@@ -79,7 +84,7 @@ table tr td {
     }
 
     span {
-        font-family: 'Comic Neue', cursive;
+        /* font-family: 'Comic Neue', cursive; */
         font-size: 26px;
     }
 
@@ -96,13 +101,13 @@ table tr td {
         margin-top: 20px;
         color: #7c795d;
         font-size: 75px;
-        font-family: 'Playfair Display', serif;
+        /* font-family: 'Playfair Display', serif; */
     }
 
     .fullNameChild {
         font-size: 32px;
         font-weight: bold;
-        font-family: sans-serif;
+        /* font-family: sans-serif; */
     }
 
     .form-box {
@@ -111,7 +116,7 @@ table tr td {
         margin: 14% auto 1% auto;
         padding: 50px 0;
         color: #fff;
-        box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+        box-shadow: 0 0 20px 2px rgba(200,200,0,1);
     }
 
     .answware {

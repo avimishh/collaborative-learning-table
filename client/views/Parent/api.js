@@ -30,21 +30,18 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
 }
 
 
-export function userRegisterRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
+export function userRegisterRequest(newUser, successFunction, errorFunction, completeFunction) {
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: usersApi,
+        url: parentsApi,
         method: "POST",
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify({
-            userId: userId,
-            password: userPassword
-        }),
+        data: JSON.stringify(newUser),
         success: function (data, textStatus, xhr) {
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
             // console.log(localStorage.getItem('token'));
-            // console.log(data);
+            console.log(data);
             successFunction(data);
         },
         error: function (xhr) {

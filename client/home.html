@@ -111,15 +111,15 @@
         </div>
         <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
 
-            <div id="btn_Parent" class="w3-light-blue w3-text-white tooltip">
+            <div id="btn_Parent" class="w3-light-blue w3-text-white tooltip w3-animate-right">
                 <img src="../../pics/parents.png" alt="">
                 <span class="tooltiptext">הורים</span>
             </div>
-            <div id="btn_Teacher" class="w3-red tooltip">
+            <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
                 <img src="../../pics/teacher.png" alt="">
                 <span class="tooltiptext">מורים</span>
             </div>
-            <div id="btn_Child" class="w3-green tooltip">
+            <div id="btn_Child" class="w3-green tooltip w3-animate-left">
                 <img src="../../pics/kid.png" alt="">
                 <span class="tooltiptext">ילדים</span>
             </div>
@@ -146,15 +146,18 @@
             $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
 
             $('#btn_Parent').on('click', () => {
-                location.replace(URL.PARENT_SIGNIN);
+                // location.replace(URL.PARENT_SIGNIN);
+                window.location.href = URL.PARENT_SIGNIN;
             });
 
             $('#btn_Teacher').on('click', () => {
-                location.replace(URL.TEACHER_SIGNIN);
+                // location.replace(URL.TEACHER_SIGNIN);
+                window.location.href = URL.TEACHER_SIGNIN;
             });
 
             $('#btn_Child').on('click', () => {
-                location.replace(URL.CHILD_SIGNIN);
+                // location.replace(URL.CHILD_SIGNIN);
+                window.location.href = URL.CHILD_SIGNIN;
             });
 
         }

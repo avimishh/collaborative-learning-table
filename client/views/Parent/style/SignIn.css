@@ -3,36 +3,23 @@
     padding: 0;
 }
 
-body {
-    background: no-repeat center center fixed;
-    background-image: url('../../../pics/background_learn.png');
-    background-size: cover;
-    font-family: sans-serif;
-}
-
 h1 {
     text-align: center;
-    margin-bottom: 40px;
-}
-
-.tittle {
-    margin-top: 20px;
-    color: #7c795d;
-    font-size: 75px;
-    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
 }
 
 .form-box {
-    width: 500px;
+    width: 450px;
     background: rgba(0,0,0,0.7);
-    margin: 6% auto 1% auto;
-    padding: 50px 0;
+    margin: 4% auto 1% auto;
+    padding: 30px 20px;
     color: #fff;
-    box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px 2px rgba(0,0,0,1);
+    font-family: 'Varela Round', sans-serif;
 }
 
 .input-box {
-    margin: 31px auto;
+    margin: 10px auto;
     width: 80%;
     border-bottom: 1px solid #fff;
     padding-top: 10px;
@@ -45,10 +32,12 @@ h1 {
         outline: none;
         background: transparent;
         color: #fff;
+        font-size: 16px;
     }
 
 ::placeholder {
     color: #ccc;
+    font-family: 'Varela Round', sans-serif;
 }
 
 .fa {
@@ -63,8 +52,8 @@ h1 {
     display: none;
 }
 
-.register-btn {
-    margin: 40px auto 20px;
+.login-btn {
+    margin: 10px auto 20px;
     width: 80%;
     display: block;
     outline: none;
@@ -77,7 +66,46 @@ h1 {
 }
 
 .new-user-btn {
-    margin: 40px auto 0;
+    margin: 10px auto 20px;
+    width: 80%;
+    display: block;
+    outline: none;
+    padding: 10px 0;
+    border: 1px solid #fff;
+    cursor: pointer;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+}
+
+body,
+h1 {
+    font-family: 'Varela Round', sans-serif;
+}
+
+body,
+html {
+    height: 100%;
+}
+
+.bgimg {
+    background-image: url('../../../pics/cactus.jpg');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+    /* margin: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.3); */
+}
+
+img {
+    width: auto;
+    height: 30px;
+    display: block;
+    margin: auto;
+}
+
+.homeBtn {
+    margin: 10px auto 0;
     width: 20%;
     display: block;
     outline: none;
@@ -87,6 +115,26 @@ h1 {
     background: transparent;
     color: #fff;
     font-size: 12px;
+}
+
+#err_text {
+    color: red;
+    /* font-size: 12px; */
+    text-align: center;
+    height: 22px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #ccc;
+}
+
+input:-webkit-autofill::first-line {
+    font-size: 16px;
+    font-family: 'Varela Round', sans-serif;
 }
 
 /*tablets*/
@@ -100,7 +148,7 @@ h1 {
         background: no-repeat center center fixed;
         background-image: url('../../../pics/background_learn.png');
         background-size: cover;
-        font-family: sans-serif;
+        /* font-family: sans-serif; */
     }
 
     h1 {
@@ -112,7 +160,7 @@ h1 {
         margin-top: 20px;
         color: #7c795d;
         font-size: 75px;
-        font-family: 'Playfair Display', serif;
+        /* font-family: 'Playfair Display', serif; */
     }
 
     .form-box {
@@ -138,6 +186,7 @@ h1 {
             outline: none;
             background: transparent;
             color: #fff;
+            font-size: 16px;
         }
 
     ::placeholder {

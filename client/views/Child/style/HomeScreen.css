@@ -24,7 +24,7 @@ header {
 
 main {
     background: no-repeat center;
-    background-image: url('../../../pics/bacground_study.png');
+    /* background-image: url('../../../pics/bacground_study.png'); */
     background-size: cover;
     font-family: sans-serif;
     width: 100%;
@@ -49,13 +49,13 @@ main {
         font-family: 'Comic Neue', cursive;
     }
 
-footer {
+/* footer {
     text-align: center;
     background-color: #fcfcfc;
     color: #fff;
     margin-left: 12%;
     margin-right: 12%;
-}
+} */
 
 .container {
     width: 100%;
@@ -86,6 +86,8 @@ footer {
     right: 9%;
     top: 20%;
 }
+
+
 
 /*tablets*/
 @media screen and (max-width: 768px) {
@@ -140,13 +142,13 @@ footer {
             font-family: 'Comic Neue', cursive;
         }
 
-    footer {
+    /* footer {
         text-align: center;
         background-color: #fcfcfc;
         color: #fff;
         margin-left: 12%;
         margin-right: 12%;
-    }
+    } */
 
     .container {
         width: 100%;

@@ -6,11 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/StudentPerformance_Child.css" rel="stylesheet" />
-    <link href="../../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="./style/Performance.css" rel="stylesheet" />
+    <link href="../../lib/w3.css" rel="stylesheet" />
+    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
+        body,
+        h1,
+        p,
+        div {
+            /* font-family: "Raleway", sans-serif; */
+            font-family: 'Varela Round', sans-serif;
+            /* font-family: 'Suez One', serif; */
+        }
+
+        body,
+        html {
+            height: 100%;
+            /* text-align: left; */
+        }
+
+        .bgimg {
+            background-image: url('../../pics/back3.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+            /* margin: 20px;
+                        border: 1px solid rgba(0, 0, 0, 0.3); */
+        }
+
+        .container {
+            width: 700px;
+            height: auto;
+            /* display: inline; */
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            /* text-align: center; */
+            /* background-color: #fcfcfc; */
+            color: #fff;
+            margin-bottom: 100px;
+            /* margin-left: 12%;
+                    margin-right: 12%; */
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 5% 0 5% 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 50px;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #000;
+            cursor: pointer;
+            background: transparent;
+            color: #000;
+            font-size: 12px;
+        }
+
+        #homeImg {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
+        #btnDiv,
+        #bottomDiv {
+            color: black;
+        }
+
         table {
             border-collapse: collapse;
             border-spacing: 0;
@@ -21,16 +99,12 @@
         th,
         td {
             text-align: center;
-            padding: 16px;
+            padding: 10px;
         }
 
-        th:first-child,
+        /* th:first-child,
         td:first-child {
             text-align: left;
-        }
-
-        /* tr:nth-child(even) {
-            background-color: #f2f2f2
         } */
 
         .fa-check {
@@ -44,49 +118,111 @@
 </head>
 
 <body dir="rtl">
-    <div>
-        <h1 class="tittle">שולחן משחקים שיתופי</h1>
-    </div>
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
+            שולחן משחקים שיתופי
+            <br>
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+        <div class="form-box w3-display-middle">
+            <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
 
-    <div class="form-box">
-        <h1>הצגת ציונים וגרף התקדמות <span class="fullNameChild"></span></h1>
+            <div class="mess" id="data">
 
-        <div class="mess" id="data">
+            </div>
 
         </div>
 
+
+        <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
+            Make Learning Fun
+        </div>
     </div>
 
+
+    <script type="module" src="consts.js"></script>
     <script type="module" src="api.js"></script>
     <script type="module">
         import { getStatsRequest } from './api.js';
+        import { URL } from './consts.js';
 
         $(document).ready(() => {
             console.log('jquery work');
-            // init();
             let child_id = JSON.parse(localStorage.getItem('child')).id;
             getStatsRequest(child_id, setData);
+
+            init();
         });
+
+        function init() {
+            $('#btn_goToHome').on('click', () => {
+                window.location.href = URL.CHILD_HOME;
+            });
+
+            displayNameTitle();
+            disableBackBtn();
+        }
 
         function setData(data) {
             let $h_tr = $('<tr>').append($('<th>').text('תאריך'), $('<th>').text('סך הכל שאלות'),
-                $('<th>').text('חיבור'), $('<th>').text('חיסור'), $('<th>').text('כפל'));
+                $('<th>').text('חיבור'), $('<th>').text('חיסור'), $('<th>').text('כפל'), $('<th>').text('ציון'));
             let $table = $('<table>').append($h_tr);
             let sheets = data[0].sheets;
             for (let i = 0; i < sheets.length; i++) {
                 console.log(sheets[i]);
-                let $td0 = $('<td>').text(sheets[i].date.substr(0,10));
+                let $td0 = $('<td>').text(formatDate(sheets[i].date.substr(0, 10)));
                 let $td1 = $('<td>').text(sheets[i].number_of_questions);
                 let $td2 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
                 let $td3 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
                 let $td4 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
-                
-                $table.append( $('<tr>').append($td0, $td1, $td2, $td3, $td4) );
+                let score = calculateScore(sheets[i]);
+                let scoreColor = (score >= 60)? 'green' : 'red';
+                let $td5 = $('<td>').text(`% ${score}`).css('color',scoreColor);
+                $table.append($('<tr>').append($td0, $td1, $td2, $td3, $td4, $td5));
             }
             $('#data').append($table);
+
+            // $('tr:even').css('backgroundColor', 'gray');
+
             console.log();
         }
 
+        function calculateScore(sheet) {
+            let sumOfCorrect = 0;
+            sheet.questions.forEach(q => {
+                sumOfCorrect = sumOfCorrect + q.correct;
+            });
+
+            return parseInt(sumOfCorrect * 100 / sheet.number_of_questions);
+        }
+
+        function displayNameTitle() {
+            let child = JSON.parse(localStorage.getItem('child'));
+            $('#nameChild').text(`${child.firstName} ${child.lastName}`);
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('-');
+        }
+
+        function disableBackBtn() {
+            history.pushState(null, null, document.URL);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, document.URL);
+            });
+        }
     </script>
 </body>
 

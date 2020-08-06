@@ -1,4 +1,6 @@
 {
     "name": "My Express App - Development",
-    "db":"mongodb://localhost/collearn"
+    "db":"mongodb://localhost/collearn",
+    "jwtPrivateKey": "mySecureKey"
+
 }
