@@ -7,7 +7,6 @@ body {
     background: no-repeat center center fixed;
     /* background-image: url('../../../pics/background_learn.png'); */
     background-size: cover;
-    /* font-family: sans-serif; */
 }
 
 h1 {
@@ -16,7 +15,6 @@ h1 {
 }
 
 span {
-    /* font-family: 'Comic Neue', cursive; */
     font-size: 16px;
 }
 
@@ -42,13 +40,11 @@ tr{
     margin-top: 20px;
     color: #7c795d;
     font-size: 75px;
-    /* font-family: 'Playfair Display', serif; */
 }
 
 .fullNameChild {
     font-size: 32px;
     font-weight: bold;
-    /* font-family: sans-serif; */
 }
 
 .form-box {
@@ -75,7 +71,6 @@ tr{
         background: no-repeat center center fixed;
         /* background-image: url('../../../pics/background_learn.png'); */
         background-size: cover;
-        /* font-family: sans-serif; */
     }
 
     h1 {
@@ -84,7 +79,6 @@ tr{
     }
 
     span {
-        /* font-family: 'Comic Neue', cursive; */
         font-size: 26px;
     }
 
@@ -101,13 +95,11 @@ tr{
         margin-top: 20px;
         color: #7c795d;
         font-size: 75px;
-        /* font-family: 'Playfair Display', serif; */
     }
 
     .fullNameChild {
         font-size: 32px;
         font-weight: bold;
-        /* font-family: sans-serif; */
     }
 
     .form-box {

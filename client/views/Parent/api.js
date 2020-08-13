@@ -2,6 +2,7 @@ const server = "http://localhost:3000/api/";
 const authApi = server + "auth/parent/";
 const usersApi = server + "users/";
 const parentsApi = server + "parents/";
+const childsApi = server + "childs/";
 
 
 export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
@@ -115,18 +116,39 @@ export function updateParentRequest(parent_id, parentToUpdate, successFunction, 
 }
 
 
-export function firstDetailsParentRequest(parentToUpdate, successFunction, errorFunction, completeFunction) {
+// export function firstDetailsParentRequest(parentToUpdate, successFunction, errorFunction, completeFunction) {
+//     console.log('work api');
+//     let request = {
+//         contentType: "application/json",
+//         url: parentsApi,
+//         method: "POST",
+//         headers: { 'x-auth-token' : localStorage.getItem('token') },
+//         data: JSON.stringify(parentToUpdate),
+//         success: function (data, textStatus, xhr) {
+//             localStorage.setItem('parent', JSON.stringify(data));
+//             // console.log(data);
+//             successFunction();
+//         },
+//         error: function (xhr) {
+//             errorFunction(xhr.status, xhr.responseText);
+//         }
+//     };
+//     $.ajax(request);
+// }
+
+
+export function getChildRequest(child_id, successFunction, errorFunction, completeFunction) {
+    console.log(child_id);
     console.log('work api');
     let request = {
         contentType: "application/json",
-        url: parentsApi,
-        method: "POST",
+        url: childsApi + child_id,
+        method: "GET",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify(parentToUpdate),
+        // data: JSON.stringify(),
         success: function (data, textStatus, xhr) {
-            localStorage.setItem('parent', JSON.stringify(data));
             // console.log(data);
-            successFunction();
+            successFunction(data);
         },
         error: function (xhr) {
             errorFunction(xhr.status, xhr.responseText);

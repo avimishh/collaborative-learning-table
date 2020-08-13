@@ -114,6 +114,13 @@
         .fa-remove {
             color: red;
         }
+
+        #err_text {
+            color: red;
+            /* font-size: 12px; */
+            text-align: center;
+            /* height: 22px; */
+        }
     </style>
 </head>
 
@@ -128,7 +135,7 @@
         </div>
         <div class="form-box w3-display-middle">
             <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
-
+            <div id="err_text"></div>
             <div class="mess" id="data">
 
             </div>
@@ -151,21 +158,23 @@
         $(document).ready(() => {
             console.log('jquery work');
             let child_id = JSON.parse(localStorage.getItem('child')).id;
-            getStatsRequest(child_id, setData);
+            getStatsRequest(child_id, setData, printErrorToUser);
 
             init();
         });
 
         function init() {
             $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.CHILD_HOME;
+                // window.location.href = URL.CHILD_HOME;
+                window.history.back();
             });
 
             displayNameTitle();
-            disableBackBtn();
+            // disableBackBtn();
         }
 
         function setData(data) {
+            if(data.length === 0) return printErrorToUser(0, 'אין תוצאות לילד זה.');
             let $h_tr = $('<tr>').append($('<th>').text('תאריך'), $('<th>').text('סך הכל שאלות'),
                 $('<th>').text('חיבור'), $('<th>').text('חיסור'), $('<th>').text('כפל'), $('<th>').text('ציון'));
             let $table = $('<table>').append($h_tr);
@@ -178,8 +187,8 @@
                 let $td3 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
                 let $td4 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
                 let score = calculateScore(sheets[i]);
-                let scoreColor = (score >= 60)? 'green' : 'red';
-                let $td5 = $('<td>').text(`% ${score}`).css('color',scoreColor);
+                let scoreColor = (score >= 60) ? 'green' : 'red';
+                let $td5 = $('<td>').text(`% ${score}`).css('color', scoreColor);
                 $table.append($('<tr>').append($td0, $td1, $td2, $td3, $td4, $td5));
             }
             $('#data').append($table);
@@ -217,11 +226,15 @@
             return [day, month, year].join('-');
         }
 
-        function disableBackBtn() {
-            history.pushState(null, null, document.URL);
-            window.addEventListener('popstate', function () {
-                history.pushState(null, null, document.URL);
-            });
+        // function disableBackBtn() {
+        //     history.pushState(null, null, document.URL);
+        //     window.addEventListener('popstate', function () {
+        //         history.pushState(null, null, document.URL);
+        //     });
+        // }
+
+        function printErrorToUser(code, err) { // popup
+            $('#err_text').text(err);
         }
     </script>
 </body>

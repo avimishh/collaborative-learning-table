@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const { Parent, validateParent } = require('../models/parent');
+const { Child } = require('../models/child');
 const auth = require('../middleware/auth'); // Authorization
 const bcrypt = require('bcrypt'); // Password Hash
 const _ = require('lodash'); // Pick/Select values from object
@@ -91,11 +92,14 @@ router.put('/:id', auth, async (req, res) => {
     try {
         // res.status(200).send(user);
         const parent = await Parent.findOneAndUpdate({ id: req.params.id }, {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            id: req.body.id,
-            password: req.body.password,
-            phone: req.body.phone
+            "$set": {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                id: req.body.id,
+                // password: req.body.password,
+                phone: req.body.phone
+            },
+            // "$push": { children: req.body.children }
         }, {
             new: true, useFindAndModify: false
         }).populate('children', 'id firstName lastName');
@@ -131,6 +135,42 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+
+// PUT ['api/parents/:id']
+router.put('/addchild/:id', /*auth,*/ async (req, res) => {
+    // // Validate client input
+    // var { error } = validateParent(req.body);
+    // // console.log(error);
+    // // Assert validation
+    // if (error)
+    //     return res.status(400).send(error.details[0].message);
+    const child = await Child.findOne({ id: req.body.childId });
+    // Assert Child data
+    if (!child)
+        return res.status(404).send(`Child ${req.body.childId} was not found.`);
+    // Try to update the selected document
+    try {
+        // res.status(200).send(user);
+        const parent = await Parent.findOneAndUpdate({ id: req.params.id }, {
+            "$push": { children: child._id }
+        }, {
+            new: true, useFindAndModify: false
+        }).populate('children', 'id firstName lastName');
+        // await parent.save();
+        // Assert update completed successfully
+        if (!parent)
+            return res.status(404).send(`Parent ${req.params.id} was not found.`);
+        // Send response to client
+        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
+    } catch (ex) {
+        return res.status(404).send(`Failed to update.`);
+    }
+});
+
+async function addChild(parent, childId) {
+    parent.children.push(childId);
+    await parent.save();
+}
 
 // Module exports
 module.exports = router;
