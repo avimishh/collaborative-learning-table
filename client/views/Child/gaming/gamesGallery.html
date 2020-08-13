@@ -4,14 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <style>
+    <script src="../../../lib/jquery.js"></script>
+    <link href="../../../lib/w3.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <!-- <style>
         * {
             box-sizing: border-box;
+            font-family: 'Varela Round', sans-serif;
         }
 
         body {
-            background-color: #f1f1f1;
+            background-color: lightskyblue;
             /* padding: 20px; */
             font-family: Arial;
         }
@@ -52,11 +55,25 @@
 
         /* Content */
         .content {
-            background-color: white;
+            /* background-color: white; */
             padding: 10px;
+            text-align: center;
+            border: blanchedalmond 1px solid;
+            border-radius: 20px;
+        }
+
+        #row_div{
             text-align: center;
         }
 
+        .content:hover {
+  border: 1px solid #777;
+}
+
+img{
+    width: 100%;
+    height: auto;
+}
         /* Responsive layout - makes a two column-layout instead of four columns */
         @media screen and (max-width: 900px) {
             .column {
@@ -70,21 +87,70 @@
                 width: 100%;
             }
         }
-    </style>
+    </style> -->
+<style>
+    div.gallery {
+  border: 1px solid #ccc;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 50%;
+  max-height: 100px;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.responsive {
+  padding: 0 6px;
+  float: left;
+  width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px) {
+  .responsive {
+    width: 49.99999%;
+    margin: 6px 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .responsive {
+    width: 100%;
+  }
+}
+
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
 </head>
 
 <body dir="rtl">
-    <!-- MAIN (Center website) -->
-    <div class="main">
+      
+      <div class="clearfix"></div>
+
+    <!-- <div class="main">
 
         <h4 id="msg">בחר משחק: </h4>
         <hr>
-        <!-- Gallery Grid -->
         <div id='row_div' class="row">
         </div>
 
-        <!-- END MAIN -->
-    </div>
+    </div> -->
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
@@ -124,20 +190,22 @@
 
         function showGames(games) {
             games.forEach(game => {
-                let $div1 = $('<div>').addClass('column');
-                let $div2 = $('<div>').addClass('content');
-                let $img = $('<img>').attr('src', game.icon).css({ 'width': '100px', 'height': '100px' });
+                let $div0 = $('<div>').addClass('responsive');//('column');
+                let $div1 = $('<div>').addClass('gallery');//('column');
+                let $div2 = $('<div>').addClass('desc');//('content');
+                let $img = $('<img>').attr('src', game.icon);//.css({ 'width': '100px', 'height': '100px' });
                 let $h3 = $('<h3>').text(game.title);
                 let $p = $('<p>').text(game.description);
                 let $btn = $('<button>').text(game.title).on('click', () => {
                     localStorage.setItem('game_id', game._id);
                     // game_id = game._id;
                     // startGameRequest(game._id);
-                    sock.emit('request_game_url_replace', game.link, game._id);
+                    sock.emit('request_game_url_replace', './games/' + game.link, game._id);
                 });
                 $div2.append($img, $h3, $p, $btn);
                 $div1.append($div2);
-                $('#row_div').append($div1);
+                $div0.append($div1);
+                $('body').append($div0);
             });
         }
     </script>

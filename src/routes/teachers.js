@@ -85,15 +85,15 @@ router.put('/:id', auth, async (req, res) => {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             id: req.body.id,
-            password: req.body.password,
+            // password: req.body.password,
             phone: req.body.phone
         }, {
             new: true, useFindAndModify: false
         }).populate('children', 'id firstName lastName');
         // Password Hash
-        const salt = await bcrypt.genSalt(10);
-        teacher.password = await bcrypt.hash(teacher.password, salt);
-        await teacher.save();
+        // const salt = await bcrypt.genSalt(10);
+        // teacher.password = await bcrypt.hash(teacher.password, salt);
+        // await teacher.save();
         // Assert update completed successfully
         if (!teacher)
             return res.status(404).send(`teacher ${req.params.id} was not found.`);

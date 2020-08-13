@@ -6,6 +6,11 @@ var sock = null;
 var isHost = false;
 
 function init() {
+    $('#btn_goToHome').on('click', () => {
+        if(sock) $('#socket_disconnect').trigger('click');
+        window.location.href = '../HomeScreen.html';
+    });
+
     $('#getGames').on('click', () => {
         $('#gameFrame').attr('src', 'gamesGallery.html');
     });

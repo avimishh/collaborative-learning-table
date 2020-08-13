@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games gallery</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../../lib/jquery.js"></script>
+    <link href="../../../lib/w3.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
         body,
@@ -77,6 +77,26 @@
             /* font-family: sans-serif; */
         }
 
+        .homeBtn {
+            margin: 10px auto 0;
+            width: 50px;
+            display: block;
+            outline: none;
+            padding: 10px 0;
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        #homeImg {
+            width: auto;
+            height: 30px;
+            display: block;
+            margin: auto;
+        }
+
         /* #players_status,
         #chat,
         #socket_btns {
@@ -95,6 +115,7 @@
         <div id="players_status" class="w3-display-topright">
             <div id="host_player" class="label p_ncon">שחקן מארח: לא מחובר</div>
             <div id="guest_player" class="label p_ncon">שחקן אורח: לא מחובר</div>
+
         </div>
 
         <div id="socket_btns" class="w3-display-topmiddle">
@@ -111,6 +132,9 @@
     <div id="container_frame" class="w3-panel w3-card-4 w3-middle">
         <iframe id="gameFrame" src="" frameborder="1"></iframe>
     </div>
+    <button type="button" class="homeBtn" id="btn_goToHome">
+        <img id="homeImg" src="../../../pics/homeBtn.png" alt="">
+    </button>
     <!-- <h4>ראשית, התחבר:</h4> -->
     <!-- <label for="childId">childId:</label><br>
     <input type="text" id="childId"><br>

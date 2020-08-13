@@ -2,6 +2,8 @@
 // Wait for jQuery to complete load
 $(document).ready(function () {
     numbers_pad_init();
+    addButtonListeners();
+    // setMathOperators();
     sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
     // console.log(localStorage.getItem('statsObject_id'));
     sock.emit('start_game', 'Math');
@@ -24,12 +26,22 @@ function numbers_pad_init() {
         numbers_buttons.push($btn);
     }
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 1; i < 10; i++) {
         $("#numbers_pad").append(numbers_buttons[i]);
-        if (i === 4) $("#numbers_pad").append($("<br>"));
+        if ((i % 3) === 0) $("#numbers_pad").append($("<br>"));
     }
+    $("#numbers_pad").append(numbers_buttons[0]);
+
 
     set_game_pad_state('disable');
+}
+
+function setMathOperators() {
+    let $img1 = $('<img>').attr('src', './plus.png').addClass('img_op');
+    let $img2 = $('<img>').attr('src', './minus.png').addClass('img_op');
+    let $img3 = $('<img>').attr('src', './multi.png').addClass('img_op');
+
+    $('#math_operations').append($img1, $img2, $img3);
 }
 
 
@@ -91,26 +103,46 @@ function set_game_pad_state(state) {
 // print messages to player from server
 var msg_counter = 0;
 const messageEvent = (text) => {
-    let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
-    $('#events').prepend($new_li);
+    $('#operation').text('');
+    $('#operation').text(text);
+    // let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
+    // $('#events').prepend($new_li);
+    console.log(`${msg_counter}: ${text}`);
     msg_counter++;
 };
 
 
 // math op init
-const addButtonListeners = () => {
-    ['plus', 'minus', 'mult'].forEach((id) => {
-        const button = document.getElementById(id);
-        button.addEventListener('click', () => {
-            sock.emit('math_op', id);
-            // console.log('DEBUG: btn sock emit');
-        });
+function addButtonListeners() {
+    $('#plus').on('click', () => {
+        console.log('DEBUG: btn sock emit');
+
+        sock.emit('math_op', 'plus');
     });
-};
+    $('#minus').click(() => { sock.emit('math_op', 'minus'); });
+    $('#mult').click(() => { sock.emit('math_op', 'mult'); });
+}
+// const addButtonListeners = () => {
+//     $('#plus').on('click',() => {
+//             console.log('DEBUG: btn sock emit');
+
+//         sock.emit('math_op', 'plus');});
+//     $('#minus').click(() => {sock.emit('math_op', 'minus');});
+//     $('#mult').click(() => {sock.emit('math_op', 'mult');});
+
+//     // ['plus', 'minus', 'mult'].forEach((id) => {
+//     //     const button = document.getElementById(id);
+//     //     button.addEventListener('click', () => {
+//     //         sock.emit('math_op', id);
+//     //         // console.log('DEBUG: btn sock emit');
+//     //     });
+//     // });
+// };
 
 
 // Socket work
 const sock = parent.sock;
+// const sock = io();
 // console.log(parent.sock);
 sock.on('message', (text) => {
     messageEvent(text)
@@ -133,4 +165,4 @@ sock.on('gamePadState', (state) => {
 });
 
 
-addButtonListeners();
+// addButtonListeners();

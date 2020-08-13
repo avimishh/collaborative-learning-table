@@ -104,9 +104,9 @@ router.put('/:id', auth, async (req, res) => {
             new: true, useFindAndModify: false
         }).populate('children', 'id firstName lastName');
         // Password Hash
-        const salt = await bcrypt.genSalt(10);
-        parent.password = await bcrypt.hash(parent.password, salt);
-        await parent.save();
+        // const salt = await bcrypt.genSalt(10);
+        // parent.password = await bcrypt.hash(parent.password, salt);
+        // await parent.save();
         // Assert update completed successfully
         if (!parent)
             return res.status(404).send(`Parents ${req.params.id} was not found.`);

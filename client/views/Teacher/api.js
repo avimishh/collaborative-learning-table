@@ -5,6 +5,25 @@ const teachersApi = server + "teachers/";
 const childsApi = server + "childs/";
 
 
+export function getChildsRequest(successFunction, errorFunction, completeFunction) {
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: childsApi,
+        method: "GET",
+        headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify({}),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
 export function getChildRequest(childId, successFunction, errorFunction, completeFunction) {
     console.log('work api');
     let request = {

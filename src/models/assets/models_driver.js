@@ -168,6 +168,32 @@ async function createGame(title, description, fieldName, icon, link) {
     notes.push(`משחק "${title}" נוצר בDB.`);
 }
 
+async function addChild(parentId, childId){
+    const child = await Child.findOne({ id: childId });
+    // Assert Child data
+    if (!child) return console.log(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`);
+    // Try to update the selected document
+    try {
+        // res.status(200).send(user);
+        const parent = await Parent.findOneAndUpdate({ id: parentId }, {
+            "$addToSet": { children: child._id }
+        }, {
+            new: true, useFindAndModify: false
+        }).populate('children', 'id firstName lastName');
+        // await parent.save();
+        // Assert update completed successfully
+        if (!parent) {
+            notes.push(`Parent ${parentId} was not found.`);
+            return console.log(`Parent ${parentId} was not found.`);
+        }
+        // Send response to client
+        notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
+    } catch (ex) {
+        notes.push(`Failed to update.`);
+        return console.log(`Failed to update.`);
+    }
+}
+
 async function initDB() {
     await createParent('משה', 'פרץ', '100', '12345', '0521111111');
     await createParent('אביב', 'גפן', '101', '12345', '0522222222');
@@ -180,10 +206,23 @@ async function initDB() {
     await createField('חשבון', 'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל');
     await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית');
     await createField('צבעים', 'תרגול הכרת צבעים');
+    await createField('זכרון', 'תרגול ואימון הזכרון');
 
-    await createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', 'icons/math_icon.jpg', './math.html');
-    await createGame('התאמת תמונות למילים', 'התאם תמונות למילים באנגלית', 'אנגלית', 'icons/english_icon.jpg', './english.html');
+
+    await createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', 'icons/math.png', './math/math.html');
+    await createGame('התאמת תמונות למילים', 'התאם תמונות למילים באנגלית', 'אנגלית', 'icons/english.png', './english/english.html');
+    await createGame('שילוב צבעים', 'תרגלו שילובי צבעים ולימדו צבעים חדשים', 'צבעים', 'icons/color.png', './ColorGame/ColorGame2.html');
+    await createGame('כרטיסיות זכרון', 'שחקו להנאתכם משחק הזכרון ופיתחו יכולות חדשות!', 'זכרון', 'icons/memory.png', './memoryCard/memoryGame2/memoryGame2.html');
+
+    return notes;
+}
+
+
+async function addChildren() {
+    await addChild('100', '1001');
+    await addChild('100', '1002');
     return notes;
 }
 
 exports.initDB = initDB;
+exports.addChildren = addChildren;

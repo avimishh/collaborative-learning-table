@@ -16,9 +16,7 @@
     <style>
         body,
         h1 {
-            /* font-family: "Raleway", sans-serif; */
             font-family: 'Varela Round', sans-serif;
-            /* font-family: 'Suez One', serif; */
         }
 
         body,
@@ -232,6 +230,9 @@
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
         <div class="w3-display-topleft w3-padding-large w3-xlarge">
             שולחן משחקים שיתופי
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
         </div>
         <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
             <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שלום <span id="parentName"></span></h1>
@@ -306,6 +307,7 @@
         // }
 
         var nextChildPage;
+        var parent = JSON.parse(localStorage.getItem('parent'));
         function init() {
             $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
 
@@ -327,9 +329,12 @@
                 window.location.href = URL.PARENT_DETAILS;
             });
 
+            $('#btn_goToHome').on('click', () => {
+                window.location.href = URL.HOME;
+            });
+
             initModal();
 
-            let parent = JSON.parse(localStorage.getItem('parent'));
             $('#parentName').text(`${parent.firstName} ${parent.lastName}`);
             updateSelectOptions(parent.children);   // popup
         }
