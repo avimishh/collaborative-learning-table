@@ -18,7 +18,7 @@
 
         #gameFrame {
             width: 100%;
-            height: 400px;
+            height: 480px;
             margin: auto;
         }
 
@@ -68,6 +68,8 @@
         #container_frame {
             margin-left: 50px;
             margin-right: 50px;
+    background: rgba(200,200,200,0.9);
+
         }
 
         body {
@@ -78,11 +80,11 @@
         }
 
         .homeBtn {
-            margin: 10px auto 0;
+            /* margin: 10px auto 0; */
             width: 50px;
             display: block;
             outline: none;
-            padding: 10px 0;
+            /* padding: 10px 0; */
             border: 1px solid #fff;
             cursor: pointer;
             background: transparent;
@@ -115,7 +117,10 @@
         <div id="players_status" class="w3-display-topright">
             <div id="host_player" class="label p_ncon">שחקן מארח: לא מחובר</div>
             <div id="guest_player" class="label p_ncon">שחקן אורח: לא מחובר</div>
-
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <!-- <img id="homeImg" src="../../../pics/homeBtn.png" alt=""> -->
+                לעמוד הבית
+            </button>
         </div>
 
         <div id="socket_btns" class="w3-display-topmiddle">
@@ -132,9 +137,7 @@
     <div id="container_frame" class="w3-panel w3-card-4 w3-middle">
         <iframe id="gameFrame" src="" frameborder="1"></iframe>
     </div>
-    <button type="button" class="homeBtn" id="btn_goToHome">
-        <img id="homeImg" src="../../../pics/homeBtn.png" alt="">
-    </button>
+
     <!-- <h4>ראשית, התחבר:</h4> -->
     <!-- <label for="childId">childId:</label><br>
     <input type="text" id="childId"><br>

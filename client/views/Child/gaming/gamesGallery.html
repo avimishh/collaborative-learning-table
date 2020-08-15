@@ -90,11 +90,12 @@ img{
     </style> -->
 <style>
     div.gallery {
-  border: 1px solid #ccc;
+  border: 1px solid #eee;
 }
 
 div.gallery:hover {
   border: 1px solid #777;
+  background-color: #777;
 }
 
 div.gallery img {
@@ -136,6 +137,10 @@ div.desc {
   display: table;
   clear: both;
 }
+
+/* .gameBtn{
+    background-color: blanchedalmond;
+} */
 </style>
 </head>
 
@@ -193,10 +198,10 @@ div.desc {
                 let $div0 = $('<div>').addClass('responsive');//('column');
                 let $div1 = $('<div>').addClass('gallery');//('column');
                 let $div2 = $('<div>').addClass('desc');//('content');
-                let $img = $('<img>').attr('src', game.icon);//.css({ 'width': '100px', 'height': '100px' });
-                let $h3 = $('<h3>').text(game.title);
-                let $p = $('<p>').text(game.description);
-                let $btn = $('<button>').text(game.title).on('click', () => {
+                let $img = $('<div>').css('height','100px').addClass('desc').append($('<img>').attr('src', game.icon));//.css({ 'width': '100px', 'height': '100px' });
+                let $h3 = $('<div>').css('height','100px').addClass('desc').append($('<h3>').text(game.title));
+                let $p = $('<div>').css('height','100px').addClass('desc').append($('<p>').text(game.description));
+                let $btn = $('<button>').addClass('w3-button w3-ripple w3-khaki w3-round-xxlarge .gameBtn').text(game.title).on('click', () => {
                     localStorage.setItem('game_id', game._id);
                     // game_id = game._id;
                     // startGameRequest(game._id);

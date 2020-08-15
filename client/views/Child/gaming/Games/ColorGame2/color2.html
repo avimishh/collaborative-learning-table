@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="../../../../../lib/jquery.js"></script>
+    <link href="../../../../../lib/w3.css" rel="stylesheet" />
+    <style>
+        #frame {
+            background-image: url("./back.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            /* width: 1400px;
+            height: 100%;
+            position: absolute; */
+            margin: auto;
+            top: 20px;
+            left: 300px;
+        }
+
+        #frame {
+            position: relative;
+            width: 800px;
+            height: 560px;
+            border: 1px solid black;
+            float: left;
+        }
+
+        #player-image {
+            height: 100px;
+            width: 100px;
+        }
+
+        #player-div {
+            position: absolute;
+            top: 450px;
+            left: 350px;
+        }
+
+        #score {
+            position: absolute;
+            left: 43px;
+            top: 55px;
+            font-size: 20px;
+        }
+
+        #color_word_cont {
+            position: relative;
+            left: 120px;
+            top: 60px;
+            font-size: 55px;
+        }
+
+        #color_word{
+            border: 2px solid black;
+            background-color: honeydew;
+            /* font-family: Arial, Helvetica, sans-serif; */
+            font-family: cursive; 
+            width: 160px;
+            display: inline-block;
+        }
+
+        .red {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+
+        .blue {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+
+        .yellow {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+
+        .green {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+        .bck_color_score {
+            background-color: cyan;
+        }
+    </style>
+    <script>
+        let $player;
+        let killTimeID;
+        let arr_color = ["red", "blue", "yellow", "green"];
+        let colorWord;
+
+        $(document).ready(function () {
+            $player = $("#player-div");
+            colorWard();
+            $("body").keydown(userPressedKey);
+            send();
+        })
+
+        // color Ward
+        function colorWard() {
+            colorWord = arr_color[Math.floor(Math.random() * 4)]; // Ward match color
+            $("#color_word").html(colorWord).css("color", colorWord);
+        }
+
+        // direction
+        function userPressedKey() {
+            switch (window.event.keyCode) {
+                case 37: // left
+                    movePlayerLeft();
+                    break;
+                case 39: // right
+                    movePlayerRight();
+                    break;
+            }
+        }
+
+        // move Player
+        function movePlayer(delta) {
+            let currentPos = parseInt($player.css("left"));
+            let newPos = currentPos + delta;
+            if (newPos >= 0 && newPos <= (parseInt($("#frame").css("width")) - parseInt($player.css("width"))) - 10)
+                $player.css("left", newPos + "px");
+        }
+
+        // move Player Left
+        function movePlayerLeft() {
+            movePlayer(-10);
+        }
+
+        // move Player Right
+        function movePlayerRight() {
+            movePlayer(10);
+        }
+
+        // time to send ball with color from top
+        function getTime() {
+            var sec = 2.5 + Math.random() * 2; // between 2.5 to 4.5 sec
+            var millisec = 1000 * sec;
+            return millisec;
+        }
+
+        // send ball with color from up
+        function send() {
+            createColor();
+            killTimeID = setTimeout(send, getTime());
+        }
+
+        // create Color ball
+        function createColor() {
+            let i = Math.floor(Math.random() * 4); // random num between 0 to 3
+            let $newColor = $("<img>").addClass(arr_color[i]);
+            $newColor.css("left", getBallColorPosition() + "px");
+            $newColor.attr("src", "../pics/" + arr_color[i] + "Color.png");
+            $("#frame").append($newColor);
+            $newColor.animate({
+                top: "530px" // where the ball color stop from top to bottom
+            }, {
+                    duration: 3000,
+                    easing: "linear",
+                    progress: checkCollision,
+                    complete: deleteObject
+                });
+        }
+
+        // delete Color ball
+        function deleteObject() {
+            $(this).remove();
+        }
+
+        // check Collision
+        function checkCollision() {
+            let $color = $(this);
+            if (checkIntersection($player, $color)) {
+                updateScore($color);
+                $color.stop();
+                $color.remove();
+            }
+        }
+
+        // check Intersection
+        function checkIntersection($x, $y) {
+            if ($x == undefined || $y == undefined) return false;
+            xLeft = parseInt($x.css("left"));
+            xTop = parseInt($x.css("top"));
+            xRight = xLeft + parseInt($x.css("width"));
+            xBottom = xTop + parseInt($x.css("height"));
+
+            yLeft = parseInt($y.css("left"));
+            yTop = parseInt($y.css("top"));
+            yRight = yLeft + parseInt($y.css("width"));
+            yBottom = yTop + parseInt($y.css("height"));
+
+            return ((xLeft >= yLeft && xLeft <= yRight || yLeft >= xLeft && yLeft <= xRight) && (xTop <= yBottom && xTop >= yTop || yTop <= xBottom && yTop >= xTop));
+        }
+
+        // get ball color Position
+        function getBallColorPosition() {
+            let playerWidth = parseInt($player.css("width"));
+            return Math.round(playerWidth / 2 + Math.random() * (parseInt($("#frame").css("width")) - playerWidth));
+        }
+
+        // update Score
+        function updateScore($color) {
+            //console.log($color[0].className);
+            //console.log($("#color_word").html());
+            if ($color[0].className == $("#color_word").html()) {
+                $("#score").text(parseInt($("#score").text()) + 1);
+                backgroundFlip("red",$("#color_word").html());
+                colorWard();
+            }
+            if (parseInt($("#score").text()) === 10) gameOver();
+        }
+
+        // gameOver
+        function gameOver() {
+            clearTimeout(killTimeID);
+            for (let i = 0; i < arr_color.length; i++) {
+                $("." + arr_color[i]).stop();
+                $("." + arr_color[i]).remove();
+            }
+            alert("good boy");
+        }
+
+        // Flip background
+        function backgroundFlip(clr, def_clr = "cyan") {
+            $("#score").css("background-color", clr);
+            setTimeout(function () {
+                $("#score").css("background-color", def_clr);
+            }, 200);
+        }
+
+    </script>
+</head>
+<body style="margin:25px;">
+    <div id="frame">
+        <div id="player-div">
+            <img id="player-image" src="../pics/basket.png" />
+            <span id="score" class="bck_color_score">0</span>
+        </div>
+    </div>
+    <div id="color_word_cont"><span id="color_word"></span></div>
+</body>
+</html>

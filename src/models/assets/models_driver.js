@@ -213,6 +213,9 @@ async function initDB() {
     await createGame('התאמת תמונות למילים', 'התאם תמונות למילים באנגלית', 'אנגלית', 'icons/english.png', './english/english.html');
     await createGame('שילוב צבעים', 'תרגלו שילובי צבעים ולימדו צבעים חדשים', 'צבעים', 'icons/color.png', './ColorGame/ColorGame2.html');
     await createGame('כרטיסיות זכרון', 'שחקו להנאתכם משחק הזכרון ופיתחו יכולות חדשות!', 'זכרון', 'icons/memory.png', './memoryCard/memoryGame2/memoryGame2.html');
+    await createGame('חשבון עם דרגון בול', 'התאמנו על כללי החשבון ושחקו עם הדמויות האהובות עליכן', 'חשבון', 'icons/dbz.png', './dbz/dbz.html');
+    await createGame('תרגול צבעים בשפה האנגלית', 'למדנו את הצבע וקלעו את הכדורים בצבע המתאים לתוך הסל', 'צבעים', 'icons/color2.png', './ColorGame2/ColorGame2.html');
+    await createGame('גלגל המזל בשפה האנגלית', 'אייתו את שמות החיות באנגלית', 'אנגלית', 'icons/english2.png', './english2/english2.html');
 
     return notes;
 }

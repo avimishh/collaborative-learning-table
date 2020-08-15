@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Math Game</title>
+
+    <link rel="stylesheet" href="./lib/w3css.css">
+    <link href="https://fonts.googleapis.com/css?family=Suez+One" rel="stylesheet">
+    <script src="./lib/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="./math.css">
+
+</head>
+<body dir="rtl">
+    <div id="background">
+        <div id="lvlDisplay">
+            <h2>
+                HighScore: <strong><span id="HighScore">0</span></strong><br>
+                Level <strong><span id="lvlNum">1</span></strong>
+            </h2>
+            <div>
+                <button onclick="levelUp()">△</button>
+            </div>
+            <br>
+            <div>
+                <button onclick="levelDown()">▽</button>
+            </div>
+            <br>
+            <br>
+            <div>
+                <button onclick="newGame()">New Game</button>
+            </div>
+        </div>
+        <div id="questDisplay" dir="ltr">
+                <h2>
+                    #<span id="questCounter">0</span>: <strong><span id="questType">-</span></strong><br>
+                </h2>
+                <h3>
+                    <strong><span id="questText">-</span></strong>
+                </h3>
+                <!-- <br>
+                <br> -->
+                <h3>
+                    =<br><strong><span id="questAnswer">-</span></strong>
+                </h3>
+            </div>
+        <div id="container">
+            <img src="./res/goku.png" id="player" />
+        </div>
+
+        <div id="stat">
+            <table class="w3-table-all w3-card-4" border="1">
+                <tr id="tableHead">
+                    <th></th>
+                    <th>חיבור<img src="./res/vegeta.png" class="tumb"></th>
+                    <th>חיסור<img src="./res/frieza.png" class="tumb"></th>
+                    <th>כפל<img src="./res/buu.png" class="tumb"></th>
+                    <th>סה"כ</th>
+                </tr>
+                <tr>
+                    <td>פגיעות</td>
+                    <td id="plus_hits"><span>0</span> / <span>0</span></td>
+                    <td id="minus_hits"><span>0</span> / <span>0</span></td>
+                    <td id="multi_hits"><span>0</span> / <span>0</span></td>
+                    <td id="all_hits"><span>0</span> / <span>0</span></td>
+                </tr>
+                <tr>
+                    <td>נקודות</td>
+                    <td id="plus_pts">0</td>
+                    <td id="minus_pts">0</td>
+                    <td id="multi_pts">0</td>
+                    <td id="all_pts">0</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="./math.js"></script>
+</body>
+</html>
