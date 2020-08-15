@@ -1,0 +1,44 @@
+#main_wrapper {
+    margin: 20px auto;
+
+}
+
+#stats td, #stats th {
+    text-align: center;
+}
+
+/* #turn_message{
+    height: 100px;
+    border: 1px solid black;
+} */
+
+.cont {
+    /* background-color: aqua; */
+    height: 300px;
+    /* width: 100%; */
+    border: 1px solid black;
+}
+
+#operations{
+    width:300px;
+}
+
+#answer{
+    border: 1px solid black;
+    height: 50px;
+}
+
+#events {
+    flex-grow: 1;
+    list-style: none;
+    margin: auto;
+    padding: 0;
+    border-bottom: 1px solid lightgrey;
+    overflow-y: scroll;
+    /* overflow: hidden; */
+    height: 100px;
+  }
+  
+  #events li {
+    padding: 10px 10px 10px 10px;
+  }

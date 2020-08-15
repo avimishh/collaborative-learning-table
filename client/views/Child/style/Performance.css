@@ -49,8 +49,8 @@ table tr td {
 .form-box {
     width: 800px;
     background: rgba(50,50,50,0.9);
-    margin: 3% auto 1% auto;
-    padding: 30px 20px;
+    margin: 1% auto 1% auto;
+    padding: 10px 20px 0 20px;
     color: #fff;
     box-shadow: 0 0 20px 2px rgba(100,100,200,1);
 }
