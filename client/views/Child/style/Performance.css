@@ -1,23 +1,6 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: no-repeat center center fixed;
-    /* background-image: url('../../../pics/background_learn.png'); */
-    background-size: cover;
-    /* font-family: sans-serif; */
-}
-
-h1 {
+﻿/* h1 {
     text-align: center;
     margin-bottom: 40px;
-}
-
-span {
-    /* font-family: 'Comic Neue', cursive; */
-    /* font-size: 26px; */
 }
 
 table tr td {
@@ -33,19 +16,6 @@ table tr td {
     margin: auto;
 }
 
-.tittle {
-    margin-top: 20px;
-    color: #7c795d;
-    font-size: 75px;
-    font-family: 'Playfair Display', serif;
-}
-
-.fullNameChild {
-    font-size: 32px;
-    font-weight: bold;
-    font-family: sans-serif;
-}
-
 .form-box {
     width: 800px;
     background: rgba(50,50,50,0.9);
@@ -53,11 +23,7 @@ table tr td {
     padding: 10px 20px 0 20px;
     color: #fff;
     box-shadow: 0 0 20px 2px rgba(100,100,200,1);
-}
-
-.answware {
-    text-decoration: underline;
-}
+} */
 
 /*tablets*/
 @media screen and (max-width: 768px) {

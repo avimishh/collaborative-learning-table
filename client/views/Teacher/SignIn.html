@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/SignIn.css" rel="stylesheet" />
-    <link href="../../lib/w3.css" rel="stylesheet" />
-    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-    <style></style>
+    <link href="../../style/global.css" rel="stylesheet" />
+    <link href="../../style/signin.css" rel="stylesheet" />
+    <style>
+        .bgimg {
+            background-image: url('../../pics/cactus.jpg');
+        }
+    </style>
     <script>
         function passwordToggle() {
             var x = document.getElementById("user_password");
@@ -51,7 +53,7 @@
             <div>
                 <!-- <button type="button" class="new-user-btn" id="register">משתמש חדש?</button> -->
                 <button type="button" class="homeBtn" id="btn_goToHome">
-                    <img src="../../pics/homeBtn.png" alt="">
+                    <img id="homeImg" src="../../pics/homeBtn.png" alt="">
                 </button>
             </div>
 

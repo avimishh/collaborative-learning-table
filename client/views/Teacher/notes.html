@@ -6,120 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/notes.css" rel="stylesheet" />
-    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="../../lib/w3.css" rel="stylesheet" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300&family=Roboto&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="../../style/global.css" rel="stylesheet" />
     <style>
-        body,
         h1 {
-            /* font-family: "Raleway", sans-serif; */
-            font-family: 'Varela Round', sans-serif;
-            /* font-family: 'Suez One', serif; */
-        }
+    /* text-align: center; */
+    margin-bottom: 40px;
+}
+span {
+    font-size: 25px;
+}
 
-        body,
-        html {
-            height: 100%;
-        }
+table tr td {
+    padding: 10px 10px;
+}
+#btn {
+    font-size: 26px;
+    width: 90px;
+    height: 40px;
+    padding: 2px 3px;
+    margin-left: 5px;
+}
 
+#rst {
+    font-size: 26px;
+    width: 90px;
+    height: 40px;
+    padding: 2px 3px;
+    margin-right: 5px;
+}
         .bgimg {
             background-image: url('../../pics/book.jpg');
-            min-height: 100%;
-            background-position: center;
-            background-size: cover;
-            /* margin: 20px;
-                border: 1px solid rgba(0, 0, 0, 0.3); */
         }
+        .mess {
+    text-align: right;
+    margin-bottom: 30px;
+}
 
-        .container {
-            width: 1100px;
-            height: auto;
-            /* display: inline; */
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            text-align: center;
-            /* background-color: #fcfcfc; */
-            color: #fff;
-            margin-bottom: 100px;
-            /* margin-left: 12%;
-            margin-right: 12%; */
-        }
-
-        .box {
-            width: 200px;
-            height: 200px;
-            margin: 5% 0 5% 0;
-            padding: 20px;
-            box-sizing: border-box;
-            font-size: 16px;
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* img {
-            width: auto;
-            height: 30px;
-            display: block;
-            margin: auto;
-        } */
-
-        .tooltip {
-            position: relative;
-            /* display: inline-block; */
-            border-bottom: 1px dotted black;
-        }
-
-        .tooltip .tooltiptext {
-            /* visibility: hidden; */
-            width: 120px;
-            background-color: grey;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-
-            /* Position the tooltip */
-            position: absolute;
-            z-index: 1;
-            top: 100%;
-            left: 50%;
-            margin-left: -60px;
-        }
-
-        .homeBtn {
-            margin: 10px auto 0;
-            width: 50px;
-            display: block;
-            outline: none;
-            padding: 10px 0;
-            border: 1px solid #fff;
-            cursor: pointer;
-            background: transparent;
-            color: #fff;
-            font-size: 12px;
-        }
-
-        #homeImg {
-            width: auto;
-            height: 30px;
-            display: block;
-            margin: auto;
-        }
-
-        /* .tooltip:hover .tooltiptext {
-                visibility: visible;
-            } */
+.form-box {
+    width: 680px;
+    margin-right: 460px;
+    /* background: rgba(0,0,0,0.7); */
+    /* margin: 1% auto 1% auto; */
+    /* padding: 50px 0; */
+    color: #fff;
+    /* box-shadow: 0 0 20px 2px rgba(0,0,0,0.5); */
+}
     </style>
     <script>
-        history.pushState(null, null, document.URL);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, document.URL);
-        });
+        // history.pushState(null, null, document.URL);
+        // window.addEventListener('popstate', function () {
+        //     history.pushState(null, null, document.URL);
+        // });
     </script>
 </head>
 

@@ -6,238 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <script src="../../lib/jquery.js"></script>
-    <link href="./style/HomeScreen.css" rel="stylesheet" />
-    <link href="../../lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="../../lib/w3.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="../../style/global.css" rel="stylesheet" />
+    <link href="../../style/modal.css" rel="stylesheet" />
+
     <style>
-        body,
-        h1 {
-            font-family: 'Varela Round', sans-serif;
-        }
-
-        body,
-        html {
-            height: 100%;
-        }
-
         .bgimg {
             background-image: url('../../pics/background/homeParents.jpg');
-            min-height: 100%;
-            background-position: center;
-            background-size: cover;
-            /* margin: 20px;
-                border: 1px solid rgba(0, 0, 0, 0.3); */
         }
 
         .container {
             width: 1100px;
-            height: auto;
-            /* display: inline; */
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            text-align: center;
-            /* background-color: #fcfcfc; */
-            color: #fff;
-            margin-bottom: 100px;
-            /* margin-left: 12%;
-            margin-right: 12%; */
         }
 
         .box {
             width: 200px;
             height: 200px;
-            margin: 5% 0 5% 0;
-            padding: 20px;
-            box-sizing: border-box;
-            font-size: 16px;
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        img {
-            width: auto;
-            height: 150px;
-            display: block;
-        }
-
-        .tooltip {
-            position: relative;
-            /* display: inline-block; */
-            border-bottom: 1px dotted black;
-        }
-
-        .tooltip .tooltiptext {
-            /* visibility: hidden; */
-            width: 120px;
-            background-color: grey;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-
-            /* Position the tooltip */
-            position: absolute;
-            z-index: 1;
-            top: 100%;
-            left: 50%;
-            margin-left: -60px;
-        }
-
-        .homeBtn {
-            margin: 10px auto 0;
-            width: 50px;
-            display: block;
-            outline: none;
-            padding: 10px 0;
-            border: 1px solid #fff;
-            cursor: pointer;
-            background: transparent;
-            color: #fff;
-            font-size: 12px;
-        }
-
-        #homeImg {
-            width: auto;
-            height: 30px;
-            display: block;
-            margin: auto;
-        }
-
-        /* .tooltip:hover .tooltiptext {
-                visibility: visible;
-            } */
-
-                /* The Modal (background) */
-                .modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 1;
-            /* Sit on top */
-            padding-top: 250px;
-            /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-        }
-
-        /* Modal Content */
-        .modal-content {
-            position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            padding: 0;
-            border: 1px solid #888;
-            width: 40%;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-animation-name: animatetop;
-            -webkit-animation-duration: 0.4s;
-            animation-name: animatetop;
-            animation-duration: 0.4s
-        }
-
-        /* Add Animation */
-        @-webkit-keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        @keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        /* The Close Button */
-        .close {
-            color: white;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-header {
-            padding: 2px 16px;
-            background-color: darkblue;
-            color: white;
-        }
-
-        .modal-body {
-            padding: 2px 5px;
-            text-align: center;
-        }
-
-        .modal-footer {
-            padding: 2px 16px;
-            background-color: darkgray;
-            color: white;
-            text-align: center;
-        }
-
-        select {
-            margin: 30px;
-            width: 60%;
-            max-width: 250px;
-            padding: 5px 50px 5px 5px;
-            font-size: 20px;
-            border: 1px solid #CCC;
-            height: 70px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: url('../../pics/kid.png') 96% / 15% no-repeat #EEE;
-        }
-
-        #btn_child_chose {
-            margin: 10px;
-            width: 20%;
-            /* padding: 5px 35px 5px 5px; */
-            font-size: 20px;
-            border: 1px solid #CCC;
-            height: 30px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        #err_text {
-            color: red;
-            /* font-size: 12px; */
-            text-align: center;
-            /* height: 22px; */
         }
     </style>
 </head>
@@ -320,6 +103,7 @@
         var teacher = JSON.parse(localStorage.getItem('teacher'));
         function init() {
             $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
+            $('.container div img').addClass('btn_home_img');
 
             $('#btn_child_details').on('click', () => {
                 nextChildPage = URL.CHILD_DETAILS;

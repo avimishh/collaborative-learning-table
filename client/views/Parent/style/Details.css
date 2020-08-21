@@ -1,98 +1,27 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-}
+﻿/*tablets*/
 
-/* body {
-    background: no-repeat center center fixed;
-    background-image: url('../../../pics/background_learn.png');
-    background-size: cover;
-} */
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-span {
-    font-size: 20px;
-}
-
-table tr td {
-    padding: 10px 30px;
-}
-
-table{
-    border-collapse:separate; 
-border-spacing:10px;
-}
-
-tr{
-    margin:10px;
-}
-
-#btn_update, #btn_rst {
-    font-size: 20px;
-    width: 90px;
-    height: 40px;
-    padding: 2px 3px;
-    margin-left: 5px;
-}
-
-.mess {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-/* .fullNameParent {
-    font-size: 32px;
-    font-weight: bold;
-} */
-
-.form-box {
-    width: 600px;
-    background: rgba(0,0,0,0.7);
-    margin: 2% auto 1% auto;
-    padding: 20px 0;
-    color: #fff;
-    box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
-}
-
-.answer {
-    width: 220px;
-    height: 26px;
-    font-size: 20px;
-    padding: 5px 3px;
-}
-
-/*tablets*/
 @media screen and (max-width: 768px) {
     * {
         margin: 0;
         padding: 0;
     }
-
     body {
         background: no-repeat center center fixed;
         background-image: url('../../../pics/background_learn.png');
         background-size: cover;
         /* font-family: sans-serif; */
     }
-
     h1 {
         text-align: center;
         margin-bottom: 40px;
     }
-
     span {
         /* font-family: 'Comic Neue', cursive; */
         font-size: 20px;
     }
-
     table tr td {
         padding: 10px 30px;
     }
-
     #btn {
         font-size: 20px;
         width: 90px;
@@ -100,7 +29,6 @@ tr{
         padding: 2px 3px;
         margin-left: 5px;
     }
-
     #rst {
         font-size: 26px;
         width: 90px;
@@ -108,34 +36,29 @@ tr{
         padding: 2px 3px;
         margin-right: 5px;
     }
-
     .mess {
         text-align: center;
         margin-bottom: 30px;
     }
-
     .tittle {
         margin-top: 20px;
         color: #7c795d;
         font-size: 75px;
         /* font-family: 'Playfair Display', serif; */
     }
-
     .fullNameChild {
         font-size: 32px;
         font-weight: bold;
         /* font-family: sans-serif; */
     }
-
     .form-box {
         width: 600px;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0, 0, 0, 0.7);
         margin: 14% auto 1% auto;
         padding: 50px 0;
         color: #fff;
-        box-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+        box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
     }
-
     .answer {
         width: 220px;
         height: 26px;

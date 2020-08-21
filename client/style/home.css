@@ -1,37 +1,4 @@
-﻿*{
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    
-}
-
-header {
-    text-align: center;
-    background-color: #fcfcfc;
-    padding: 5px;
-}
-
-    header h1 {
-        font-size: 48px;
-        color: #7c795d;
-        font-family: 'Trocchi', serif;
-        font-size: 45px;
-        font-weight: normal;
-        line-height: 48px;
-        margin: 0;
-    }
-
-main {
-    background: no-repeat center center;
-    background-image: url('../../pics/bacground_study.png');
-    background-size: cover;
-    font-family: sans-serif;
-    width: 100%;
-    /*min-height: calc(100vh - 214px - 150px);*/
-    min-height: 60vh;
-}
+﻿
 
     main div h1 {
         font-size: 48px;
