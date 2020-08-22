@@ -195,6 +195,7 @@ async function addChild(parentId, childId){
 }
 
 async function initDB() {
+    notes = [];
     await createParent('משה', 'פרץ', '100', '12345', '0521111111');
     await createParent('אביב', 'גפן', '101', '12345', '0522222222');
 
@@ -222,6 +223,7 @@ async function initDB() {
 
 
 async function addChildren() {
+    notes = [];
     await addChild('100', '1001');
     await addChild('100', '1002');
     return notes;

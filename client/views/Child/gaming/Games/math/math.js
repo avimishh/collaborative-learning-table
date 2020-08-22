@@ -114,6 +114,7 @@ const messageEvent = (text) => {
 
 // math op init
 function addButtonListeners() {
+    console.log('addButtonListeners');
     $('#plus').on('click', () => {
         console.log('DEBUG: btn sock emit');
 
