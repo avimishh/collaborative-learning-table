@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const { Child, validateChild } = require('../models/child');
+const { Stat } = require('../models/stat');
 // const admin = require('../middleware/admin');
 
 // HTTP Handling
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
 // GET ['api/childs/:id'] - auth
 router.get('/:id', async (req, res) => {
     // Find
-    const child = await Child.findOne({ id: req.params.id }).select('-notes -stats');
+    const child = await Child.findOne({ id: req.params.id }).select('-notes');
     // Check if exist
     if (!child)
         return res.status(404).send(`ילד בעל ת"ז ${req.params.id} אינו קיים במערכת.`);
@@ -28,7 +29,7 @@ router.get('/:id', async (req, res) => {
 // GET ['api/childs/:id/:password'] - Login
 router.get('/:id/:password', async (req, res) => {
     // Find
-    const child = await Child.findOne({ id: req.params.id });
+    const child = await Child.findOne({ id: req.params.id }).select('-notes');;
     // Check if exist
     if (!child)
         return res.status(404).send(`ילד בעל ת"ז ${req.params.id} לא קיים במערכת`);
@@ -48,6 +49,19 @@ router.post('/', async (req, res) => {
     // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
+    let stat = await Stat.findOne({ child_id: req.body.id });
+    if (!stat) {
+        stat = new Stat({
+            child_id: req.body.id,
+            sheets: {
+                math: [],
+                english: [],
+                memory: [],
+                color: [],
+            }
+        });
+        stat = await stat.save();
+    }
     // Create new document
     let child = new Child({
         firstName: req.body.firstName,
@@ -58,7 +72,8 @@ router.post('/', async (req, res) => {
         gamesPassword: req.body.gamesPassword,
         address: req.body.address,
         phone: req.body.phone,
-        level: req.body.level
+        level: req.body.level,
+        stats: stat._id
     });
     // Save to DataBase
     child = await child.save();

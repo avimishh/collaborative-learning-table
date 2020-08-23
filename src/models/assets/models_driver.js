@@ -5,6 +5,7 @@ const { Teacher, validateTeacher } = require('../teacher');
 const { Child, validateChild } = require('../child');
 const { Field, validateField } = require('../field');
 const { Game, validateGame } = require('../game');
+const { Stat } = require('../stat');
 
 const bcrypt = require('bcrypt'); // Password Hash
 
@@ -19,14 +20,14 @@ async function createParent(firstName, lastName, id, password, phone) {
     // Assert validation
     if (error) {
         notes.push(error.details[0].message);
-        return console.log(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
     }
     // Check if the parent exist
     let parent = await Parent.findOne({ id });
     // Response 400 Bad Request if the parent exist
     if (parent) {
         notes.push(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`);
-        return console.log(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`);
+        return console.log(reverseString(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`));
     }
     // Create new document
     parent = new Parent({
@@ -49,14 +50,14 @@ async function createTeacher(firstName, lastName, id, password, phone) {
     // Assert validation
     if (error) {
         notes.push(error.details[0].message);
-        return console.log(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
     }
     // Check if the teacher exist
     let teacher = await Teacher.findOne({ id });
     // Response 400 Bad Request if the teacher exist
     if (teacher) {
         notes.push(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`);
-        return console.log(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`);
+        return console.log(reverseString(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`));
     }
     // Create new document
     teacher = new Teacher({
@@ -84,14 +85,27 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     // Assert validation
     if (error) {
         notes.push(error.details[0].message);
-        return console.log(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
     }
     // Check if the child exist
     let child = await Child.findOne({ id });
     // Response 400 Bad Request if the child exist
     if (child) {
         notes.push(`ילד בעל ת"ז "${id}" כבר קיים במערכת.`);
-        return console.log(`ילד בעל ת"ז "${id}" כבר קיים במערכת.`);
+        return console.log(reverseString(`ילד בעל ת"ז "${id}" כבר קיים במערכת.`));
+    }
+    let stat = await Stat.findOne({ child_id: id });
+    if (!stat) {
+        stat = new Stat({
+            child_id: id,
+            sheets: {
+                math: [],
+                english: [],
+                memory: [],
+                color: [],
+            }
+        });
+        stat = await stat.save();
     }
     // Create new document
     child = new Child({
@@ -103,8 +117,10 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
         gamesPassword,
         address,
         phone,
-        level
+        level,
+        stats: stat._id
     });
+    // child.stat = stat._id;
     // Save to DataBase
     child = await child.save();
     notes.push(`ילד "${firstName} ${lastName}" נוצר בDB.`);
@@ -115,14 +131,14 @@ async function createField(name, description) {
     const { error } = validateField({ name, description });
     if (error) {
         notes.push(error.details[0].message);
-        return console.log(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
     }
     // Check if the child exist
     let field = await Field.findOne({ name });
     // Response 400 Bad Request if the child exist
     if (field) {
         notes.push(`תחום בשם "${name}" כבר קיים במערכת.`);
-        return console.log(`תחום בשם "${name}" כבר קיים במערכת.`);
+        return console.log(reverseString(`תחום בשם "${name}" כבר קיים במערכת.`));
     }
     field = new Field({
         name,
@@ -136,20 +152,20 @@ async function createField(name, description) {
 async function createGame(title, description, fieldName, icon, link) {
     // Validate field
     const field = await Field.findOne({ name: fieldName });
-    if (!field) return console.log(`תחום הלימודים "${fieldName}" אינו קיים במערכת.`);
+    if (!field) return console.log(reverseString(`תחום הלימודים "${fieldName}" אינו קיים במערכת.`));
     // Validate client input
     const { error } = validateGame({ title, description, field, icon, link });
     // Assert validation
     if (error) {
         notes.push(error.details[0].message);
-        return console.log(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
     }
     // Check if the child exist
     let game = await Game.findOne({ title });
     // Response 400 Bad Request if the child exist
     if (game) {
         notes.push(`משחק בשם "${title}" כבר קיים במערכת.`);
-        return console.log(`משחק בשם "${title}" כבר קיים במערכת.`);
+        return console.log(reverseString(`משחק בשם "${title}" כבר קיים במערכת.`));
     }
     // Create new document
     game = new Game({
@@ -168,10 +184,10 @@ async function createGame(title, description, fieldName, icon, link) {
     notes.push(`משחק "${title}" נוצר בDB.`);
 }
 
-async function addChild(parentId, childId){
+async function addChild(parentId, childId) {
     const child = await Child.findOne({ id: childId });
     // Assert Child data
-    if (!child) return console.log(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`);
+    if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
     // Try to update the selected document
     try {
         // res.status(200).send(user);
@@ -184,13 +200,13 @@ async function addChild(parentId, childId){
         // Assert update completed successfully
         if (!parent) {
             notes.push(`Parent ${parentId} was not found.`);
-            return console.log(`Parent ${parentId} was not found.`);
+            return console.log(reverseString(`Parent ${parentId} was not found.`));
         }
         // Send response to client
         notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
     } catch (ex) {
         notes.push(`Failed to update.`);
-        return console.log(`Failed to update.`);
+        return console.log(reverseString(`Failed to update.`));
     }
 }
 
@@ -201,8 +217,8 @@ async function initDB() {
 
     await createTeacher('עליזה', 'שמשוני', '10', '12345', '0523333333');
 
-    await createChild('יזהר', 'גפן', '1001', new Date(2010, 5, 1), 'זכר', '12', 'נתניה', '0522222233', 'ג');
-    await createChild('יונית', 'פרץ', '1002', new Date(2012, 10, 1), 'נקבה', '12', 'הרצליה', '0522222233', 'א');
+    await createChild('יותם', 'גפן', '1001', new Date(2010, 5, 1), 'זכר', '12', 'נתניה', '0522222233', 'ג');
+    await createChild('ליאור', 'גפן', '1002', new Date(2012, 10, 1), 'נקבה', '12', 'הרצליה', '0522222233', 'א');
 
     await createField('חשבון', 'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל');
     await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית');
@@ -227,6 +243,10 @@ async function addChildren() {
     await addChild('100', '1001');
     await addChild('100', '1002');
     return notes;
+}
+
+function reverseString(str) {
+    return str.split('').reverse().join('');
 }
 
 exports.initDB = initDB;

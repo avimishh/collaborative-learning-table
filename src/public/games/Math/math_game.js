@@ -135,7 +135,8 @@ class MathGame {
 
     _statsSaveInDB() {
         this._players.forEach(p => {
-            saveData(p._statsObject_id, p._stats, questions.length);
+            let gameID = '5f2c39eb0a7d2569742bb278';
+            saveData(p._statsObject_id, p._stats, questions.length, gameID);
         });
     }
 }
