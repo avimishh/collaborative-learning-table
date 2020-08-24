@@ -21,7 +21,11 @@ function init() {
     });
     $('#socket_connect').on('click', () => {
         console.log('socket connected');
-        sock = io();
+        // sock = io();
+        let child = JSON.parse(localStorage.getItem('child'));
+        // console.log(child);
+        // sock = io.connect('', {query: `child_ID=${child.id}`});
+        sock = io.connect('', {query: `child_ID=${child.id}&child_Name=${child.firstName}`});
         sock.emit('conn_status');
         sock.on('toClient_conn_status', (status0, status1) => {
             player_status_update(status0, status1);

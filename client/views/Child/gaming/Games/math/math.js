@@ -4,7 +4,7 @@ $(document).ready(function () {
     numbers_pad_init();
     addButtonListeners();
     // setMathOperators();
-    sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
+    // sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
     // console.log(localStorage.getItem('statsObject_id'));
     sock.emit('start_game', 'Math');
     console.log('run');

@@ -1,142 +1,125 @@
 const express = require('express');
 const socketio = require('socket.io');
+const {Player} = require('./models/player');
+const {Game} = require('./models/game');
 
+var io;
 
-var players = [{ sock: null, stats: null },
-{ sock: null, stats: null }];
-var isPlayersReady = false;
-var isStatsReady = 0;
-var gameTitle = '';
+var playerHost = null, playerGuest = null;
+var gamePlayed = null;
+
 var status0 = 'disconnect';
 var status1 = 'disconnect';
 
-
-function init(io) {
+function init(io_startup) {
+    io = io_startup;
     // io.eio.pingTimeout = 100;
     // io.eio.pingInterval = 10;
-    io.on('connection', (sock) => {
-        console.log('player connected');
+    io.on('connection', (socket) => {
+        console.log('player connected, child id: ' + socket.handshake.query.child_ID);
 
-        if (players[0].sock && players[1].sock) {
-            console.log('player throwed out');
-            sock.emit('init_msg', 'יש כבר שני מתמודדים');
-            sock.disconnect();
+        if (playerHost != null && playerGuest != null) {
+            console.log(`There already two connections: ${playerHost.id} ${playerHost.name}, and ${playerGuest.id} ${playerGuest.name}.`);
+            console.log('A new player trying connect to server, he throwed out');
+            socket.emit('init_msg', 'יש כבר שני מתמודדים, ההתחברות נכשלה.');
+            socket.disconnect();
         }
 
-        if (players[0].sock) {
-            // 2 players connected
-            init_Guest_player(io, sock);
+        if (playerHost != null) {
+            // playerHost is connected, now after guest player connected,
+            // 2 players are connected
+            init_Guest_player(socket);
             io.emit('players_ready_choose_game');
         } else {
-            // Only 1 player connected
-            init_Host_player(io, sock);
+            // playerHost making his connection, Only 1 player connected
+            init_Host_player(socket);
         }
 
         // Echo init_msg to all clients
-        sock.on('init_msg', (text) => {
-            io.emit('init_msg', text);
+        socket.on('init_msg', (text) => {
+            echo_Message_To_All_Clients('init_msg', text);
         });
 
-        sock.on('init_msg', (text) => {
-            io.emit('init_msg', text);
+        socket.on('conn_status', () => {
+            set_Connection_Status_To_Clients();
         });
-
-        sock.on('conn_status', () => {
-            status0 = (players[0].sock === null) ? 'disconnect' : 'connect';
-            status1 = (players[1].sock === null) ? 'disconnect' : 'connect';
-            io.emit('toClient_conn_status', status0, status1);
-        });
-
-        // sock.on('disconnect', (text) => {
-        //     console.log('player disconnected');
-        //     // io.emit('init_msg', text);
-        // });
-
-
-        // sock.on('setStatsObject', (statsObject_id) => {
-        //     if (players[0].sock === sock)
-        //         players[0].stats = statsObject_id;
-        //     else if (players[1].sock === sock)
-        //         players[1].stats = statsObject_id;
-        //     isStatsReady++;
-        //     startGame();
-        // });
     });
 }
 
-// function setGameToPlay(title) {
-//     gameTitle = title;
-// }
-
-
-function init_Host_player(io, sock){
-    players[0].sock = sock;
-    players[0].sock.emit('init_msg', 'שלום מארח');
-    players[0].sock.emit('init_msg', 'אתה השחקן הראשון, מחכים לאורח');
-    sock.emit('set_player_role', 'Host');
-    sock.on('disconnect', (text) => {
-        console.log('player 0 disconnected');
-        players[0].sock = null;
-        isPlayersReady = false;
-        status0 = 'disconnect';
-        io.emit('toClient_conn_status', status0, status1);
-    });
-    sock.on('setStatsObject', (statsObject_id) => {
-        players[0].stats = statsObject_id;
-        isStatsReady++;
-    });
-    sock.on('start_game', (title) => {
-        gameTitle = title;
-        // startGame();
-    });
-    sock.on('request_game_url_replace', (game_url, game_id) =>{
-        io.emit('open_game_page', game_url, game_id);
-    });
+function echo_Message_To_All_Clients(type, text){
+    io.emit(type, text);
 }
 
+function set_Connection_Status_To_Clients(){
+    status0 = (playerHost === null) ? 'disconnect' : 'connect';
+    status1 = (playerGuest === null) ? 'disconnect' : 'connect';
+    io.emit('toClient_conn_status', status0, status1);
+}
 
-function init_Guest_player(io, sock){
-    players[1].sock = sock;
-    players[1].sock.emit('init_msg', 'שלום אורח');
-    players[1].sock.emit('init_msg', 'אתה השחקן השני, אפשר להתחיל');
-    sock.emit('set_player_role', 'guest');
-    isPlayersReady = true;
-    sock.on('disconnect', (text) => {
-        // io.emit('conn_status', 1, 'disconnect');
-        console.log('player 1 disconnected');
-        players[1].sock = null;
-        isPlayersReady = false;
-        status1 = 'disconnect';
-        io.emit('toClient_conn_status', status0, status1);
+function init_Host_player(socket) {
+    // get queries from socket connection
+    let id = socket.handshake.query.child_ID;
+    let name = socket.handshake.query.child_Name;
+    // init guest client
+    playerHost = new Player(socket, id, name);
+    playerHost.send_Init_Message_To_Client(`שלום ${name}! אתה השחקן המארח, מחכים לאורח`);
+    playerHost.set_Player_Role_To_Client('Host');
+
+    playerHost.socket.on('disconnect', (text) => {
+        console.log(`player ${playerHost.id} ${playerHost.name} disconnected`);
+        playerHost = null;
+        set_Connection_Status_To_Clients();
     });
-    sock.on('setStatsObject', (statsObject_id) => {
-        players[1].stats = statsObject_id;
-        isStatsReady++;
+
+    socket.on('start_game', (title) => {
         startGame();
     });
+    socket.on('init_game', (title, id, url) => {
+        gamePlayed = new Game(title, id, url);
+        io.emit('open_game_page', gamePlayed.url);
+    });
 }
+
+
+function init_Guest_player(socket) {
+    // get queries from socket connection
+    let id = socket.handshake.query.child_ID;
+    let name = socket.handshake.query.child_Name;
+    // init guest client
+    playerGuest = new Player(socket, id, name);
+    playerGuest.send_Init_Message_To_Client(`שלום ${name}! אתה השחקן השני, אפשר להתחיל`);
+    playerGuest.set_Player_Role_To_Client('guest');
+
+    playerGuest.socket.on('disconnect', (text) => {
+        console.log(`player ${playerGuest.id} ${playerGuest.name} disconnected`);
+        playerGuest = null;
+        set_Connection_Status_To_Clients();
+    });
+}
+
 
 const MathGame = require('./Math/math_game');
 const EnglishGame = require('./English/english_game');
 
 // game code as parameter
 function startGame() {
-    // console.log('start');
-    if (isPlayersReady === false && isStatsReady < 2) {
-        console.log('There isnt 2 players connected');
+    if (playerHost === null || playerGuest === null) {
+        console.log('There arent 2 players connected');
         return;
     }
     // Start a game
-    if (gameTitle === 'Math') {
-        new MathGame(players[0], players[1]);
-    }
-    if (gameTitle === 'English') {
-        new EnglishGame(players[0], players[1]);
+    switch (gamePlayed.title) {
+        case 'תרגילי חשבון':
+            new MathGame(playerHost, playerGuest, gamePlayed);
+            break;
+        case 'התאמת תמונות למילים':
+            new EnglishGame(playerHost, playerGuest, gamePlayed);
+            break;
+        default:
+            console.log('wrong game reference');
+            break;
     }
 }
 
 
 module.exports.init = init;
-// module.exports.startGame = startGame;
-// module.exports.setGameToPlay = setGameToPlay;
-// module.exports.setPlayerStatsObject = setPlayerObject;

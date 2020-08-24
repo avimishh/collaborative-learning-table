@@ -88,65 +88,65 @@ img{
             }
         }
     </style> -->
-<style>
-    div.gallery {
-  border: 1px solid #eee;
-}
+    <style>
+        div.gallery {
+            border: 1px solid #eee;
+        }
 
-div.gallery:hover {
-  border: 1px solid #777;
-  background-color: #777;
-}
+        div.gallery:hover {
+            border: 1px solid #777;
+            background-color: #777;
+        }
 
-div.gallery img {
-  width: 50%;
-  max-height: 100px;
-  height: auto;
-}
+        div.gallery img {
+            width: 50%;
+            max-height: 100px;
+            height: auto;
+        }
 
-div.desc {
-  padding: 15px;
-  text-align: center;
-}
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
 
-* {
-  box-sizing: border-box;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-.responsive {
-  padding: 0 6px;
-  float: left;
-  width: 24.99999%;
-}
+        .responsive {
+            padding: 0 6px;
+            float: left;
+            width: 24.99999%;
+        }
 
-@media only screen and (max-width: 700px) {
-  .responsive {
-    width: 49.99999%;
-    margin: 6px 0;
-  }
-}
+        @media only screen and (max-width: 700px) {
+            .responsive {
+                width: 49.99999%;
+                margin: 6px 0;
+            }
+        }
 
-@media only screen and (max-width: 500px) {
-  .responsive {
-    width: 100%;
-  }
-}
+        @media only screen and (max-width: 500px) {
+            .responsive {
+                width: 100%;
+            }
+        }
 
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
-/* .gameBtn{
+        /* .gameBtn{
     background-color: blanchedalmond;
 } */
-</style>
+    </style>
 </head>
 
 <body dir="rtl">
-      
-      <div class="clearfix"></div>
+
+    <div class="clearfix"></div>
 
     <!-- <div class="main">
 
@@ -159,36 +159,22 @@ div.desc {
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { getGamesRequest, startGameRequest } from './api.js';
+        import { getGamesRequest } from './api.js';
         import { URL } from './consts.js';
 
         var sock = parent.sock;
         var isHost = parent.isHost;
 
         $(document).ready(() => {
-            console.log('jqeury work');
+            // console.log('jqeury work');
             init();
-            sock.on('open_game_page', (this_game_url, game_id) =>{
-                console.log('b');
-                game_url = this_game_url;
-                startGameRequest(game_id, open_game_page);
-                // location.replace(game_url);
+            sock.on('open_game_page', (this_game_url) => {
+                window.location.href = this_game_url;
             });
-            // console.log(sock);
-            // var referrer = document.referrer;
-            // console.log(referrer);
-            // console.log(referrer.sock);
         });
 
-        var game_url = "";
-        // var game_id = "";
-        function open_game_page(){
-            // location.replace(game_url);
-            window.location.href = game_url;
-        }
-
         function init() {
-            if(isHost) getGamesRequest(showGames);
+            if (isHost) getGamesRequest(showGames);
             else $('#msg').text('המתן לחברך בבחירת משחק');
         }
 
@@ -198,14 +184,15 @@ div.desc {
                 let $div0 = $('<div>').addClass('responsive');//('column');
                 let $div1 = $('<div>').addClass('gallery');//('column');
                 let $div2 = $('<div>').addClass('desc');//('content');
-                let $img = $('<div>').css('height','100px').addClass('desc').append($('<img>').attr('src', game.icon));//.css({ 'width': '100px', 'height': '100px' });
-                let $h3 = $('<div>').css('height','100px').addClass('desc').append($('<h3>').text(game.title));
-                let $p = $('<div>').css('height','100px').addClass('desc').append($('<p>').text(game.description));
+                let $img = $('<div>').css('height', '100px').addClass('desc').append($('<img>').attr('src', game.icon));//.css({ 'width': '100px', 'height': '100px' });
+                let $h3 = $('<div>').css('height', '100px').addClass('desc').append($('<h3>').text(game.title));
+                let $p = $('<div>').css('height', '100px').addClass('desc').append($('<p>').text(game.description));
                 let $btn = $('<button>').addClass('w3-button w3-ripple w3-khaki w3-round-xxlarge .gameBtn').text(game.title).on('click', () => {
                     localStorage.setItem('game_id', game._id);
+                    console.log(game);
                     // game_id = game._id;
                     // startGameRequest(game._id);
-                    sock.emit('request_game_url_replace', './games/' + game.link, game._id);
+                    sock.emit('init_game', game.title, game._id, './games/' + game.link);
                 });
                 $div2.append($img, $h3, $p, $btn);
                 $div1.append($div2);
