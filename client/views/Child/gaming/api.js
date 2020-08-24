@@ -20,34 +20,6 @@ export function getGamesRequest(successFunction, errorFunction, completeFunction
             // errorFunction(xhr.status, xhr.responseText);
         }
     };
-
-    // if (completeFunction !== undefined) request.complete = completeFunction;
-
-    $.ajax(request);
-}
-
-
-export function startGameRequest(gameId, successFunction, errorFunction, completeFunction) {
-    let request = {
-        contentType: "application/json",
-        url: playGamesApi + "start/",
-        method: "POST",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify({
-            child_id: JSON.parse(localStorage.getItem('child')).id,
-            game_id: gameId
-        }),
-        success: function (data, textStatus, xhr) {
-            // console.log(data);
-            localStorage.setItem('statsObject_id', data._id);
-            console.log('statsObject_id: ' + data._id);
-            successFunction();
-        },
-        error: function (xhr) {
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-
     $.ajax(request);
 }
 

@@ -1,4 +1,4 @@
-const save_Data_DB = require('./../gameStatsSaver');
+const save_Data_DB = require('./../StatsSaver');
 const { Player } = require('./../models/player');
 const { Game } = require('./../models/game');
 const { Stats } = require('./../models/stats');
@@ -6,11 +6,6 @@ const { Stats } = require('./../models/stats');
 var questions = [];
 // const
 const MAX_ROUNDS = 3;
-
-
-function init_Game_Listeners() {
-
-}
 
 var playerToPlay, playerToWait;
 
@@ -73,9 +68,6 @@ class MathGame {
         playerToPlay.set_Operators_State('enable');
         playerToWait.send_Message_To_Client('message', 'המתן לחברך בבחירת פעולה');
         playerToWait.set_Operators_State('disable');
-        // this._setMathOperatorsState(playerToPlay, 'enable');    // specific
-        // this._sendToPlayer(playerToWait, 'message', 'המתן לחברך בבחירת פעולה');
-        // this._setMathOperatorsState(playerToWait, 'disable');   // specific
     }
 
     _set_Next_Player_Turn() {
@@ -96,7 +88,7 @@ class MathGame {
         // After player chose operator disable his game operators
         // this._setMathOperatorsState(playerIndex, 'disable');
         this._players[playerIndex].set_Operators_State('disable');
-        
+
         var new_Question = new Question(op);
         questions.push(new_Question);
         this._sendToPlayers('question', new_Question.toString());
@@ -135,8 +127,10 @@ class MathGame {
         this._roundCounter++;
 
         if (this._roundCounter >= MAX_ROUNDS) {
+            this._roundCounter = 0;
             this._sendToPlayers('message', 'המשחק הסתיים');
             this._Save_Stats_in_DB();
+            setTimeout(() => { this._end_Game_Back_To_Games_Gallery() }, 5000);
             // this._sendToPlayers('end');
             // this._players[0]._socket.disconnect(true);
             // this._players[1]._socket.disconnect(true);
@@ -149,16 +143,16 @@ class MathGame {
     _Stats_Update_To_Client() {
         this._players[0].update_Client_Stats([this._players[0].stats._stats, this._players[1].stats._stats]);
         this._players[1].update_Client_Stats([this._players[1].stats._stats, this._players[0].stats._stats]);
-        // this._players[0].socket.emit('stats', [this._players[0].stats._stats, this._players[1].stats._stats]);
-        // this._players[1].socket.emit('stats', [this._players[1].stats._stats, this._players[0].stats._stats]);
     }
 
     _Save_Stats_in_DB() {
         this._players.forEach(async (p) =>  {
-            // let gameID = '5f2c39eb0a7d2569742bb278';
-            // save_Data_DB(p.id, p._stats, p.numOfQuestions, p.numOfQuestions, gameID);
             await save_Data_DB(p.id, p.stats, this._game_id);
         });
+    }
+
+    _end_Game_Back_To_Games_Gallery(){
+        this._sendToPlayers('players_ready_choose_game');
     }
 }
 
@@ -218,8 +212,6 @@ class Question {
 class MathStats extends Stats {
     constructor() {
         super();
-        // this.numOfQuestions = 0;
-        // this.numOfCorrectAnswers = 0;
         this._stats = [{
             operator: 'Plus',
             asked: 0,

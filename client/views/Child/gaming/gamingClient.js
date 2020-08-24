@@ -1,5 +1,6 @@
 $(document).ready(() => {
     init();
+    $('#socket_connect').trigger('click');
 });
 
 var sock = null;
@@ -11,20 +12,10 @@ function init() {
         window.location.href = '../HomeScreen.html';
     });
 
-    $('#getGames').on('click', () => {
-        $('#gameFrame').attr('src', 'gamesGallery.html');
-    });
-    $('#childLogin').on('click', () => {
-        let childId = $('#childId').val();
-        console.log(childId);
-        childLogin(childId, showResponse, showError);
-    });
     $('#socket_connect').on('click', () => {
         console.log('socket connected');
         // sock = io();
         let child = JSON.parse(localStorage.getItem('child'));
-        // console.log(child);
-        // sock = io.connect('', {query: `child_ID=${child.id}`});
         sock = io.connect('', {query: `child_ID=${child.id}&child_Name=${child.firstName}`});
         sock.emit('conn_status');
         sock.on('toClient_conn_status', (status0, status1) => {
@@ -57,9 +48,6 @@ function init() {
         sock.disconnect(true);
     });
 }
-
-
-
 
 
 // function setHostEvents(){

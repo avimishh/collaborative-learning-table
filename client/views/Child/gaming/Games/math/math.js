@@ -1,13 +1,8 @@
-
-// Wait for jQuery to complete load
 $(document).ready(function () {
     numbers_pad_init();
     addButtonListeners();
-    // setMathOperators();
-    // sock.emit('setStatsObject', localStorage.getItem('statsObject_id'));
-    // console.log(localStorage.getItem('statsObject_id'));
     sock.emit('start_game', 'Math');
-    console.log('run');
+    // console.log('run');
 });
 
 
@@ -36,6 +31,22 @@ function numbers_pad_init() {
     set_game_pad_state('disable');
 }
 
+// math op init
+function addButtonListeners() {
+    // console.log('addButtonListeners');
+    $('#plus').on('click', () => {
+        // console.log('DEBUG: btn sock emit');
+        sock.emit('math_op', 'plus');
+    });
+    $('#minus').click(() => { sock.emit('math_op', 'minus'); });
+    $('#mult').click(() => { sock.emit('math_op', 'mult'); });
+}
+
+
+
+
+
+
 function setMathOperators() {
     let $img1 = $('<img>').attr('src', './plus.png').addClass('img_op');
     let $img2 = $('<img>').attr('src', './minus.png').addClass('img_op');
@@ -45,10 +56,7 @@ function setMathOperators() {
 }
 
 
-// show question got from server to the player
-function ask_question(question_string) {
-    $('#question').text(question_string);
-}
+
 
 
 // player type his answer using game pad buttons
@@ -65,23 +73,80 @@ function submit_answer() {
     $('#answer').empty();
     sock.emit('answer_submitted', answer);
     set_game_pad_state('disable');
-
 }
 
 
+
+
+
+
+
+
+
+
+
+
+// Socket work
+const sock = parent.sock;
+// const sock = io();
+// console.log(parent.sock);
+
+
+
+
+
+sock.on('message', (text) => {
+    messageEvent(text)
+});
+
+// print messages to player from server
+var msg_counter = 0;
+const messageEvent = (text) => {
+    $('#operation').text('');
+    $('#operation').text(text);
+    $('#operation2').text('');
+    $('#operation2').text(text);
+    show_modal();
+    console.log(`${msg_counter}: ${text}`);
+    msg_counter++;
+};
+
+
+
+
+
+
+sock.on('question', (text) => {
+    ask_question(text)
+});
+// show question got from server to the player
+function ask_question(question_string) {
+    $('#question').text(question_string);
+}
+
+
+
+
+
+sock.on('stats', (playersStats) => {
+    update_stats(playersStats)
+});
 // updating statistics got from server on stats board
 function update_stats(playersStats) {
-    $('#plus td:nth-child(2)').text(playersStats[0].plus);    // player
-    $('#plus td:nth-child(3)').text(playersStats[1].plus);    // friend
+    let rows = ['stat_plus', 'stat_minus', 'stat_mult'];
 
-    $('#minus td:nth-child(2)').text(playersStats[0].minus);    // player
-    $('#minus td:nth-child(3)').text(playersStats[1].minus);    // friend
-
-    $('#mult td:nth-child(2)').text(playersStats[0].mult);    // player
-    $('#mult td:nth-child(3)').text(playersStats[1].mult);    // friend
+    rows.forEach((r, index) => {
+        $(`#${r} td:nth-child(2)`).text(playersStats[0][index].correct);    // player
+        $(`#${r} td:nth-child(3)`).text(playersStats[1][index].correct);    // friend
+    })
 }
 
 
+
+
+sock.on('disableOperators', (state) => {
+    set_math_operators_state(state)
+});
 // math operators disabled after player chose, enabled when new round started
 function set_math_operators_state(state) {
     if (state === 'disable')
@@ -91,6 +156,10 @@ function set_math_operators_state(state) {
 }
 
 
+
+sock.on('gamePadState', (state) => {
+    set_game_pad_state(state)
+});
 // only enabled after question was asked
 function set_game_pad_state(state) {
     if (state === 'disable')
@@ -99,71 +168,26 @@ function set_game_pad_state(state) {
         $('#game_pad button').removeAttr('disabled');
 }
 
-
-// print messages to player from server
-var msg_counter = 0;
-const messageEvent = (text) => {
-    $('#operation').text('');
-    $('#operation').text(text);
-    // let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
-    // $('#events').prepend($new_li);
-    console.log(`${msg_counter}: ${text}`);
-    msg_counter++;
-};
-
-
-// math op init
-function addButtonListeners() {
-    console.log('addButtonListeners');
-    $('#plus').on('click', () => {
-        console.log('DEBUG: btn sock emit');
-
-        sock.emit('math_op', 'plus');
-    });
-    $('#minus').click(() => { sock.emit('math_op', 'minus'); });
-    $('#mult').click(() => { sock.emit('math_op', 'mult'); });
+// Modal
+function show_modal() {
+    $("#modal_choose_child").fadeIn("slow");
+    setTimeout(() => {
+        $("#modal_choose_child").fadeOut("slow");
+    }, 2000);
 }
-// const addButtonListeners = () => {
-//     $('#plus').on('click',() => {
-//             console.log('DEBUG: btn sock emit');
 
-//         sock.emit('math_op', 'plus');});
-//     $('#minus').click(() => {sock.emit('math_op', 'minus');});
-//     $('#mult').click(() => {sock.emit('math_op', 'mult');});
+initModal();
 
-//     // ['plus', 'minus', 'mult'].forEach((id) => {
-//     //     const button = document.getElementById(id);
-//     //     button.addEventListener('click', () => {
-//     //         sock.emit('math_op', id);
-//     //         // console.log('DEBUG: btn sock emit');
-//     //     });
-//     // });
-// };
+function initModal() {
+    $("#btn_exit_modal").on('click', () => {
+        $("#modal_choose_child").css("display", "none");
+    });
 
-
-// Socket work
-const sock = parent.sock;
-// const sock = io();
-// console.log(parent.sock);
-sock.on('message', (text) => {
-    messageEvent(text)
-});
-
-sock.on('question', (text) => {
-    ask_question(text)
-});
-
-sock.on('stats', (playersStats) => {
-    update_stats(playersStats)
-});
-
-sock.on('disableOperators', (state) => {
-    set_math_operators_state(state)
-});
-
-sock.on('gamePadState', (state) => {
-    set_game_pad_state(state)
-});
-
-
-// addButtonListeners();
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        let modal = document.getElementById("modal_choose_child");
+        // if (event.target == modal) {
+        modal.style.display = "none";
+        // }
+    }
+}
