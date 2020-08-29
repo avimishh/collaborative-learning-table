@@ -15,6 +15,12 @@ const fieldSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     }
+    // engName:{
+    //     type: String,
+    //     required: true,
+    //     minlength: 5,
+    //     maxlength: 1024 
+    // }
 });
 
 // Model

@@ -22,7 +22,7 @@ const sheetSchema = new mongoose.Schema({
         type: Number,
         // required: true
     },
-    additionalInfo: {}
+    additionalInfo: [{}]
 })
 
 

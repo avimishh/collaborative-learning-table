@@ -80,7 +80,6 @@ function init_Host_player(socket) {
     });
 }
 
-
 function init_Guest_player(socket) {
     // get queries from socket connection
     let id = socket.handshake.query.child_ID;
@@ -101,8 +100,11 @@ function init_Guest_player(socket) {
 const MathGame = require('./Math/math_game');
 const EnglishGame = require('./English/english_game');
 
+var playingGame;
+
 // game code as parameter
 function startGame() {
+    delete playingGame;
     if (playerHost === null || playerGuest === null) {
         console.log('There arent 2 players connected');
         return;
@@ -110,10 +112,10 @@ function startGame() {
     // Start a game
     switch (gamePlayed.title) {
         case 'תרגילי חשבון':
-            new MathGame(playerHost, playerGuest, gamePlayed);
+            playingGame = new MathGame(playerHost, playerGuest, gamePlayed);
             break;
         case 'התאמת תמונות למילים':
-            new EnglishGame(playerHost, playerGuest, gamePlayed);
+            playingGame = new EnglishGame(playerHost, playerGuest, gamePlayed);
             break;
         default:
             console.log('wrong game reference');

@@ -5,13 +5,17 @@ const { Stats } = require('./../models/stats');
 
 var questions = [];
 // const
-const MAX_ROUNDS = 3;
+const MAX_ROUNDS = 1;
 
 var playerToPlay, playerToWait;
 
+function math_op(op){
+    this._askQuestion(idx, op);
+}
+
 class MathGame {
     constructor(p0, p1, game) {
-        this._game_id =  game.id;
+        this._game_id = game.id;
         // #### Global ####
         this._players = [p0, p1];
 
@@ -105,7 +109,7 @@ class MathGame {
             this._isPlayersAnswerCorrect[playerIndex] = true;
         }
         // if wrong answer
-        else 
+        else
             this._isPlayersAnswerCorrect[playerIndex] = false;
     }
 
@@ -146,13 +150,22 @@ class MathGame {
     }
 
     _Save_Stats_in_DB() {
-        this._players.forEach(async (p) =>  {
+        this._players.forEach(async (p) => {
             await save_Data_DB(p.id, p.stats, this._game_id);
         });
     }
 
-    _end_Game_Back_To_Games_Gallery(){
+    _end_Game_Back_To_Games_Gallery() {
+        this._removeListeners();
         this._sendToPlayers('players_ready_choose_game');
+    }
+
+    _removeListeners() {
+        this._players.forEach(p => {
+            p.socket.removeAllListeners('math_op');
+            p.socket.removeAllListeners('answer_submitted');
+            // console.log(p.socket.eventNames());
+        });
     }
 }
 

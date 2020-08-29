@@ -7,6 +7,9 @@ const { Field, validateField } = require('../field');
 const { Game, validateGame } = require('../game');
 const { Stat } = require('../stat');
 
+const save_Data_DB = require('./../../public/games/StatsSaver');
+
+
 const bcrypt = require('bcrypt'); // Password Hash
 
 // mongoose.connect(config.get('db'))
@@ -210,6 +213,35 @@ async function addChild(parentId, childId) {
     }
 }
 
+async function addStat(child_id, stats, game_id) {
+
+    await save_Data_DB(child_id, stats, game_id);
+
+    const child = await Child.findOne({ id: childId });
+    // Assert Child data
+    if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
+    // Try to update the selected document
+    try {
+        // res.status(200).send(user);
+        const parent = await Parent.findOneAndUpdate({ id: parentId }, {
+            "$addToSet": { children: child._id }
+        }, {
+            new: true, useFindAndModify: false
+        }).populate('children', 'id firstName lastName');
+        // await parent.save();
+        // Assert update completed successfully
+        if (!parent) {
+            notes.push(`Parent ${parentId} was not found.`);
+            return console.log(reverseString(`Parent ${parentId} was not found.`));
+        }
+        // Send response to client
+        notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
+    } catch (ex) {
+        notes.push(`Failed to update.`);
+        return console.log(reverseString(`Failed to update.`));
+    }
+}
+
 async function initDB() {
     notes = [];
     await createParent('משה', 'פרץ', '100', '12345', '0521111111');
@@ -245,9 +277,117 @@ async function addChildren() {
     return notes;
 }
 
+async function addStats() {
+    notes = [];
+
+    const date = [new Date(2020, 05, 03), new Date(2020, 05, 04), new Date(2020, 05, 12),
+    new Date(2020, 05, 14), new Date(2020, 05, 18),
+    new Date(2020, 05, 21), new Date(2020, 06, 02),
+    new Date(2020, 06, 04), new Date(2020, 06, 06)];
+    // const p_NoQ = [10, 8, 15, 12, 14, 8, 12, 10, 15];
+    // const p_NoC = [3, 3, 9, 9, 10, 4, 10, 3, 10];
+    // const p_Plus_a = [5, 3, 6, 7, 6, 4, 6, 5, 8];
+    // const p_Plus_c = [2, 2, 4, 6, 5, 2, 6, 2, 7];
+    // const p_Minus_a = [3, 3, 5, 3, 4, 2, 3, 4, 4];
+    // const p_Minus_c = [1, 0, 3, 2, 3, 1, 2, 1, 2];
+    // const p_Multi_a = [2, 2, 4, 1, 4, 2, 3, 1, 3];
+    // const p_Multi_c = [0, 1, 2, 1, 2, 1, 2, 0, 1];
+
+    for (let i = 0; i < date.length; i++) {
+        // await addMathStat('1001', '5f2c39eb0a7d2569742bb278', date[i]);
+    }
+
+    for (let i = 0; i < date.length; i++) {
+        await addMathStat('1002', '5f2c39eb0a7d2569742bb278', date[i]);
+    }
+
+
+    for (let i = 0; i < date.length; i++) {
+        // await addEngStat('1001', '5f2c39eb0a7d2569742bb27a', date[i]);
+    }
+
+    for (let i = 0; i < date.length; i++) {
+        await addEngStat('1002', '5f2c39eb0a7d2569742bb27a', date[i]);
+    }
+
+    notes.push('success');
+    return notes;
+}
+
+async function addMathStat(child_id, game_id, date) {
+    let p_Plus_a = getRandNum();
+    let p_Plus_c = p_Plus_a > 0 ? getRandNum(p_Plus_a + 1) : 0;
+    let p_Minus_a = getRandNum();
+    let p_Minus_c = p_Minus_a > 0 ? getRandNum(p_Minus_a + 1) : 0;
+    let p_Multi_a = getRandNum();
+    let p_Multi_c = p_Multi_a > 0 ? getRandNum(p_Multi_a + 1) : 0;
+    let p_NoQ = p_Plus_a + p_Minus_a + p_Multi_a;
+    let p_NoC = p_Plus_c + p_Minus_c + p_Multi_c;
+
+    let mathStat = {
+        numOfQuestions: p_NoQ,
+        numOfCorrectAnswers: p_NoC,
+        _stats: [{
+            operator: 'Plus',
+            asked: p_Plus_a,
+            correct: p_Plus_c
+        },
+        {
+            operator: 'Minus',
+            asked: p_Minus_a,
+            correct: p_Minus_c
+        },
+        {
+            operator: 'Multi',
+            asked: p_Multi_a,
+            correct: p_Multi_c
+        }]
+    }
+
+    await save_Data_DB(child_id, mathStat, game_id, date);
+}
+
+async function addEngStat(child_id, game_id, date) {
+    let p_engToHeb_a = getRandNum();
+    let p_engToHeb_c = p_engToHeb_a > 0 ? getRandNum(p_engToHeb_a + 1) : 0;
+    let p_hebToEng_a = getRandNum();
+    let p_hebToEng_c = p_hebToEng_a > 0 ? getRandNum(p_hebToEng_a + 1) : 0;
+    let p_picToEng_a = getRandNum();
+    let p_picToEng_c = p_picToEng_a > 0 ? getRandNum(p_picToEng_a + 1) : 0;
+    let p_NoQ = p_engToHeb_a + p_hebToEng_a + p_picToEng_a;
+    let p_NoC = p_engToHeb_c + p_hebToEng_c + p_picToEng_c;
+
+    let englishStat = {
+        numOfQuestions: p_NoQ,
+        numOfCorrectAnswers: p_NoC,
+        _stats: [{
+            operator: 'engToHeb',
+            asked: p_engToHeb_a,
+            correct: p_engToHeb_c
+        },
+        {
+            operator: 'hebToEng',
+            asked: p_hebToEng_a,
+            correct: p_hebToEng_c
+        },
+        {
+            operator: 'picToEng',
+            asked: p_picToEng_a,
+            correct: p_picToEng_c
+        }]
+    }
+
+    await save_Data_DB(child_id, englishStat, game_id, date);
+}
+
+function getRandNum(to = 10) {
+    return Math.floor((Math.random() * to) + 0);
+}
+
 function reverseString(str) {
     return str.split('').reverse().join('');
 }
 
 exports.initDB = initDB;
 exports.addChildren = addChildren;
+exports.addStats = addStats;

@@ -15,6 +15,7 @@
         .homeBtn {
             border: 1px solid #000;
             color: #000;
+            margin-left: 0;
         }
 
         #btnDiv,
@@ -41,12 +42,14 @@
         }
 
         .form-box {
-            width: 800px;
+            width: 80%;
             background: rgba(50, 50, 50, 0.9);
             margin: 1% auto 1% auto;
             padding: 10px 20px 0 20px;
             color: #fff;
             box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
+            overflow: scroll;
+            height: 500px;
         }
 
         table {
@@ -60,6 +63,7 @@
         td {
             text-align: center;
             padding: 10px;
+            width: 10%;
         }
 
         /* th:first-child,
@@ -73,6 +77,38 @@
 
         .fa-remove {
             color: red;
+        }
+
+        .dataDate {
+            width: 15%;
+        }
+
+        .dataGame {
+            width: 20%;
+        }
+
+        .goodScore {
+            background-color: rgba(100, 240, 10, 0.4);
+        }
+
+        .badScore {
+            background: rgba(240, 21, 13, 0.4);
+        }
+
+        .tableHead {
+            background: rgba(4, 32, 41, 0.4);
+        }
+
+        .emptyScore {
+            background: rgba(4, 32, 41, 0.4);
+        }
+
+        .gameIconImg {
+            width: 50px;
+            height: 50px;
+            max-height: 50px;
+            height: auto;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -111,7 +147,9 @@
         $(document).ready(() => {
             console.log('jquery work');
             let child_id = JSON.parse(localStorage.getItem('child')).id;
-            getStatsRequest(child_id, setData, printErrorToUser);
+            let fieldName = localStorage.getItem('selectedField');
+            console.log(fieldName);
+            getStatsRequest(child_id, fieldName, setData, printErrorToUser);
 
             init();
         });
@@ -127,37 +165,68 @@
         }
 
         function setData(data) {
+            console.log(data);
+            // check imported data
             if (data.length === 0) return printErrorToUser(0, 'אין תוצאות לילד זה.');
-            let $h_tr = $('<tr>').append($('<th>').text('תאריך'), $('<th>').text('סך הכל שאלות'),
-                $('<th>').text('חיבור'), $('<th>').text('חיסור'), $('<th>').text('כפל'), $('<th>').text('ציון'));
+            // date + numOfQuestions + numOfCorrectAnswers
+            let $h_tr = $('<tr>').append($('<th>').text('תאריך'),
+                $('<th>').text('סמל משחק'),
+                $('<th>').text('סך הכל שאלות'),
+                $('<th>').text('סך הכל תשובות נכונות'));
+            // append type names ex.: 'חיבור', 'חיסור'...
+            data[0].additionalInfo.forEach(dataCol => {
+                $h_tr.append($('<th>').text(dataCol.operator));
+            });
+            $h_tr.append($('<th>').text('ציון')).addClass('tableHead');
+
             let $table = $('<table>').append($h_tr);
-            let sheets = data[0].sheets;
+
+            // let sheets = data[0].sheets;
+            let sheets = data;
             for (let i = 0; i < sheets.length; i++) {
                 console.log(sheets[i]);
-                let $td0 = $('<td>').text(formatDate(sheets[i].date.substr(0, 10)));
-                let $td1 = $('<td>').text(sheets[i].number_of_questions);
-                let $td2 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
-                let $td3 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
-                let $td4 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
+                // Date
+                let $td0 = $('<td>').text(formatDate(sheets[i].date.substr(0, 10))).addClass('dataDate');
+                // Game Id
+                let $td1 = $('<td>').append($('<img>').attr('src', 'gaming/' + sheets[i].game.icon).addClass('gameIconImg'))
+                    .append($('<div>').text(sheets[i].game.title)).addClass('dataGame');
+                // Total Questions Data
+                let $td2 = $('<td>').text(sheets[i].numOfQuestions);
+                let $td3 = $('<td>').text(sheets[i].numOfCorrectAnswers);
+                // Specified Data
+                let $tdDynamicData = [];
+                sheets[i].additionalInfo.forEach(dataCol => {
+                    if (dataCol.asked > 0)
+                        $tdDynamicData.push($('<td>').text(`${dataCol.asked} / ${dataCol.correct} `));
+                    else
+                        $tdDynamicData.push($('<td>').text(` - `)/*.addClass('emptyScore')*/);
+                });
+                // let $td3 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
+                // let $td4 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
+                // let $td5 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
+
+                // Score
+                // let score = calculateScore(sheets[i].additionalInfo);
                 let score = calculateScore(sheets[i]);
                 let scoreColor = (score >= 60) ? 'green' : 'red';
-                let $td5 = $('<td>').text(`% ${score}`).css('color', scoreColor);
-                $table.append($('<tr>').append($td0, $td1, $td2, $td3, $td4, $td5));
+                let $td4 = $('<td>').text(`% ${score}`).css('color', scoreColor);
+
+                $table.append($('<tr>').append($td0, $td1, $td2, $td3, $tdDynamicData, $td4).addClass((score >= 60) ? 'goodScore' : 'badScore'));
             }
             $('#data').append($table);
 
             // $('tr:even').css('backgroundColor', 'gray');
 
-            console.log();
+            // console.log();
         }
 
         function calculateScore(sheet) {
-            let sumOfCorrect = 0;
-            sheet.questions.forEach(q => {
-                sumOfCorrect = sumOfCorrect + q.correct;
-            });
+            // let sumOfCorrect = 0;
+            // sheet.questions.forEach(q => {
+            //     sumOfCorrect = sumOfCorrect + q.correct;
+            // });
 
-            return parseInt(sumOfCorrect * 100 / sheet.number_of_questions);
+            return parseInt(sheet.numOfCorrectAnswers * 100 / sheet.numOfQuestions);
         }
 
         function displayNameTitle() {

@@ -97,7 +97,8 @@
     <script type="module">
         import { } from './api.js';
         import { URL } from './consts.js';
-
+        
+        var fields = ['אנגלית', 'צבעים', 'חשבון', 'זכרון'];
         $(document).ready(() => {
             console.log('jquery work');
             init();
@@ -136,7 +137,6 @@
         }
 
         function updateSelectOptions() { // popup
-            let fields = ['אנגלית', 'צבעים', 'חשבון', 'זכרון'];
             let i = 0;
             fields.forEach(field => {
                 $('#children_selector')
@@ -153,7 +153,9 @@
 
         function initModal() {
             $('#btn_child_chose').on('click', () => {
-                let fieldId = $('select[name=children] option').filter(':selected').val();
+                let selectedId = $('select[name=children] option').filter(':selected').val();
+                // store field for next page import performance according to field
+                localStorage.setItem('selectedField', fields[selectedId]);
                 window.location.href = URL.CHILD_PERFORMANCE;
             });
 
