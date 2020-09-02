@@ -7,15 +7,15 @@ const MESSAGE_LEN = [2, 1024];
 const ID_LEN = [2, 9];
 
 const noteSchema = new mongoose.Schema({
-    // teacher: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Teacher',
-    //     required: true
-    // },
     teacher: {
-        type: teacherSchema,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teacher',
         required: true
     },
+    // teacher: {
+    //     type: teacherSchema,
+    //     required: true
+    // },
     date: {
         type: Date,
         default: Date.now()
@@ -34,11 +34,17 @@ const Note = mongoose.model('Note', noteSchema);
 
 // Essential functions
 function validateNote(note) {
-    const schema = {
+    // const schema = {
+    //     teacherId: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {return customError(errors, 'תעודת זהות מורה')}),
+    //     date: Joi.date().required(),      // YYYY-MM-DD
+    //     message: Joi.string().min(MESSAGE_LEN[0]).max(MESSAGE_LEN[1]).required().error(errors => { return customError(errors, 'תוכן ההודעה') }),
+    // };
+
+    const schema = Joi.object().keys({
         teacherId: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {return customError(errors, 'תעודת זהות מורה')}),
         date: Joi.date().required(),      // YYYY-MM-DD
-        message: Joi.string().min(MESSAGE_LEN[0]).max(MESSAGE_LEN[1]).required().error(errors => { return customError(errors, 'תוכן ההודעה') }),
-    };
+        message: Joi.string().min(MESSAGE_LEN[0]).max(MESSAGE_LEN[1]).required().error(errors => { return customError(errors, 'תוכן ההודעה') })
+    }).unknown(true);
     return Joi.validate(note, schema);
 }
 

@@ -1,21 +1,119 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
-    <link href="./style/notes.css" rel="stylesheet" />
-</head>
-<body dir="rtl">
-    <div>
-        <h1 class="tittle">שולחן משחקים שיתופי</h1>
-    </div>
-    <div class="form-box">
-        <h1>הצגת הערות להורי הילד<span></span></h1>
+    <style>
+        h1 {
+            /* text-align: center; */
+            margin-bottom: 40px;
+        }
 
-        <div class="mess">
-            <form>
+        span {
+            font-size: 20px;
+        }
+
+        table tr td {
+            padding: 10px 10px;
+        }
+
+        #btn {
+            font-size: 26px;
+            width: 90px;
+            height: 40px;
+            padding: 2px 3px;
+            margin-left: 5px;
+        }
+
+        #rst {
+            font-size: 26px;
+            width: 90px;
+            height: 40px;
+            padding: 2px 3px;
+            margin-right: 5px;
+        }
+
+        .bgimg {
+            background-image: url('../../pics/background/book.jpg');
+        }
+
+        .mess {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .form-box {
+            width: 20%;
+            /* height: 80%; */
+            /* margin: auto; */
+            /* margin-right: 460px; */
+            background: rgba(0, 0, 0, 0.7);
+            margin: 1% 2% 1% 2%;
+            /* padding: 50px 0; */
+            color: #fff;
+            /* overflow-y: scroll; */
+            /* box-shadow: 0 0 20px 2px rgba(0,0,0,0.5); */
+            text-align: center;
+            border-radius: 20px;
+        }
+
+
+
+        /* Chat containers */
+        .container {
+            border: 2px solid #dedede;
+            /* background-color: #f1f1f1; */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            color: black;
+            background-color: #e7f3fe;
+  border-right: 6px solid #2196F3;
+        }
+
+        #notes_container table {
+            margin: auto;
+            width: 100%;
+        }
+
+        #notes_container{
+            width: 50%;
+            font-size: 20px;
+        }
+        #notes_container .date{
+            margin-left: 0px;
+            width: 30%;
+            color: #aaa;
+        }
+        #notes_container .message{
+            width: 40%;
+        }
+
+        #notes_container .teacher{
+            width: 30%;
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            שולחן משחקים שיתופי
+            <button type="button" class="homeBtn" id="btn_goToHome">
+                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+            </button>
+        </div>
+
+        <div class="form-box w3-display-topright">
+            <br>
+            <h1>הצגת הערות להורי הילד<span></span></h1>
+
+
+            <div class="mess">
                 <table>
                     <!--1. First Name-->
                     <tr>
@@ -45,37 +143,90 @@
                             <span id="ID"></span>
                         </td>
                     </tr>
-                    <!--4. Notes Date-->
-                    <tr>
-                        <td>
-                            <span>תאריך ההערות:</span>
-                        </td>
-                        <td>
-                            <span id="notesDate"></span>
-                        </td>
-                    </tr>
-                    <!--5. Notes-->
-                    <tr>
-                        <td>
-                            <span>הערות</span>
-                        </td>
-                        <td>
-                            <span id="notes"></span>
-                        </td>
-                    </tr>
-                    <!--11. Update-->
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="button" id="btn" value="קראתי" />
-                        </td>
-                    </tr>
                 </table>
-            </form>
+
+            </div>
+
         </div>
 
+        <div class="w3-display-middle" id="notes_container">
+        </div>
+
+
+        <div class="w3-display-bottomleft w3-padding-large">
+            Make Learning Fun
+        </div>
     </div>
 
 
+
+
+
+    <script type="module" src="api.js"></script>
+    <script type="module" src="consts.js"></script>
+    <script type="module">
+        import { getChildRequest, getChildNotesRequest } from './api.js';
+        import { URL } from './consts.js';
+
+        var child;
+        $(document).ready(() => {
+            console.log('jquery work');
+            init();
+            // let child_id = JSON.parse(localStorage.getItem('child')).id;
+            showStudentDetails();
+            getChildNotesRequest(child.id, showNotes);
+        });
+
+        function init() {
+            $('#btn_goToHome').on('click', () => {
+                window.location.href = URL.PARENT_HOME;
+            });
+
+        }
+
+        function showStudentDetails() {
+            child = JSON.parse(localStorage.getItem('child'));
+            $("#firstName").html(child.firstName);                   // firstName
+            $("#lastName").html(child.lastName);                     // lastName
+            $("#ID").html(child.id);                                 // id
+            // $("#notesDate").text(formatDate(new Date()));
+        }
+
+        function showNotes(notes) {
+            // console.log(notes);
+            notes.forEach((note, index) => {
+                let $td1 = $('<td>', {class:'teacher'})
+                    .text(`המורה: `).append($('<br>')).append(`${note.teacher.firstName} ${note.teacher.lastName}`);
+                let $td2 = $('<td>', {class:'message'}).text(note.message);
+                let $td3 = $('<td>', {class:'date'}).text(formatDate(note.date));
+                $('#notes_container').append( 
+                    $('<div>', {class:'container'}).append(
+                        $('<table>').append( $td1, $td2, $td3 )
+                         ));
+
+            });
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [day, month, year].join('-');
+        }
+
+
+
+
+
+    </script>
+
 </body>
+
 </html>

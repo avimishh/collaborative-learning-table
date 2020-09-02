@@ -69,23 +69,41 @@
         </div>
     </div>
 
-        <!-- The Modal -->
-        <div id="modal_choose_child" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close" id="btn_exit_modal">&times;</span>
-                    <h2 style="text-align: center;">בחר ילד:</h2>
-                </div>
-                <div class="modal-body">
-                    <select name="children" id="children_selector">
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button id="btn_child_chose" type="button">בחר</button>
-                    <div id="err_text"></div>
-                </div>
+    <!-- The Modal -->
+    <div id="modal_choose_child" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" id="btn_exit_modal">&times;</span>
+                <h2 style="text-align: center;">בחר ילד:</h2>
+            </div>
+            <div class="modal-body">
+                <select name="children" id="children_selector">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_child_chose" type="button">בחר</button>
+                <div id="err_text"></div>
             </div>
         </div>
+    </div>
+
+    <!-- The Modal Field -->
+    <div id="modal_choose_field" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" id="btn_exit_modal_field">&times;</span>
+                <h2 style="text-align: center;">בחר תחום:</h2>
+            </div>
+            <div class="modal-body">
+                <select name="field" id="field_selector">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_field_chose" type="button">בחר</button>
+                <div id="err_text"></div>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
@@ -93,6 +111,7 @@
         import { getUserRequest, getTeacherRequest, getChildRequest, getChildsRequest } from './api.js';
         import { URL } from './consts.js';
 
+        var fields = ['אנגלית', 'צבעים', 'חשבון', 'זכרון'];
         $(document).ready(() => {
             console.log('jquery work');
             init();
@@ -150,6 +169,14 @@
                         .attr("value", child.id)
                         .text(`${child.id}: ${child.firstName} ${child.lastName}`));
             });
+            let i = 0;
+            fields.forEach(field => {
+                $('#field_selector')
+                    .append($("<option></option>")
+                        .attr("value", i)
+                        .text(`${field}`));
+                i++;
+            });
         }
 
         function getChildSuccess(data) { // popup
@@ -161,21 +188,42 @@
             $('#err_text').text(err);
         }
 
+        var childId;
         function initModal() {
             $('#btn_child_chose').on('click', () => {
-                let childId = $('select[name=children] option').filter(':selected').val();
-                getChildRequest(childId, getChildSuccess, printErrorToUser);
+                childId = $('select[name=children] option').filter(':selected').val();
+                if (nextChildPage != URL.CHILD_PERFORMANCE)
+                    getChildRequest(childId, getChildSuccess, printErrorToUser);
+                else {
+                    $("#modal_choose_field").css("display", "block");
+                    $('#btn_exit_modal').trigger('click');
+                }
             });
 
             $("#btn_exit_modal").on('click', () => {
                 $("#modal_choose_child").css("display", "none");
             });
 
+            $('#btn_field_chose').on('click', () => {
+                let selectedId = $('select[name=field] option').filter(':selected').val();
+                // store field for next page import performance according to field
+                localStorage.setItem('selectedField', fields[selectedId]);
+                getChildRequest(childId, getChildSuccess, printErrorToUser);
+            });
+
+            $("#btn_exit_modal_field").on('click', () => {
+                $("#modal_choose_field").css("display", "none");
+            });
+
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function (event) {
                 let modal = document.getElementById("modal_choose_child");
+                let modal_field = document.getElementById("modal_choose_field");
                 if (event.target == modal) {
                     modal.style.display = "none";
+                }
+                else if(event.target == modal_field){
+                    modal_field.style.display = "none";
                 }
             }
         }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Note } = require('../models/note');
+const { Note, validate } = require('../models/note');
 const { Teacher } = require('../models/teacher');
 const { Child } = require('../models/child');
 
@@ -13,15 +13,15 @@ const { Child } = require('../models/child');
 
 
 // GET ['api/notes/:child_id'] - id=child.id
-router.get('/:child_id', async (req, res) => {
+router.get('/:childId', async (req, res) => {
     // Find
     // const note = await Note.findById(req.params.id);
     // const note = await Note.find({child:req.params.id});
     // var notes = list();
-    const child = await Child.findOne({ id: req.params.id }).populate('notes.teacher', '_id firstName lastName');
+    const child = await Child.findOne({ id: req.params.childId }).populate('notes.teacher', '_id firstName lastName');
     // Check if exist
     if (!child)
-        return res.status(404).send(`Child ${req.params.id} was not found.`);
+        return res.status(404).send(`Child ${req.params.childId} was not found.`);
     // parent.children.forEach(async (child_id) => {
     //     var newNotes = await Note.find({ child: child_id });
     //     notes.push(newNotes);

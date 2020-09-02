@@ -3,6 +3,8 @@ const authApi = server + "auth/parent/";
 const usersApi = server + "users/";
 const parentsApi = server + "parents/";
 const childsApi = server + "childs/";
+const notesApi = server + "notes/";
+
 
 
 export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
@@ -143,6 +145,27 @@ export function getChildRequest(child_id, successFunction, errorFunction, comple
     let request = {
         contentType: "application/json",
         url: childsApi + child_id,
+        method: "GET",
+        headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify(),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
+export function getChildNotesRequest(child_id, successFunction, errorFunction, completeFunction) {
+    console.log(child_id);
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: notesApi + child_id,
         method: "GET",
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),

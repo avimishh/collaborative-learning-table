@@ -4,16 +4,10 @@ const { Sheet } = require('../../models/sheet');
 const { mathSheetSchema } = require('../../models/sheets/math');
 
 module.exports = async function (p_child_ID, stats, gameRefId, date = Date.now()) {
-    // let numOfCorrectAnswers = 2;
-    // p_child_ID = '1001';
-    console.log('p_child_ID: ' + p_child_ID);
-    // const newSheet = mathSheetSchema;
+    // console.log('p_child_ID: ' + p_child_ID);
     stats._stats.forEach(e => {
         e.operator = Operator_To_English(e.operator);
     });
-    // stats._stats[0].operator = 'חיבור';
-    // stats._stats[1].operator = 'חיסור';
-    // stats._stats[2].operator = 'כפל';
 
     const newSheet = new Sheet({
         game: gameRefId,

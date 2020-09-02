@@ -294,20 +294,32 @@ async function addStats() {
     // const p_Multi_c = [0, 1, 2, 1, 2, 1, 2, 0, 1];
 
     for (let i = 0; i < date.length; i++) {
-        // await addMathStat('1001', '5f2c39eb0a7d2569742bb278', date[i]);
+        if (Math.random > 0.5)
+            await addMathStat('1001', '5f2c39eb0a7d2569742bb278', date[i]);
+        else
+            await addMathStat('1001', '5f37ce4b11602061b06218d6', date[i]);
     }
 
     for (let i = 0; i < date.length; i++) {
+        if (Math.random > 0.5)
         await addMathStat('1002', '5f2c39eb0a7d2569742bb278', date[i]);
+    else
+        await addMathStat('1002', '5f37ce4b11602061b06218d6', date[i]);
     }
 
 
     for (let i = 0; i < date.length; i++) {
-        // await addEngStat('1001', '5f2c39eb0a7d2569742bb27a', date[i]);
+        if (Math.random > 0.5)
+        await addMathStat('1001', '5f2c39eb0a7d2569742bb27a', date[i]);
+    else
+        await addMathStat('1001', '5f37ce4b11602061b06218da', date[i]);
     }
 
     for (let i = 0; i < date.length; i++) {
-        await addEngStat('1002', '5f2c39eb0a7d2569742bb27a', date[i]);
+        if (Math.random > 0.5)
+        await addMathStat('1002', '5f2c39eb0a7d2569742bb27a', date[i]);
+    else
+        await addMathStat('1002', '5f37ce4b11602061b06218da', date[i]);
     }
 
     notes.push('success');

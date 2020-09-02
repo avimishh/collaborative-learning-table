@@ -173,7 +173,9 @@
         $(document).ready(() => {
             console.log('jquery work');
             init();
-            getChildRequest('1001', showStudentDetails);
+            // let child_id = JSON.parse(localStorage.getItem('child')).id;
+            // getChildRequest(child_id, showStudentDetails);
+            showStudentDetails();
         });
 
         function init() {
@@ -183,10 +185,11 @@
 
         }
 
-        function showStudentDetails(data) {
-            $("#firstName").html(data.firstName);                   // firstName
-            $("#lastName").html(data.lastName);                     // lastName
-            $("#ID").html(data.id);                                 // id
+        function showStudentDetails() {
+            let child = JSON.parse(localStorage.getItem('child'));
+            $("#firstName").html(child.firstName);                   // firstName
+            $("#lastName").html(child.lastName);                     // lastName
+            $("#ID").html(child.id);                                 // id
             $("#notesDate").text(formatDate(new Date()));
         }
 
