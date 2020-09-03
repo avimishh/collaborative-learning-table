@@ -21,22 +21,6 @@
             padding: 10px 10px;
         }
 
-        #btn {
-            font-size: 26px;
-            width: 90px;
-            height: 40px;
-            padding: 2px 3px;
-            margin-left: 5px;
-        }
-
-        #rst {
-            font-size: 26px;
-            width: 90px;
-            height: 40px;
-            padding: 2px 3px;
-            margin-right: 5px;
-        }
-
         .bgimg {
             background-image: url('../../pics/background/book.jpg');
         }
@@ -69,10 +53,14 @@
             /* background-color: #f1f1f1; */
             border-radius: 5px;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px auto;
             color: black;
             background-color: #e7f3fe;
-  border-right: 6px solid #2196F3;
+            border-right: 6px solid #2196F3;
+        }
+
+        .container:hover {
+            background-color: #b9ddff;
         }
 
         #notes_container table {
@@ -80,21 +68,50 @@
             width: 100%;
         }
 
-        #notes_container{
+        #notes_container {
+            height: 80%;
             width: 50%;
             font-size: 20px;
+            /* overflow-y: scroll; */
+            /* background: rgba(0, 0, 0, 0.1); */
+            padding: 1rem;
+            /* background: white; */
+            /* height: 250px; */
+            overflow: auto;
         }
-        #notes_container .date{
+
+        #notes_container .date {
             margin-left: 0px;
             width: 30%;
             color: #aaa;
         }
-        #notes_container .message{
+
+        #notes_container .message {
             width: 40%;
         }
 
-        #notes_container .teacher{
+        #notes_container .teacher {
             width: 30%;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #2196F3;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #08487c;
         }
     </style>
 </head>
@@ -195,14 +212,14 @@
         function showNotes(notes) {
             // console.log(notes);
             notes.forEach((note, index) => {
-                let $td1 = $('<td>', {class:'teacher'})
+                let $td1 = $('<td>', { class: 'teacher' })
                     .text(`המורה: `).append($('<br>')).append(`${note.teacher.firstName} ${note.teacher.lastName}`);
-                let $td2 = $('<td>', {class:'message'}).text(note.message);
-                let $td3 = $('<td>', {class:'date'}).text(formatDate(note.date));
-                $('#notes_container').append( 
-                    $('<div>', {class:'container'}).append(
-                        $('<table>').append( $td1, $td2, $td3 )
-                         ));
+                let $td2 = $('<td>', { class: 'message' }).text(note.message);
+                let $td3 = $('<td>', { class: 'date' }).text(formatDate(note.date));
+                $('#notes_container').append(
+                    $('<div>', { class: 'container' }).append(
+                        $('<table>').append($td1, $td2, $td3)
+                    ));
 
             });
         }

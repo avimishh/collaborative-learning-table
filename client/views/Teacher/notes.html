@@ -7,6 +7,7 @@
     <title></title>
     <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
+    <link href="../../style/overlay.css" rel="stylesheet" />
     <style>
         h1 {
             /* text-align: center; */
@@ -112,7 +113,7 @@
                         <!--4. Notes Date-->
                         <tr>
                             <td>
-                                <span>תאריך ההערות:</span>
+                                <span>תאריך כתיבה:</span>
                             </td>
                             <td>
                                 <span id="notesDate"></span>
@@ -121,30 +122,14 @@
                         <!--5. Notes-->
                         <tr>
                             <td colspan="2">
-                                <span>הערות</span>
-                                <br>
-                                <!-- </td> -->
-                                <!-- <td> -->
-                                <textarea rows="5" cols="35" id="notes"></textarea>
+                                <textarea rows="5" cols="35" id="note_message"
+                                    placeholder="הוסף הערות בתיבה זה"></textarea>
                             </td>
                         </tr>
-                        <!--6. Approval-->
-                        <!-- <tr>
-                            <td>
-                                <span>אני מאשר שכל הנתונים נכונים</span>
-                            </td>
-                            <td>
-                                <input type="checkbox" id="approval" class="answware" />
-                            </td>
-                        </tr> -->
-                        <!--11. Update-->
                         <tr>
-                            <!-- <td></td> -->
                             <td colspan="2" style="text-align: center;">
-                                <input type="button" id="btn" value="שלח"
-                                    onclick="window.location.href = 'Notes Message/NotesMessage.html'" />
+                                <input type="button" id="btn" value="שלח" />
                                 <input type="reset" id="rst" value="נקה" />
-
                             </td>
                         </tr>
                     </table>
@@ -162,19 +147,20 @@
         </div>
     </div>
 
-
+    <div id="overlay">
+        <div id='text_to_user' class="w3-padding w3-hide-medium w3-hide-small">
+        </div>
+    </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { getChildRequest } from './api.js';
+        import { getChildRequest, postChildNotesRequest } from './api.js';
         import { URL } from './consts.js';
 
         $(document).ready(() => {
             console.log('jquery work');
             init();
-            // let child_id = JSON.parse(localStorage.getItem('child')).id;
-            // getChildRequest(child_id, showStudentDetails);
             showStudentDetails();
         });
 
@@ -183,10 +169,21 @@
                 window.location.href = URL.TEACHER_HOME;
             });
 
+            $('#btn').on('click', () => {
+                let message = $('#note_message').val();
+                let teacherId = JSON.parse(localStorage.getItem('teacher')).id;
+                postChildNotesRequest(child.id, { teacherId, message }, noteSuccess, noteFailed);
+            });
+
+            $('#rst').on('click', () => {
+                $('#note_message').text();
+            });
         }
 
+        var child;
+
         function showStudentDetails() {
-            let child = JSON.parse(localStorage.getItem('child'));
+            child = JSON.parse(localStorage.getItem('child'));
             $("#firstName").html(child.firstName);                   // firstName
             $("#lastName").html(child.lastName);                     // lastName
             $("#ID").html(child.id);                                 // id
@@ -207,6 +204,24 @@
             return [day, month, year].join('-');
         }
 
+
+        function noteSuccess() {
+            $('#text_to_user').text('הערה נרשמה בהצלחה.');
+            displayOverlay();
+        }
+
+        function noteFailed(status, responseText) {
+            $('#text_to_user').text(`שגיאה ברישום הערה: ${responseText}.`);
+            displayOverlay();
+        }
+
+        function displayOverlay() {
+            $('#overlay').css('display', 'block');
+            setTimeout(() => {
+                // $('#overlay').css('display', 'none');
+                $('#btn_goToHome').trigger('click');
+            }, 2000);
+        }
     </script>
 </body>
 

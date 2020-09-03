@@ -32,8 +32,8 @@ router.get('/:childId', async (req, res) => {
 });
 
 
-// POST ['api/notes']
-router.post('/', async (req, res) => {
+// POST ['api/notes/:childId']
+router.post('/:childId', async (req, res) => {
     // Validate client input
     const { error } = validate(req.body);
     // Assert validation
@@ -45,12 +45,12 @@ router.post('/', async (req, res) => {
     // Create new document
     let newNote = new Note({
         teacher: teacher._id,
-        date: Date.now(),
+        // date: Date.now(),
         message: req.body.message
     });
 
     try {
-        let child = await Child.findOneAndUpdate({ id: req.body.childId },
+        let child = await Child.findOneAndUpdate({ id: req.params.childId },
             {
                 $push: { notes: newNote }
             }, {

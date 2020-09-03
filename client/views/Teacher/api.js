@@ -3,6 +3,7 @@ const authApi = server + "auth/teacher/";
 const usersApi = server + "users/";
 const teachersApi = server + "teachers/";
 const childsApi = server + "childs/";
+const notesApi = server + "notes/";
 
 
 export function getChildsRequest(successFunction, errorFunction, completeFunction) {
@@ -166,6 +167,28 @@ export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, err
             localStorage.setItem('teacher', JSON.stringify(data));
             // console.log(data);
             successFunction();
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
+export function postChildNotesRequest(childId, newNote, successFunction, errorFunction, completeFunction) {
+    console.log(childId);
+    console.log(newNote);
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: notesApi + childId,
+        method: "POST",
+        headers: { 'x-auth-token' : localStorage.getItem('token') },
+        data: JSON.stringify(newNote),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
         },
         error: function (xhr) {
             errorFunction(xhr.status, xhr.responseText);
