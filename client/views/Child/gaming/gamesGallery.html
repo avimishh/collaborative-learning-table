@@ -192,7 +192,7 @@ img{
                     console.log(game);
                     // game_id = game._id;
                     // startGameRequest(game._id);
-                    sock.emit('init_game', game.title, game._id, './games/' + game.link);
+                    sock.emit('init_game', game.title, game._id, './Games/' + game.link);
                 });
                 $div2.append($img, $h3, $p, $btn);
                 $div1.append($div2);
