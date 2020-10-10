@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <link rel="icon" type="image/png" href="./pics/logo2.png" />
+    <title>Collaborative Learning</title>
+    <!-- <link rel="icon" type="image/png" href="./pics/logo3.png" /> -->
     <script src="./lib/jquery.js"></script>
     <link href="./style/global.css" rel="stylesheet" />
     <link href="./style/modal.css" rel="stylesheet" />
@@ -146,17 +146,14 @@
 
       function initModal() {
         $("#btn_exit_modal").on("click", () => {
-          $("#modal_choose_child").css("display", "none");
+          $("#modal_edition").css("display", "none");
         });
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
-          let modal = document.getElementById("modal_choose_child");
-          if (event.target == modal) {
+          let modal = document.getElementById("modal_edition");
+          if (event.target == modal) 
             modal.style.display = "none";
-          } else if (event.target == modal_field) {
-            modal_field.style.display = "none";
-          }
         };
       }
     </script>

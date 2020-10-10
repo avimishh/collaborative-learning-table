@@ -1,4 +1,4 @@
-import { getServerApiUrl } from "../../globalDeclarations.js";
+import { getServerApiUrl, globalInit } from "../../globalDeclarations.js";
 
 const server = getServerApiUrl();
 const authApi = server + "auth/parent/";
