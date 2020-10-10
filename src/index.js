@@ -1,5 +1,4 @@
 // Imports: Winston - Logging
-//          debug
 const debug = require('debug')('app:startup');
 const winston = require('winston');
 
