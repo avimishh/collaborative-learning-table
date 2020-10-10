@@ -1,5 +1,5 @@
 {
     "name": "My Express App - Production",
-    "db":"mongodb+srv://col_learn:<colearn>@cluster0.s1bii.mongodb.net/<colearn>?retryWrites=true&w=majority",
+    "db":"mongodb+srv://colearn:colearn@cluster0.s1bii.mongodb.net/colearn?retryWrites=true&w=majority",
     "jwtPrivateKey": "mySecureKey"
 }

@@ -22,9 +22,11 @@ const logger = createLogger({
   ],
   exceptionHandlers: [
     new transports.File({ filename: "./log/exceptions.log" }),
+    new transports.Console({format: winston.format.simple()})
   ],
   rejectionHandlers: [
     new transports.File({ filename: "./log/rejections.log" }),
+    new transports.Console({format: winston.format.simple()})
   ],
 });
 
