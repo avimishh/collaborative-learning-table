@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <link rel="icon" type="image/png" href="./pics/logo2.png" />
     <script src="./lib/jquery.js"></script>
     <style>
-        button {
-            margin: 10px;
-        }
+      button {
+        margin: 10px;
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
+  <body dir="rtl">
     <button id="init_db">אתחל את בסיס הנתונים</button>
     <button id="add_children">הוסף ילדים</button>
     <button id="add_stats">הוסף סטטיסטיקות</button>
+    <button id="test" onclick="test()">בדיקה</button>
     <div id="err_text"></div>
 
     <script type="module">
-        const server = "http://localhost:3000/";
-        const adminUrl = server + "admin/";
+      import { getServerUrl } from "../../globalDeclarations.js";
 
-        const COMMAND = {
-            INIT_DB: 'initdb',
-            ADD_CHILDREN: 'addchildren',
-            ADD_STATS: 'addstats'
-        }
+      const server = getServerUrl();
+      const adminUrl = server + "admin/";
 
-        $(document).ready(() => {
-            localStorage.clear();
-            init();
+      const COMMAND = {
+        INIT_DB: "initdb",
+        ADD_CHILDREN: "addchildren",
+        ADD_STATS: "addstats",
+      };
+
+      $(document).ready(() => {
+        localStorage.clear();
+        init();
+      });
+
+      function init() {
+        $("#init_db").on("click", () => {
+          getRequest(COMMAND.INIT_DB, printToUser);
         });
 
-        function init() {
-            $('#init_db').on('click', () => {
-                getRequest(COMMAND.INIT_DB, printToUser);
-            });
+        $("#add_children").on("click", () => {
+          getRequest(COMMAND.ADD_CHILDREN, printToUser);
+        });
 
-            $('#add_children').on('click', () => {
-                getRequest(COMMAND.ADD_CHILDREN, printToUser);
-            });
+        $("#add_stats").on("click", () => {
+          getRequest(COMMAND.ADD_STATS, printToUser);
+        });
+      }
 
-            $('#add_stats').on('click', () => {
-                getRequest(COMMAND.ADD_STATS, printToUser);
-            });
-        }
+      function getRequest(command, completeFunction) {
+        $("#err_text").html("");
+        console.log("work api");
+        let request = {
+          contentType: "application/json",
+          url: adminUrl + command,
+          method: "GET",
+          // headers: { 'x-auth-token': localStorage.getItem('token') },
+          // data: JSON.stringify(),
+          success: function (data, textStatus, xhr) {
+            $("#err_text").html(data);
+          },
+          error: function (xhr) {
+            $("#err_text").html(xhr.status + " : " + xhr.responseText);
+            // errorFunction(xhr.status, xhr.responseText);
+          },
+        };
+        $.ajax(request);
+      }
 
-        function getRequest(command, completeFunction) {
-            $('#err_text').html('');
-            console.log('work api');
-            let request = {
-                contentType: "application/json",
-                url: adminUrl + command,
-                method: "GET",
-                // headers: { 'x-auth-token': localStorage.getItem('token') },
-                // data: JSON.stringify(),
-                success: function (data, textStatus, xhr) {
-                    $('#err_text').html(data);
-                },
-                error: function (xhr) {
-                    $('#err_text').html(xhr.status + ' : ' + xhr.responseText);
-                    // errorFunction(xhr.status, xhr.responseText);
-                }
-            };
-            $.ajax(request);
-        }
-
-        function printToUser(data) {
-            $('#err_text').text(data);
-        }
+      function printToUser(data) {
+        $("#err_text").text(data);
+      }
     </script>
-</body>
-
+  </body>
 </html>

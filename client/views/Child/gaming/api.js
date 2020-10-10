@@ -1,4 +1,7 @@
-const server = "http://localhost:3000/api/";
+import { getServerApiUrl } from "../../../globalDeclarations.js";
+
+
+const server = getServerApiUrl();
 const serverStatic = "http://localhost:3000/static/"
 const gamesApi = server + "games/";
 const childsApi = server + "childs/";

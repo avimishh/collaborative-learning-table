@@ -1,4 +1,6 @@
-const server = "http://localhost:3000/api/";
+import { getServerApiUrl } from "../../globalDeclarations.js";
+
+const server = getServerApiUrl();
 const authApi = server + "auth/teacher/";
 const usersApi = server + "users/";
 const teachersApi = server + "teachers/";

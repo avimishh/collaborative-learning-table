@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <script src="../../../lib/jquery.js"></script>
+    <link href="../../../style/global.css" rel="stylesheet" />
+    <link href="../../../style/modal.css" rel="stylesheet" />
+
+    <style>
+      .bgimg {
+        background-image: url("../../../pics/background/homeParents.jpg");
+      }
+
+      .container {
+        width: 1100px;
+      }
+
+      .box {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+
+  <body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+      <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        שולחן משחקים שיתופי
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="../../../pics/homeBtn.png" alt="" />
+        </button>
+      </div>
+      <div
+        class="w3-display-topmiddle"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
+          <span id="teacherName"></span>, נא לבחור את הפעולה הרצויה:
+        </h1>
+        <hr class="w3-border-grey" style="margin: auto; width: 40%" />
+      </div>
+      <div
+        class="w3-display-bottommiddle container"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <div
+          id="btn_child_register"
+          class="w3-light-blue w3-text-white tooltip"
+        >
+          <img src="../../../pics/child_register.png" alt="" />
+          <span class="tooltiptext">רישום ילד חדש</span>
+        </div>
+        <div id="btn_child_update" class="w3-red tooltip">
+          <img src="../../../pics/children.png" alt="" />
+          <span class="tooltiptext">שינוי ילד קיים</span>
+        </div>
+        <div id="btn_child_remove" class="w3-green tooltip">
+          <img src="../../../pics/child_remove.png" alt="" />
+          <span class="tooltiptext">מחיקת ילד</span>
+        </div>
+      </div>
+
+      <div class="w3-display-bottomleft w3-padding-large">
+        Make Learning Fun
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="modal_choose_child" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">בחר ילד:</h2>
+        </div>
+        <div class="modal-body">
+          <select name="children" id="children_selector"></select>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_child_chose" type="button">בחר</button>
+          <div id="err_text"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../api.js"></script>
+    <script type="module" src="../consts.js"></script>
+    <script type="module">
+      import { getChildsRequest } from "../api.js";
+      import { URL } from "../consts.js";
+
+      $(document).ready(() => {
+        console.log("jquery work");
+        init();
+        getChildsRequest(updateSelectOptions);
+      });
+
+      var nextPage;
+      var teacher = JSON.parse(localStorage.getItem("teacher"));
+      function init() {
+        $(".container div").addClass(
+          "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
+        );
+        $(".container div img").addClass("btn_home_img");
+
+        $("#btn_child_register").on("click", () => {
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.REGISTER;
+        });
+
+        $("#btn_child_update").on("click", () => {
+          nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
+          $("#modal_choose_child").css("display", "block");
+        });
+
+        $("#btn_child_remove").on("click", () => {
+          nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
+          $("#modal_choose_child").css("display", "block");
+        });
+
+        $("#btn_goToHome").on("click", () => {
+          window.location.href = URL.HOME;
+        });
+
+        displayNameTitle();
+
+        initModal();
+      }
+
+      function displayNameTitle() {
+        $("#teacherName").text(`${teacher.firstName} ${teacher.lastName}`);
+      }
+
+      function updateSelectOptions(children) {
+        // popup
+        children.forEach((child) => {
+          $("#children_selector").append(
+            $("<option></option>")
+              .attr("value", child.id)
+              .text(`${child.id}: ${child.firstName} ${child.lastName}`)
+          );
+        });
+        let i = 0;
+        fields.forEach((field) => {
+          $("#field_selector").append(
+            $("<option></option>").attr("value", i).text(`${field}`)
+          );
+          i++;
+        });
+      }
+
+      function getChildSuccess(data) {
+        // popup
+        localStorage.setItem("child", JSON.stringify(data));
+        window.location.href = nextPage;
+      }
+
+      function printErrorToUser(code, err) {
+        // popup
+        $("#err_text").text(err);
+      }
+
+      var childId;
+      function initModal() {
+        $("#btn_child_chose").on("click", () => {
+          childId = $("select[name=children] option").filter(":selected").val();
+          getChildRequest(childId, getChildSuccess, printErrorToUser);
+        });
+
+        $("#btn_exit_modal").on("click", () => {
+          $("#modal_choose_child").css("display", "none");
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          let modal = document.getElementById("modal_choose_child");
+          if (event.target == modal) {
+            modal.style.display = "none";
+          } else if (event.target == modal_field) {
+            modal_field.style.display = "none";
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

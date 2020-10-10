@@ -1,99 +1,164 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <link rel="icon" type = "image/png" href = "./pics/logo2.png"/>
+    <link rel="icon" type="image/png" href="./pics/logo2.png" />
     <script src="./lib/jquery.js"></script>
     <link href="./style/global.css" rel="stylesheet" />
+    <link href="./style/modal.css" rel="stylesheet" />
     <style>
-        .bgimg {
-            background-image: url('./pics/background/c.jpg');
-        }
+      .bgimg {
+        background-image: url("./pics/background/c.jpg");
+      }
 
-        .container {
-            width: 700px;
-        }
+      .container {
+        width: 700px;
+      }
 
-        .box {
-            width: 200px;
-            height: 200px;
-            font-size: 34px;
-        }
+      .box {
+        width: 200px;
+        height: 200px;
+        font-size: 34px;
+      }
 
-        .tooltip .tooltiptext {
-            background-color: black;
-        }
+      .tooltip .tooltiptext {
+        background-color: black;
+      }
+
+      #logo-cont {
+        text-align: left;
+      }
+
+      #img-edition {
+        width: 400px;
+        height: 400px;
+      }
+      #modal_edition{
+        padding-top: 50px;
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
-
+  <body dir="rtl">
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge">
-            Logo
+      <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
+        Make Learning Fun
+        <br />
+        <button id="btn-admin">Admin</button>
+      </div>
+      <div
+        class="w3-display-topmiddle"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
+          למידה שיתופית
+        </h1>
+        <hr class="w3-border-grey" style="margin: auto; width: 40%" />
+        <p class="w3-large w3-center">ברוכים הבאים!</p>
+      </div>
+      <div
+        class="w3-display-bottommiddle container"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <div
+          id="btn_Parent"
+          class="w3-light-blue w3-text-white tooltip w3-animate-right"
+        >
+          <img src="../../pics/parents.png" alt="" />
+          <span class="tooltiptext">הורים</span>
         </div>
-        <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
-            <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שולחן משחקים שיתופי</h1>
-            <hr class="w3-border-grey" style="margin:auto;width:40%">
-            <p class="w3-large w3-center">ברוכים הבאים!</p>
+        <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
+          <img src="../../pics/teacher.png" alt="" />
+          <span class="tooltiptext">מורים</span>
+        </div>
+        <div id="btn_Child" class="w3-green tooltip w3-animate-left">
+          <img src="../../pics/kid.png" alt="" />
+          <span class="tooltiptext">ילדים</span>
+        </div>
+      </div>
 
-        </div>
-        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
+      <div class="w3-display-bottomleft w3-padding-large">
+        Avi Mishayev & Ido Yehezkel
+      </div>
+    </div>
 
-            <div id="btn_Parent" class="w3-light-blue w3-text-white tooltip w3-animate-right">
-                <img src="../../pics/parents.png" alt="">
-                <span class="tooltiptext">הורים</span>
-            </div>
-            <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
-                <img src="../../pics/teacher.png" alt="">
-                <span class="tooltiptext">מורים</span>
-            </div>
-            <div id="btn_Child" class="w3-green tooltip w3-animate-left">
-                <img src="../../pics/kid.png" alt="">
-                <span class="tooltiptext">ילדים</span>
-            </div>
+    <!-- The Modal -->
+    <div id="modal_edition" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">COVID-19 EDITION</h2>
+          <h2 style="text-align: center">Play&Learn From Home</h2>
         </div>
-
-        <div class="w3-display-bottomleft w3-padding-large">
-            Make Learning Fun
+        <div class="modal-body">
+          <img id="img-edition" src="./pics/covid19_edition.png" alt="" />
         </div>
+        <div class="modal-footer">
+          <!-- <button id="btn_child_chose" type="button">בחר</button> -->
+          <div id="err_text"></div>
+        </div>
+      </div>
     </div>
 
     <script type="module">
-        const URL = {
-            PARENT_SIGNIN: 'views/Parent/SignIn.html',
-            TEACHER_SIGNIN: 'views/Teacher/SignIn.html',
-            CHILD_SIGNIN: 'views/Child/SignIn.html'
-        }
+      const URL = {
+        PARENT_SIGNIN: "views/Parent/SignIn.html",
+        TEACHER_SIGNIN: "views/Teacher/SignIn.html",
+        CHILD_SIGNIN: "views/Child/SignIn.html",
+        Admin: "./admin.html",
+      };
 
-        $(document).ready(() => {
-            localStorage.clear();
-            init();
+      $(document).ready(() => {
+        localStorage.clear();
+        init();
+        $('#modal_edition').show();
+        setTimeout(() => {
+            $('#modal_edition').hide();
+        }, 5000);
+      });
+
+      function init() {
+        $(".container div").addClass(
+          "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
+        );
+        $(".container div img").addClass("btn_home_img");
+
+        $("#btn_Parent").on("click", () => {
+          window.location.href = URL.PARENT_SIGNIN;
         });
 
-        function init() {
-            $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
-            $('.container div img').addClass('btn_home_img');
+        $("#btn_Teacher").on("click", () => {
+          window.location.href = URL.TEACHER_SIGNIN;
+        });
 
-            $('#btn_Parent').on('click', () => {
-                // location.replace(URL.PARENT_SIGNIN);
-                window.location.href = URL.PARENT_SIGNIN;
-            });
+        $("#btn_Child").on("click", () => {
+          window.location.href = URL.CHILD_SIGNIN;
+        });
 
-            $('#btn_Teacher').on('click', () => {
-                // location.replace(URL.TEACHER_SIGNIN);
-                window.location.href = URL.TEACHER_SIGNIN;
-            });
+        $("#btn-admin").on("click", () => {
+          window.location.href = URL.Admin;
+        });
 
-            $('#btn_Child').on('click', () => {
-                // location.replace(URL.CHILD_SIGNIN);
-                window.location.href = URL.CHILD_SIGNIN;
-            });
+        initModal();
+      }
 
-        }
+      function initModal() {
+        $("#btn_exit_modal").on("click", () => {
+          $("#modal_choose_child").css("display", "none");
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          let modal = document.getElementById("modal_choose_child");
+          if (event.target == modal) {
+            modal.style.display = "none";
+          } else if (event.target == modal_field) {
+            modal_field.style.display = "none";
+          }
+        };
+      }
     </script>
-</body>
-
+  </body>
 </html>

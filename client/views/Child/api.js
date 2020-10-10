@@ -1,8 +1,10 @@
-const server = "http://localhost:3000/api/";
+import { getServerApiUrl } from "../../globalDeclarations.js";
+
+const server = getServerApiUrl();
 const childsApi = server + "childs/";
-// const mathStatsApi = server + "mathStats/";
 const statsApi = server + "stats/";
 
+console.log(server);
 
 export function childLoginRequest(childId, gamesPassword, successFunction, errorFunction, completeFunction) {
     console.log('work api');
