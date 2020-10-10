@@ -1,5 +1,6 @@
 const serverOnLocal = "http://localhost:3000/";
-const serverOnCloud = "https://colearn2.herokuapp.com/";
+const serverOnCloud = "https://co-learn.herokuapp.com/";
+// colearn2
 const hostname = window.location.hostname;
 
 export function getServerUrl() {
