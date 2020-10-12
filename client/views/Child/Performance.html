@@ -1,264 +1,278 @@
 ﻿<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
     <style>
-        .bgimg {
-            background-image: url('../../pics/background/back3.jpg');
-        }
+      .bgimg {
+        background-image: url("../../pics/background/back3.jpg");
+      }
 
-        .homeBtn {
-            border: 1px solid #000;
-            color: #000;
-            margin-left: 0;
-        }
+      .homeBtn {
+        border: 1px solid #000;
+        color: #000;
+        margin-left: 0;
+      }
 
-        #btnDiv,
-        #bottomDiv {
-            color: black;
-        }
+      #btnDiv,
+      #bottomDiv {
+        color: black;
+      }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+      }
 
-        table tr td {
-            padding: 10px 30px;
-        }
+      table tr td {
+        padding: 10px 30px;
+      }
 
-        .mess {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+      .mess {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-        #chartContainer {
-            margin: auto;
-        }
+      #chartContainer {
+        margin: auto;
+      }
 
-        .form-box {
-            width: 80%;
-            background: rgba(50, 50, 50, 0.9);
-            margin: 1% auto 1% auto;
-            padding: 10px 20px 0 20px;
-            color: #fff;
-            box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
-            overflow: scroll;
-            height: 500px;
-        }
+      .form-box {
+        width: 80%;
+        background: rgba(50, 50, 50, 0.9);
+        margin: 1% auto 1% auto;
+        padding: 10px 20px 0 20px;
+        color: #fff;
+        box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
+        overflow: scroll;
+        height: 500px;
+      }
 
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-            width: 100%;
-            border: 1px solid #ddd;
-        }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+      }
 
-        th,
-        td {
-            text-align: center;
-            padding: 10px;
-            width: 10%;
-        }
+      th,
+      td {
+        text-align: center;
+        padding: 10px;
+        width: 10%;
+      }
 
-        /* th:first-child,
+      /* th:first-child,
         td:first-child {
             text-align: left;
         } */
 
-        .fa-check {
-            color: green;
-        }
+      .fa-check {
+        color: green;
+      }
 
-        .fa-remove {
-            color: red;
-        }
+      .fa-remove {
+        color: red;
+      }
 
-        .dataDate {
-            width: 15%;
-        }
+      .dataDate {
+        width: 15%;
+      }
 
-        .dataGame {
-            width: 20%;
-        }
+      .dataGame {
+        width: 20%;
+      }
 
-        .goodScore {
-            background-color: rgba(100, 240, 10, 0.4);
-        }
+      .goodScore {
+        background-color: rgba(100, 240, 10, 0.4);
+      }
 
-        .badScore {
-            background: rgba(240, 21, 13, 0.4);
-        }
+      .badScore {
+        background: rgba(240, 21, 13, 0.4);
+      }
 
-        .tableHead {
-            background: rgba(4, 32, 41, 0.4);
-        }
+      .tableHead {
+        background: rgba(4, 32, 41, 0.4);
+      }
 
-        .emptyScore {
-            background: rgba(4, 32, 41, 0.4);
-        }
+      .emptyScore {
+        background: rgba(4, 32, 41, 0.4);
+      }
 
-        .gameIconImg {
-            width: 50px;
-            height: 50px;
-            max-height: 50px;
-            height: auto;
-            margin-bottom: 10px;
-        }
+      .gameIconImg {
+        width: 50px;
+        height: 50px;
+        max-height: 50px;
+        height: auto;
+        margin-bottom: 10px;
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
+  <body dir="rtl">
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
-            שולחן משחקים שיתופי
-            <br>
-            <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
-            </button>
-        </div>
-        <div class="form-box w3-display-middle">
-            <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
-            <div id="err_text"></div>
-            <div class="mess" id="data">
+      <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
+        שולחן משחקים שיתופי
+        <br />
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+        </button>
+      </div>
+      <div class="form-box w3-display-middle">
+        <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
+        <div id="err_text"></div>
+        <div class="mess" id="data"></div>
+      </div>
 
-            </div>
-
-        </div>
-
-
-        <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
-            Make Learning Fun
-        </div>
+      <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
+        Make Learning Fun
+      </div>
     </div>
-
 
     <script type="module" src="consts.js"></script>
     <script type="module" src="api.js"></script>
     <script type="module">
-        import { getStatsRequest } from './api.js';
-        import { URL } from './consts.js';
+      import { getStatsRequest } from "./api.js";
+      import { URL } from "./consts.js";
 
-        $(document).ready(() => {
-            console.log('jquery work');
-            let child_id = JSON.parse(localStorage.getItem('child')).id;
-            let fieldName = localStorage.getItem('selectedField');
-            console.log(fieldName);
-            getStatsRequest(child_id, fieldName, setData, printErrorToUser);
+      $(document).ready(() => {
+        console.log("jquery work");
+        let child_id = JSON.parse(localStorage.getItem("child")).id;
+        let fieldName = localStorage.getItem("selectedField");
+        console.log(fieldName);
+        getStatsRequest(child_id, fieldName, setData, printErrorToUser);
 
-            init();
+        init();
+      });
+
+      function init() {
+        $("#btn_goToHome").on("click", () => {
+          // window.location.href = URL.CHILD_HOME;
+          window.history.back();
         });
 
-        function init() {
-            $('#btn_goToHome').on('click', () => {
-                // window.location.href = URL.CHILD_HOME;
-                window.history.back();
-            });
+        displayNameTitle();
+        // disableBackBtn();
+      }
 
-            displayNameTitle();
-            // disableBackBtn();
+      function setData(data) {
+        console.log(data);
+        // check imported data
+        if (data.length === 0)
+          return printErrorToUser(0, "אין תוצאות לילד זה.");
+        // date + numOfQuestions + numOfCorrectAnswers
+        let $h_tr = $("<tr>").append(
+          $("<th>").text("תאריך"),
+          $("<th>").text("סמל משחק"),
+          $("<th>").text("סך הכל שאלות"),
+          $("<th>").text("סך הכל תשובות נכונות")
+        );
+        // append type names ex.: 'חיבור', 'חיסור'...
+        data[0].additionalInfo.forEach((dataCol) => {
+          $h_tr.append($("<th>").text(dataCol.operator));
+        });
+        $h_tr.append($("<th>").text("ציון")).addClass("tableHead");
+
+        let $table = $("<table>").append($h_tr);
+
+        // let sheets = data[0].sheets;
+        let sheets = data;
+        for (let i = 0; i < sheets.length; i++) {
+          console.log(sheets[i]);
+          // Date
+          let $td0 = $("<td>")
+            .text(formatDate(sheets[i].date.substr(0, 10)))
+            .addClass("dataDate");
+          // Game Id
+          let $td1 = $("<td>")
+            .append(
+              $("<img>")
+                .attr("src", "gaming/" + sheets[i].game.icon)
+                .addClass("gameIconImg")
+            )
+            .append($("<div>").text(sheets[i].game.title))
+            .addClass("dataGame");
+          // Total Questions Data
+          let $td2 = $("<td>").text(sheets[i].numOfQuestions);
+          let $td3 = $("<td>").text(sheets[i].numOfCorrectAnswers);
+          // Specified Data
+          let $tdDynamicData = [];
+          sheets[i].additionalInfo.forEach((dataCol) => {
+            if (dataCol.asked > 0)
+              $tdDynamicData.push(
+                $("<td>").text(`${dataCol.asked} / ${dataCol.correct} `)
+              );
+            else
+              $tdDynamicData.push(
+                $("<td>").text(` - `) /*.addClass('emptyScore')*/
+              );
+          });
+          // let $td3 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
+          // let $td4 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
+          // let $td5 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
+
+          // Score
+          // let score = calculateScore(sheets[i].additionalInfo);
+          let score = calculateScore(sheets[i]);
+          let darkGreen = "#32CD32";
+          let scoreColor = score >= 60 ? darkGreen : "red";
+          let $td4 = $("<td>").text(`% ${score}`).css("color", scoreColor);
+
+          $table.append(
+            $("<tr>")
+              .append($td0, $td1, $td2, $td3, $tdDynamicData, $td4)
+              .addClass(score >= 60 ? "goodScore" : "badScore")
+          );
         }
+        $("#data").append($table);
 
-        function setData(data) {
-            console.log(data);
-            // check imported data
-            if (data.length === 0) return printErrorToUser(0, 'אין תוצאות לילד זה.');
-            // date + numOfQuestions + numOfCorrectAnswers
-            let $h_tr = $('<tr>').append($('<th>').text('תאריך'),
-                $('<th>').text('סמל משחק'),
-                $('<th>').text('סך הכל שאלות'),
-                $('<th>').text('סך הכל תשובות נכונות'));
-            // append type names ex.: 'חיבור', 'חיסור'...
-            data[0].additionalInfo.forEach(dataCol => {
-                $h_tr.append($('<th>').text(dataCol.operator));
-            });
-            $h_tr.append($('<th>').text('ציון')).addClass('tableHead');
+        // $('tr:even').css('backgroundColor', 'gray');
 
-            let $table = $('<table>').append($h_tr);
+        // console.log();
+      }
 
-            // let sheets = data[0].sheets;
-            let sheets = data;
-            for (let i = 0; i < sheets.length; i++) {
-                console.log(sheets[i]);
-                // Date
-                let $td0 = $('<td>').text(formatDate(sheets[i].date.substr(0, 10))).addClass('dataDate');
-                // Game Id
-                let $td1 = $('<td>').append($('<img>').attr('src', 'gaming/' + sheets[i].game.icon).addClass('gameIconImg'))
-                    .append($('<div>').text(sheets[i].game.title)).addClass('dataGame');
-                // Total Questions Data
-                let $td2 = $('<td>').text(sheets[i].numOfQuestions);
-                let $td3 = $('<td>').text(sheets[i].numOfCorrectAnswers);
-                // Specified Data
-                let $tdDynamicData = [];
-                sheets[i].additionalInfo.forEach(dataCol => {
-                    if (dataCol.asked > 0)
-                        $tdDynamicData.push($('<td>').text(`${dataCol.asked} / ${dataCol.correct} `));
-                    else
-                        $tdDynamicData.push($('<td>').text(` - `)/*.addClass('emptyScore')*/);
-                });
-                // let $td3 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
-                // let $td4 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
-                // let $td5 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
+      function calculateScore(sheet) {
+        // let sumOfCorrect = 0;
+        // sheet.questions.forEach(q => {
+        //     sumOfCorrect = sumOfCorrect + q.correct;
+        // });
 
-                // Score
-                // let score = calculateScore(sheets[i].additionalInfo);
-                let score = calculateScore(sheets[i]);
-                let scoreColor = (score >= 60) ? 'green' : 'red';
-                let $td4 = $('<td>').text(`% ${score}`).css('color', scoreColor);
+        return parseInt(
+          (sheet.numOfCorrectAnswers * 100) / sheet.numOfQuestions
+        );
+      }
 
-                $table.append($('<tr>').append($td0, $td1, $td2, $td3, $tdDynamicData, $td4).addClass((score >= 60) ? 'goodScore' : 'badScore'));
-            }
-            $('#data').append($table);
+      function displayNameTitle() {
+        let child = JSON.parse(localStorage.getItem("child"));
+        $("#nameChild").text(`${child.firstName} ${child.lastName}`);
+      }
 
-            // $('tr:even').css('backgroundColor', 'gray');
+      function formatDate(date) {
+        var d = new Date(date),
+          month = "" + (d.getMonth() + 1),
+          day = "" + d.getDate(),
+          year = d.getFullYear();
 
-            // console.log();
-        }
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
 
-        function calculateScore(sheet) {
-            // let sumOfCorrect = 0;
-            // sheet.questions.forEach(q => {
-            //     sumOfCorrect = sumOfCorrect + q.correct;
-            // });
+        return [day, month, year].join("-");
+      }
 
-            return parseInt(sheet.numOfCorrectAnswers * 100 / sheet.numOfQuestions);
-        }
+      // function disableBackBtn() {
+      //     history.pushState(null, null, document.URL);
+      //     window.addEventListener('popstate', function () {
+      //         history.pushState(null, null, document.URL);
+      //     });
+      // }
 
-        function displayNameTitle() {
-            let child = JSON.parse(localStorage.getItem('child'));
-            $('#nameChild').text(`${child.firstName} ${child.lastName}`);
-        }
-
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2)
-                month = '0' + month;
-            if (day.length < 2)
-                day = '0' + day;
-
-            return [day, month, year].join('-');
-        }
-
-        // function disableBackBtn() {
-        //     history.pushState(null, null, document.URL);
-        //     window.addEventListener('popstate', function () {
-        //         history.pushState(null, null, document.URL);
-        //     });
-        // }
-
-        function printErrorToUser(code, err) { // popup
-            $('#err_text').text(err);
-        }
+      function printErrorToUser(code, err) {
+        // popup
+        $("#err_text").text(err);
+      }
     </script>
-</body>
-
+  </body>
 </html>

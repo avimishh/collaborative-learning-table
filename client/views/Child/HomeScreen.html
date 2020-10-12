@@ -1,177 +1,194 @@
 ﻿<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
     <link href="../../style/modal.css" rel="stylesheet" />
     <style>
-        body,
-        h1,
-        p,
-        div {
-            color: #000;
-        }
+      body,
+      h1,
+      p,
+      div {
+        color: #000;
+      }
 
-        .bgimg {
-            background-image: url('../../pics/background/back8.jpg');
-        }
+      .bgimg {
+        background-image: url("../../pics/background/back8.jpg");
+      }
 
-        .container {
-            width: 700px;
-        }
+      .container {
+        width: 700px;
+      }
 
-        .box {
-            width: 200px;
-            height: 200px;
-        }
+      .box {
+        width: 200px;
+        height: 200px;
+      }
 
-        .modal-header {
-            background-color: coral;
-        }
+      .homeBtn {
+        border: 1px solid #dcdcdc;
+        color: #000;
+        margin-left: 0;
+      }
 
-        select {
-            background: url('');
-        }
+      .modal-header {
+        background-color: coral;
+      }
+
+      select {
+        background: url("");
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
+  <body dir="rtl">
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge">
-            שולחן משחקים שיתופי
-            <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
-            </button>
+      <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        שולחן משחקים שיתופי
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+        </button>
+      </div>
+      <div
+        class="w3-display-topmiddle"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
+          שלום <span id="childName"></span>
+        </h1>
+        <hr class="w3-border-grey" style="margin: auto; width: 40%" />
+        <p class="w3-large w3-center">ברוך הבא לאזור האישי שלך!</p>
+      </div>
+      <div
+        class="w3-display-bottommiddle container"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <div id="btn_game" class="w3-green tooltip w3-animate-right">
+          <img src="../../pics/play3.png" alt="" />
+          <span class="tooltiptext">שחק משחקים</span>
         </div>
-        <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
-            <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שלום <span id="childName"></span></h1>
-            <hr class="w3-border-grey" style="margin:auto;width:40%">
-            <p class="w3-large w3-center">ברוך הבא לאזור האישי שלך!</p>
+        <div
+          id="btn_details"
+          class="w3-light-blue w3-text-white tooltip w3-animate-bottom"
+        >
+          <img src="../../pics/note1.png" alt="" />
+          <span class="tooltiptext">פרטים אישיים</span>
         </div>
-        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
-            <div id="btn_game" class="w3-green tooltip w3-animate-right">
-                <img src="../../pics/play3.png" alt="">
-                <span class="tooltiptext">שחק משחקים</span>
-            </div>
-            <div id='btn_details' class="w3-light-blue w3-text-white tooltip w3-animate-bottom">
-                <img src="../../pics/note1.png" alt="">
-                <span class="tooltiptext">פרטים אישיים</span>
-            </div>
-            <div id="btn_performance" class="w3-red tooltip w3-animate-left">
-                <img src="../../pics/note2.png" alt="">
-                <span class="tooltiptext">הצגת ציונים</span>
-            </div>
+        <div id="btn_performance" class="w3-red tooltip w3-animate-left">
+          <img src="../../pics/note2.png" alt="" />
+          <span class="tooltiptext">הצגת ציונים</span>
+        </div>
+      </div>
 
-
-        </div>
-
-        <div class="w3-display-bottomleft w3-padding-large">
-            Make Learning Fun
-        </div>
+      <div class="w3-display-bottomleft w3-padding-large">
+        Make Learning Fun
+      </div>
     </div>
 
     <!-- The Modal -->
     <div id="modal_choose_child" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" id="btn_exit_modal">&times;</span>
-                <h2 style="text-align: center;">בחר תחום:</h2>
-            </div>
-            <div class="modal-body">
-                <select name="children" id="children_selector">
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button id="btn_child_chose" type="button">בחר</button>
-                <div id="err_text"></div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">בחר תחום:</h2>
         </div>
+        <div class="modal-body">
+          <select name="children" id="children_selector"></select>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_child_chose" type="button">בחר</button>
+          <div id="err_text"></div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { } from './api.js';
-        import { URL } from './consts.js';
-        
-        var fields = ['אנגלית', 'צבעים', 'חשבון', 'זכרון'];
-        $(document).ready(() => {
-            console.log('jquery work');
-            init();
+      import {} from "./api.js";
+      import { URL } from "./consts.js";
+
+      var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
+      $(document).ready(() => {
+        console.log("jquery work");
+        init();
+      });
+
+      function init() {
+        $(".container div").addClass(
+          "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
+        );
+        $(".container div img").addClass("btn_home_img");
+
+        $("#btn_details").on("click", () => {
+          window.location.href = URL.CHILD_DETAILS;
         });
 
-        function init() {
-            $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
-            $('.container div img').addClass('btn_home_img');
+        $("#btn_performance").on("click", () => {
+          // window.location.href = URL.CHILD_PERFORMANCE;
+          $("#modal_choose_child").css("display", "block");
+        });
 
-            $('#btn_details').on('click', () => {
-                window.location.href = URL.CHILD_DETAILS;
-            });
+        $("#btn_game").on("click", () => {
+          window.location.href = URL.CHILD_GAME;
+        });
 
-            $('#btn_performance').on('click', () => {
-                // window.location.href = URL.CHILD_PERFORMANCE;
-                $("#modal_choose_child").css("display", "block");
-            });
+        $("#btn_goToHome").on("click", () => {
+          window.location.href = URL.HOME;
+        });
 
-            $('#btn_game').on('click', () => {
-                window.location.href = URL.CHILD_GAME;
-            });
+        displayNameTitle();
 
-            $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.HOME;
-            });
+        updateSelectOptions();
+        initModal();
+      }
 
-            displayNameTitle();
+      function displayNameTitle() {
+        let child = JSON.parse(localStorage.getItem("child"));
+        $("#childName").text(`${child.firstName} ${child.lastName}`);
+      }
 
-            updateSelectOptions();
-            initModal();
-        }
+      function updateSelectOptions() {
+        // popup
+        let i = 0;
+        fields.forEach((field) => {
+          $("#children_selector").append(
+            $("<option></option>").attr("value", i).text(`${field}`)
+          );
+          i++;
+        });
+      }
 
-        function displayNameTitle() {
-            let child = JSON.parse(localStorage.getItem('child'));
-            $('#childName').text(`${child.firstName} ${child.lastName}`);
-        }
+      function printErrorToUser(code, err) {
+        // popup
+        $("#err_text").text(err);
+      }
 
-        function updateSelectOptions() { // popup
-            let i = 0;
-            fields.forEach(field => {
-                $('#children_selector')
-                    .append($("<option></option>")
-                        .attr("value", i)
-                        .text(`${field}`));
-                i++;
-            });
-        }
+      function initModal() {
+        $("#btn_child_chose").on("click", () => {
+          let selectedId = $("select[name=children] option")
+            .filter(":selected")
+            .val();
+          // store field for next page import performance according to field
+          localStorage.setItem("selectedField", fields[selectedId]);
+          window.location.href = URL.CHILD_PERFORMANCE;
+        });
 
-        function printErrorToUser(code, err) { // popup
-            $('#err_text').text(err);
-        }
+        $("#btn_exit_modal").on("click", () => {
+          $("#modal_choose_child").css("display", "none");
+        });
 
-        function initModal() {
-            $('#btn_child_chose').on('click', () => {
-                let selectedId = $('select[name=children] option').filter(':selected').val();
-                // store field for next page import performance according to field
-                localStorage.setItem('selectedField', fields[selectedId]);
-                window.location.href = URL.CHILD_PERFORMANCE;
-            });
-
-            $("#btn_exit_modal").on('click', () => {
-                $("#modal_choose_child").css("display", "none");
-            });
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                let modal = document.getElementById("modal_choose_child");
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          let modal = document.getElementById("modal_choose_child");
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
     </script>
-</body>
-
+  </body>
 </html>

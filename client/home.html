@@ -39,6 +39,18 @@
       #modal_edition {
         padding-top: 50px;
       }
+
+      #modal_development_connect {
+        padding-top: 50px;
+      }
+
+      /* #btn-admin {
+        height: 40px;
+        width: 50px;
+        background-color: Transparent;
+        border: none;
+        outline: none;
+      } */
     </style>
   </head>
 
@@ -48,6 +60,7 @@
         Make Learning Fun
         <br />
         <button id="btn-admin">Admin</button>
+        <!-- <button id="btn-admin"></button> -->
       </div>
       <div
         class="w3-display-topmiddle"
@@ -103,6 +116,25 @@
       </div>
     </div>
 
+    <!-- The Development Modal -->
+    <div id="modal_development_connect" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal1"> &times; </span>
+          <h2 style="text-align: center">כניסת מפתח מערכת:</h2>
+        </div>
+        <div class="modal-body w3-padding-large">
+          <input type="text" id="user_name" placeholder="שם משתמש" />
+          <br /><br />
+          <input type="password" id="password" placeholder="סיסמא" />
+        </div>
+        <div class="modal-footer">
+          <button id="btn_dev_connect" type="button">התחבר</button>
+          <div id="err_text"></div>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       const URL = {
         PARENT_SIGNIN: "views/Parent/SignIn.html",
@@ -111,10 +143,13 @@
         Admin: "./admin.html",
       };
 
+      var nextChildPage;
+
       $(document).ready(() => {
         localStorage.clear();
         init();
         $("#modal_edition").show();
+        $("#modal_development_connect").hide();
         setTimeout(() => {
           $("#modal_edition").hide();
         }, 5000);
@@ -140,6 +175,8 @@
 
         $("#btn-admin").on("click", () => {
           window.location.href = URL.Admin;
+          // nextChildPage = URL.Admin;
+          // $("#modal_development_connect").css("display", "block");
         });
 
         initModal();
@@ -150,10 +187,24 @@
           $("#modal_edition").css("display", "none");
         });
 
+        // $("#btn_exit_modal1").on("click", () => {
+        //   $("#modal_development_connect").css("display", "none");
+        // });
+
+        // $("#btn_dev_connect").on("click", () => {
+        //   if (
+        //     ($("#user_name").val() == "1234") &
+        //     ($("#password").val() == "1234")
+        //   )
+        //     window.location.href = URL.Admin;
+        // });
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
           let modal = document.getElementById("modal_edition");
-          if (event.target == modal) modal.style.display = "none";
+          let modalDev = document.getElementById("modal_development_connect");
+          if (event.target == modal || event.target == modalDev)
+            modal.style.display = "none";
         };
       }
     </script>
