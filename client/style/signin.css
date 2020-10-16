@@ -44,12 +44,8 @@ h1 {
     margin-left: 10px;
 }
 
-.eye {
+.icon-eye {
     position: absolute;
-}
-
-#hide1 {
-    display: none;
 }
 
 .login-btn {
@@ -89,11 +85,28 @@ h1 {
     background: transparent;
     color: #fff;
     font-size: 16px;
+    font-weight: bold;
+    border-radius: 100px;
+}
+
+.register-btn:hover {
+    border: 1px solid #fff;
+    background: blanchedalmond;
+    color: black;
+    font-weight: bold;
 }
 
 .homeBtn {
     width: 20%;
+    /* border-radius: 100px; */
 }
+
+/* .homeBtn:hover {
+    border: 1px solid #fff;
+    background: blanchedalmond;
+    color: black;
+    font-weight: bold;
+} */
 
 #err_text {
     height: 22px;

@@ -7,8 +7,8 @@ export const URL = {
   TEACHER_DETAILS: "Details.html",
   TEACHER_CHILD_MANAGEMENT: { 
       HOME: "childManagement/childManagement.html",
-      REGISTER: "childManagement/register.html",
-      UPDATE: "childManagement/update.html"
+      REGISTER: "register.html",
+      UPDATE: "update.html"
     },
   // TEACHER_REGISTER: 'Register.html',
   CHILD_DETAILS: "../Child/Details.html",

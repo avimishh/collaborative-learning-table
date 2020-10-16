@@ -1,127 +1,117 @@
 ﻿<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
     <link href="../../style/signin.css" rel="stylesheet" />
     <style>
-        span {
-            font-size: 16px;
-        }
+      span {
+        font-size: 16px;
+      }
 
-        .mess {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      .mess {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        .form-box {
-            background: rgba(0, 0, 0, 0.9);
-            margin: 3% auto 1% auto;
-            box-shadow: 0 0 20px 2px rgba(255, 0, 255, 1);
-        }
+      .form-box {
+        background: rgba(0, 0, 0, 0.9);
+        margin: 3% auto 1% auto;
+        box-shadow: 0 0 20px 2px rgba(255, 0, 255, 1);
+      }
 
-        .bgimg {
-            background-image: url('../../pics/background/childSignin.jpg');
-        }
+      .bgimg {
+        background-image: url("../../pics/background/childSignin.jpg");
+      }
     </style>
-    <script>
-        function passwordToggle() {
-            var x = document.getElementById("gamesPassword");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
-    </script>
-</head>
+  </head>
 
-<body dir="rtl">
+  <body dir="rtl">
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge">
-            שולחן משחקים שיתופי
-        </div>
-        <div class="form-box w3-display-topmiddle">
-            <h1>התחברות ילד</h1>
+      <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        שולחן משחקים שיתופי
+      </div>
+      <div class="form-box w3-display-topmiddle">
+        <h1>התחברות ילד</h1>
 
-            <div class="mess">
-                <span>נא העבר צ'יפ במקום המיועד </span>
-                <br />
-                <span>או הכנס תעודת זהות </span>
-                <br />
-                <span>ולאחר מכן לחץ על כניסה</span>
-            </div>
-
-            <div class="input-box">
-                <i class="fa fa-user"></i>
-                <input type="text" id="id_user" placeholder="תעודת זהות" />
-            </div>
-
-            <div class="input-box">
-                <i class="fa fa-key"></i>
-                <input type="text" placeholder="סיסמת משחקים" id="gamesPassword" />
-                <span class="eye" onclick="passwordToggle()">
-                    <i id="hide1" class="fa fa-eye"></i>
-                    <i id="hide2" class="fa fa-eye-slash"></i>
-                </span>
-            </div>
-            <div id="err_text"></div>
-
-            <button type="button" class="login-btn" id="login">כניסה</button>
-
-            <div>
-                <button type="button" class="homeBtn" id="btn_goToHome">
-                    <img id="homeImg" src="../../pics/homeBtn.png" alt="">
-                    חזרה לעמוד
-                    <br>
-                    הראשי
-                </button>
-            </div>
-
+        <div class="mess">
+          <span>נא העבר צ'יפ במקום המיועד </span>
+          <br />
+          <span>או הכנס תעודת זהות </span>
+          <br />
+          <span>ולאחר מכן לחץ על כניסה</span>
         </div>
 
-        <div class="w3-display-bottomleft w3-padding-large">
-            Make Learning Fun
+        <div class="input-box">
+          <i class="fa fa-user"></i>
+          <input type="text" id="id_user" placeholder="תעודת זהות" />
         </div>
+
+        <div class="input-box">
+          <i class="fa fa-key"></i>
+          <input type="text" placeholder="סיסמת משחקים" id="gamesPassword" />
+          <span class="icon-eye" onclick="passwordToggle()">
+            <i class="fa fa-eye-slash"></i>
+          </span>
+        </div>
+        <div id="err_text"></div>
+
+        <button type="button" class="login-btn" id="login">כניסה</button>
+
+        <div>
+          <button type="button" class="homeBtn" id="btn_goToHome">
+            <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+            חזרה לעמוד
+            <br />
+            הראשי
+          </button>
+        </div>
+      </div>
+
+      <div class="w3-display-bottomleft w3-padding-large">
+        Make Learning Fun
+      </div>
     </div>
 
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
     <script type="module">
-        import { childLoginRequest } from './api.js';
-        import { URL } from './consts.js';
+      import { childLoginRequest } from "./api.js";
+      import { URL } from "./consts.js";
+      import { initSignInPage } from "../../globalDeclarations.js";
 
-        $(document).ready(() => {
-            console.log('jquery work');
-            init();
+      $(document).ready(() => {
+        console.log("jquery work");
+        init();
+        initSignInPage();
+      });
+
+      function init() {
+        $("#login").on("click", () => {
+          let child_id = $("#id_user").val();
+          let gamesPassword = $("#gamesPassword").val();
+          childLoginRequest(
+            child_id,
+            gamesPassword,
+            loginSuccess,
+            printErrorToUser
+          );
         });
 
-        function init() {
-            $('#login').on('click', () => {
-                console.log('work btn');
-                let child_id = $("#id_user").val();
-                let gamesPassword = $("#gamesPassword").val();
-                childLoginRequest(child_id, gamesPassword, loginSuccess, printErrorToUser);
-            });
+        $("#btn_goToHome").on("click", () => {
+          window.location.href = URL.HOME;
+        });
+      }
 
-            $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.HOME;
-            });
-        }
+      function loginSuccess(child) {
+        localStorage.setItem("child", JSON.stringify(child));
+        window.location.href = URL.CHILD_HOME;
+      }
 
-        function loginSuccess(child) {
-            localStorage.setItem('child', JSON.stringify(child));
-            window.location.href = URL.CHILD_HOME;
-        }
-
-        function printErrorToUser(code, err) {
-            $('#err_text').text(err);
-        }
+      function printErrorToUser(code, err) {
+        $("#err_text").text(err);
+      }
     </script>
-</body>
-
+  </body>
 </html>

@@ -48,13 +48,13 @@ const childSchema = new mongoose.Schema({
     address: {
         type: String,
         // required: true,
-        minlength: ADDRESS_LEN[0],
+        // minlength: ADDRESS_LEN[0],
         maxlength: ADDRESS_LEN[1]
     },
     phone: {
         type: String,
-        required: true,
-        minlength: PHONE_LEN[0],
+        // required: true,
+        // minlength: PHONE_LEN[0],
         maxlength: PHONE_LEN[1]
     },
     level: {
@@ -92,9 +92,9 @@ function validateChild(child) {
         id: Joi.string().regex(/[0-9]{2,9}/).min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
         birth: Joi.date().required(),      // YYYY-MM-DD
         gender: Joi.string().valid(...GENDER_ENUM).error(errors => { return customError(errors, 'מין') }),
-        address: Joi.string().min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => { return customError(errors, 'כתובת') }),
-        phone: Joi.string().regex(/0[1-9][0-9]{7}|05[0-9]{8}/).min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') }),
-        level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
+        address: Joi.string().allow(null,'').min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => { return customError(errors, 'כתובת') }),
+        phone: Joi.string().allow(null,'').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => { return customError(errors, 'טלפון') }),
+        // level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
         gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמת משחקים') })
     };
     // return true;
@@ -115,13 +115,13 @@ function customError(errors, key) {
                 err.message = `'${key}' נדרש`;
                 break;
             case 'string.min':
-                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
+                err.message = `'${key}' נדרש להכיל לפחות ${err.context.limit} תוים`;
                 break;
             case 'string.max':
-                err.message = `'${key}' נדרש להכיל פחות מ-${err.context.limit} תוים`;
+                err.message = `'${key}' נדרש להכיל עד${err.context.limit} תוים`;
                 break;
             case 'string.regex.base':
-                err.message = 'נדרש שם המכיל אותיות בשפה העברית';
+                err.message = `${key}: ` + 'נדרש שם המכיל אותיות בשפה העברית';
                 break;
             default:
                 break;
