@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { initDB, addChildren, addStats } = require('../models/assets/models_driver');
+const { initDB, belongChildrenToParent, addStats } = require('../models/assets/models_driver');
 
 router.get('/', async (req,res) => {
     res.sendFile(path.resolve(__dirname + '/../../client/admin.html'));
@@ -17,8 +17,8 @@ router.get('/initdb', async (req, res) => {
     res.status(200).send(htmlString);
 });
 
-router.get('/addchildren', async (req, res) => {
-    let notes = await addChildren();
+router.get('/belongChildrenToParent', async (req, res) => {
+    let notes = await belongChildrenToParent();
     let htmlString = '';
     notes.forEach(n => {
         htmlString = htmlString.concat(`<h4>${n}</h4>`);

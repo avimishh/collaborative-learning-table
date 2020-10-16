@@ -270,7 +270,7 @@ async function initDB() {
 }
 
 
-async function addChildren() {
+async function belongChildrenToParent() {
     notes = [];
     await addChild('100', '1001');
     await addChild('100', '1002');
@@ -401,5 +401,5 @@ function reverseString(str) {
 }
 
 exports.initDB = initDB;
-exports.addChildren = addChildren;
+exports.belongChildrenToParent = belongChildrenToParent;
 exports.addStats = addStats;
