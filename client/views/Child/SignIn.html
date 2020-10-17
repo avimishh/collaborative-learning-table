@@ -18,9 +18,9 @@
       }
 
       .form-box {
-        background: rgba(0, 0, 0, 0.9);
-        margin: 3% auto 1% auto;
-        box-shadow: 0 0 20px 2px rgba(255, 0, 255, 1);
+        background: darkolivegreen; /*rgba(0, 0, 0, 1);*/
+        /* margin: 3% auto 1% auto; */
+        box-shadow: 0 0 80px 0 limegreen;
       }
 
       .bgimg {
@@ -33,14 +33,22 @@
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
       <div class="w3-display-topleft w3-padding-large w3-xlarge">
         שולחן משחקים שיתופי
+        <div>
+          <button type="button" class="homeBtn" id="btn_goToHome">
+            <img id="homeImg" src="/pics/homeBtn.png" alt="" />
+            חזרה לעמוד
+            <br />
+            הראשי
+          </button>
+        </div>
       </div>
-      <div class="form-box w3-display-topmiddle">
+      <div class="form-box w3-display-middle">
         <h1>התחברות ילד</h1>
 
         <div class="mess">
-          <span>נא העבר צ'יפ במקום המיועד </span>
-          <br />
-          <span>או הכנס תעודת זהות </span>
+          <!-- <span>נא העבר צ'יפ במקום המיועד </span>
+          <br /> -->
+          <span>הכנס תעודת זהות </span>
           <br />
           <span>ולאחר מכן לחץ על כניסה</span>
         </div>
@@ -61,14 +69,7 @@
 
         <button type="button" class="login-btn" id="login">כניסה</button>
 
-        <div>
-          <button type="button" class="homeBtn" id="btn_goToHome">
-            <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
-            חזרה לעמוד
-            <br />
-            הראשי
-          </button>
-        </div>
+
       </div>
 
       <div class="w3-display-bottomleft w3-padding-large">

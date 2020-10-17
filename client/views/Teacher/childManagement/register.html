@@ -10,15 +10,12 @@
     <link href="/style/modal.css" rel="stylesheet" />
     <style>
       .form-box {
-        margin: 4% auto 1% auto;
+        margin: unset;
+        background: rgba(0, 0, 0, 0.9);
       }
 
       .bgimg {
         background-image: url("/pics/background/back-register.jpg");
-      }
-
-      .homeBtn {
-        width: 20%;
       }
 
       #err_text {
@@ -27,12 +24,12 @@
 
       .form-box {
         width: 800px;
-        background: cadetblue;
+        /* background: cadetblue; */
         margin: 1% auto 1% auto;
         padding: 30px 20px;
         color: #fff;
         box-shadow: 0 0 20px 10px blanchedalmond;
-        border-radius: 0px 0 50px 50px;
+        border-radius: 50px 50px 50px 50px;
         /* font-family: heb_font_Varela; */
       }
 
@@ -59,7 +56,7 @@
         width: 50%;
         border: white 2px solid;
         outline: none;
-        background: cadetblue;
+        background: black;
         color: #fff;
         font-size: 16px;
         padding: 5px 50px 5px 5px;
@@ -164,7 +161,7 @@
           <h2 style="text-align: center">הרישום הצליח!</h2>
         </div>
         <div class="modal-body">
-          <img id="img-modal" src="/pics/kid_success.jpg" alt="" />
+          <img id="img-modal" src="/pics/kid_success.png" alt="" />
         </div>
         <div class="modal-footer">
           <div id="err_text">מיד תועבר בחזרה לעמוד הניהול...</div>
@@ -214,15 +211,14 @@
         });
 
         $("#btn-cancel").on("click", () => {
-          window.location.href = "../" + URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
         });
       }
 
-      function registerSuccess(parent) {
-        localStorage.setItem("parent", JSON.stringify(parent));
+      function registerSuccess() {
         $("#modal-success").show();
         setTimeout(() => {
-          window.location.href = "../" + URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
         }, 5000);
       }
 

@@ -75,6 +75,54 @@ export function childRegisterRequest(
   $.ajax(request);
 }
 
+export function childUpdateRequest(
+  toUpdateChild,
+  successFunction,
+  errorFunction
+) {
+  console.log("work api");
+  let request = {
+    contentType: "application/json",
+    url: childsApi + toUpdateChild.id,
+    method: "PUT",
+    headers: { 'x-auth-token' : localStorage.getItem('token') },
+    data: JSON.stringify(toUpdateChild),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    },
+  };
+  $.ajax(request);
+}
+
+deleteChildRequest
+
+export function deleteChildRequest(
+  toDeleteChildId,
+  successFunction,
+  errorFunction
+) {
+  console.log("work api");
+  let request = {
+    contentType: "application/json",
+    url: childsApi + toDeleteChildId,
+    method: "DELETE",
+    headers: { 'x-auth-token' : localStorage.getItem('token') },
+    // data: JSON.stringify(),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    },
+  };
+  $.ajax(request);
+}
+
 export function userLoginRequest(
   userId,
   userPassword,

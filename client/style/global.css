@@ -75,7 +75,7 @@ body, html {
 
 .btn_home_img {
     display: block;
-    max-width: 100%;
+    /* max-width: 100%; */
     height: auto;
     max-height: 100%;
 }
@@ -85,7 +85,7 @@ body, html {
 .tooltip {
     position: relative;
     /* display: inline-block; */
-    border-bottom: 1px dotted black;
+    /* border-bottom: 1px dotted black; */
 }
 
 .tooltip .tooltiptext {
@@ -117,7 +117,7 @@ body, html {
 
 .homeBtn {
     margin: 10px auto 0;
-    width: 50px;
+    width: 80px;
     display: block;
     outline: none;
     padding: 10px 0;

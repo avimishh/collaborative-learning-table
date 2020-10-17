@@ -110,19 +110,7 @@ select {
     background: url('../pics/kid.png') 96% / 15% no-repeat #EEE;
 }
 
-#btn_child_chose {
-    margin: 10px;
-    width: 20%;
-    /* padding: 5px 35px 5px 5px; */
-    font-size: 20px;
-    border: 1px solid #CCC;
-    height: 30px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-#btn_field_chose {
+.modal-footer button{
     margin: 10px;
     width: 20%;
     /* padding: 5px 35px 5px 5px; */
