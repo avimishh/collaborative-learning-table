@@ -5,12 +5,18 @@ const { Teacher, validateTeacher } = require('../models/teacher');
 const auth = require('../middleware/auth'); // Authorization
 // const admin = require('../middleware/admin');
 
+const bcrypt = require('bcrypt'); // Password Hash
+const _ = require('lodash'); // Pick/Select values from object
+
 // HTTP Handling
 // debug? permissions of admin or teacher.
 // GET ['api/teachers']
 router.get('/', async (req, res) => {
-    const teachers = await Teacher.find().select('-password').sort('firstName');
+    // Find
+    const teachers = await Teacher.find().select('-password').sort('id');
     res.send(teachers);
+    // Check if not exist Teachers
+    if (teachers.length < 1 || teachers == undefined) return res.status(404).send("לא קיימים מורים במערכת.");
 });
 
 // change from byId to findOne and by userId/name
@@ -44,14 +50,16 @@ router.post('/', async (req, res) => {
     // Validate client input
     const { error } = validateTeacher(req.body);
     // Assert validation
-    if (error)
+    if (error){
+        console.log(error.details[0].message);
         return res.status(400).send(error.details[0].message);
+    }
     // Check if the teacher exist
     let teacher = await Teacher.findOne({ id: req.body.id });
     // Response 400 Bad Request if the teacher exist
-    if (teacher) return res.status(400).send(`הורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
+    if (teacher) return res.status(400).send(`מורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
     // Create new document
-    teacher = new teacher({
+    teacher = new Teacher({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id,
@@ -112,14 +120,17 @@ router.delete('/:id', async (req, res) => {
     try {
         const teacher = await Teacher.findOneAndRemove({ id: req.params.id });
         // Assert delete completed successfully
-        if (!teacher)
-            return res.status(404).send(`Teachers ${req.params.id} was not found.`);
-
+        if (!teacher){
+            console.log('1');
+            return res.status(404).send(`המורה בעל ת"ז: ${req.params.id} לא נמצא/ה.`);
+        }
+            
         // Send response to client
         res.send(teacher);
     }
     catch (ex) {
-        return res.status(404).send(`Faild to deleting.`);
+        console.log('2');
+        return res.status(404).send(`בעיה במחיקת המורה.`);
     }
 });
 

@@ -9,8 +9,11 @@ const { Stat } = require('../models/stat');
 
 // GET ['api/childs'] - only DEV, auth, admin
 router.get('/', async (req, res) => {
-    const childs = await Child.find().select('-notes -stats').sort('firstName');
+    // Find
+    const childs = await Child.find().select('-notes -stats').sort('id');
     res.send(childs);
+    // Check if not exist Children
+    if (childs.length < 1 || childs == undefined) return res.status(404).send("לא קיימים ילדים במערכת.");
 });
 
 

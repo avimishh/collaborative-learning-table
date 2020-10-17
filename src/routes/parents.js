@@ -12,8 +12,10 @@ const _ = require('lodash'); // Pick/Select values from object
 // debug? permissions of admin or teacher.
 // GET ['api/parents']
 router.get('/', async (req, res) => {
-    const parents = await Parent.find().select('-password').sort('firstName');
+    const parents = await Parent.find().select('-password').sort('id');
     res.send(parents);
+    // Check if not exist Parents
+    if (parents.length < 1 || parents == undefined) return res.status(404).send("לא קיימים הורים במערכת.");
 });
 
 

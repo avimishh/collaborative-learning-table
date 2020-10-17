@@ -1,4 +1,4 @@
 {
     "jwtPrivateKey": "mySecureKey",
-    "db":"mongodb://localhost/collearn"
+    "db":"mongodb+srv://colearn:colearn@cluster0.s1bii.mongodb.net/colearn?retryWrites=true&w=majority"
 }

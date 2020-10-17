@@ -9,7 +9,6 @@ const { Stat } = require('../stat');
 
 const save_Data_DB = require('./../../public/games/StatsSaver');
 
-
 const bcrypt = require('bcrypt'); // Password Hash
 
 // mongoose.connect(config.get('db'))
@@ -399,6 +398,7 @@ function getRandNum(to = 10) {
 function reverseString(str) {
     return str.split('').reverse().join('');
 }
+
 
 exports.initDB = initDB;
 exports.belongChildrenToParent = belongChildrenToParent;

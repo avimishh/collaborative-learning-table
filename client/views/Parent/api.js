@@ -98,6 +98,26 @@ export function getParentRequest(parent_id, successFunction, errorFunction, comp
 }
 
 
+export function getParentsRequest(successFunction, errorFunction, completeFunction) {
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: parentsApi,
+        method: "GET",
+        // headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify({}),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
 export function updateParentRequest(parent_id, parentToUpdate, successFunction, errorFunction, completeFunction) {
     // console.log(parentToUpdate);
     console.log('work api');

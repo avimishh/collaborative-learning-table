@@ -1,237 +1,251 @@
 ﻿<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
     <script src="../../lib/jquery.js"></script>
     <link href="../../style/global.css" rel="stylesheet" />
     <link href="../../style/modal.css" rel="stylesheet" />
 
     <style>
-        .bgimg {
-            background-image: url('../../pics/background/homeParents.jpg');
-        }
+      .bgimg {
+        background-image: url("../../pics/background/homeParents.jpg");
+      }
 
-        .container {
-            width: 1100px;
-        }
+      .container {
+        width: 1100px;
+      }
 
-        .box {
-            width: 200px;
-            height: 200px;
-        }
+      .box {
+        width: 200px;
+        height: 200px;
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
+  <body dir="rtl">
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge">
-            שולחן משחקים שיתופי
-            <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
-            </button>
+      <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        שולחן משחקים שיתופי
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+        </button>
+      </div>
+      <div
+        class="w3-display-topmiddle"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
+          שלום <span id="teacherName"></span>
+        </h1>
+        <hr class="w3-border-grey" style="margin: auto; width: 40%" />
+        <!-- <p class="w3-large w3-center">ברוכים הבאים!</p> -->
+      </div>
+      <div
+        class="w3-display-bottommiddle container"
+        style="margin-top: 100px; margin-right: 100px"
+      >
+        <div id="btn_child_details" class="w3-light-blue w3-text-white tooltip">
+          <img src="../../pics/kidid.png" alt="" />
+          <span class="tooltiptext">פרטי הילדים</span>
         </div>
-        <div class="w3-display-topmiddle" style="margin-top:100px;margin-right: 100px;">
-            <h1 class="w3-jumbo w3-animate-top" id="title" style="width:700px">שלום <span id="teacherName"></span></h1>
-            <hr class="w3-border-grey" style="margin:auto;width:40%">
-            <!-- <p class="w3-large w3-center">ברוכים הבאים!</p> -->
-
+        <div id="btn_child_performance" class="w3-red tooltip">
+          <img src="../../pics/grades.png" alt="" />
+          <span class="tooltiptext">הצגת ציונים</span>
         </div>
-        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
-
-            <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
-                <img src="../../pics/kidid.png" alt="">
-                <span class="tooltiptext">פרטי הילדים</span>
-            </div>
-            <div id="btn_child_performance" class="w3-red tooltip">
-                <img src="../../pics/grades.png" alt="">
-                <span class="tooltiptext">הצגת ציונים</span>
-            </div>
-            <div id="btn_notes" class="w3-green tooltip">
-                <img src="../../pics/report.png" alt="">
-                <span class="tooltiptext">כתיבת הערות</span>
-            </div>
-            <div id="btn_details" class="w3-yellow w3-text-white tooltip">
-                <img src="../../pics/idcard.png" alt="">
-                <span class="tooltiptext">פרטים אישיים</span>
-            </div>
-
-            <div id="btn_child_management" class="box w3-pink w3-text-white tooltip">
-                <img src="../../pics/kid.png" alt="">
-                <span class="tooltiptext">עדכון ילד</span>
-            </div>
+        <div id="btn_notes" class="w3-green tooltip">
+          <img src="../../pics/report.png" alt="" />
+          <span class="tooltiptext">כתיבת הערות</span>
+        </div>
+        <div id="btn_details" class="w3-yellow w3-text-white tooltip">
+          <img src="../../pics/idcard.png" alt="" />
+          <span class="tooltiptext">פרטים אישיים</span>
         </div>
 
-        <div class="w3-display-bottomleft w3-padding-large">
-            Make Learning Fun
+        <div
+          id="btn_child_management"
+          class="box w3-pink w3-text-white tooltip"
+        >
+          <img src="../../pics/kid.png" alt="" />
+          <span class="tooltiptext">עדכון ילד</span>
         </div>
+      </div>
+
+      <div class="w3-display-bottomleft w3-padding-large">
+        Make Learning Fun
+      </div>
     </div>
 
     <!-- The Modal -->
     <div id="modal_choose_child" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" id="btn_exit_modal">&times;</span>
-                <h2 style="text-align: center;">בחר ילד:</h2>
-            </div>
-            <div class="modal-body">
-                <select name="children" id="children_selector">
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button id="btn_child_chose" type="button">בחר</button>
-                <div id="err_text"></div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">בחר ילד:</h2>
         </div>
+        <div class="modal-body">
+          <select name="children" id="children_selector"></select>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_child_chose" type="button">בחר</button>
+          <div id="err_text"></div>
+        </div>
+      </div>
     </div>
 
     <!-- The Modal Field -->
     <div id="modal_choose_field" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" id="btn_exit_modal_field">&times;</span>
-                <h2 style="text-align: center;">בחר תחום:</h2>
-            </div>
-            <div class="modal-body">
-                <select name="field" id="field_selector">
-                </select>
-            </div>
-            <div class="modal-footer">
-                <button id="btn_field_chose" type="button">בחר</button>
-                <div id="err_text"></div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal_field">&times;</span>
+          <h2 style="text-align: center">בחר תחום:</h2>
         </div>
+        <div class="modal-body">
+          <select name="field" id="field_selector"></select>
+        </div>
+        <div class="modal-footer">
+          <button id="btn_field_chose" type="button">בחר</button>
+          <div id="err_text"></div>
+        </div>
+      </div>
     </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { getUserRequest, getTeacherRequest, getChildRequest, getChildsRequest } from './api.js';
-        import { URL } from './consts.js';
+      import {
+        getUserRequest,
+        getTeacherRequest,
+        getChildRequest,
+        getChildsRequest,
+      } from "./api.js";
+      import { URL } from "./consts.js";
 
-        var fields = ['אנגלית', 'צבעים', 'חשבון', 'זכרון'];
-        $(document).ready(() => {
-            console.log('jquery work');
-            init();
-            getChildsRequest(updateSelectOptions);
+      var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
+      $(document).ready(() => {
+        console.log("jquery work");
+        init();
+        getChildsRequest(updateSelectOptions);
+      });
+
+      var nextChildPage;
+      var teacher = JSON.parse(localStorage.getItem("teacher"));
+      function init() {
+        $(".container div").addClass(
+          "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
+        );
+        $(".container div img").addClass("btn_home_img");
+
+        $("#btn_child_details").on("click", () => {
+          nextChildPage = URL.CHILD_DETAILS;
+          $("#modal_choose_child").css("display", "block");
+          // window.location.href = URL.CHILD_DETAILS;
         });
 
-        var nextChildPage;
-        var teacher = JSON.parse(localStorage.getItem('teacher'));
-        function init() {
-            $('.container div').addClass('box w3-hover-text-black w3-hover-opacity w3-hover-shadow');
-            $('.container div img').addClass('btn_home_img');
+        $("#btn_child_performance").on("click", () => {
+          nextChildPage = URL.CHILD_PERFORMANCE;
+          $("#modal_choose_child").css("display", "block");
+          // window.location.href = URL.CHILD_PERFORMANCE;
+        });
 
-            $('#btn_child_details').on('click', () => {
-                nextChildPage = URL.CHILD_DETAILS;
-                $("#modal_choose_child").css("display", "block");
-                // window.location.href = URL.CHILD_DETAILS;
-            });
+        $("#btn_notes").on("click", () => {
+          nextChildPage = URL.TEACHER_NOTES;
+          $("#modal_choose_child").css("display", "block");
+          // window.location.href = URL.TEACHER_NOTES;
+        });
 
-            $('#btn_child_performance').on('click', () => {
-                nextChildPage = URL.CHILD_PERFORMANCE;
-                $("#modal_choose_child").css("display", "block");
-                // window.location.href = URL.CHILD_PERFORMANCE;
-            });
+        $("#btn_details").on("click", () => {
+          window.location.href = URL.TEACHER_DETAILS;
+        });
 
-            $('#btn_notes').on('click', () => {
-                nextChildPage = URL.TEACHER_NOTES;
-                $("#modal_choose_child").css("display", "block");
-                // window.location.href = URL.TEACHER_NOTES;
-            });
-            
-            $('#btn_details').on('click', () => {
-                window.location.href = URL.TEACHER_DETAILS;
-            });
+        $("#btn_child_management").on("click", () => {
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+        });
 
-            $('#btn_child_management').on('click', () => {
-                window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
-            });
+        $("#btn_goToHome").on("click", () => {
+          window.location.href = URL.HOME;
+        });
 
-            $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.HOME;
-            });
+        displayNameTitle();
 
-            displayNameTitle();
+        initModal();
+        // updateSelectOptions(parent.children);   // popup
+      }
 
-            initModal();
-            // updateSelectOptions(parent.children);   // popup
-        }
+      function displayNameTitle() {
+        $("#teacherName").text(`${teacher.firstName} ${teacher.lastName}`);
+      }
 
+      function updateSelectOptions(children) {
+        // popup
+        children.forEach((child) => {
+          $("#children_selector").append(
+            $("<option></option>")
+              .attr("value", child.id)
+              .text(`${child.id}: ${child.firstName} ${child.lastName}`)
+          );
+        });
+        let i = 0;
+        fields.forEach((field) => {
+          $("#field_selector").append(
+            $("<option></option>").attr("value", i).text(`${field}`)
+          );
+          i++;
+        });
+      }
 
+      function getChildSuccess(data) {
+        // popup
+        localStorage.setItem("child", JSON.stringify(data));
+        window.location.href = nextChildPage;
+      }
 
-        function displayNameTitle() {
-            $('#teacherName').text(`${teacher.firstName} ${teacher.lastName}`);
-        }
+      function printErrorToUser(code, err) {
+        // popup
+        $("#err_text").text(err);
+      }
 
-        function updateSelectOptions(children) { // popup
-            children.forEach(child => {
-                $('#children_selector')
-                    .append($("<option></option>")
-                        .attr("value", child.id)
-                        .text(`${child.id}: ${child.firstName} ${child.lastName}`));
-            });
-            let i = 0;
-            fields.forEach(field => {
-                $('#field_selector')
-                    .append($("<option></option>")
-                        .attr("value", i)
-                        .text(`${field}`));
-                i++;
-            });
-        }
+      var childId;
+      function initModal() {
+        $("#btn_child_chose").on("click", () => {
+          childId = $("select[name=children] option").filter(":selected").val();
+          if (nextChildPage != URL.CHILD_PERFORMANCE)
+            getChildRequest(childId, getChildSuccess, printErrorToUser);
+          else {
+            $("#modal_choose_field").css("display", "block");
+            $("#btn_exit_modal").trigger("click");
+          }
+        });
 
-        function getChildSuccess(data) { // popup
-            localStorage.setItem('child', JSON.stringify(data));
-            window.location.href = nextChildPage;
-        }
+        $("#btn_exit_modal").on("click", () => {
+          $("#modal_choose_child").css("display", "none");
+        });
 
-        function printErrorToUser(code, err) { // popup
-            $('#err_text').text(err);
-        }
+        $("#btn_field_chose").on("click", () => {
+          let selectedId = $("select[name=field] option")
+            .filter(":selected")
+            .val();
+          // store field for next page import performance according to field
+          localStorage.setItem("selectedField", fields[selectedId]);
+          getChildRequest(childId, getChildSuccess, printErrorToUser);
+        });
 
-        var childId;
-        function initModal() {
-            $('#btn_child_chose').on('click', () => {
-                childId = $('select[name=children] option').filter(':selected').val();
-                if (nextChildPage != URL.CHILD_PERFORMANCE)
-                    getChildRequest(childId, getChildSuccess, printErrorToUser);
-                else {
-                    $("#modal_choose_field").css("display", "block");
-                    $('#btn_exit_modal').trigger('click');
-                }
-            });
+        $("#btn_exit_modal_field").on("click", () => {
+          $("#modal_choose_field").css("display", "none");
+        });
 
-            $("#btn_exit_modal").on('click', () => {
-                $("#modal_choose_child").css("display", "none");
-            });
-
-            $('#btn_field_chose').on('click', () => {
-                let selectedId = $('select[name=field] option').filter(':selected').val();
-                // store field for next page import performance according to field
-                localStorage.setItem('selectedField', fields[selectedId]);
-                getChildRequest(childId, getChildSuccess, printErrorToUser);
-            });
-
-            $("#btn_exit_modal_field").on('click', () => {
-                $("#modal_choose_field").css("display", "none");
-            });
-
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                let modal = document.getElementById("modal_choose_child");
-                let modal_field = document.getElementById("modal_choose_field");
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-                else if(event.target == modal_field){
-                    modal_field.style.display = "none";
-                }
-            }
-        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          let modal = document.getElementById("modal_choose_child");
+          let modal_field = document.getElementById("modal_choose_field");
+          if (event.target == modal) {
+            modal.style.display = "none";
+          } else if (event.target == modal_field) {
+            modal_field.style.display = "none";
+          }
+        };
+      }
     </script>
-</body>
-
+  </body>
 </html>

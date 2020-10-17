@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { initDB, belongChildrenToParent, addStats } = require('../models/assets/models_driver');
+const { initDB, belongChildrenToParent, addStats, addTeacher } = require('../models/assets/models_driver');
 
 router.get('/', async (req,res) => {
     res.sendFile(path.resolve(__dirname + '/../../client/admin.html'));
@@ -36,5 +36,6 @@ router.get('/addstats', async (req, res) => {
     res.set('Content-Type', 'text/html');
     res.status(200).send(htmlString);
 });
+
 
 module.exports = router;

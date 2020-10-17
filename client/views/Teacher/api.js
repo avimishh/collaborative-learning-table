@@ -94,6 +94,28 @@ export function userRegisterRequest(userId, userPassword, successFunction, error
 }
 
 
+export function teacherRegisterRequest(user, successFunction, errorFunction, completeFunction) {
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: teachersApi,
+        method: "POST",
+        // headers: { 'x-auth-token' : localStorage.getItem('token') },
+        data: JSON.stringify(user),
+        success: function (data, textStatus, xhr) {
+            localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
+            //  console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            // console.log(xhr.status, xhr.responseText);
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
 export function getUserRequest(successFunction, errorFunction, completeFunction) {
     console.log('work api');
     let request = {
@@ -128,6 +150,48 @@ export function getTeacherRequest(teacher_id, successFunction, errorFunction, co
             successFunction(data);
         },
         error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
+export function getTeachersRequest(successFunction, errorFunction, completeFunction) {
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: teachersApi,
+        method: "GET",
+        // headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify({}),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            errorFunction(xhr.status, xhr.responseText);
+        }
+    };
+    $.ajax(request);
+}
+
+
+export function deleteTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
+    console.log(teacher_id);
+    console.log('work api');
+    let request = {
+        contentType: "application/json",
+        url: teachersApi + teacher_id,
+        method: "DELETE",
+        // headers: { 'x-auth-token' : localStorage.getItem('token') },
+        // data: JSON.stringify({}),
+        success: function (data, textStatus, xhr) {
+            // console.log(data);
+            successFunction(data);
+        },
+        error: function (xhr) {
+            // console.log(xhr.status, xhr.responseText);
             errorFunction(xhr.status, xhr.responseText);
         }
     };

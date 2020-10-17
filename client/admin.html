@@ -7,21 +7,90 @@
     <link rel="icon" type="image/png" href="./pics/logo2.png" />
     <script src="./lib/jquery.js"></script>
     <style>
+      body {
+        background-color: steelblue;
+        font-family: sans-serif;
+        font-size: 24px;
+      }
+
+      h1 {
+        font-size: 2em;
+        margin-top: 0.67em;
+        margin-bottom: 0.67em;
+        font-weight: bold;
+        text-align: center;
+      }
+
       button {
         margin: 10px;
+        font-size: 20px;
+      }
+
+      span {
+        margin: 10px;
+      }
+
+      #div_general {
+        background-color: aqua;
+        display: table;
+      }
+
+      #div_teachers {
+        background-color: lightgreen;
+        display: table;
+      }
+
+      #div_parents {
+        background-color: lightgrey;
+        display: table;
+      }
+
+      #div_children {
+        background-color: sandybrown;
+        display: table;
+      }
+
+      #err_text {
+        text-align: center;
+        margin-top: 2px;
       }
     </style>
   </head>
 
   <body dir="rtl">
-    <button id="init_db">אתחל את בסיס הנתונים</button>
-    <button id="add_children">שייך ילדים להורים</button>
-    <button id="add_stats">הוסף סטטיסטיקות לילדים</button>
-    <button id="test" onclick="test()">בדיקה</button>
+    <h1>אפשרויות מנהל מערכת:</h1>
+    <div id="div_general">
+      <span>כללי:</span>
+      <button id="init_db">אתחל את בסיס הנתונים</button>
+    </div>
+    <div id="div_teachers">
+      <span>מורים:</span>
+      <button id="show_teachers">הצגת כל המורים</button>
+      <button id="add_teacher">הוספת מורה</button>
+      <button id="delete_teacher">מחיקת מורה</button>
+    </div>
+    <div id="div_parents">
+      <span>הורים:</span>
+      <button id="show_parents">הצגת כל ההורים</button>
+      <button id="add_children">שייך ילדים להורים</button>
+    </div>
+    <div id="div_children">
+      <span>ילדים:</span>
+      <button id="show_children">הצגת כל הילדים</button>
+      <button id="add_stats">הוסף סטטיסטיקות לילדים</button>
+    </div>
+
     <div id="err_text"></div>
 
     <script type="module">
       import { getServerUrl } from "../../globalDeclarations.js";
+      import {
+        getTeachersRequest,
+        deleteTeacherRequest,
+        teacherRegisterRequest,
+      } from "./views/Teacher/api.js";
+      import { getParentsRequest } from "./views/Parent/api.js";
+      import { getChildsRequest } from "./views/Child/api.js";
 
       const server = getServerUrl();
       const adminUrl = server + "admin/";
@@ -40,14 +109,49 @@
       function init() {
         $("#init_db").on("click", () => {
           getRequest(COMMAND.INIT_DB, printToUser);
+          resultColor("general");
+        });
+
+        $("#add_teacher").on("click", () => {
+          var teacher = {
+            firstName: "שולה",
+            lastName: "וידר",
+            id: "11",
+            password: "12345",
+            phone: "0524444444",
+          };
+          teacherRegisterRequest(teacher, addTeacher, errDeleteUser);
+          resultColor("teachers");
+        });
+
+        $("#show_teachers").on("click", () => {
+          getTeachersRequest(updateShowUsers);
+          resultColor("teachers");
+        });
+
+        $("#delete_teacher").on("click", () => {
+          deleteTeacherRequest("11", deleteUser, errDeleteUser);
+          resultColor("teachers");
+        });
+
+        $("#show_parents").on("click", () => {
+          getParentsRequest(updateShowUsers);
+          resultColor("parents");
         });
 
         $("#add_children").on("click", () => {
           getRequest(COMMAND.ADD_CHILDREN, printToUser);
+          resultColor("parents");
+        });
+
+        $("#show_children").on("click", () => {
+          getChildsRequest(updateShowUsers);
+          resultColor("children");
         });
 
         $("#add_stats").on("click", () => {
           getRequest(COMMAND.ADD_STATS, printToUser);
+          resultColor("children");
         });
       }
 
@@ -73,6 +177,63 @@
 
       function printToUser(data) {
         $("#err_text").text(data);
+      }
+
+      function updateShowUsers(users) {
+        $("#err_text").empty();
+        users.forEach((user) => {
+          $("#err_text").append(
+            $("<h4></h4>")
+              .attr("value", user.id)
+              .text(`${user.id}: ${user.firstName} ${user.lastName}`)
+          );
+        });
+      }
+
+      function addTeacher(users) {
+        $("#err_text").empty();
+        $("#err_text").append(
+          $("<h4></h4>")
+            .attr("value", users.id)
+            .text(`${users.id}: ${users.firstName} ${users.lastName}`)
+        );
+      }
+
+      function deleteUser(users) {
+        $("#err_text").empty();
+        $("#err_text").append(
+          $("<h4></h4>")
+            .attr("value", users.id)
+            .text(
+              `המורה הבא נמחק מהמערכת - ${users.id}: ${users.firstName} ${users.lastName}`
+            )
+        );
+      }
+
+      function errDeleteUser(users, id) {
+        console.log(users);
+        console.log(id);
+        $("#err_text").empty();
+        $("#err_text").append(
+          $("<h4></h4>").attr("value", users.id).text(`${id}`)
+        );
+      }
+
+      function resultColor(index) {
+        $("#err_text").css("padding", "1px");
+        switch (index) {
+          case "general":
+            $("#err_text").css("background-color", "aqua");
+            break;
+          case "teachers":
+            $("#err_text").css("background-color", "lightgreen");
+            break;
+          case "parents":
+            $("#err_text").css("background-color", "lightgrey");
+            break;
+          default:
+            $("#err_text").css("background-color", "sandybrown");
+        }
       }
     </script>
   </body>
