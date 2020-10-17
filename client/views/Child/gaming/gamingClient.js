@@ -17,8 +17,8 @@ function init() {
         // sock = io();
         let child = JSON.parse(localStorage.getItem('child'));
         sock = io.connect('', {query: `child_ID=${child.id}&child_Name=${child.firstName}`});
-        sock.emit('conn_status');
-        sock.on('toClient_conn_status', (status0, status1) => {
+        sock.emit('client_asks_players_conn_status');
+        sock.on('fromServer_toClient_players_conn_status', (status0, status1) => {
             player_status_update(status0, status1);
         });
         sock.on('set_player_role', (role) => {
@@ -33,7 +33,7 @@ function init() {
                 $('#guest_player').addClass('thicker');
             }
         });
-        sock.on('players_ready_choose_game', () => {
+        sock.on('players_ready_host_choose_game', () => {
             getGames();
             // if(isHost) getGames();
             // else waitForHost();

@@ -6,10 +6,10 @@ const {Game} = require('./models/game');
 var io;
 
 var playerHost = null, playerGuest = null;
-var gamePlayed = null;
+var gameToPlay = null;
 
-var status0 = 'disconnect';
-var status1 = 'disconnect';
+var statusHost = 'disconnect';
+var statusGuest = 'disconnect';
 
 function init(io_startup) {
     io = io_startup;
@@ -29,7 +29,7 @@ function init(io_startup) {
             // playerHost is connected, now after guest player connected,
             // 2 players are connected
             init_Guest_player(socket);
-            io.emit('players_ready_choose_game');
+            io.emit('players_ready_host_choose_game');
         } else {
             // playerHost making his connection, Only 1 player connected
             init_Host_player(socket);
@@ -40,7 +40,7 @@ function init(io_startup) {
             echo_Message_To_All_Clients('init_msg', text);
         });
 
-        socket.on('conn_status', () => {
+        socket.on('client_asks_players_conn_status', () => {
             set_Connection_Status_To_Clients();
         });
     });
@@ -51,18 +51,15 @@ function echo_Message_To_All_Clients(type, text){
 }
 
 function set_Connection_Status_To_Clients(){
-    status0 = (playerHost === null) ? 'disconnect' : 'connect';
-    status1 = (playerGuest === null) ? 'disconnect' : 'connect';
-    io.emit('toClient_conn_status', status0, status1);
+    statusHost = (playerHost === null) ? 'disconnect' : 'connect';
+    statusGuest = (playerGuest === null) ? 'disconnect' : 'connect';
+    io.emit('fromServer_toClient_players_conn_status', statusHost, statusGuest);
 }
 
 function init_Host_player(socket) {
     // get queries from socket connection
-    let id = socket.handshake.query.child_ID;
-    let name = socket.handshake.query.child_Name;
-    // init guest client
-    playerHost = new Player(socket, id, name);
-    playerHost.send_Init_Message_To_Client(`שלום ${name}! אתה השחקן המארח, מחכים לאורח`);
+    playerHost = new Player(socket, socket.handshake.query.child_ID, socket.handshake.query.child_Name);
+    playerHost.send_Init_Message_To_Client(`שלום ${playerHost.name}! אתה השחקן המארח, מחכים לאורח`);
     playerHost.set_Player_Role_To_Client('Host');
 
     playerHost.socket.on('disconnect', (text) => {
@@ -71,22 +68,17 @@ function init_Host_player(socket) {
         set_Connection_Status_To_Clients();
     });
 
-    socket.on('start_game', (title) => {
-        startGame();
+    socket.on('fromHostClient_toServer_gameToPlay_details', (title, id, url) => {
+        gameToPlay = new Game(title, id, url);
+        io.emit('fromServer_toClients_openGameUrl', gameToPlay.url);
     });
-    socket.on('init_game', (title, id, url) => {
-        gamePlayed = new Game(title, id, url);
-        io.emit('open_game_page', gamePlayed.url);
-    });
+    socket.on('fromClient_toServer_startGame',startGame);
 }
 
 function init_Guest_player(socket) {
     // get queries from socket connection
-    let id = socket.handshake.query.child_ID;
-    let name = socket.handshake.query.child_Name;
-    // init guest client
-    playerGuest = new Player(socket, id, name);
-    playerGuest.send_Init_Message_To_Client(`שלום ${name}! אתה השחקן השני, אפשר להתחיל`);
+    playerGuest = new Player(socket, socket.handshake.query.child_ID, socket.handshake.query.child_Name);
+    playerGuest.send_Init_Message_To_Client(`שלום ${playerGuest.name}! אתה השחקן השני, אפשר להתחיל`);
     playerGuest.set_Player_Role_To_Client('guest');
 
     playerGuest.socket.on('disconnect', (text) => {
@@ -97,8 +89,8 @@ function init_Guest_player(socket) {
 }
 
 
-const MathGame = require('./Math/math_game');
-const EnglishGame = require('./English/english_game');
+const MathGame = require('./Math/math1');
+const EnglishGame = require('./English/english1');
 
 var playingGame;
 
@@ -110,18 +102,17 @@ function startGame() {
         return;
     }
     // Start a game
-    switch (gamePlayed.title) {
+    switch (gameToPlay.title) {
         case 'תרגילי חשבון':
-            playingGame = new MathGame(playerHost, playerGuest, gamePlayed);
+            playingGame = new MathGame(playerHost, playerGuest, gameToPlay);
             break;
         case 'התאמת תמונות למילים':
-            playingGame = new EnglishGame(playerHost, playerGuest, gamePlayed);
+            playingGame = new EnglishGame(playerHost, playerGuest, gameToPlay);
             break;
         default:
             console.log('wrong game reference');
             break;
     }
 }
-
 
 module.exports.init = init;

@@ -94,7 +94,7 @@ function validateChild(child) {
         gender: Joi.string().valid(...GENDER_ENUM).error(errors => { return customError(errors, 'מין') }),
         address: Joi.string().allow(null,'').min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => { return customError(errors, 'כתובת') }),
         phone: Joi.string().allow(null,'').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => { return customError(errors, 'טלפון') }),
-        // level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
+        level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
         gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמת משחקים') })
     };
     // return true;

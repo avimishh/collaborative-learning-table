@@ -3,8 +3,7 @@ const express = require("express");
 const app = express();
 
 // START UP
-const logger = require("./startup/logging");
-
+const logger = require("./startup/logging.js");
 // Debug
 if (app.get("env") === "development") {
   require("./startup/debug")(app);

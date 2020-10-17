@@ -6,6 +6,12 @@ class Player {
         this.stats = null;
     }
 
+    set_Player_Stat(stats){
+        this.stats = stats;
+    }
+
+
+
     send_Init_Message_To_Client(text){
         this.socket.emit('init_msg', text);   // DEBUG
     }
@@ -19,18 +25,13 @@ class Player {
     }
 
 
-    set_Player_Stat(stats){
-        this.stats = stats;
-    }
-
-
     set_Operators_State(state){
         // console.log('at set_Operators_State()');
         this.socket.emit('disableOperators', state);
     }
 
-    update_Client_Stats(data){
-        this.socket.emit('stats', data)
+    update_Client_Stats(dataPlayersStatsArray){
+        this.socket.emit('fromServer_toClient_updated_stats', dataPlayersStatsArray)
     }
 }
 

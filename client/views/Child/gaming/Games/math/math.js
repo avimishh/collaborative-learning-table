@@ -1,7 +1,7 @@
 $(document).ready(function () {
     numbers_pad_init();
     addButtonListeners();
-    sock.emit('start_game', 'Math');
+    sock.emit('fromClient_toServer_startGame');
     // console.log('run');
 });
 
@@ -39,7 +39,7 @@ function addButtonListeners() {
         sock.emit('math_op', 'plus');
     });
     $('#minus').click(() => { sock.emit('math_op', 'minus'); });
-    $('#mult').click(() => { sock.emit('math_op', 'mult'); });
+    $('#multi').click(() => { sock.emit('math_op', 'multi'); });
 }
 
 
@@ -88,30 +88,14 @@ function submit_answer() {
 
 // Socket work
 const sock = parent.sock;
-// const sock = io();
-// console.log(parent.sock);
 
-
-
-
-
-sock.on('message', (text) => {
-    messageEvent(text)
-});
-
-// print messages to player from server
 var msg_counter = 0;
-const messageEvent = (text) => {
-    $('#operation').text('');
-    $('#operation').text(text);
-    $('#operation2').text('');
-    $('#operation2').text(text);
-    show_modal();
-    console.log(`${msg_counter}: ${text}`);
-    msg_counter++;
-};
-
-
+sock.on('fromServer_toClients_instruction_game', (text) => {
+        $('#instruction-top').text(text);
+        $('#instruction-modal').text(text);
+        show_modal();
+        console.log(`${++msg_counter}: ${text}`);
+});
 
 
 
@@ -126,20 +110,17 @@ function ask_question(question_string) {
 
 
 
-
-
-sock.on('stats', (playersStats) => {
-    update_stats(playersStats)
+sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
+    $('#table-stats-body').empty();
+    playersStatsArray[0].subFields.forEach((subField,index) => {
+        $('<tr>').append( 
+            $('<td>').text(subField.operatorHeb),
+            $('<td>').text(playersStatsArray[0].subFields[index].correct),      // player
+            $('<td>').text(playersStatsArray[1].subFields[index].correct)       // friend
+            ).appendTo('#table-stats-body');
+    });
 });
-// updating statistics got from server on stats board
-function update_stats(playersStats) {
-    let rows = ['stat_plus', 'stat_minus', 'stat_mult'];
 
-    rows.forEach((r, index) => {
-        $(`#${r} td:nth-child(2)`).text(playersStats[0][index].correct);    // player
-        $(`#${r} td:nth-child(3)`).text(playersStats[1][index].correct);    // friend
-    })
-}
 
 
 

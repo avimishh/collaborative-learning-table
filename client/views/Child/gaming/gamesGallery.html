@@ -1,206 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../../../lib/jquery.js"></script>
-    <link href="../../../lib/w3.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-    <!-- <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Varela Round', sans-serif;
-        }
-
-        body {
-            background-color: lightskyblue;
-            /* padding: 20px; */
-            font-family: Arial;
-        }
-
-        /* Center website */
-        .main {
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        h4 {
-            /* font-size: 50px; */
-            word-break: break-all;
-        }
-
-        .row {
-            margin: 8px -16px;
-        }
-
-        /* Add padding BETWEEN each column (if you want) */
-        .row,
-        .row>.column {
-            padding: 8px;
-        }
-
-        /* Create four equal columns that floats next to each other */
-        .column {
-            float: left;
-            width: 25%;
-        }
-
-        /* Clear floats after rows */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        /* Content */
-        .content {
-            /* background-color: white; */
-            padding: 10px;
-            text-align: center;
-            border: blanchedalmond 1px solid;
-            border-radius: 20px;
-        }
-
-        #row_div{
-            text-align: center;
-        }
-
-        .content:hover {
-  border: 1px solid #777;
-}
-
-img{
-    width: 100%;
-    height: auto;
-}
-        /* Responsive layout - makes a two column-layout instead of four columns */
-        @media screen and (max-width: 900px) {
-            .column {
-                width: 50%;
-            }
-        }
-
-        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
-        @media screen and (max-width: 600px) {
-            .column {
-                width: 100%;
-            }
-        }
-    </style> -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/lib/w3.css" rel="stylesheet" />
     <style>
-        div.gallery {
-            border: 1px solid #eee;
-        }
+      div.gallery {
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+      }
 
-        div.gallery:hover {
-            border: 1px solid #777;
-            background-color: #777;
-        }
+      div.gallery:hover {
+        border: 1px solid #777;
+        background-color: #777;
+      }
 
-        div.gallery img {
-            width: 50%;
-            max-height: 100px;
-            height: auto;
-        }
+      div.gallery img {
+        width: 50%;
+        max-height: 100px;
+        height: auto;
+      }
 
-        div.desc {
-            padding: 15px;
-            text-align: center;
-        }
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
 
-        * {
-            box-sizing: border-box;
-        }
+      .desc-p {
+        padding: 15px;
+        text-align: center;
+        height: 100px;
+      }
 
+      * {
+        box-sizing: border-box;
+      }
+
+      .responsive {
+        padding: 0 6px;
+        float: left;
+        width: 24.99999%;
+        cursor: pointer;
+      }
+
+      @media only screen and (max-width: 700px) {
         .responsive {
-            padding: 0 6px;
-            float: left;
-            width: 24.99999%;
+          width: 49.99999%;
+          margin: 6px 0;
         }
+      }
 
-        @media only screen and (max-width: 700px) {
-            .responsive {
-                width: 49.99999%;
-                margin: 6px 0;
-            }
+      @media only screen and (max-width: 500px) {
+        .responsive {
+          width: 100%;
         }
+      }
 
-        @media only screen and (max-width: 500px) {
-            .responsive {
-                width: 100%;
-            }
-        }
-
-        .clearfix:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        /* .gameBtn{
-    background-color: blanchedalmond;
-} */
+      .clearfix:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
     </style>
-</head>
+  </head>
 
-<body dir="rtl">
-
+  <body dir="rtl">
     <div class="clearfix"></div>
-
-    <!-- <div class="main">
-
-        <h4 id="msg">בחר משחק: </h4>
-        <hr>
-        <div id='row_div' class="row">
-        </div>
-
-    </div> -->
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
+    <div id="guest-client-message" class="w3-display-container">
+      <h4 id="msg" class="w3-display-middle"></h4>
+    </div>
     <script type="module">
-        import { getGamesRequest } from './api.js';
-        import { URL } from './consts.js';
+      import { getGamesRequest } from "./api.js";
+      import { URL } from "./consts.js";
 
-        var sock = parent.sock;
-        var isHost = parent.isHost;
+      var sock = parent.sock;
+      var isHost = parent.isHost;
 
-        $(document).ready(() => {
-            // console.log('jqeury work');
-            init();
-            sock.on('open_game_page', (this_game_url) => {
-                window.location.href = this_game_url;
-            });
+      $(document).ready(() => {
+        init();
+        sock.on("fromServer_toClients_openGameUrl", (gameToPlayUrl) => {
+          window.location.href = gameToPlayUrl;
         });
+      });
 
-        function init() {
-            if (isHost) getGamesRequest(showGames);
-            else $('#msg').text('המתן לחברך בבחירת משחק');
-        }
+      function init() {
+        if (isHost) getGamesRequest(showGames);
+        else $("#msg").text("המתן לחברך בבחירת משחק");
+      }
 
-
-        function showGames(games) {
-            games.forEach(game => {
-                let $div0 = $('<div>').addClass('responsive');//('column');
-                let $div1 = $('<div>').addClass('gallery');//('column');
-                let $div2 = $('<div>').addClass('desc');//('content');
-                let $img = $('<div>').css('height', '100px').addClass('desc').append($('<img>').attr('src', game.icon));//.css({ 'width': '100px', 'height': '100px' });
-                let $h3 = $('<div>').css('height', '100px').addClass('desc').append($('<h3>').text(game.title));
-                let $p = $('<div>').css('height', '100px').addClass('desc').append($('<p>').text(game.description));
-                let $btn = $('<button>').addClass('w3-button w3-ripple w3-khaki w3-round-xxlarge .gameBtn').text(game.title).on('click', () => {
-                    localStorage.setItem('game_id', game._id);
-                    console.log(game);
-                    // game_id = game._id;
-                    // startGameRequest(game._id);
-                    sock.emit('init_game', game.title, game._id, './Games/' + game.link);
-                });
-                $div2.append($img, $h3, $p, $btn);
-                $div1.append($div2);
-                $div0.append($div1);
-                $('body').append($div0);
-            });
-        }
+      function showGames(games) {
+        games.forEach((game) => {
+          let $div0 = $("<div>").addClass("responsive"); //('column');
+          let $div1 = $("<div>").addClass("gallery"); //('column');
+          let $div2 = $("<div>").addClass("desc"); //('content');
+          let $img = $("<div>")
+            .addClass("desc-p")
+            .append($("<img>").attr("src", game.icon)); //.css({ 'width': '100px', 'height': '100px' });
+          let $h3 = $("<div>")
+            .addClass("desc-p")
+            .append($("<h3>").text(game.title));
+          let $p = $("<div>")
+            .addClass("desc-p")
+            .append($("<p>").text(game.description));
+          let $btn = $("<button>")
+            .addClass("w3-button w3-ripple w3-khaki w3-round-xxlarge")
+            .text(game.title);
+          $div2.append($img, $h3, $p, $btn);
+          $div1.append($div2);
+          $div0.append($div1).on("click", () => {
+            sock.emit(
+              "fromHostClient_toServer_gameToPlay_details",
+              game.title,
+              game._id,
+              "./Games/" + game.link
+            );
+          });
+          $("body").append($div0);
+        });
+      }
     </script>
-</body>
-
+  </body>
 </html>

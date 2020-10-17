@@ -129,9 +129,9 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     notes.push(`ילד "${firstName} ${lastName}" נוצר בDB.`);
 }
 
-async function createField(name, description) {
+async function createField(name, description, nameEng) {
     // validate input
-    const { error } = validateField({ name, description });
+    const { error } = validateField({ name, description, nameEng });
     if (error) {
         notes.push(error.details[0].message);
         return console.log(reverseString(error.details[0].message));
@@ -145,7 +145,8 @@ async function createField(name, description) {
     }
     field = new Field({
         name,
-        description
+        description,
+        nameEng
     });
 
     field = await field.save();
@@ -252,10 +253,14 @@ async function initDB() {
     await createChild('יותם', 'גפן', '1001', new Date(2010, 5, 1), 'זכר', '12', 'נתניה', '0522222233', 'ג');
     await createChild('ליאור', 'גפן', '1002', new Date(2012, 10, 1), 'נקבה', '12', 'הרצליה', '0522222233', 'א');
 
-    await createField('חשבון', 'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל');
-    await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית');
-    await createField('צבעים', 'תרגול הכרת צבעים');
-    await createField('זכרון', 'תרגול ואימון הזכרון');
+    await createField(
+        'חשבון',
+         'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל',
+         'math'
+         );
+    await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
+    await createField('צבעים', 'תרגול הכרת צבעים', 'colors');
+    await createField('זכרון', 'תרגול ואימון הזכרון', 'memory');
 
 
     await createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', 'icons/math.png', './math/math.html');
@@ -340,17 +345,17 @@ async function addMathStat(child_id, game_id, date) {
         numOfQuestions: p_NoQ,
         numOfCorrectAnswers: p_NoC,
         _stats: [{
-            operator: 'Plus',
+            operator: 'plus',
             asked: p_Plus_a,
             correct: p_Plus_c
         },
         {
-            operator: 'Minus',
+            operator: 'minus',
             asked: p_Minus_a,
             correct: p_Minus_c
         },
         {
-            operator: 'Multi',
+            operator: 'multi',
             asked: p_Multi_a,
             correct: p_Multi_c
         }]

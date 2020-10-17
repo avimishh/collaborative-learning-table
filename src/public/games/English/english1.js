@@ -1,4 +1,4 @@
-const saveData = require('./../StatsSaver');
+const saveData = require('../StatsSaver');
 
 
 // const
@@ -13,7 +13,7 @@ class EnglishGame {
         this._isPlayersAnswerCorrect = [null, null];
         this._roundCounter = 0;
 
-        this._sendToPlayers('message', 'התחלנו לשחק');
+        this._sendToPlayers('fromServer_toClients_instruction_game', 'התחלנו לשחק');
         this._generate_questions();
 
         // Add listener 
@@ -34,7 +34,7 @@ class EnglishGame {
 
     // Message to 1 player
     _sendToPlayer(playerIndex, msg) {
-        this._players[playerIndex]._socket.emit('message', msg);
+        this._players[playerIndex]._socket.emit('fromServer_toClients_instruction_game', msg);
     }
 
     // Message for both players
@@ -118,7 +118,7 @@ class EnglishGame {
         this._roundCounter++;
 
         if (this._roundCounter >= MAX_ROUNDS) {
-            this._sendToPlayers('message', 'המשחק הסתיים');
+            this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק הסתיים');
             this._statsSaveInDB();
             // this._sendToPlayers('end');
             // this._players[0]._socket.disconnect(true);

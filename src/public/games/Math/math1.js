@@ -1,33 +1,33 @@
-const save_Data_DB = require('./../StatsSaver');
-const { Player } = require('./../models/player');
-const { Game } = require('./../models/game');
-const { Stats } = require('./../models/stats');
+const save_Data_DB = require('../StatsSaver');
+const { Player } = require('../models/player');
+const { Game } = require('../models/game');
+const { Stats } = require('../models/stats');
+// @@@@CHANGING
+const field = 'math';
+const subFields = [{eng: 'plus', heb: 'חיבור'},
+                    {eng: 'minus', heb: 'חיסור'},
+                    {eng: 'multi', heb: 'כפל'}];
+// @@@@
 
 var questions = [];
-// const
-const MAX_ROUNDS = 1;
-
+const MAX_ROUNDS = 2;
 var playerToPlay, playerToWait;
 
-function math_op(op){
-    this._askQuestion(idx, op);
-}
+// function math_op(op){
+//     this._askQuestion(idx, op);
+// }
 
-class MathGame {
+class MathGame { // @@@@CHANGING
     constructor(p0, p1, game) {
         this._game_id = game.id;
-        // #### Global ####
+
         this._players = [p0, p1];
-
         this._isPlayersAnswerCorrect = [null, null];
-        // change message to header
-        this._sendToPlayers('message', 'המשחק החל');
-        // ################
 
-        this._players.forEach(p => {
-            p.set_Player_Stat(new MathStats);
-        });
+        this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק החל');
 
+        this._players.forEach(p => p.set_Player_Stat(new Stats(field, subFields)));   
+        this._update_Client_Stats();
         // #### Specific Listeners ####
         // Add listener 
         this._players.forEach((player, idx) => {
@@ -68,9 +68,9 @@ class MathGame {
     _determineTurn() {
         playerToPlay = this._players[this._whoseTurn];
         playerToWait = this._players[(this._whoseTurn === 1) ? 0 : 1];
-        playerToPlay.send_Message_To_Client('message', 'תורך לבחור פעולה');
+        playerToPlay.send_Message_To_Client('fromServer_toClients_instruction_game', 'תורך לבחור פעולה');
         playerToPlay.set_Operators_State('enable');
-        playerToWait.send_Message_To_Client('message', 'המתן לחברך בבחירת פעולה');
+        playerToWait.send_Message_To_Client('fromServer_toClients_instruction_game', 'המתן לחברך בבחירת פעולה');
         playerToWait.set_Operators_State('disable');
     }
 
@@ -125,14 +125,14 @@ class MathGame {
     }
 
     _endRound() {
-        this._Stats_Update_To_Client();
+        this._update_Client_Stats();
         this._isPlayersAnswerCorrect = [null, null];
         this._set_Next_Player_Turn();
         this._roundCounter++;
 
         if (this._roundCounter >= MAX_ROUNDS) {
             this._roundCounter = 0;
-            this._sendToPlayers('message', 'המשחק הסתיים');
+            this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק הסתיים');
             this._Save_Stats_in_DB();
             setTimeout(() => { this._end_Game_Back_To_Games_Gallery() }, 5000);
             // this._sendToPlayers('end');
@@ -144,9 +144,9 @@ class MathGame {
         this._startRound();
     }
 
-    _Stats_Update_To_Client() {
-        this._players[0].update_Client_Stats([this._players[0].stats._stats, this._players[1].stats._stats]);
-        this._players[1].update_Client_Stats([this._players[1].stats._stats, this._players[0].stats._stats]);
+    _update_Client_Stats() {
+        this._players[0].update_Client_Stats([this._players[0].stats, this._players[1].stats]);
+        this._players[1].update_Client_Stats([this._players[1].stats, this._players[0].stats]);
     }
 
     _Save_Stats_in_DB() {
@@ -157,7 +157,7 @@ class MathGame {
 
     _end_Game_Back_To_Games_Gallery() {
         this._removeListeners();
-        this._sendToPlayers('players_ready_choose_game');
+        this._sendToPlayers('players_ready_host_choose_game');
     }
 
     _removeListeners() {
@@ -191,7 +191,7 @@ class Question {
             case 'minus':
                 res = this._oprnd1 - this._oprnd2;
                 break;
-            case 'mult':
+            case 'multi':
                 res = this._oprnd1 * this._oprnd2;
                 break;
             default:
@@ -210,7 +210,7 @@ class Question {
             case 'minus':
                 op = '-';
                 break;
-            case 'mult':
+            case 'multi':
                 op = '*';
                 break;
             default:
@@ -218,58 +218,6 @@ class Question {
         }
 
         return `${this._oprnd1} ${op} ${this._oprnd2}`;
-    }
-}
-
-
-class MathStats extends Stats {
-    constructor() {
-        super();
-        this._stats = [{
-            operator: 'Plus',
-            asked: 0,
-            correct: 0
-        },
-        {
-            operator: 'Minus',
-            asked: 0,
-            correct: 0
-        },
-        {
-            operator: 'Multi',
-            asked: 0,
-            correct: 0
-        }]
-    }
-
-    _add_Asked_Question(operation) {
-        switch (operation) {
-            case 'plus':
-                this._stats[0].asked++;
-                break;
-            case 'minus':
-                this._stats[1].asked++;
-                break;
-            case 'mult':
-                this._stats[2].asked++;
-                break;
-        }
-        super._add_Asked_Question();
-    }
-
-    _add_Correct_Answer(operation) {
-        switch (operation) {
-            case 'plus':
-                this._stats[0].correct++;
-                break;
-            case 'minus':
-                this._stats[1].correct++;
-                break;
-            case 'mult':
-                this._stats[2].correct++;
-                break;
-        }
-        super._add_Correct_Answer();
     }
 }
 
