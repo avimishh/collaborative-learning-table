@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Teacher, validateTeacher } = require('../models/teacher');
+const {
+    Teacher,
+    validateTeacher
+} = require('../models/teacher');
 const auth = require('../middleware/auth'); // Authorization
 // const admin = require('../middleware/admin');
 
@@ -34,7 +37,9 @@ router.get('/me', auth, async (req, res) => {
 // GET ['api/teachers/:id']
 router.get('/:id', async (req, res) => {
     // Find
-    const teacher = await Teacher.findOne({ id: req.params.id }).select('-password');
+    const teacher = await Teacher.findOne({
+        id: req.params.id
+    }).select('-password');
     // const teacher = await teacher.findOne({id:req.params.id});
     // Check if exist
     if (!teacher)
@@ -48,14 +53,18 @@ router.get('/:id', async (req, res) => {
 // POST ['api/teachers'] -   Register
 router.post('/', async (req, res) => {
     // Validate client input
-    const { error } = validateTeacher(req.body);
+    const {
+        error
+    } = validateTeacher(req.body);
     // Assert validation
-    if (error){
+    if (error) {
         console.log(error.details[0].message);
         return res.status(400).send(error.details[0].message);
     }
     // Check if the teacher exist
-    let teacher = await Teacher.findOne({ id: req.body.id });
+    let teacher = await Teacher.findOne({
+        id: req.body.id
+    });
     // Response 400 Bad Request if the teacher exist
     if (teacher) return res.status(400).send(`מורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
     // Create new document
@@ -81,7 +90,9 @@ router.post('/', async (req, res) => {
 // PUT ['api/teachers/:id']
 router.put('/:id', auth, async (req, res) => {
     // Validate client input
-    var { error } = validateTeacher(req.body);
+    var {
+        error
+    } = validateTeacher(req.body);
     // console.log(error);
     // Assert validation
     if (error)
@@ -89,14 +100,17 @@ router.put('/:id', auth, async (req, res) => {
     // Try to update the selected document
     try {
         // res.status(200).send(user);
-        const teacher = await teachers.findOneAndUpdate({ id: req.params.id }, {
+        const teacher = await teachers.findOneAndUpdate({
+            id: req.params.id
+        }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             id: req.body.id,
             // password: req.body.password,
             phone: req.body.phone
         }, {
-            new: true, useFindAndModify: false
+            new: true,
+            useFindAndModify: false
         }).populate('children', 'id firstName lastName');
         // Password Hash
         // const salt = await bcrypt.genSalt(10);
@@ -118,17 +132,18 @@ router.put('/:id', auth, async (req, res) => {
 router.delete('/:id', async (req, res) => {
     // Try to delete the selected document
     try {
-        const teacher = await Teacher.findOneAndRemove({ id: req.params.id });
+        const teacher = await Teacher.findOneAndRemove({
+            id: req.params.id
+        });
         // Assert delete completed successfully
-        if (!teacher){
+        if (!teacher) {
             console.log('1');
             return res.status(404).send(`המורה בעל ת"ז: ${req.params.id} לא נמצא/ה.`);
         }
-            
+
         // Send response to client
         res.send(teacher);
-    }
-    catch (ex) {
+    } catch (ex) {
         console.log('2');
         return res.status(404).send(`בעיה במחיקת המורה.`);
     }

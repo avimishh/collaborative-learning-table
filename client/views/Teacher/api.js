@@ -1,4 +1,6 @@
-import { getServerApiUrl } from "../../globalDeclarations.js";
+import {
+  getServerApiUrl
+} from "../../globalDeclarations.js";
 
 const server = getServerApiUrl();
 const authApi = server + "auth/teacher/";
@@ -7,16 +9,15 @@ const teachersApi = server + "teachers/";
 const childsApi = server + "childs/";
 const notesApi = server + "notes/";
 
-export function getChildsRequest(
-  successFunction,
-  errorFunction
-) {
+export function getChildsRequest(successFunction, errorFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi,
     method: "GET",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     // data: JSON.stringify({}),
     success: function (data, textStatus, xhr) {
       successFunction(data);
@@ -28,18 +29,15 @@ export function getChildsRequest(
   $.ajax(request);
 }
 
-export function getChildRequest(
-  childId,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function getChildRequest(childId, successFunction, errorFunction, completeFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi + childId,
     method: "GET",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     // data: JSON.stringify({}),
     success: function (data, textStatus, xhr) {
       // console.log(data);
@@ -52,17 +50,15 @@ export function getChildRequest(
   $.ajax(request);
 }
 
-export function childRegisterRequest(
-  newChild,
-  successFunction,
-  errorFunction
-) {
+export function childRegisterRequest(newChild, successFunction, errorFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi,
     method: "POST",
-    headers: { 'x-auth-token' : localStorage.getItem('token') },
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
     data: JSON.stringify(newChild),
     success: function (data, textStatus, xhr) {
       // console.log(data);
@@ -75,17 +71,15 @@ export function childRegisterRequest(
   $.ajax(request);
 }
 
-export function childUpdateRequest(
-  toUpdateChild,
-  successFunction,
-  errorFunction
-) {
+export function childUpdateRequest(toUpdateChild, successFunction, errorFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi + toUpdateChild.id,
     method: "PUT",
-    headers: { 'x-auth-token' : localStorage.getItem('token') },
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
     data: JSON.stringify(toUpdateChild),
     success: function (data, textStatus, xhr) {
       // console.log(data);
@@ -98,77 +92,71 @@ export function childUpdateRequest(
   $.ajax(request);
 }
 
-export function deleteChildRequest(
-    toDeleteChildId,
-    successFunction,
-    errorFunction
-  ) {
-    console.log("work api");
-    let request = {
-      contentType: "application/json",
-      url: childsApi + toDeleteChildId,
-      method: "DELETE",
-      headers: { 'x-auth-token' : localStorage.getItem('token') },
-      // data: JSON.stringify(),
-      success: function (data, textStatus, xhr) {
-        // console.log(data);
-        successFunction(data);
-      },
-      error: function (xhr) {
-        errorFunction(xhr.status, xhr.responseText);
-      },
-    };
-    $.ajax(request);
-  }
+export function deleteChildRequest(toDeleteChildId, successFunction, errorFunction) {
+  console.log("work api");
+  let request = {
+    contentType: "application/json",
+    url: childsApi + toDeleteChildId,
+    method: "DELETE",
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
+    // data: JSON.stringify(),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    },
+  };
+  $.ajax(request);
+}
 
 export function teacherRegisterRequest(user, successFunction, errorFunction, completeFunction) {
-    console.log('work api');
-    let request = {
-        contentType: "application/json",
-        url: teachersApi,
-        method: "POST",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify(user),
-        success: function (data, textStatus, xhr) {
-            localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-            //  console.log(data);
-            successFunction(data);
-        },
-        error: function (xhr) {
-            // console.log(xhr.status, xhr.responseText);
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi,
+    method: "POST",
+    // headers: { 'x-auth-token' : localStorage.getItem('token') },
+    data: JSON.stringify(user),
+    success: function (data, textStatus, xhr) {
+      localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
+      //  console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      // console.log(xhr.status, xhr.responseText);
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
 }
 
 
 export function getUserRequest(successFunction, errorFunction, completeFunction) {
-    console.log('work api');
-    let request = {
-        contentType: "application/json",
-        url: teachersApi + "me/",
-        method: "GET",
-        headers: { 'x-auth-token' : localStorage.getItem('token') },
-        // data: JSON.stringify(),
-        success: function (data, textStatus, xhr) {
-            // console.log(data);
-            successFunction(data);
-        },
-        error: function (xhr) {
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi + "me/",
+    method: "GET",
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
+    // data: JSON.stringify(),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
 }
 
-export function userLoginRequest(
-  userId,
-  userPassword,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
@@ -191,13 +179,7 @@ export function userLoginRequest(
   $.ajax(request);
 }
 
-export function userRegisterRequest(
-  userId,
-  userPassword,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function userRegisterRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
@@ -221,81 +203,80 @@ export function userRegisterRequest(
 }
 
 export function getTeachersRequest(successFunction, errorFunction, completeFunction) {
-    console.log('work api');
-    let request = {
-        contentType: "application/json",
-        url: teachersApi,
-        method: "GET",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        // data: JSON.stringify({}),
-        success: function (data, textStatus, xhr) {
-            // console.log(data);
-            successFunction(data);
-        },
-        error: function (xhr) {
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi,
+    method: "GET",
+    // headers: { 'x-auth-token' : localStorage.getItem('token') },
+    // data: JSON.stringify({}),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
 }
 
 
 export function deleteTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
-    console.log(teacher_id);
-    console.log('work api');
-    let request = {
-        contentType: "application/json",
-        url: teachersApi + teacher_id,
-        method: "DELETE",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        // data: JSON.stringify({}),
-        success: function (data, textStatus, xhr) {
-            // console.log(data);
-            successFunction(data);
-        },
-        error: function (xhr) {
-            // console.log(xhr.status, xhr.responseText);
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
+  console.log(teacher_id);
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi + teacher_id,
+    method: "DELETE",
+    // headers: { 'x-auth-token' : localStorage.getItem('token') },
+    // data: JSON.stringify({}),
+    success: function (data, textStatus, xhr) {
+      // console.log(data);
+      successFunction(data);
+    },
+    error: function (xhr) {
+      // console.log(xhr.status, xhr.responseText);
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
 }
 
 
 export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunction, errorFunction, completeFunction) {
-    // console.log(teacherToUpdate);
-    console.log('work api');
-    let request = {
-        contentType: "application/json",
-        url: teachersApi + teacher_id,
-        method: "PUT",
-        headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify(teacherToUpdate),
-        success: function (data, textStatus, xhr) {
-            localStorage.setItem('teacher', JSON.stringify(data));
-            // console.log(data);
-            successFunction();
-        },
-        error: function (xhr) {
-            errorFunction(xhr.status, xhr.responseText);
-        }
-    };
-    $.ajax(request);
+  // console.log(teacherToUpdate);
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi + teacher_id,
+    method: "PUT",
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
+    data: JSON.stringify(teacherToUpdate),
+    success: function (data, textStatus, xhr) {
+      localStorage.setItem('teacher', JSON.stringify(data));
+      // console.log(data);
+      successFunction();
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
 }
 
-export function getTeacherRequest(
-  teacher_id,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function getTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
   console.log(teacher_id);
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi + teacher_id,
     method: "GET",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     // data: JSON.stringify(),
     success: function (data, textStatus, xhr) {
       console.log(data);
@@ -308,20 +289,16 @@ export function getTeacherRequest(
   $.ajax(request);
 }
 
-export function updateTeacherRequest(
-  teacher_id,
-  teacherToUpdate,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunction, errorFunction, completeFunction) {
   // console.log(teacherToUpdate);
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi + teacher_id,
     method: "PUT",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     data: JSON.stringify(teacherToUpdate),
     success: function (data, textStatus, xhr) {
       localStorage.setItem("teacher", JSON.stringify(data));
@@ -335,18 +312,15 @@ export function updateTeacherRequest(
   $.ajax(request);
 }
 
-export function firstDetailsTeacherRequest(
-  teacherToUpdate,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, errorFunction, completeFunction) {
   console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi,
     method: "POST",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     data: JSON.stringify(teacherToUpdate),
     success: function (data, textStatus, xhr) {
       localStorage.setItem("teacher", JSON.stringify(data));
@@ -360,13 +334,7 @@ export function firstDetailsTeacherRequest(
   $.ajax(request);
 }
 
-export function postChildNotesRequest(
-  childId,
-  newNote,
-  successFunction,
-  errorFunction,
-  completeFunction
-) {
+export function postChildNotesRequest(childId, newNote, successFunction, errorFunction, completeFunction) {
   console.log(childId);
   console.log(newNote);
   console.log("work api");
@@ -374,7 +342,9 @@ export function postChildNotesRequest(
     contentType: "application/json",
     url: notesApi + childId,
     method: "POST",
-    headers: { "x-auth-token": localStorage.getItem("token") },
+    headers: {
+      "x-auth-token": localStorage.getItem("token")
+    },
     data: JSON.stringify(newNote),
     success: function (data, textStatus, xhr) {
       // console.log(data);

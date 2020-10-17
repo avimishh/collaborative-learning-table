@@ -1,89 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <link rel="icon" type="image/png" href="./pics/logo2.png" />
-    <script src="./lib/jquery.js"></script>
-    <style>
-      body {
-        background-color: steelblue;
-        font-family: sans-serif;
-        font-size: 24px;
-      }
 
-      h1 {
-        font-size: 2em;
-        margin-top: 0.67em;
-        margin-bottom: 0.67em;
-        font-weight: bold;
-        text-align: center;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <link rel="icon" type="image/png" href="./pics/logo2.png" />
+  <script src="./lib/jquery.js"></script>
+  <style>
+    body {
+      background-color: steelblue;
+      font-family: sans-serif;
+      font-size: 24px;
+    }
 
-      button {
-        margin: 10px;
-        font-size: 20px;
-      }
+    h1 {
+      font-size: 2em;
+      margin-top: 0.67em;
+      margin-bottom: 0.67em;
+      font-weight: bold;
+      text-align: center;
+    }
 
-      span {
-        margin: 10px;
-      }
+    button {
+      margin: 10px;
+      font-size: 20px;
+    }
 
-      #div_general {
-        background-color: aqua;
-        display: table;
-      }
+    span {
+      margin: 10px;
+    }
 
-      #div_teachers {
-        background-color: lightgreen;
-        display: table;
-      }
+    #div_general {
+      background-color: aqua;
+      display: table;
+    }
 
-      #div_parents {
-        background-color: lightgrey;
-        display: table;
-      }
+    #div_teachers {
+      background-color: lightgreen;
+      display: table;
+    }
 
-      #div_children {
-        background-color: sandybrown;
-        display: table;
-      }
+    #div_parents {
+      background-color: lightgrey;
+      display: table;
+    }
 
-      #err_text {
-        text-align: center;
-        margin-top: 2px;
-      }
-    </style>
-  </head>
+    #div_children {
+      background-color: sandybrown;
+      display: table;
+    }
 
-  <body dir="rtl">
-    <h1>אפשרויות מנהל מערכת:</h1>
-    <div id="div_general">
-      <span>כללי:</span>
-      <button id="init_db">אתחל את בסיס הנתונים</button>
-    </div>
-    <div id="div_teachers">
-      <span>מורים:</span>
-      <button id="show_teachers">הצגת כל המורים</button>
-      <button id="add_teacher">הוספת מורה</button>
-      <button id="delete_teacher">מחיקת מורה</button>
-    </div>
-    <div id="div_parents">
-      <span>הורים:</span>
-      <button id="show_parents">הצגת כל ההורים</button>
-      <button id="add_children">שייך ילדים להורים</button>
-    </div>
-    <div id="div_children">
-      <span>ילדים:</span>
-      <button id="show_children">הצגת כל הילדים</button>
-      <button id="add_stats">הוסף סטטיסטיקות לילדים</button>
-    </div>
+    #err_text {
+      text-align: center;
+      margin-top: 2px;
+    }
+  </style>
+</head>
 
-    <div id="err_text"></div>
+<body dir="rtl">
+  <h1>אפשרויות מנהל מערכת:</h1>
+  <div id="div_general">
+    <span>כללי:</span>
+    <button id="init_db">אתחל את בסיס הנתונים</button>
+  </div>
+  <div id="div_teachers">
+    <span>מורים:</span>
+    <button id="show_teachers">הצגת כל המורים</button>
+    <button id="add_teacher">הוספת מורה</button>
+    <button id="delete_teacher">מחיקת מורה</button>
+  </div>
+  <div id="div_parents">
+    <span>הורים:</span>
+    <button id="show_parents">הצגת כל ההורים</button>
+    <button id="add_children">שייך ילדים להורים</button>
+  </div>
+  <div id="div_children">
+    <span>ילדים:</span>
+    <button id="show_children">הצגת כל הילדים</button>
+    <button id="add_stats">הוסף סטטיסטיקות לילדים</button>
+  </div>
 
-    <script type="module">
-      import { getServerUrl } from "../../globalDeclarations.js";
+  <div id="err_text"></div>
+
+  <script type="module">
+    import { getServerUrl } from "../../globalDeclarations.js";
       import {
         getTeachersRequest,
         deleteTeacherRequest,
@@ -236,5 +237,6 @@
         }
       }
     </script>
-  </body>
+</body>
+
 </html>

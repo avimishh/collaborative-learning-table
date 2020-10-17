@@ -1,113 +1,111 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <script src="/lib/jquery.js"></script>
-    <link href="/style/global.css" rel="stylesheet" />
-    <link href="/style/modal.css" rel="stylesheet" />
 
-    <style>
-      .bgimg {
-        background-image: url("../../pics/background/homeParents.jpg");
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <link href="/style/modal.css" rel="stylesheet" />
 
-      .container {
-        width: 1100px;
-      }
+  <style>
+    .bgimg {
+      background-image: url("../../pics/background/homeParents.jpg");
+    }
 
-      .box {
-        width: 200px;
-        height: 200px;
-      }
-    </style>
-  </head>
+    .container {
+      width: 1100px;
+    }
 
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge" >
-            שולחן משחקים שיתופי
-            <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="/pics/homeBtn.png" alt="">
-            </button>
-        </div>
-        <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
-            <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
-                <img src="/pics/v2/kidid.png" alt="">
-                <span class="tooltiptext">פרטי הילדים</span>
-            </div>
-            <div id="btn_child_performance" class="w3-red tooltip">
-                <img src="/pics/v2/grades.png" alt="">
-                <span class="tooltiptext">הצגת ציונים</span>
-            </div>
-            <div id="btn_notes" class="w3-green tooltip">
-                <img src="/pics/v2/report.png" alt="">
-                <span class="tooltiptext">כתיבת הערות</span>
-            </div>
-            <div id="btn_details" class="w3-yellow w3-text-white tooltip">
-                <img src="/pics/v2/details.png" alt="">
-                <span class="tooltiptext">פרטים אישיים</span>
-            </div>
+    .box {
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
 
-            <div id="btn_child_management" class="box w3-pink w3-text-white tooltip">
-                <img src="/pics/v2/kidmanage.png" alt="">
-                <span class="tooltiptext">עדכון ילד</span>
-            </div>
-        </div>
-
-        <div
-          id="btn_child_management"
-          class="box w3-pink w3-text-white tooltip"
-        >
-          <img src="../../pics/kid.png" alt="" />
-          <span class="tooltiptext">עדכון ילד</span>
-        </div>
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge">
+      שולחן משחקים שיתופי
+      <button type="button" class="homeBtn" id="btn_goToHome">
+        <img id="homeImg" src="/pics/homeBtn.png" alt="">
+      </button>
+    </div>
+    <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
+      <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
+        <img src="/pics/v2/kidid.png" alt="">
+        <span class="tooltiptext">פרטי הילדים</span>
+      </div>
+      <div id="btn_child_performance" class="w3-red tooltip">
+        <img src="/pics/v2/grades.png" alt="">
+        <span class="tooltiptext">הצגת ציונים</span>
+      </div>
+      <div id="btn_notes" class="w3-green tooltip">
+        <img src="/pics/v2/report.png" alt="">
+        <span class="tooltiptext">כתיבת הערות</span>
+      </div>
+      <div id="btn_details" class="w3-yellow w3-text-white tooltip">
+        <img src="/pics/v2/details.png" alt="">
+        <span class="tooltiptext">פרטים אישיים</span>
       </div>
 
-      <div class="w3-display-bottomleft w3-padding-large">
-        Make Learning Fun
+      <div id="btn_child_management" class="box w3-pink w3-text-white tooltip">
+        <img src="/pics/v2/kidmanage.png" alt="">
+        <span class="tooltiptext">עדכון ילד</span>
       </div>
     </div>
 
-    <!-- The Modal -->
-    <div id="modal_choose_child" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" id="btn_exit_modal">&times;</span>
-          <h2 style="text-align: center">בחר ילד:</h2>
-        </div>
-        <div class="modal-body">
-          <select name="children" id="children_selector"></select>
-        </div>
-        <div class="modal-footer">
-          <button id="btn_child_chose" type="button">בחר</button>
-          <div id="err_text"></div>
-        </div>
+    <div id="btn_child_management" class="box w3-pink w3-text-white tooltip">
+      <img src="../../pics/kid.png" alt="" />
+      <span class="tooltiptext">עדכון ילד</span>
+    </div>
+  </div>
+
+  <div class="w3-display-bottomleft w3-padding-large">
+    Make Learning Fun
+  </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="modal_choose_child" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" id="btn_exit_modal">&times;</span>
+        <h2 style="text-align: center">בחר ילד:</h2>
+      </div>
+      <div class="modal-body">
+        <select name="children" id="children_selector"></select>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_child_chose" type="button">בחר</button>
+        <div id="err_text"></div>
       </div>
     </div>
+  </div>
 
-    <!-- The Modal Field -->
-    <div id="modal_choose_field" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" id="btn_exit_modal_field">&times;</span>
-          <h2 style="text-align: center">בחר תחום:</h2>
-        </div>
-        <div class="modal-body">
-          <select name="field" id="field_selector"></select>
-        </div>
-        <div class="modal-footer">
-          <button id="btn_field_chose" type="button">בחר</button>
-          <div id="err_text"></div>
-        </div>
+  <!-- The Modal Field -->
+  <div id="modal_choose_field" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" id="btn_exit_modal_field">&times;</span>
+        <h2 style="text-align: center">בחר תחום:</h2>
+      </div>
+      <div class="modal-body">
+        <select name="field" id="field_selector"></select>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_field_chose" type="button">בחר</button>
+        <div id="err_text"></div>
       </div>
     </div>
+  </div>
 
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
-    <script type="module">
-      import {
+  <script type="module" src="api.js"></script>
+  <script type="module" src="consts.js"></script>
+  <script type="module">
+    import {
         getUserRequest,
         getTeacherRequest,
         getChildRequest,
@@ -240,5 +238,6 @@
         };
       }
     </script>
-  </body>
+</body>
+
 </html>
