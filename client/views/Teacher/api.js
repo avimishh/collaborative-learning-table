@@ -289,7 +289,6 @@ export function getTeacherRequest(teacher_id, successFunction, errorFunction, co
   $.ajax(request);
 }
 
-
 export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, errorFunction, completeFunction) {
   console.log("work api");
   let request = {
