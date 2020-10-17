@@ -36,7 +36,8 @@ router.post('/', auth, async (req, res) => {
 
     let field = new Field({
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description,
+        nameEng: req.body.nameEng
     });
 
     field = await field.save();
@@ -53,7 +54,8 @@ router.put('/:id', async (req, res) => {
     try {
         const field = await Field.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
-            description: req.body.description
+            description: req.body.description,
+            nameEng: req.body.nameEng
         },
             {
                 new: true,

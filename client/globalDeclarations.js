@@ -1,6 +1,5 @@
 const serverOnLocal = "http://localhost:3000/";
 const serverOnCloud = "https://co-learn.herokuapp.com/";
-// colearn2
 const hostname = window.location.hostname;
 
 export function getServerUrl() {
@@ -12,6 +11,20 @@ export function getServerApiUrl() {
   if (hostname === "localhost") return serverOnLocal + "api/";
   return serverOnCloud + "api/";
 }
+
+export function passwordToggle() {
+  $("#user_password").attr(
+    "type",
+    $("#user_password").attr("type") === "password" ? "text" : "password"
+  );
+  $(".icon-eye").find("i").toggleClass("fa-eye fa-eye-slash");
+}
+
+export function initSignInPage() {
+  window.passwordToggle = passwordToggle;
+}
+
+
 
 export function globalInit() {
   include(".././pics/logo3.png");

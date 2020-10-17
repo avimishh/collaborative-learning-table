@@ -15,7 +15,7 @@ const mathSheetSchema = new mongoose.Schema({
     questions: [{
         operator: {
             type: String,
-            enum: ['Plus', 'Minus', 'Multi'],
+            enum: ['plus', 'minus', 'multi'],
             // required: true
         },
         asked: {

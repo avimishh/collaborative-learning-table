@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/signin.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
+    <style>
+      .form-box {
+        margin: unset;
+        background: rgba(0, 0, 0, 0.9);
+      }
+
+      .bgimg {
+        background-image: url("/pics/background/back-register.jpg");
+      }
+
+      #err_text {
+        height: 22px;
+      }
+
+      .form-box {
+        width: 800px;
+        /* background: cadetblue; */
+        margin: 1% auto 1% auto;
+        padding: 30px 20px;
+        color: #fff;
+        box-shadow: 0 0 20px 10px blanchedalmond;
+        border-radius: 50px 50px 50px 50px;
+        /* font-family: heb_font_Varela; */
+      }
+
+      .input-box {
+        display: inline-block;
+        margin: 10px 30px;
+        width: 40%;
+        border-bottom: 1px solid #fff;
+        padding-top: 10px;
+        padding-bottom: 5px;
+      }
+      .input-box input {
+        width: 70%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      #input-gender {
+        margin: unset;
+        text-align: center;
+        width: 50%;
+        border: white 2px solid;
+        outline: none;
+        background: black;
+        color: #fff;
+        font-size: 16px;
+        padding: 5px 50px 5px 5px;
+        height: unset;
+      }
+
+      input#input-birth::-webkit-calendar-picker-indicator {
+        display: none;
+      }
+
+      input[type="date"]::-webkit-inner-spin-button,
+      input[type="date"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      .modal-header {
+        padding: 2px 16px;
+        background-color: crimson;
+        color: white;
+      }
+      .modal {
+        padding-top: 50px;
+      }
+      #img-modal {
+        width: 400px;
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body dir="rtl">
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+      <div class="w3-display-topleft w3-padding-large w3-xlarge">
+        שולחן משחקים שיתופי
+      </div>
+    </div>
+    <div class="form-box w3-display-middle">
+      <h1 style="font-weight: bold">עדכון פרטים</h1>
+      <div class="input-box">
+        <i class="fa fa-user-circle-o"></i>
+        <input type="text" id="input-firstName" placeholder="שם פרטי" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-user-circle-o"></i>
+        <input type="text" id="input-lastName" placeholder="שם משפחה" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-address-card-o"></i>
+        <input type="text" id="input-id" placeholder="תעודת זהות" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-birthday-cake"></i>
+        <input
+          type="text"
+          placeholder="תאריך לידה:"
+          disabled
+          style="width: 40%; left: 0"
+        />
+        <input type="date" id="input-birth" style="width: 40%" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-intersex"></i>
+        <input type="text" placeholder="מין:" disabled style="width: 20%" />
+        <select name="gender" id="input-gender">
+          <option value="זכר">זכר</option>
+          <option value="נקבה">נקבה</option>
+        </select>
+      </div>
+      <div class="input-box">
+        <i class="fa fa-map-signs"></i>
+        <input type="text" id="input-address" placeholder="כתובת (לא חובה)" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-phone-square"></i>
+        <input type="text" id="input-phone" placeholder="טלפון (לא חובה)" />
+      </div>
+      <div class="input-box">
+        <i class="fa fa-gamepad"></i>
+        <input
+          type="text"
+          placeholder="סיסמת משחקים"
+          id="input-gamesPassword"
+        />
+        <span class="icon-eye" onclick="passwordToggle()">
+          <i class="fa fa-eye"></i>
+        </span>
+      </div>
+      <div id="err_text"></div>
+
+      <button type="button" class="register-btn" id="btn-update">
+        עדכון פרטים
+      </button>
+      <button type="button" class="register-btn" id="btn-cancel">ביטול</button>
+    </div>
+
+    <div class="w3-display-bottomleft w3-padding-large">Make Learning Fun</div>
+
+    <!-- The Modal -->
+    <div id="modal-success" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">העדכון הצליח!</h2>
+        </div>
+        <div class="modal-body">
+          <img id="img-modal" src="/pics/kid_success.png" alt="" />
+        </div>
+        <div class="modal-footer">
+          <div id="err_text">מיד תועבר בחזרה לעמוד הניהול...</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { childUpdateRequest } from "../api.js";
+      import { URL } from "../consts.js";
+
+      $(document).ready(() => {
+        console.log("jquery work");
+        initInputDetails();
+        init();
+        window.passwordToggle = passwordToggle;
+        setTimeout(passwordToggle, 1000);
+      });
+
+      function passwordToggle() {
+        $("#input-gamesPassword").attr(
+          "type",
+          $("#input-gamesPassword").attr("type") === "password" ? "text" : "password"
+        );
+        $(".icon-eye").find("i").toggleClass("fa-eye fa-eye-slash");
+      }
+
+      function initInputDetails(){
+        let child = JSON.parse(localStorage.getItem('child'));
+        childProperties.forEach((prop) => {
+            $(`#input-${prop}`).val(child[prop]);
+          });
+          $(`#input-birth`).val(formatDate(child["birth"]));
+      }
+
+      const childProperties = [
+        "firstName",
+        "lastName",
+        "id",
+        "birth",
+        "gender",
+        "address",
+        "phone",
+        "level",
+        "gamesPassword",
+      ];
+      function init() {
+        $("#btn-update").on("click", () => {
+          let newChild = {};
+          childProperties.forEach((prop) => {
+            newChild[prop] = $(`#input-${prop}`).val();
+          });
+          console.log(newChild);
+          // newUser.firstName = $("#user_fname").val();
+          childUpdateRequest(newChild, registerSuccess, printErrorToUser);
+        });
+
+        $("#btn-cancel").on("click", () => {
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+        });
+      }
+
+      function registerSuccess(parent) {
+        $("#modal-success").show();
+        setTimeout(() => {
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+        }, 5000);
+      }
+
+      function printErrorToUser(code, err) {
+        $("#err_text").text(err);
+      }
+
+      function formatDate(date) {
+        var d = new Date(date),
+          month = "" + (d.getMonth() + 1),
+          day = "" + d.getDate(),
+          year = d.getFullYear();
+
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+
+        return [year, month, day].join("-");
+      }
+    </script>
+  </body>
+</html>

@@ -4,22 +4,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <script src="../../../lib/jquery.js"></script>
-    <link href="../../../style/global.css" rel="stylesheet" />
-    <link href="../../../style/modal.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
 
     <style>
       .bgimg {
-        background-image: url("../../../pics/background/homeParents.jpg");
+        background-image: url("/pics/background/homeParents.jpg");
       }
 
       .container {
-        width: 1100px;
+        width: 50%;
       }
 
       .box {
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 150px;
+      }
+
+      .modal-header {
+        padding: 2px 16px;
+        background-color: crimson;
+        color: white;
+      }
+      .modal {
+        /* padding-top: 50px; */
+      }
+      #img-modal {
+        width: 400px;
+        height: 400px;
       }
     </style>
   </head>
@@ -29,15 +42,17 @@
       <div class="w3-display-topleft w3-padding-large w3-xlarge">
         שולחן משחקים שיתופי
         <button type="button" class="homeBtn" id="btn_goToHome">
-          <img id="homeImg" src="../../../pics/homeBtn.png" alt="" />
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
         </button>
       </div>
       <div
         class="w3-display-topmiddle"
         style="margin-top: 100px; margin-right: 100px"
       >
-        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
-          <span id="teacherName"></span>, נא לבחור את הפעולה הרצויה:
+        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 900px">
+          <span id="teacherName"></span>
+          , <br>
+          נא לבחור את הפעולה הרצויה:
         </h1>
         <hr class="w3-border-grey" style="margin: auto; width: 40%" />
       </div>
@@ -49,15 +64,15 @@
           id="btn_child_register"
           class="w3-light-blue w3-text-white tooltip"
         >
-          <img src="../../../pics/child_register.png" alt="" />
+          <img src="/pics/child_register.png" alt="" />
           <span class="tooltiptext">רישום ילד חדש</span>
         </div>
         <div id="btn_child_update" class="w3-red tooltip">
-          <img src="../../../pics/children.png" alt="" />
+          <img src="/pics/children.png" alt="" />
           <span class="tooltiptext">שינוי ילד קיים</span>
         </div>
-        <div id="btn_child_remove" class="w3-green tooltip">
-          <img src="../../../pics/child_remove.png" alt="" />
+        <div id="btn_child_delete" class="w3-green tooltip">
+          <img src="/pics/child_remove.png" alt="" />
           <span class="tooltiptext">מחיקת ילד</span>
         </div>
       </div>
@@ -71,11 +86,11 @@
     <div id="modal_choose_child" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="close" id="btn_exit_modal">&times;</span>
+          <span class="close btn_exit_modal" id="">&times;</span>
           <h2 style="text-align: center">בחר ילד:</h2>
         </div>
         <div class="modal-body">
-          <select name="children" id="children_selector"></select>
+          <select name="children" class="children_selector" ></select>
         </div>
         <div class="modal-footer">
           <button id="btn_child_chose" type="button">בחר</button>
@@ -84,10 +99,44 @@
       </div>
     </div>
 
-    <script type="module" src="../api.js"></script>
-    <script type="module" src="../consts.js"></script>
+        <!-- The Delete Child Modal -->
+        <div id="modal-child-delete" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close btn_exit_modal" id="">&times;</span>
+              <h2 style="text-align: center">בחר ילד:</h2>
+            </div>
+            <div class="modal-body">
+              <select name="children" class="children_selector" size="3" style="height: 120px;width: 80%;"></select>
+            </div>
+            <div class="modal-footer">
+              <button id="btn-child-delete" type="button">בחר</button>
+              <div id="div-child-delete-ask">
+                האם אתה בטוח?
+              <button id="btn-child-delete-yes" type="button" >כן</button>
+              <button id="btn-child-delete-no" type="button">לא</button>
+              </div>
+              <div id="err_text"></div>
+            </div>
+          </div>
+        </div>
+    <!-- The Modal -->
+    <div id="modal-success" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="btn_exit_modal">&times;</span>
+          <h2 style="text-align: center">המחיקה הצליחה!</h2>
+        </div>
+        <div class="modal-body">
+          <img id="img-modal" src="/pics/kid_success.png" alt="" />
+        </div>
+        <!-- <div class="modal-footer">
+          <div id="err_text">אנא המתן לרענון הנתונים...</div>
+        </div> -->
+      </div>
+    </div>
     <script type="module">
-      import { getChildsRequest } from "../api.js";
+      import { getChildsRequest , getChildRequest, deleteChildRequest } from "../api.js";
       import { URL } from "../consts.js";
 
       $(document).ready(() => {
@@ -110,16 +159,18 @@
 
         $("#btn_child_update").on("click", () => {
           nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
-          $("#modal_choose_child").css("display", "block");
+          $("#modal_choose_child").show();
         });
 
-        $("#btn_child_remove").on("click", () => {
-          nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
-          $("#modal_choose_child").css("display", "block");
+        $("#btn_child_delete").on("click", () => {
+          // nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
+          $("#modal-child-delete").show();
+          $("#btn-child-delete").show();
+          $("#div-child-delete-ask").hide();
         });
 
         $("#btn_goToHome").on("click", () => {
-          window.location.href = URL.HOME;
+          window.location.href = URL.TEACHER_HOME;
         });
 
         displayNameTitle();
@@ -134,25 +185,28 @@
       function updateSelectOptions(children) {
         // popup
         children.forEach((child) => {
-          $("#children_selector").append(
+          $(".children_selector").append(
             $("<option></option>")
               .attr("value", child.id)
               .text(`${child.id}: ${child.firstName} ${child.lastName}`)
           );
         });
-        let i = 0;
-        fields.forEach((field) => {
-          $("#field_selector").append(
-            $("<option></option>").attr("value", i).text(`${field}`)
-          );
-          i++;
-        });
+        if(children.length > 0)
+        
+        $(".children_selector").find('option:first').attr('selected', 'selected');
       }
 
       function getChildSuccess(data) {
         // popup
         localStorage.setItem("child", JSON.stringify(data));
         window.location.href = nextPage;
+      }
+
+      function deleteChildSuccess() {
+        $("#modal-success").show();
+        setTimeout(() => {
+          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+        }, 2000);
       }
 
       function printErrorToUser(code, err) {
@@ -163,21 +217,35 @@
       var childId;
       function initModal() {
         $("#btn_child_chose").on("click", () => {
-          childId = $("select[name=children] option").filter(":selected").val();
+          childId = $("#modal_choose_child select[name=children] option").filter(":selected").val();
           getChildRequest(childId, getChildSuccess, printErrorToUser);
         });
 
-        $("#btn_exit_modal").on("click", () => {
-          $("#modal_choose_child").css("display", "none");
+        $(".btn_exit_modal").on("click", () => {
+          $(".modal").css("display", "none");
+        });
+
+        $('#btn-child-delete').click(function() {
+          $('#btn-child-delete').hide();
+          $('#div-child-delete-ask').show();
+        });
+        $('#btn-child-delete-yes').click(() => {
+          childId = $("#modal-child-delete select[name=children] option").filter(":selected").val();
+          console.log('childDelete:' + childId);
+          deleteChildRequest(childId, deleteChildSuccess);
+        });
+        $('#btn-child-delete-no').click(() => {
+          $(".modal").css("display", "none");
         });
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
           let modal = document.getElementById("modal_choose_child");
+          let modal_child_delete = document.getElementById("modal-child-delete");
           if (event.target == modal) {
             modal.style.display = "none";
-          } else if (event.target == modal_field) {
-            modal_field.style.display = "none";
+          }else if(event.target == modal_child_delete){
+            modal_child_delete.style.display = "none";
           }
         };
       }

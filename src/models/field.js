@@ -6,21 +6,21 @@ const fieldSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 50
+        minlength: 2,
+        maxlength: 20
     },
     description: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 2,
         maxlength: 1024
+    },
+    nameEng:{
+        type: String,
+        required: true,
+        minlength: 2,
+        maxlength: 20 
     }
-    // engName:{
-    //     type: String,
-    //     required: true,
-    //     minlength: 5,
-    //     maxlength: 1024 
-    // }
 });
 
 // Model
@@ -30,8 +30,9 @@ const Field = mongoose.model('Field', fieldSchema);
 // Validation
 function validateField(field) {
     const schema = {
-        name: Joi.string().min(5).max(50).required(),
-        description: Joi.string().min(5).max(1024).required()
+        name: Joi.string().min(2).max(50).required(),
+        nameEng: Joi.string().min(2).max(50).required(),
+        description: Joi.string().min(2).max(1024).required()
     };
     return Joi.validate(field, schema);
 }

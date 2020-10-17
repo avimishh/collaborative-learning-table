@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
-    <link href="../../style/modal.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
     <style>
       body,
       h1,
@@ -16,7 +16,7 @@
       }
 
       .bgimg {
-        background-image: url("../../pics/background/back8.jpg");
+        background-image: url("/pics/background/back8.jpg");
       }
 
       .container {
@@ -41,6 +41,11 @@
       select {
         background: url("");
       }
+
+      .container div {
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 20px 2px cornflowerblue;
+}
     </style>
   </head>
 
@@ -49,7 +54,7 @@
       <div class="w3-display-topleft w3-padding-large w3-xlarge">
         שולחן משחקים שיתופי
         <button type="button" class="homeBtn" id="btn_goToHome">
-          <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
         </button>
       </div>
       <div
@@ -67,18 +72,18 @@
         style="margin-top: 100px; margin-right: 100px"
       >
         <div id="btn_game" class="w3-green tooltip w3-animate-right">
-          <img src="../../pics/play3.png" alt="" />
+          <img src="/pics/v2/kidplay.png" alt="" />
           <span class="tooltiptext">שחק משחקים</span>
         </div>
         <div
           id="btn_details"
           class="w3-light-blue w3-text-white tooltip w3-animate-bottom"
         >
-          <img src="../../pics/note1.png" alt="" />
+          <img src="/pics/v2/details.png" alt="" />
           <span class="tooltiptext">פרטים אישיים</span>
         </div>
         <div id="btn_performance" class="w3-red tooltip w3-animate-left">
-          <img src="../../pics/note2.png" alt="" />
+          <img src="/pics/v2/grades.png" alt="" />
           <span class="tooltiptext">הצגת ציונים</span>
         </div>
       </div>
