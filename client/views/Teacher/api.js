@@ -289,28 +289,6 @@ export function getTeacherRequest(teacher_id, successFunction, errorFunction, co
   $.ajax(request);
 }
 
-export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunction, errorFunction, completeFunction) {
-  // console.log(teacherToUpdate);
-  console.log("work api");
-  let request = {
-    contentType: "application/json",
-    url: teachersApi + teacher_id,
-    method: "PUT",
-    headers: {
-      "x-auth-token": localStorage.getItem("token")
-    },
-    data: JSON.stringify(teacherToUpdate),
-    success: function (data, textStatus, xhr) {
-      localStorage.setItem("teacher", JSON.stringify(data));
-      // console.log(data);
-      successFunction();
-    },
-    error: function (xhr) {
-      errorFunction(xhr.status, xhr.responseText);
-    },
-  };
-  $.ajax(request);
-}
 
 export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, errorFunction, completeFunction) {
   console.log("work api");
