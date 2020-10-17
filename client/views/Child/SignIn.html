@@ -60,7 +60,7 @@
 
         <div class="input-box">
           <i class="fa fa-key"></i>
-          <input type="text" placeholder="סיסמת משחקים" id="gamesPassword" />
+          <input type="password" placeholder="סיסמת משחקים" id="user_password" />
           <span class="icon-eye" onclick="passwordToggle()">
             <i class="fa fa-eye-slash"></i>
           </span>
@@ -80,18 +80,19 @@
     <script type="module">
       import { childLoginRequest } from "./api.js";
       import { URL } from "./consts.js";
-      import { initSignInPage } from "../../globalDeclarations.js";
+      import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
         console.log("jquery work");
         init();
         initSignInPage();
+        // window.passwordToggle = passwordToggle;
       });
 
       function init() {
         $("#login").on("click", () => {
           let child_id = $("#id_user").val();
-          let gamesPassword = $("#gamesPassword").val();
+          let gamesPassword = $("#user_password").val();
           childLoginRequest(
             child_id,
             gamesPassword,
