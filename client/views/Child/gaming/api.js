@@ -1,4 +1,6 @@
-import { getServerApiUrl } from "../../../globalDeclarations.js";
+import {
+    getServerApiUrl
+} from "../../../globalDeclarations.js";
 
 
 const server = getServerApiUrl();

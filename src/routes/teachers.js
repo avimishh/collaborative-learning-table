@@ -75,6 +75,7 @@ router.post('/', async (req, res) => {
         password: req.body.password,
         phone: req.body.phone
     });
+    teacher.assignToClassroom(req.body.classroomCode);
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     teacher.password = await bcrypt.hash(teacher.password, salt);
