@@ -33,17 +33,12 @@ function numbers_pad_init() {
 
 // math op init
 function addButtonListeners() {
-    // console.log('addButtonListeners');
-    $('#plus').on('click', () => {
-        // console.log('DEBUG: btn sock emit');
-        sock.emit('math_op', 'plus');
+    var subFields = ['plus','minus','multi'];
+
+    subFields.forEach(subField => {
+        $(`#${subField}`).click( () => {sock.emit('fromClient_toServer_notify_subField_selected', subField)});
     });
-    $('#minus').click(() => { sock.emit('math_op', 'minus'); });
-    $('#multi').click(() => { sock.emit('math_op', 'multi'); });
 }
-
-
-
 
 
 

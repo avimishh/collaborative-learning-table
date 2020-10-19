@@ -12,7 +12,6 @@ const { Field, validateField } = require('../models/field');
 router.get('/', async (req, res, next) => {
     // DEBUG
     // throw new Error('Could not get the fields.');
-
     const fields = await Field.find().select('-__v').sort('name');
     res.send(fields);
 });

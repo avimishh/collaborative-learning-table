@@ -13,9 +13,6 @@ var questions = [];
 const MAX_ROUNDS = 2;
 var playerToPlay, playerToWait;
 
-// function math_op(op){
-//     this._askQuestion(idx, op);
-// }
 
 class MathGame { // @@@@CHANGING
     constructor(p0, p1, game) {
@@ -27,12 +24,12 @@ class MathGame { // @@@@CHANGING
         this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק החל');
 
         this._players.forEach(p => p.set_Player_Stat(new Stats(field, subFields)));   
-        this._update_Client_Stats();
+        this._update_Clients_Stats();
         // #### Specific Listeners ####
         // Add listener 
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player.socket.on('math_op', (op) => {
+            player.socket.on('fromClient_toServer_notify_subField_selected', (op) => {
                 this._askQuestion(idx, op);
             });
 
@@ -125,7 +122,7 @@ class MathGame { // @@@@CHANGING
     }
 
     _endRound() {
-        this._update_Client_Stats();
+        this._update_Clients_Stats();
         this._isPlayersAnswerCorrect = [null, null];
         this._set_Next_Player_Turn();
         this._roundCounter++;
@@ -144,7 +141,7 @@ class MathGame { // @@@@CHANGING
         this._startRound();
     }
 
-    _update_Client_Stats() {
+    _update_Clients_Stats() {
         this._players[0].update_Client_Stats([this._players[0].stats, this._players[1].stats]);
         this._players[1].update_Client_Stats([this._players[1].stats, this._players[0].stats]);
     }
@@ -162,7 +159,7 @@ class MathGame { // @@@@CHANGING
 
     _removeListeners() {
         this._players.forEach(p => {
-            p.socket.removeAllListeners('math_op');
+            p.socket.removeAllListeners('fromClient_toServer_notify_subField_selected');
             p.socket.removeAllListeners('answer_submitted');
             // console.log(p.socket.eventNames());
         });

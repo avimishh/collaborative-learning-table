@@ -15,8 +15,7 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
         additionalInfo: p_stats.subFields
     });
 
-    let fieldName = field_To_English(game.field.name);
-
+    let fieldName = game.field.nameEng;
     try {
         let stat = await Stat.findOne({ child_id: p_child_id });
         stat.sheets[fieldName].push(newSheet);
@@ -26,24 +25,24 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
     }
 }
 
-function field_To_English(fieldName) {
-    let res = '';
-    switch (fieldName) {
-        case 'חשבון':
-            res = 'math'
-            break;
-        case 'אנגלית':
-            res = 'english'
-            break;
-        case 'צבעים':
-            res = 'color'
-            break;
-        case 'זכרון':
-            res = 'memory'
-            break;
-        default:
-            res = 'general'
-            break;
-    }
-    return res;
-}
+// function field_To_English(fieldName) {
+//     let res = '';
+//     switch (fieldName) {
+//         case 'חשבון':
+//             res = 'math'
+//             break;
+//         case 'אנגלית':
+//             res = 'english'
+//             break;
+//         case 'צבעים':
+//             res = 'color'
+//             break;
+//         case 'זכרון':
+//             res = 'memory'
+//             break;
+//         default:
+//             res = 'general'
+//             break;
+//     }
+//     return res;
+// }

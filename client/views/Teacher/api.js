@@ -1,6 +1,6 @@
 import {
   getServerApiUrl
-} from "../../globalDeclarations.js";
+} from "/globalDeclarations.js";
 
 const server = getServerApiUrl();
 const authApi = server + "auth/teacher/";
