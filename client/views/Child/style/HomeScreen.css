@@ -1,9 +1,6 @@
-﻿/* * {
+﻿* {
     margin: 0;
     padding: 0;
-}
-
-body {
 }
 
 header {
@@ -24,11 +21,11 @@ header {
 
 main {
     background: no-repeat center;
-    /* background-image: url('../../../pics/bacground_study.png'); */
+    background-image: url('../../../pics/bacground_study.png');
     background-size: cover;
     font-family: sans-serif;
     width: 100%;
-    /*min-height: calc(100vh - 214px - 150px);*/
+    min-height: calc(100vh - 214px - 150px);
     min-height: 60vh;
 }
 

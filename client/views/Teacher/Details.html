@@ -46,73 +46,71 @@
             <div id="err_text"></div>
 
             <div class="mess">
-                <form>
-                    <table>
-                        <!--1. First Name-->
-                        <tr>
-                            <td>
-                                <span>שם פרטי:</span>
-                            </td>
-                            <td class="details">
-                                <!-- <input id="firstName" class="answer" /> -->
-                                <span id="firstName"></span>
-                            </td>
+                <table>
+                    <!--1. First Name-->
+                    <tr>
+                        <td>
+                            <span>שם פרטי:</span>
+                        </td>
+                        <td class="details">
+                            <!-- <input id="firstName" class="answer" /> -->
+                            <span id="firstName"></span>
+                        </td>
 
-                        </tr>
-                        <!--2. Last Name-->
-                        <tr>
-                            <td>
-                                <span>שם משפחה:</span>
-                            </td>
-                            <td class="details">
-                                <!-- <input id="lastName" class="answer" /> -->
-                                <span id="lastName"></span>
+                    </tr>
+                    <!--2. Last Name-->
+                    <tr>
+                        <td>
+                            <span>שם משפחה:</span>
+                        </td>
+                        <td class="details">
+                            <!-- <input id="lastName" class="answer" /> -->
+                            <span id="lastName"></span>
 
-                            </td>
-                        </tr>
-                        <!--3. id teacher-->
-                        <tr>
-                            <td>
-                                <span>תעודת זהות:</span>
-                            </td>
-                            <td class="details">
-                                <span id="id_teacher"></span>
+                        </td>
+                    </tr>
+                    <!--3. id teacher-->
+                    <tr>
+                        <td>
+                            <span>תעודת זהות:</span>
+                        </td>
+                        <td class="details">
+                            <span id="id_teacher"></span>
 
-                                <!-- <input id="id_teacher" class="answer" /> -->
-                            </td>
-                        </tr>
-                        <!--4. Phone Number-->
-                        <tr>
-                            <td>
-                                <span>טלפון:</span>
-                            </td>
-                            <td class="details">
-                                <span id="phoneNumber"></span>
+                            <!-- <input id="id_teacher" class="answer" /> -->
+                        </td>
+                    </tr>
+                    <!--4. Phone Number-->
+                    <tr>
+                        <td>
+                            <span>טלפון:</span>
+                        </td>
+                        <td class="details">
+                            <span id="phoneNumber"></span>
 
-                                <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
-                            </td>
-                        </tr>
-                        <!--5. Password-->
-                        <tr>
-                            <td>
-                                <span>סיסמא:</span>
-                            </td>
-                            <td>
-                                <button id="btn-change-password">לחץ להחלפת סיסמה</button>
-                                <!-- <span id="password"></span> -->
-                                <!-- <input type="password" id="password" placeholder="הכנס סיסמה לאישור" /> -->
-                            </td>
-                        </tr>
-                        <!--6. Update-->
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
-                                <input class="w3-button" type="button" id="btn_update" value="עדכן" />
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                            <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
+                        </td>
+                    </tr>
+                    <!--5. Password-->
+                    <tr>
+                        <td>
+                            <span>סיסמא:</span>
+                        </td>
+                        <td>
+                            <button id="btn-change-password">לחץ להחלפת סיסמה</button>
+                            <!-- <span id="password"></span> -->
+                            <!-- <input type="password" id="password" placeholder="הכנס סיסמה לאישור" /> -->
+                        </td>
+                    </tr>
+                    <!--6. Update-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
+                            <input class="w3-button" type="button" id="btn_update" value="עדכן" />
+                        </td>
+                    </tr>
+                </table>
             </div>
 
         </div>
@@ -137,7 +135,7 @@
                 <input type="password" id="input-new-password" placeholder="סיסמא חדשה" />
             </div>
             <div class="modal-footer">
-                <button id="btn-save-new-password" type="button" onclick="updateTeacherPassword()">שמור</button>
+                <button id="btn-save-new-password" type="button" ">שמור</button>
                 <!-- <div id="modal-err-text"></div> -->
             </div>
         </div>
@@ -164,8 +162,12 @@
                 showTeacherDetails();
             });
 
-            $('#btn-change-password').click(() => {
-                  $('#modal-change-password').show();
+            $('#btn-change-password').on('click', () => {
+                $('#modal-change-password').show();
+            });
+
+            $('#btn-save-new-password').click(() => {
+                updateTeacherPassword();
             });
 
             let teacher = JSON.parse(localStorage.getItem('teacher'));
@@ -224,6 +226,7 @@
         }
 
         function showUpdatedDetails() {
+            $('#modal-change-password').hide();
             // $(".answer").attr('disabled', true);
             printErrorToUser(0,'הנתונים עודכנו בהצלחה.');
             showTeacherDetails();
@@ -233,6 +236,7 @@
         }
 
         function printErrorToUser(code, err) { // popup
+            $('#modal-change-password').hide();
             $('#err_text').text(err);
         }
 

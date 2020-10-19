@@ -130,14 +130,14 @@ router.put('/:id', auth, async (req, res) => {
 
 // PUT ['api/teachers/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
-    if (req.body.newPassword === null || req.body.newPassword === '')
-        return res.status(400).send("הסיסמה לא יכולה להיות ריקה.");
+    if (req.body.newPassword === null || req.body.newPassword.length < 5)
+        return res.status(400).send("הסיסמה חייבת להכיל לפחות 5 תווים.");
 
     try {
         const teacher = await Teacher.findOneAndUpdate({
             id: req.params.id
         }, {
-            password: req.body.password
+            password: req.body.newPassword
         }, {
             new: true,
             useFindAndModify: false
