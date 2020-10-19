@@ -1,15 +1,17 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
-    <link href="../../style/details.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/details.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
     <style>
         .bgimg {
-            background-image: url('../../pics/background/homeParents.jpg');
+            background-image: url('/pics/background/homeParents.jpg');
         }
 
         .homeBtn {
@@ -27,6 +29,7 @@
         }
     </style>
 </head>
+
 <body dir="rtl">
 
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
@@ -34,7 +37,7 @@
             שולחן משחקים שיתופי
             <br>
             <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+                <img id="homeImg" src="/pics/homeBtn.png" alt="">
             </button>
         </div>
 
@@ -52,7 +55,7 @@
                             </td>
                             <td class="details">
                                 <!-- <input id="firstName" class="answer" /> -->
-                                <span id="firstName" ></span>
+                                <span id="firstName"></span>
                             </td>
 
                         </tr>
@@ -95,8 +98,9 @@
                                 <span>סיסמא:</span>
                             </td>
                             <td>
+                                <button id="btn-change-password">לחץ להחלפת סיסמה</button>
                                 <!-- <span id="password"></span> -->
-                                <input type="password" id="password" placeholder="הכנס סיסמה לאישור"/>
+                                <!-- <input type="password" id="password" placeholder="הכנס סיסמה לאישור" /> -->
                             </td>
                         </tr>
                         <!--6. Update-->
@@ -113,21 +117,34 @@
 
         </div>
 
-        <!-- <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
-
-        </div> -->
-
         <div class="w3-display-bottomleft w3-padding-large">
-            <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home"
-                    aria-hidden="true"></i></button>
             Make Learning Fun
         </div>
     </div>
 
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
+    <!-- The Change Password Modal -->
+    <div id="modal-change-password" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close btn_exit_modal" id="">&times;</span>
+                <h2 style="text-align: center">החלפת סיסמה</h2>
+            </div>
+            <div class="modal-body">
+                <!-- סיסמה ישנה: 
+              <input type="password" id="input-old-password" placeholder="סיסמא ישנה" /> -->
+                <!-- <br><br> -->
+                סיסמה חדשה:
+                <input type="password" id="input-new-password" placeholder="סיסמא חדשה" />
+            </div>
+            <div class="modal-footer">
+                <button id="btn-save-new-password" type="button" onclick="updateTeacherPassword()">שמור</button>
+                <!-- <div id="modal-err-text"></div> -->
+            </div>
+        </div>
+    </div>
+
     <script type="module">
-        import { updateTeacherRequest } from './api.js';
+        import { updateTeacherRequest, updateTeacherPasswordRequest } from './api.js';
         import { URL } from './consts.js';
 
         $(document).ready(function () {
@@ -145,6 +162,10 @@
             $('#btn_rst').on('click', () => {
                 $('.details').children().trigger('focusout');
                 showTeacherDetails();
+            });
+
+            $('#btn-change-password').click(() => {
+                  $('#modal-change-password').show();
             });
 
             let teacher = JSON.parse(localStorage.getItem('teacher'));
@@ -179,10 +200,15 @@
                 firstName: $("#firstName").text(),
                 lastName: $("#lastName").text(),
                 id: $("#id_teacher").text(),
-                phone: $("#phoneNumber").text(),
-                password: $("#password").val()
+                phone: $("#phoneNumber").text()
+                // password: $("#password").val()
             };
             updateTeacherRequest(teacher.id, updatedTeacher, showUpdatedDetails, printErrorToUser);
+        }
+
+        function updateTeacherPassword() {
+            let teacher = JSON.parse(localStorage.getItem('teacher'));
+            updateTeacherPasswordRequest(teacher.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
         }
 
         function showTeacherDetails() {
@@ -194,7 +220,7 @@
             $("#lastName").text(teacher.lastName);                     // lastName
             $("#id_teacher").text(teacher.id);                          // id
             $("#phoneNumber").text(teacher.phone);                     // phoneNumber
-            $("#password").text(teacher.password);                     // password
+            // $("#password").text(teacher.password);                     // password
         }
 
         function showUpdatedDetails() {
@@ -209,9 +235,21 @@
         function printErrorToUser(code, err) { // popup
             $('#err_text').text(err);
         }
+
+        function initModal() {
+        $(".btn_exit_modal").on("click", () => {
+          $(".modal").hide();
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+          let modal = document.getElementById("modal-change-password");
+          if (event.target == modal)
+            modal.style.display = "none";
+        }
+      }
+
     </script>
-
-
-
 </body>
+
 </html>

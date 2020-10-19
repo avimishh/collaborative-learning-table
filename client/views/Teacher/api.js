@@ -257,7 +257,7 @@ export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunctio
     data: JSON.stringify(teacherToUpdate),
     success: function (data, textStatus, xhr) {
       localStorage.setItem('teacher', JSON.stringify(data));
-      // console.log(data);
+      console.log(data);
       successFunction();
     },
     error: function (xhr) {
@@ -266,6 +266,28 @@ export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunctio
   };
   $.ajax(request);
 }
+
+
+export function updateTeacherPasswordRequest(teacher_id, newPassword, successFunction, errorFunction) {
+  console.log('work api');
+  let request = {
+    contentType: "application/json",
+    url: teachersApi + 'changePassword/' + teacher_id,
+    method: "PUT",
+    headers: {
+      'x-auth-token': localStorage.getItem('token')
+    },
+    data: JSON.stringify({newPassword}),
+    success: function (data, textStatus, xhr) {
+      successFunction();
+    },
+    error: function (xhr) {
+      errorFunction(xhr.status, xhr.responseText);
+    }
+  };
+  $.ajax(request);
+}
+
 
 export function getTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
   console.log(teacher_id);

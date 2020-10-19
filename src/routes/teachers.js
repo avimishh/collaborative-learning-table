@@ -101,7 +101,7 @@ router.put('/:id', auth, async (req, res) => {
     // Try to update the selected document
     try {
         // res.status(200).send(user);
-        const teacher = await teachers.findOneAndUpdate({
+        const teacher = await Teacher.findOneAndUpdate({
             id: req.params.id
         }, {
             firstName: req.body.firstName,
@@ -123,10 +123,39 @@ router.put('/:id', auth, async (req, res) => {
         // Send response to client
         res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(404).send(`סיסמה שגויה`);
     }
 });
 
+
+// PUT ['api/teachers/:id']
+router.put('/changePassword/:id', auth, async (req, res) => {
+    if (req.body.newPassword === null || req.body.newPassword === '')
+        return res.status(400).send("הסיסמה לא יכולה להיות ריקה.");
+
+    try {
+        const teacher = await Teacher.findOneAndUpdate({
+            id: req.params.id
+        }, {
+            password: req.body.password
+        }, {
+            new: true,
+            useFindAndModify: false
+        }).populate('children', 'id firstName lastName');
+        // Assert update completed successfully
+        if (!teacher)
+            return res.status(404).send(`teacher ${req.params.id} was not found.`);
+        // Password Hash
+        const salt = await bcrypt.genSalt(10);
+        teacher.password = await bcrypt.hash(teacher.password, salt);
+        await teacher.save();
+
+        // Send response to client
+        res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
+    } catch (ex) {
+        return res.status(404).send(`סיסמה שגויה`);
+    }
+});
 
 // admin permission?
 // DELETE ['api/teachers/:id']

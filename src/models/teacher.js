@@ -91,9 +91,9 @@ function validateTeacher(teacher) {
         id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {
             return customError(errors, 'תעודת זהות')
         }),
-        password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {
-            return customError(errors, 'סיסמה')
-        }),
+        // password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {
+        //     return customError(errors, 'סיסמה')
+        // }),
         phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {
             return customError(errors, 'טלפון')
         })

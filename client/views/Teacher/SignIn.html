@@ -1,63 +1,64 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
-    <link href="../../style/signin.css" rel="stylesheet" />
-    <style>
-      .bgimg {
-        background-image: url("../../pics/background/cactus.jpg");
-      }
-    </style>
-  </head>
 
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-      <div class="w3-display-topleft w3-padding-large w3-xlarge">
-        שולחן משחקים שיתופי
-        <div>
-          <button type="button" class="homeBtn" id="btn_goToHome">
-            <img id="homeImg" src="/pics/homeBtn.png" alt="" />
-            חזרה לעמוד
-            <br />
-            הראשי
-          </button>
-        </div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="../../lib/jquery.js"></script>
+  <link href="../../style/global.css" rel="stylesheet" />
+  <link href="../../style/signin.css" rel="stylesheet" />
+  <style>
+    .bgimg {
+      background-image: url("../../pics/background/cactus.jpg");
+    }
+  </style>
+</head>
+
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge">
+      שולחן משחקים שיתופי
+      <div>
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
+          חזרה לעמוד
+          <br />
+          הראשי
+        </button>
       </div>
-      <div class="form-box w3-display-middle">
-        <h1>התחברות מורה</h1>
+    </div>
+    <div class="form-box w3-display-middle">
+      <h1>התחברות מורה</h1>
 
-        <div class="input-box">
-          <i class="fa fa-user"></i>
-          <input type="text" id="user_id" placeholder="תעודת זהות" />
-        </div>
-
-        <div class="input-box">
-          <i class="fa fa-key"></i>
-          <input type="password" placeholder="סיסמא" id="user_password" />
-          <span class="icon-eye" onclick="passwordToggle()">
-            <i class="fa fa-eye-slash"></i>
-          </span>
-        </div>
-        <div id="err_text"></div>
-
-        <button type="button" class="login-btn" id="login">כניסה</button>
-
-        <div>
-          <!-- <button type="button" class="new-user-btn" id="register">משתמש חדש?</button> -->
-        </div>
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" id="user_id" placeholder="תעודת זהות" />
       </div>
 
-      <div class="w3-display-bottomleft w3-padding-large">
-        Make Learning Fun
+      <div class="input-box">
+        <i class="fa fa-key"></i>
+        <input type="password" placeholder="סיסמא" id="user_password" />
+        <span class="icon-eye" onclick="passwordToggle()">
+          <i class="fa fa-eye-slash"></i>
+        </span>
+      </div>
+      <div id="err_text"></div>
+
+      <button type="button" class="login-btn" id="login">כניסה</button>
+
+      <div>
+        <!-- <button type="button" class="new-user-btn" id="register">משתמש חדש?</button> -->
       </div>
     </div>
 
-    <script type="module">
-      import { userLoginRequest } from "./api.js";
+    <div class="w3-display-bottomleft w3-padding-large">
+      Make Learning Fun
+    </div>
+  </div>
+
+  <script type="module">
+    import { userLoginRequest } from "./api.js";
       import { URL } from "./consts.js";
       import { initSignInPage } from "../../globalDeclarations.js";
 
@@ -71,12 +72,7 @@
         $("#login").on("click", () => {
           let userId = $("#user_id").val();
           let userPassword = $("#user_password").val();
-          userLoginRequest(
-            userId,
-            userPassword,
-            loginSuccess,
-            printErrorToUser
-          );
+          userLoginRequest(userId, userPassword, loginSuccess, printErrorToUser);
         });
 
         // $('#register').on('click', () => {
@@ -97,5 +93,6 @@
         $("#err_text").text(err);
       }
     </script>
-  </body>
+</body>
+
 </html>
