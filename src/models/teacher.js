@@ -2,6 +2,9 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const {
+    Classroom
+} = require('./classroom');
 
 // Const Lengths [min_length, max_length]
 const NAME_LEN = [2, 50];
@@ -46,32 +49,63 @@ const teacherSchema = new mongoose.Schema({
 });
 
 
-teacherSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+teacherSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        _id: this._id
+    }, config.get('jwtPrivateKey'));
     return token;
 }
+
+teacherSchema.methods.assignToClassroom = async function (classroomCode) {
+    const classroom = await Classroom.findOneAndUpdate({
+        code: classroomCode
+    }, {
+        "$push": {
+            teachers: this._id
+        }
+    }, {
+        new: true,
+        useFindAndModify: false
+    });
+    if (!classroom)
+        return null;
+    return classroom._id;
+}
+
 
 // Model
 const Teacher = mongoose.model('Teacher', teacherSchema);
 
 
+
+
 // Essential functions
-function validateTeacher(teacher){
+function validateTeacher(teacher) {
     const schema = {
-        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם פרטי')}),
-        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {return customError(errors, 'שם משפחה')}),
-        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {return customError(errors, 'תעודת זהות')}),
-        password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {return customError(errors, 'סיסמה')}),
-        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {return customError(errors, 'טלפון')})
+        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם פרטי')
+        }),
+        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם משפחה')
+        }),
+        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {
+            return customError(errors, 'תעודת זהות')
+        }),
+        password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {
+            return customError(errors, 'סיסמה')
+        }),
+        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {
+            return customError(errors, 'טלפון')
+        })
     };
     // return true;
     return Joi.validate(teacher, schema);
 }
 
 
-function customError(errors, key){
+function customError(errors, key) {
     errors.forEach(err => {
-        switch (err.type){
+        switch (err.type) {
             case 'any.empty':
                 err.message = `'${key}' לא יכול להיות ריק`;
                 break;

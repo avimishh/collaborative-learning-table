@@ -3,17 +3,15 @@ const config = require('config');
 const { Parent, validateParent } = require('../parent');
 const { Teacher, validateTeacher } = require('../teacher');
 const { Child, validateChild } = require('../child');
-const { Field, validateField } = require('../field');
+const { Field, createField } = require('../field');
 const { Game, validateGame } = require('../game');
 const { Stat } = require('../stat');
+const { createClassroom } = require('../classroom');
+
 
 const save_Data_DB = require('./../../public/games/StatsSaver');
 
 const bcrypt = require('bcrypt'); // Password Hash
-
-// mongoose.connect(config.get('db'))
-//   .then(() => console.log('Connected to MongoDB...'))
-//   .catch(err => console.error('Could not connect to MongoDB...', err));
 
 var notes = [];
 
@@ -69,6 +67,7 @@ async function createTeacher(firstName, lastName, id, password, phone) {
         password,
         phone
     });
+    teacher.assignToClassroom(req.body.classroomCode);
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     teacher.password = await bcrypt.hash(teacher.password, salt);
@@ -128,29 +127,7 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     notes.push(`ילד "${firstName} ${lastName}" נוצר בDB.`);
 }
 
-async function createField(name, description, nameEng) {
-    // validate input
-    const { error } = validateField({ name, description, nameEng });
-    if (error) {
-        notes.push(error.details[0].message);
-        return console.log(reverseString(error.details[0].message));
-    }
-    // Check if the child exist
-    let field = await Field.findOne({ name });
-    // Response 400 Bad Request if the child exist
-    if (field) {
-        notes.push(`תחום בשם "${name}" כבר קיים במערכת.`);
-        return console.log(reverseString(`תחום בשם "${name}" כבר קיים במערכת.`));
-    }
-    field = new Field({
-        name,
-        description,
-        nameEng
-    });
 
-    field = await field.save();
-    notes.push(`תחום "${name}" נוצר בDB.`);
-}
 
 async function createGame(title, description, fieldName, icon, link) {
     // Validate field
@@ -242,8 +219,28 @@ async function addStat(child_id, stats, game_id) {
     }
 }
 
+async function addFields() {
+    await createField(
+        'אחשבון',
+         'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל',
+         'math'
+         );
+    await createField('אנגליתא', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
+    await createField('צבעיםא', 'תרגול הכרת צבעים', 'colors');
+    await createField('זכרוןא', 'תרגול ואימון הזכרון', 'memory');
+}
+
+
 async function initDB() {
     notes = [];
+    await Classroom.createClassroom("כיתת המצטיינים של עליזה");
+    await createTeacher('עליזה', 'שמשוני', '10', '12345', '0523333333');
+
+
+    await Classroom.createClassroom("כיתת היפים והאמיצים של דפנה");
+    await Classroom.createClassroom("כיתה ב'2");
+
+
     await createParent('משה', 'פרץ', '100', '12345', '0521111111');
     await createParent('אביב', 'גפן', '101', '12345', '0522222222');
 
@@ -404,7 +401,7 @@ function reverseString(str) {
     return str.split('').reverse().join('');
 }
 
-
 exports.initDB = initDB;
+exports.addFields = addFields;
 exports.belongChildrenToParent = belongChildrenToParent;
 exports.addStats = addStats;

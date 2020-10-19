@@ -75,7 +75,7 @@ router.post('/', async (req, res) => {
         gamesPassword: req.body.gamesPassword,
         address: req.body.address,
         phone: req.body.phone,
-        level: req.body.level,
+        classroom: child.assignToClassroom(req.body.classroom),
         stats: stat._id
     });
     // Save to DataBase

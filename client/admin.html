@@ -76,6 +76,7 @@
   <div id="div_general">
     <span>כללי:</span>
     <button id="init_db">אתחל את בסיס הנתונים</button>
+    <button id="btn-test">הוסף תחום לימודים</button>
   </div>
   <div id="div_teachers">
     <span>מורים:</span>
@@ -177,6 +178,20 @@
       });
 
       function init() {
+        $("#btn-test").click( () => {
+            $.ajax({
+              contentType: "application/json",
+              url: adminUrl + 'addField',
+              method: "POST",
+              success: function (data) {
+                console.log("success");
+              },
+              error: function (xhr) {
+                console.log(xhr.status, xhr.responseText);
+              }
+            });
+        });
+
         $("#init_db").on("click", () => {
           getRequest(COMMAND.INIT_DB, printToUser);
           resultColor("general");

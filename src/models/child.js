@@ -1,7 +1,11 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { noteSchema } = require('./note');
-
+const {
+    noteSchema
+} = require('./note');
+const {
+    Classroom
+} = require('./classroom');
 
 // Const Lengths [min_length, max_length]
 const NAME_LEN = [2, 50];
@@ -9,7 +13,6 @@ const ID_LEN = [2, 9];
 const PASSWORD_LEN = [2, 10];
 const ADDRESS_LEN = [3, 255];
 const PHONE_LEN = [9, 10];
-const LEVEL_ENUM = ['א', 'ב', 'ג'];
 const GENDER_ENUM = ['זכר', 'נקבה'];
 
 // Schema
@@ -57,11 +60,10 @@ const childSchema = new mongoose.Schema({
         // minlength: PHONE_LEN[0],
         maxlength: PHONE_LEN[1]
     },
-    level: {
-        type: String,
-        enum: LEVEL_ENUM,
-        // required: true,
-        default: LEVEL_ENUM[0]
+    classroom: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Classroom',
+        required: true
     },
     gamesPassword: {
         type: String,
@@ -84,18 +86,48 @@ const childSchema = new mongoose.Schema({
 const Child = mongoose.model('Child', childSchema);
 
 
+childSchema.methods.assignToClassroom = async function (classroomCode) {
+    const classroom = await Classroom.findOneAndUpdate({
+        code: classroomCode
+    }, {
+        "$push": {
+            children: this._id
+        }
+    }, {
+        new: true,
+        useFindAndModify: false
+    });
+    if (!classroom)
+        return null;
+    return classroom._id;
+}
+
+
 // Essential functions
 function validateChild(child) {
     const schema = {
-        firstName: Joi.string().regex(/^[א-ת]+$/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
-        lastName: Joi.string().regex(/[א-ת]{2,50}/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
-        id: Joi.string().regex(/[0-9]{2,9}/).min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
-        birth: Joi.date().required(),      // YYYY-MM-DD
-        gender: Joi.string().valid(...GENDER_ENUM).error(errors => { return customError(errors, 'מין') }),
-        address: Joi.string().allow(null,'').min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => { return customError(errors, 'כתובת') }),
-        phone: Joi.string().allow(null,'').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => { return customError(errors, 'טלפון') }),
-        level: Joi.string().valid(...LEVEL_ENUM).error(errors => { return customError(errors, 'רמה') }),
-        gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמת משחקים') })
+        firstName: Joi.string().regex(/^[א-ת]+$/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם פרטי')
+        }),
+        lastName: Joi.string().regex(/[א-ת]{2,50}/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם משפחה')
+        }),
+        id: Joi.string().regex(/[0-9]{2,9}/).min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {
+            return customError(errors, 'תעודת זהות')
+        }),
+        birth: Joi.date().required(), // YYYY-MM-DD
+        gender: Joi.string().valid(...GENDER_ENUM).error(errors => {
+            return customError(errors, 'מין')
+        }),
+        address: Joi.string().allow(null, '').min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => {
+            return customError(errors, 'כתובת')
+        }),
+        phone: Joi.string().allow(null, '').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => {
+            return customError(errors, 'טלפון')
+        }),
+        gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {
+            return customError(errors, 'סיסמת משחקים')
+        })
     };
     // return true;
     return Joi.validate(child, schema);
