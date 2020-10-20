@@ -8,7 +8,6 @@ const { Game, validateGame } = require('../game');
 const { Stat } = require('../stat');
 const { createClassroom } = require('../classroom');
 
-
 const save_Data_DB = require('./../../public/games/StatsSaver');
 
 const bcrypt = require('bcrypt'); // Password Hash
@@ -221,13 +220,13 @@ async function addStat(child_id, stats, game_id) {
 
 async function addFields() {
     await createField(
-        'אחשבון',
+        'חשבון',
          'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל',
          'math'
          );
-    await createField('אנגליתא', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
-    await createField('צבעיםא', 'תרגול הכרת צבעים', 'colors');
-    await createField('זכרוןא', 'תרגול ואימון הזכרון', 'memory');
+    await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
+    await createField('צבעים', 'תרגול הכרת צבעים', 'colors');
+    await createField('זכרון', 'תרגול ואימון הזכרון', 'memory');
 }
 
 

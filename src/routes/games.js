@@ -56,7 +56,8 @@ router.post('/', async (req, res) => {
         field: {
             _id: field._id,
             name: field.name,
-            description: field.description
+            description: field.description,
+            nameEng: field.nameEng
         },
         icon: req.body.icon,
         link: req.body.link
@@ -86,7 +87,8 @@ router.put('/:id', async (req, res) => {
             field: {
                 _id: field._id,
                 name: field.name,
-                description: field.description
+                description: field.description,
+                nameEng: field.nameEng
             },
             icon: req.body.icon,
             link: req.body.link
