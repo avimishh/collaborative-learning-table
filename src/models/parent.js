@@ -76,16 +76,31 @@ const Parent = mongoose.model('Parent', parentSchema);
 
 // Essential functions
 function validateParent(parent) {
-    const schema = Joi.object().keys({
-        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
-        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
-        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
-        password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמה') }),
-        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') })
-    }).unknown(true);
-
+    const schema = {
+        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { 
+            return customError(errors, 'שם פרטי') 
+        }),
+        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { 
+            return customError(errors, 'שם משפחה') 
+        }),
+        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { 
+            return customError(errors, 'תעודת זהות') 
+        }),
+        // password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמה') }),
+        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { 
+            return customError(errors, 'טלפון') 
+        })
+    };
     // return true;
     return Joi.validate(parent, schema);
+
+    // const schema = Joi.object().keys({
+    //     firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם פרטי') }),
+    //     lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { return customError(errors, 'שם משפחה') }),
+    //     id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { return customError(errors, 'תעודת זהות') }),
+    //     // password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמה') }),
+    //     phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { return customError(errors, 'טלפון') })
+    // }).unknown(true);
 }
 
 
@@ -114,4 +129,5 @@ function customError(errors, key) {
 
 // Module exports
 exports.Parent = Parent;
+exports.parentSchema = parentSchema;
 exports.validateParent = validateParent;

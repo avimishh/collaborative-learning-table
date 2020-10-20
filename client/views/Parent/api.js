@@ -140,6 +140,26 @@ export function updateParentRequest(parent_id, parentToUpdate, successFunction, 
 }
 
 
+export function updateParentPasswordRequest(parent_id, newPassword, successFunction, errorFunction) {
+    console.log('work api');
+    let request = {
+      contentType: "application/json",
+      url: parentsApi + 'changePassword/' + parent_id,
+      method: "PUT",
+      headers: {
+        'x-auth-token': localStorage.getItem('token')
+      },
+      data: JSON.stringify({newPassword}),
+      success: function (data, textStatus, xhr) {
+        successFunction();
+      },
+      error: function (xhr) {
+        errorFunction(xhr.status, xhr.responseText);
+      }
+    };
+    $.ajax(request);
+  }
+
 // export function firstDetailsParentRequest(parentToUpdate, successFunction, errorFunction, completeFunction) {
 //     console.log('work api');
 //     let request = {

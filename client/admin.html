@@ -389,10 +389,11 @@
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
           let modal_child_delete = document.getElementById("modal-child-delete");
+          let modal_add_teachers = document.getElementById("modal_add_teacher");
           if(event.target == modal_child_delete){
             modal_child_delete.style.display = "none";
-          }else if(event.target == modal_add_teacher){
-            modal_add_teacher.style.display = "none";
+          }else if(event.target == modal_add_teachers){
+            modal_add_teachers.style.display = "none";
           }
         };
       }
