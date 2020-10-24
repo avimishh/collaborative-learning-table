@@ -128,7 +128,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 
-// PUT ['api/teachers/:id']
+// PUT ['api/teachers/changePassword/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
     if (req.body.newPassword === null || req.body.newPassword.length < 5)
         return res.status(400).send("הסיסמה חייבת להכיל לפחות 5 תווים.");

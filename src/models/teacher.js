@@ -116,7 +116,7 @@ function customError(errors, key) {
                 err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
                 break;
             case 'string.max':
-                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
+                err.message = `'${key}' נדרש להכיל פחות מ-${err.context.limit} תוים`;
                 break;
             default:
                 break;

@@ -5,9 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
-    <link href="../../style/details.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/details.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
     <style>
         .bgimg {
             background-image: url('../../pics/background/homeParents.jpg');
@@ -44,72 +45,71 @@
             <div id="err_text"></div>
 
             <div class="mess">
-                <form>
-                    <table>
-                        <!--1. First Name-->
-                        <tr>
-                            <td>
-                                <span>שם פרטי:</span>
-                            </td>
-                            <td class="details">
-                                <!-- <input id="firstName" class="answer" /> -->
-                                <span id="firstName" ></span>
-                            </td>
+                <table>
+                    <!--1. First Name-->
+                    <tr>
+                        <td>
+                            <span>שם פרטי:</span>
+                        </td>
+                        <td class="details">
+                            <!-- <input id="firstName" class="answer" /> -->
+                            <span id="firstName"></span>
+                        </td>
 
-                        </tr>
-                        <!--2. Last Name-->
-                        <tr>
-                            <td>
-                                <span>שם משפחה:</span>
-                            </td>
-                            <td class="details">
-                                <!-- <input id="lastName" class="answer" /> -->
-                                <span id="lastName"></span>
+                    </tr>
+                    <!--2. Last Name-->
+                    <tr>
+                        <td>
+                            <span>שם משפחה:</span>
+                        </td>
+                        <td class="details">
+                            <!-- <input id="lastName" class="answer" /> -->
+                            <span id="lastName"></span>
 
-                            </td>
-                        </tr>
-                        <!--3. id parent-->
-                        <tr>
-                            <td>
-                                <span>תעודת זהות:</span>
-                            </td>
-                            <td class="details">
-                                <span id="id_parent"></span>
+                        </td>
+                    </tr>
+                    <!--3. id parent-->
+                    <tr>
+                        <td>
+                            <span>תעודת זהות:</span>
+                        </td>
+                        <td class="details">
+                            <span id="id_parent"></span>
 
-                                <!-- <input id="id_parent" class="answer" /> -->
-                            </td>
-                        </tr>
-                        <!--4. Phone Number-->
-                        <tr>
-                            <td>
-                                <span>טלפון:</span>
-                            </td>
-                            <td class="details">
-                                <span id="phoneNumber"></span>
+                            <!-- <input id="id_parent" class="answer" /> -->
+                        </td>
+                    </tr>
+                    <!--4. Phone Number-->
+                    <tr>
+                        <td>
+                            <span>טלפון:</span>
+                        </td>
+                        <td class="details">
+                            <span id="phoneNumber"></span>
 
-                                <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
-                            </td>
-                        </tr>
-                        <!--5. Password-->
-                        <tr>
-                            <td>
-                                <span>סיסמא:</span>
-                            </td>
-                            <td>
-                                <!-- <span id="password"></span> -->
-                                <input type="password" id="password" placeholder="הכנס סיסמה לאישור"/>
-                            </td>
-                        </tr>
-                        <!--6. Update-->
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
-                                <input class="w3-button" type="button" id="btn_update" value="עדכן" />
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                            <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
+                        </td>
+                    </tr>
+                    <!--5. Password-->
+                    <tr>
+                        <td>
+                            <span>סיסמא:</span>
+                        </td>
+                        <td>
+                            <button id="btn-change-password">לחץ להחלפת סיסמה</button>
+                            <!-- <span id="password"></span> -->
+                            <!-- <input type="password" id="password" placeholder="הכנס סיסמה לאישור"/> -->
+                        </td>
+                    </tr>
+                    <!--6. Update-->
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
+                            <input class="w3-button" type="button" id="btn_update" value="עדכן" />
+                        </td>
+                    </tr>
+                </table>
             </div>
 
         </div>
@@ -119,16 +119,37 @@
         </div> -->
 
         <div class="w3-display-bottomleft w3-padding-large">
-            <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home"
-                    aria-hidden="true"></i></button>
+            <!-- <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home"
+                    aria-hidden="true"></i></button> -->
             Make Learning Fun
+        </div>
+    </div>
+
+    <!-- The Change Password Modal -->
+    <div id="modal-change-password" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close btn_exit_modal" id="">&times;</span>
+                <h2 style="text-align: center">החלפת סיסמה</h2>
+            </div>
+            <div class="modal-body">
+                <!-- סיסמה ישנה: 
+              <input type="password" id="input-old-password" placeholder="סיסמא ישנה" /> -->
+                <!-- <br><br> -->
+                סיסמא חדשה:
+                <input type="password" id="input-new-password" placeholder="סיסמא חדשה" />
+            </div>
+            <div class="modal-footer">
+                <button id="btn-save-new-password" type="button">שמור</button>
+                <!-- <div id=" modal-err-text"></div> -->
+            </div>
         </div>
     </div>
 
     <script type="module" src="api.js"></script>
     <script type="module" src="consts.js"></script>
     <script type="module">
-        import { updateParentRequest } from './api.js';
+        import { updateParentRequest, updateParentPasswordRequest } from './api.js';
         import { URL } from './consts.js';
 
         $(document).ready(function () {
@@ -148,12 +169,21 @@
                 showParentDetails();
             });
 
+            $('#btn-change-password').on('click', () => {
+                $('#modal-change-password').show();
+            });
+
+            $('#btn-save-new-password').click(() => {
+                updateParentPassword();
+            });
+
             let parent = JSON.parse(localStorage.getItem('parent'));
-            $('#parentName').text(`${parent.firstName} ${parent.lastName}`);
+            // $('#parentName').text(`${parent.firstName} ${parent.lastName}`);
 
             $('td:nth-child(2)').css('border', '1px solid white');
 
             $('.details').children().click(function () { spanToInput($(this)); });
+            initModal();
 
         });
 
@@ -180,10 +210,15 @@
                 firstName: $("#firstName").text(),
                 lastName: $("#lastName").text(),
                 id: $("#id_parent").text(),
-                phone: $("#phoneNumber").text(),
-                password: $("#password").val()
+                phone: $("#phoneNumber").text()
+                // password: $("#password").val()
             };
             updateParentRequest(parent.id, updatedParent, showUpdatedDetails, printErrorToUser);
+        }
+
+        function updateParentPassword() {
+            let parent = JSON.parse(localStorage.getItem('parent'));
+            updateParentPasswordRequest(parent.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
         }
 
         function showParentDetails() {
@@ -195,10 +230,11 @@
             $("#lastName").text(parent.lastName);                     // lastName
             $("#id_parent").text(parent.id);                          // id
             $("#phoneNumber").text(parent.phone);                     // phoneNumber
-            $("#password").text(parent.password);                     // password
+            // $("#password").text(parent.password);                     // password
         }
 
         function showUpdatedDetails() {
+            $('#modal-change-password').hide();
             // $(".answer").attr('disabled', true);
             printErrorToUser(0,'הנתונים עודכנו בהצלחה.');
             showParentDetails();
@@ -208,8 +244,23 @@
         }
 
         function printErrorToUser(code, err) { // popup
+            $('#modal-change-password').hide();
             $('#err_text').text(err);
         }
+
+        function initModal() {
+            $(".btn_exit_modal").on("click", () => {
+            $(".modal").hide();
+            });
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                let modal = document.getElementById("modal-change-password");
+                if (event.target == modal)
+                modal.style.display = "none";
+            }
+        }
+
     </script>
 </body>
 

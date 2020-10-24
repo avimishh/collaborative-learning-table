@@ -119,6 +119,37 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
+
+// PUT ['api/parents/changePassword/:id']
+router.put('/changePassword/:id', auth, async (req, res) => {
+    if (req.body.newPassword === null || req.body.newPassword.length < 5)
+        return res.status(400).send("הסיסמה חייבת להכיל לפחות 5 תווים.");
+
+    try {
+        const parent = await Parent.findOneAndUpdate({
+            id: req.params.id
+        }, {
+            password: req.body.newPassword
+        }, {
+            new: true,
+            useFindAndModify: false
+        }).populate('children', 'id firstName lastName');
+        // Assert update completed successfully
+        if (!parent)
+            return res.status(404).send(`parent ${req.params.id} was not found.`);
+        // Password Hash
+        const salt = await bcrypt.genSalt(10);
+        parent.password = await bcrypt.hash(parent.password, salt);
+        await parent.save();
+
+        // Send response to client
+        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
+    } catch (ex) {
+        return res.status(404).send(`סיסמה שגויה`);
+    }
+});
+
+
 // admin permission?
 // DELETE ['api/parents/:id']
 router.delete('/:id', async (req, res) => {
