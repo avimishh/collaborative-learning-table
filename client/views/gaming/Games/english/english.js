@@ -49,7 +49,7 @@ function answers_pad_init() {
     $btn.on("click", function () {
       $(this).hide();
       // console.log('DEBUG: ' + words[i]);
-      sock.emit("answer_submitted", questions[i]);
+      sock.emit("fromClient_toServer_player_submitted_answer", questions[i]);
       set_answers_pad_state("disable");
     });
     answers_buttons.push($btn);
@@ -76,7 +76,7 @@ function answers_pad_init_images() {
     $btn.on("click", function () {
       $(this).hide();
       // console.log('DEBUG: ' + words[i]);
-      sock.emit("answer_submitted", questions[i]);
+      sock.emit("fromClient_toServer_player_submitted_answer", questions[i]);
       set_answers_pad_state("disable");
     });
     answers_buttons.push($btn);
@@ -155,6 +155,6 @@ sock.on("stats", (playersStats) => {
   update_stats(playersStats);
 });
 
-sock.on("gamePadState", (state) => {
+sock.on("fromServer_toClient_set_answer_frame_state", (state) => {
   set_answers_pad_state(state);
 });

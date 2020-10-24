@@ -1,6 +1,6 @@
 import {
     getServerApiUrl
-} from "../../../globalDeclarations.js";
+} from "../../globalDeclarations.js";
 
 
 const server = getServerApiUrl();
@@ -16,9 +16,7 @@ export function getGamesRequest(successFunction, errorFunction, completeFunction
         url: gamesApi,
         method: "GET",
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        // data: JSON.stringify(parent),
         success: function (data, textStatus, xhr) {
-            // successFunction(data);//, textStatus, jqXHR);
             successFunction(data);
         },
         error: function (xhr) {

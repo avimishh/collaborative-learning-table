@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games gallery</title>
+    <script src="/lib/jquery.js"></script>
+    <link href="/lib/w3.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
+    <link href="/style/gaming.css" rel="stylesheet" />
+    <style>
+        #frame-iframe {
+            width: 100%;
+            height: 520px;
+            margin: auto;
+        }
+
+        .label {
+            color: white;
+            padding: 8px;
+            width: 200px;
+            border: 1px black solid;
+        }
+
+        .p_con {
+            background-color: #4CAF50;
+        }
+
+        .p_ncon {
+            background-color: #f44336;
+        }
+
+        div.thicker {
+            font-weight: 900;
+        }
+
+        /* #chat { */
+        /* width: 300px; */
+        /* margin-right: 500px; */
+        /* margin-top: 0px; */
+        /* } */
+
+        /* #events {
+            flex-grow: 1;
+            list-style: none;
+            margin: auto;
+            padding: 0;
+            border-bottom: 1px solid lightgrey;
+            overflow-y: scroll;
+            overflow: hidden;
+            height: 100px;
+        }
+
+        #events li {
+            padding: 10px 10px 10px 10px;
+        } */
+
+        #div-frame-container {
+            /* margin-left: 50px; */
+            /* margin-right: 50px; */
+            background: cornflowerblue;
+            /* rgba(200, 200, 200, 0.918); */
+        }
+
+        body {
+            background: no-repeat center center fixed;
+            background-image: url('/pics/background/back9.jpg');
+            background-size: cover;
+        }
+
+        #socket_btns button {
+            /* margin: 10px auto 0; */
+            width: 70px;
+            height: 60px;
+            /* display: block; */
+            outline: none;
+            /* padding: 10px 0; */
+            border: 1px solid #fff;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-size: 12px;
+            background-color: blue;
+        }
+
+        #socket_btns {
+            display: none;
+        }
+
+        #div-top {
+            height: 60px;
+        }
+
+        #div-top:hover #socket_btns {
+            display: block;
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <div class="w3-display-container" id="div-top">
+        <div id="players_status" class="w3-display-topright">
+            <div id="host_player" class="label p_ncon">שחקן מארח: לא מחובר</div>
+            <div id="guest_player" class="label p_ncon">שחקן אורח: לא מחובר</div>
+        </div>
+
+        <div id="socket_btns" class="w3-display-topmiddle">
+            <button id="socket_connect">socket connect</button>
+            <button id="socket_disconnect">socket disconnect</button>
+            <button id="btn_goToHome">לעמוד הבית</button>
+        </div>
+
+        <!-- <div id="chat" class="w3-container w3-cell w3-display-topleft">
+            <ul id="events"></ul>
+        </div> -->
+
+    </div>
+    <div id="div-frame-container" class="w3-panel w3-card-4 w3-middle">
+        <iframe id="frame-iframe" src="" frameborder="1"></iframe>
+    </div>
+
+    <!-- The Instruction Modal -->
+    <div id="modal-instruction" class="modal" onclick="hideModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <h1 id="modal-instruction-text"></h1>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./gamingClient.js"></script>
+</body>
+
+</html>

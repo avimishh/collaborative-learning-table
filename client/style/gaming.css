@@ -1,0 +1,27 @@
+@import "/lib/w3.css";
+@import "/lib/font-awesome-4.7.0/css/font-awesome.min.css";
+/* font */
+
+@font-face {
+    font-family: heb_font_Varela;
+    src: url('/lib/VarelaRound-Regular.ttf');
+}
+
+body {
+    background-image: url('/pics/background/board.png');
+    /* min-height: 100%; */
+    background-position: center;
+    background-size: cover;
+}
+
+body,
+h1,
+p,
+div {
+    font-family: heb_font_Varela;
+}
+
+.modal-content:hover {
+    background-color: cornflowerblue;
+    cursor: pointer;
+}

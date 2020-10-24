@@ -28,7 +28,7 @@ function numbers_pad_init() {
     $("#numbers_pad").append(numbers_buttons[0]);
 
 
-    set_game_pad_state('disable');
+    set_answer_container_state('disable');
 }
 
 // math op init
@@ -66,8 +66,8 @@ function submit_answer() {
     event.preventDefault();
     let answer = $('#answer').text();
     $('#answer').empty();
-    sock.emit('answer_submitted', answer);
-    set_game_pad_state('disable');
+    sock.emit('fromClient_toServer_player_submitted_answer', answer);
+    set_answer_container_state('disable');
 }
 
 
@@ -87,7 +87,7 @@ const sock = parent.sock;
 var msg_counter = 0;
 sock.on('fromServer_toClients_instruction_game', (text) => {
         $('#instruction-top').text(text);
-        $('#instruction-modal').text(text);
+        $('#modal-game-instruction-text').text(text);
         show_modal();
         console.log(`${++msg_counter}: ${text}`);
 });
@@ -95,13 +95,10 @@ sock.on('fromServer_toClients_instruction_game', (text) => {
 
 
 
-sock.on('question', (text) => {
-    ask_question(text)
+sock.on('fromServer_toClient_show_the_new_question', (question_string) => {
+    let pre_question = 'פתור את התרגיל: '
+    $('#instruction-top').text(pre_question + question_string);
 });
-// show question got from server to the player
-function ask_question(question_string) {
-    $('#question').text(question_string);
-}
 
 
 
@@ -133,37 +130,41 @@ function set_math_operators_state(state) {
 
 
 
-sock.on('gamePadState', (state) => {
-    set_game_pad_state(state)
+sock.on('fromServer_toClient_set_answer_frame_state', (state) => {
+    set_answer_container_state(state)
 });
 // only enabled after question was asked
-function set_game_pad_state(state) {
+function set_answer_container_state(state) {
     if (state === 'disable')
-        $('#game_pad button').attr('disabled', 'true');
+        $('#frame-answer button').attr('disabled', 'true');
     else
-        $('#game_pad button').removeAttr('disabled');
+        $('#frame-answer button').removeAttr('disabled');
 }
 
 // Modal
 function show_modal() {
-    $("#modal_choose_child").fadeIn("slow");
+    $("#modal-game-instruction").fadeIn("slow");
     setTimeout(() => {
-        $("#modal_choose_child").fadeOut("slow");
+        $("#modal-game-instruction").fadeOut("slow");
     }, 2000);
 }
 
-initModal();
-
-function initModal() {
-    $("#btn_exit_modal").on('click', () => {
-        $("#modal_choose_child").css("display", "none");
-    });
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        let modal = document.getElementById("modal_choose_child");
-        // if (event.target == modal) {
-        modal.style.display = "none";
-        // }
-    }
+function hideModal(){
+    $('#modal-game-instruction').hide();
 }
+
+// initModal();
+
+// function initModal() {
+//     $("#btn_exit_modal").on('click', () => {
+//         $("#modal-game-instruction").css("display", "none");
+//     });
+
+//     // When the user clicks anywhere outside of the modal, close it
+//     window.onclick = function (event) {
+//         let modal = document.getElementById("modal-game-instruction");
+//         // if (event.target == modal) {
+//         modal.style.display = "none";
+//         // }
+//     }
+// }

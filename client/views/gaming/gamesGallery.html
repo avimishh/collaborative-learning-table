@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="/lib/jquery.js"></script>
-    <link href="/lib/w3.css" rel="stylesheet" />
-    <style>
-      div.gallery {
-        border: 1px solid #eee;
-        margin-bottom: 10px;
-      }
 
-      div.gallery:hover {
-        border: 1px solid #777;
-        background-color: #777;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/lib/jquery.js"></script>
+  <link href="/lib/w3.css" rel="stylesheet" />
+  <style>
+    div.gallery {
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+    }
 
-      div.gallery img {
-        width: 50%;
-        max-height: 100px;
-        height: auto;
-      }
+    div.gallery:hover {
+      border: 1px solid #777;
+      background-color: #777;
+    }
 
-      div.desc {
-        padding: 15px;
-        text-align: center;
-      }
+    div.gallery img {
+      width: 50%;
+      max-height: 100px;
+      height: auto;
+    }
 
-      .desc-p {
-        padding: 15px;
-        text-align: center;
-        height: 100px;
-      }
+    div.desc {
+      padding: 15px;
+      text-align: center;
+    }
 
-      * {
-        box-sizing: border-box;
-      }
+    .desc-p {
+      padding: 15px;
+      text-align: center;
+      height: 100px;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    .responsive {
+      padding: 0 6px;
+      float: left;
+      width: 24.99999%;
+      cursor: pointer;
+    }
+
+    @media only screen and (max-width: 700px) {
       .responsive {
-        padding: 0 6px;
-        float: left;
-        width: 24.99999%;
-        cursor: pointer;
+        width: 49.99999%;
+        margin: 6px 0;
       }
+    }
 
-      @media only screen and (max-width: 700px) {
-        .responsive {
-          width: 49.99999%;
-          margin: 6px 0;
-        }
+    @media only screen and (max-width: 500px) {
+      .responsive {
+        width: 100%;
       }
+    }
 
-      @media only screen and (max-width: 500px) {
-        .responsive {
-          width: 100%;
-        }
-      }
+    .clearfix:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  </style>
+</head>
 
-      .clearfix:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
-    </style>
-  </head>
-
-  <body dir="rtl">
-    <div class="clearfix"></div>
-    <div id="guest-client-message" class="w3-display-container">
-      <h4 id="msg" class="w3-display-middle"></h4>
-    </div>
-    <script type="module">
-      import { getGamesRequest } from "./api.js";
-      import { URL } from "./consts.js";
+<body dir="rtl">
+  <div class="clearfix"></div>
+  <div id="guest-client-message" class="w3-display-container">
+    <h4 id="msg" class="w3-display-middle"></h4>
+  </div>
+  <script type="module">
+    import { getGamesRequest } from "./api.js";
+    import { URL } from "./consts.js";
 
       var sock = parent.sock;
       var isHost = parent.isHost;
@@ -120,5 +121,6 @@
         });
       }
     </script>
-  </body>
+</body>
+
 </html>

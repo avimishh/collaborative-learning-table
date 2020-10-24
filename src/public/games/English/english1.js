@@ -23,7 +23,7 @@ class EnglishGame {
                 this._askQuestion(idx, question);
             });
 
-            player._socket.on('answer_submitted', (question) => {
+            player._socket.on('fromClient_toServer_player_submitted_answer', (question) => {
                 this._checkAnswer(idx, question);
                 this._checkRoundOver();
             });
@@ -72,7 +72,7 @@ class EnglishGame {
 
     // numbers pad = where the player write his answer
     _setAnswersPadState(state) {
-        this._sendToPlayers('gamePadState', state)
+        this._sendToPlayers('fromServer_toClient_set_answer_frame_state', state)
     }
 
     _askQuestion(playerIndex, question) {
@@ -83,7 +83,7 @@ class EnglishGame {
         let qIdx = questions.findIndex(q => q._word === question._word);
         if (qIdx !== -1) askedQuestions.push(questions.splice(qIdx, 1));
         ////
-        this._sendToPlayers('question', question._word);
+        this._sendToPlayers('fromServer_toClient_show_the_new_question', question._word);
         this._setAnswersPadState('enable'); // set enable so player can answer
     }
 

@@ -11,38 +11,37 @@ const subFields = [{eng: 'plus', heb: 'חיבור'},
 
 var questions = [];
 const MAX_ROUNDS = 2;
-var playerToPlay, playerToWait;
-
+const P0= 0, P1 = 1;
 
 class MathGame { // @@@@CHANGING
-    constructor(p0, p1, game) {
+    constructor(player0, player1, game) {
         this._game_id = game.id;
 
-        this._players = [p0, p1];
-        this._isPlayersAnswerCorrect = [null, null];
+        this._players = [player0, player1];
+        this._players.forEach(p => p.set_Player_Stat(new Stats(field, subFields)));   
 
         this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק החל');
 
-        this._players.forEach(p => p.set_Player_Stat(new Stats(field, subFields)));   
-        this._update_Clients_Stats();
         // #### Specific Listeners ####
-        // Add listener 
+        // Add listeners
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player.socket.on('fromClient_toServer_notify_subField_selected', (op) => {
-                this._askQuestion(idx, op);
+            player.socket.on('fromClient_toServer_notify_subField_selected', (op) => { // @@@@CHANGING
+                this._askNewQuestion(idx, op);
             });
 
-            player.socket.on('answer_submitted', (answer) => {
-                this._checkAnswer(idx, answer);
+            player.socket.on('fromClient_toServer_player_submitted_answer', (answer) => {
+                this._checkPlayerAnswer(idx, answer);
                 this._checkRoundOver();
             });
         });
         // ############################
 
+        this._isPlayersAnswerCorrect = [null, null];
         this._roundCounter = 0;
-        this._whoseTurn = 0;    // By default player0 starts
-        this._startRound();
+        this._whoseTurn = P0;    // By default player0 starts
+        this._update_Clients_Stats();   // first initialize all to 0
+        this._startNextRound();
     }
 
     // #### Global ####
@@ -58,51 +57,50 @@ class MathGame { // @@@@CHANGING
         });
     }
 
-    _startRound() {
+    _startNextRound() {
+        this._isPlayersAnswerCorrect = [null, null];
+        this._roundCounter++;
         this._determineTurn();
     }
 
-    _determineTurn() {
-        playerToPlay = this._players[this._whoseTurn];
-        playerToWait = this._players[(this._whoseTurn === 1) ? 0 : 1];
+    // @@@@CHANGING
+    _determineTurn() { 
+        let playerToPlay = this._players[this._whoseTurn];
         playerToPlay.send_Message_To_Client('fromServer_toClients_instruction_game', 'תורך לבחור פעולה');
-        playerToPlay.set_Operators_State('enable');
+        playerToPlay.set_Operators_Frame_State('enable');
+
+        let playerToWait = this._players[(this._whoseTurn === P1) ? P0 : P1];
         playerToWait.send_Message_To_Client('fromServer_toClients_instruction_game', 'המתן לחברך בבחירת פעולה');
-        playerToWait.set_Operators_State('disable');
+        playerToWait.set_Operators_Frame_State('disable');
     }
 
     _set_Next_Player_Turn() {
-        this._whoseTurn = (this._whoseTurn === 1) ? 0 : 1;
-    }
-    // ################
-
-    _setMathOperatorsState(playerIndex, state) {
-        this._players[playerIndex].set_Operators_State('disableOperators', state)
+        this._whoseTurn = (this._whoseTurn === P1) ? P0 : P1;
     }
 
-    // numbers pad = where the player write his answer
-    _setNumbersPadState(state) {
-        this._sendToPlayers('gamePadState', state)
+    // @@@@CHANGING
+    _setPlayersAnswerFrameState(state) {
+        this._sendToPlayers('fromServer_toClient_set_answer_frame_state', state)
     }
 
-    _askQuestion(playerIndex, op) {
-        // After player chose operator disable his game operators
-        // this._setMathOperatorsState(playerIndex, 'disable');
-        this._players[playerIndex].set_Operators_State('disable');
+    // @@@@CHANGING
+    _askNewQuestion(playerIndex, op) {
+        // After player chose operator/question disable his game operators
+        this._players[playerIndex].set_Operators_Frame_State('disable'); 
 
-        var new_Question = new Question(op);
+        var new_Question = new Question(op); 
         questions.push(new_Question);
-        this._sendToPlayers('question', new_Question.toString());
-        this._players.forEach(p => p.stats._add_Asked_Question(op));
+        this._sendToPlayers('fromServer_toClient_show_the_new_question', new_Question.toString());
+        this._players.forEach(p => p.stats._add_AskedQuestion(op));
 
-        this._setNumbersPadState('enable'); // set enable so player can answer
+        this._setPlayersAnswerFrameState('enable'); // set enable so player can answer
     }
 
-    _checkAnswer(playerIndex, answer_From_Player) {
+    _checkPlayerAnswer(playerIndex, answer_From_Player) {
         let asked_Question = questions[questions.length - 1];
-        // if correct answer
-        if (asked_Question._correct_Answer === parseInt(answer_From_Player)) {
-            this._players[playerIndex].stats._add_Correct_Answer(asked_Question._operator);
+        
+        if (asked_Question._correct_Answer === parseInt(answer_From_Player)) { // @@@@CHANGING
+            this._players[playerIndex].stats._add_CorrectAnswer(asked_Question._operator);
             this._isPlayersAnswerCorrect[playerIndex] = true;
         }
         // if wrong answer
@@ -123,14 +121,11 @@ class MathGame { // @@@@CHANGING
 
     _endRound() {
         this._update_Clients_Stats();
-        this._isPlayersAnswerCorrect = [null, null];
-        this._set_Next_Player_Turn();
-        this._roundCounter++;
 
         if (this._roundCounter >= MAX_ROUNDS) {
             this._roundCounter = 0;
             this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק הסתיים');
-            this._Save_Stats_in_DB();
+            this._save_Stats_in_DB();
             setTimeout(() => { this._end_Game_Back_To_Games_Gallery() }, 5000);
             // this._sendToPlayers('end');
             // this._players[0]._socket.disconnect(true);
@@ -138,15 +133,16 @@ class MathGame { // @@@@CHANGING
             return;
         }
 
-        this._startRound();
+        this._set_Next_Player_Turn();
+        this._startNextRound();
     }
 
     _update_Clients_Stats() {
-        this._players[0].update_Client_Stats([this._players[0].stats, this._players[1].stats]);
-        this._players[1].update_Client_Stats([this._players[1].stats, this._players[0].stats]);
+        this._players[P0].update_Client_Stats([this._players[P0].stats, this._players[P1].stats]);
+        this._players[P1].update_Client_Stats([this._players[P1].stats, this._players[P0].stats]);
     }
 
-    _Save_Stats_in_DB() {
+    _save_Stats_in_DB() {
         this._players.forEach(async (p) => {
             await save_Data_DB(p.id, p.stats, this._game_id);
         });
@@ -154,18 +150,20 @@ class MathGame { // @@@@CHANGING
 
     _end_Game_Back_To_Games_Gallery() {
         this._removeListeners();
-        this._sendToPlayers('players_ready_host_choose_game');
+        this._sendToPlayers('fromServer_toClient_players_ready_hostPlayer_choose_game');
     }
 
+    // @@@@CHANGING
     _removeListeners() {
         this._players.forEach(p => {
             p.socket.removeAllListeners('fromClient_toServer_notify_subField_selected');
-            p.socket.removeAllListeners('answer_submitted');
+            p.socket.removeAllListeners('fromClient_toServer_player_submitted_answer');
             // console.log(p.socket.eventNames());
         });
     }
 }
 
+// @@@@CHANGING
 // #### specific ####
 class Question {
     constructor(operator) {
@@ -194,7 +192,6 @@ class Question {
             default:
                 console.log('DEBUG: error in _calculateQuestionResult()');
         }
-
         return res;
     }
 
@@ -213,10 +210,9 @@ class Question {
             default:
                 console.log('DEBUG: error in _questionToString()');
         }
-
         return `${this._oprnd1} ${op} ${this._oprnd2}`;
     }
 }
 
-
+// @@@@CHANGING
 module.exports = MathGame;

@@ -126,8 +126,6 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     notes.push(`ילד "${firstName} ${lastName}" נוצר בDB.`);
 }
 
-
-
 async function createGame(title, description, fieldName, icon, link) {
     // Validate field
     const field = await Field.findOne({ name: fieldName });
@@ -153,6 +151,7 @@ async function createGame(title, description, fieldName, icon, link) {
         field: {
             _id: field._id,
             name: field.name,
+            nameEng: field.nameEng,
             description: field.description
         },
         icon,
@@ -232,12 +231,12 @@ async function addFields() {
 
 async function initDB() {
     notes = [];
-    await Classroom.createClassroom("כיתת המצטיינים של עליזה");
-    await createTeacher('עליזה', 'שמשוני', '10', '12345', '0523333333');
+    // await Classroom.createClassroom("כיתת המצטיינים של עליזה");
+    // await createTeacher('עליזה', 'שמשוני', '10', '12345', '0523333333');
 
 
-    await Classroom.createClassroom("כיתת היפים והאמיצים של דפנה");
-    await Classroom.createClassroom("כיתה ב'2");
+    // await Classroom.createClassroom("כיתת היפים והאמיצים של דפנה");
+    // await Classroom.createClassroom("כיתה ב'2");
 
 
     await createParent('משה', 'פרץ', '100', '12345', '0521111111');

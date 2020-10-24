@@ -12,12 +12,12 @@ class Player {
 
 
 
-    send_Init_Message_To_Client(text){
-        this.socket.emit('init_msg', text);   // DEBUG
+    send_Welcome_Message_To_Client(text){
+        this.socket.emit('fromServer_toClient_welcome_msg', text);   // DEBUG
     }
 
     set_Player_Role_To_Client(role){
-        this.socket.emit('set_player_role', role);
+        this.socket.emit('fromServer_toClient_set_player_role', role);
     }
 
     send_Message_To_Client(type, text){
@@ -25,8 +25,8 @@ class Player {
     }
 
 
-    set_Operators_State(state){
-        // console.log('at set_Operators_State()');
+    set_Operators_Frame_State(state){
+        // console.log('at set_Operators_Frame_State()');
         this.socket.emit('disableOperators', state);
     }
 

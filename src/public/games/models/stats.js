@@ -14,12 +14,12 @@ class Stats {
         });
     }
 
-    _add_Asked_Question(operation) {
+    _add_AskedQuestion(operation) {
         console.log(operation);
         this.subFields.find(s => s.operator === operation).asked++;
     }
 
-    _add_Correct_Answer(operation) {
+    _add_CorrectAnswer(operation) {
         this.subFields.find(s => s.operator === operation).correct++;
     }
 
