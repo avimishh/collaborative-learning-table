@@ -1,91 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="/lib/jquery.js"></script>
-    <link href="/lib/w3.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./style.css" />
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap" rel="stylesheet"> -->
-    <title>English</title>
-    <script src="./english.js"></script>
-    <style>
-      body {
-        background-image: url("/pics/background/back10.jpg");
-        /* background-color: darkolivegreen; */
-      }
 
-      #message_div {
-        text-align: center;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Game</title>
+  <script src="/lib/jquery.js"></script>
+  <link href="/lib/w3.css" rel="stylesheet" />
+  <link href="/style/modal.css" rel="stylesheet" />
+  <link href="/style/gaming.css" rel="stylesheet" />
+  <script src="./english.js"></script>
+  <style>
+    body {
+      background-image: url("/pics/background/back10.jpg");
+      /* background-color: darkolivegreen; */
+    }
 
-      #message_box {
-        /* width: 300px; */
-        height: 40px;
-        /* border: black 1px solid; */
-        margin: 10px auto;
-        font-weight: 900;
-        font-size: 30px;
-        direction: rtl;
-      }
+    #message_div {
+      text-align: center;
+    }
 
-      #cards_div {
-        text-align: center;
-        height: 150px;
-        padding-top: 20px;
-        margin-top: 50px;
-        font-size: 32px;
-        font-family: "Josefin Sans", sans-serif;
-      }
+    #message_box {
+      /* width: 300px; */
+      height: 40px;
+      /* border: black 1px solid; */
+      margin: 10px auto;
+      font-weight: 900;
+      font-size: 30px;
+      direction: rtl;
+    }
 
-      #cards_div button {
-        margin: 10px;
-        width: 150px;
-        height: 100px;
-      }
+    #cards_div {
+      text-align: center;
+      height: 150px;
+      padding-top: 20px;
+      margin-top: 50px;
+      font-size: 32px;
+      font-family: "Josefin Sans", sans-serif;
+    }
 
-      #answers_div {
-        text-align: center;
-        height: 150px;
-        /* padding-top: 20px; */
-        margin-top: 20px;
-      }
+    #cards_div button {
+      margin: 10px;
+      width: 150px;
+      height: 100px;
+    }
 
-      #answers_div button {
-        margin: 10px;
-        width: 80px;
-      }
+    #answers_div {
+      text-align: center;
+      height: 150px;
+      /* padding-top: 20px; */
+      margin-top: 20px;
+    }
 
-      #stats {
-        width: 100px;
-        float: left;
-      }
+    #answers_div button {
+      margin: 10px;
+      width: 80px;
+    }
 
-      .img_answers {
-        margin: 10px;
-        width: 150px;
-        height: 150px;
-      }
-    </style>
-  </head>
+    #stats {
+      width: 100px;
+      float: left;
+    }
 
-  <body>
-    <div class="w3-container" id="message_div">
-      <div id="stats" class="w3-table-all">
-        <table class="w3-table">
-          <tr>
-            <th>אתה</th>
-            <th>חברך</th>
-          </tr>
-          <tr id="score">
-            <td>0</td>
-            <td>0</td>
-          </tr>
-        </table>
-      </div>
-      <h4 id="message_box">message</h4>
+    .img_answers {
+      margin: 10px;
+      width: 150px;
+      height: 150px;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="height:100vh;" class="w3-container w3-display-container" id="message_div">
+    <div class="w3-display-topmiddle w3-padding w3-hide-small">
+      <h1 id="instruction-top">שלום</h1>
+  </div>
+    <div id="stats" class="w3-table-all">
+      <table class="w3-table">
+        <tr>
+          <th>אתה</th>
+          <th>חברך</th>
+        </tr>
+        <tr id="score">
+          <td>0</td>
+          <td>0</td>
+        </tr>
+      </table>
     </div>
-    <div class="w3-container" id="cards_div"></div>
-    <div class="w3-container" id="answers_div"></div>
-  </body>
+    <!-- <h4 id="message_box">message</h4> -->
+  </div>
+  <div class="w3-container" id="cards_div"></div>
+  <div class="w3-container" id="answers_div"></div>
+
+  <!-- The Instruction Modal -->
+  <div id="modal-game-instruction" class="modal" onclick="hideModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <h1 id="modal-game-instruction-text"></h1>
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>

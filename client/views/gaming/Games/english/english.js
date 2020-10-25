@@ -1,32 +1,69 @@
+const sock = parent.sock;
 var imagesPath = "./images/";
 
 $(document).ready(function () {
-  init_game_pad();
+  addSocketEvents();
+  initGamePads(); // check
   sock.emit("setStatsObject", localStorage.getItem("statsObject_id"));
   sock.emit("fromClient_toServer_startGame");
   displayNameTitle();
 });
 
+
+function addSocketEvents(){
+  var msg_counter = 0;
+  sock.on('fromServer_toClients_instruction_game', (text) => {
+      $('#instruction-top').text(text);
+      show_modal(text);
+      console.log(`${++msg_counter}: ${text}`);
+  });
+
+  sock.on('fromServer_toClient_show_the_new_question', (question_string) => {
+      let pre_question = 'בחר את התמונה שמתמאימה ל: '
+      $('#instruction-top').text(pre_question + question_string);
+      show_modal(pre_question + question_string);
+  });
+
+  sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
+      $('#table-stats-body').empty();
+      playersStatsArray[0].subFields.forEach((subField, index) => {
+          $('<tr>').append(
+              $('<td>').text(subField.operatorHeb),
+              $('<td>').text(playersStatsArray[0].subFields[index].correct), // player
+              $('<td>').text(playersStatsArray[1].subFields[index].correct) // friend
+          ).appendTo('#table-stats-body');
+      });
+  });
+
+  // sock.on('fromServer_toClient_setOperatorsState', (state) => {
+  //     setOperatorsState(state)
+  // });
+
+  // sock.on('fromServer_toClient_set_answer_frame_state', (state) => {
+  //     setAnswerContainerState(state)
+  // });
+}
+
+
 // var words = ['Apple', 'House', 'Dog', 'Sun', 'Ball'];
 // var answers = ['תפוח', 'בית', 'כלב', 'שמש', 'כדור'];
 var questions = [];
 
-function init_game_pad() {
-  words_pad_init();
-  answers_pad_init_images();
+function initGamePads() {
+  initWordsPad();
+  initAnswersImagesPad();
 }
-// Game pad buttons initizalization
-function words_pad_init() {
+
+function initWordsPad() {
   $("#cards_div").empty();
   var words_buttons = [];
+
   for (let i = 0; i < questions.length; i++) {
     let $btn = $("<button>").text(questions[i]._word);
-    // w3-css style
     $btn.addClass("w3-button w3-card w3-ripple w3-yellow w3-hover-red");
-    $btn.on("click", function () {
+    $btn.click(function () {
       $(this).hide();
-      // console.log('DEBUG: ' + words[i]);
-      sock.emit("player_chose_word", questions[i]);
+      sock.emit("fromClient_toServer_player_chose_word", questions[i]);
     });
     words_buttons.push($btn);
   }
@@ -64,7 +101,7 @@ function answers_pad_init() {
 
 // <input type="image" class="img_answers" src="./images/apple.png">
 // Game pad buttons initizalization
-function answers_pad_init_images() {
+function initAnswersImagesPad() {
   $("#answers_div").empty();
   var answers_buttons = [];
   for (let i = 0; i < questions.length; i++) {
@@ -134,14 +171,12 @@ function update_stats(playersStats) {
   $("#score td:nth-child(2)").text(playersStats[1].correct); // friend
 }
 
-// Socket work
-const sock = parent.sock;
 sock.on("message", (text) => {
   messageEvent(text);
 });
 sock.on("set_questions", (new_questions) => {
   questions = new_questions;
-  init_game_pad();
+  initGamePads();
 });
 sock.on("question", (text) => {
   messageEvent(`מה מתאים למילה: ${text} ?`);

@@ -19,7 +19,7 @@ class EnglishGame {
         // Add listener 
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player._socket.on('player_chose_word', (question) => {
+            player._socket.on('fromClient_toServer_player_chose_word', (question) => {
                 this._askQuestion(idx, question);
             });
 
