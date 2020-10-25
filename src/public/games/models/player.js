@@ -24,10 +24,8 @@ class Player {
         this.socket.emit(type, text);   // DEBUG
     }
 
-
     set_Operators_Frame_State(state){
-        // console.log('at set_Operators_Frame_State()');
-        this.socket.emit('disableOperators', state);
+        this.socket.emit('fromServer_toClient_setOperatorsState', state);
     }
 
     update_Client_Stats(dataPlayersStatsArray){
