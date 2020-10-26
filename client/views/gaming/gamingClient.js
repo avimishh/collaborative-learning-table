@@ -9,7 +9,7 @@ var isHost = false;
 function init() {
     $('#btn_goToHome').on('click', () => {
         if (sock) $('#socket_disconnect').trigger('click');
-        window.location.href = '../HomeScreen.html';
+        window.location.href = '../Child/HomeScreen.html';
     });
 
     $('#socket_connect').on('click', () => {
