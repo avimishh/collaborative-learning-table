@@ -10,8 +10,6 @@ class Player {
         this.stats = stats;
     }
 
-
-
     send_Welcome_Message_To_Client(text){
         this.socket.emit('fromServer_toClient_welcome_msg', text);   // DEBUG
     }
@@ -26,6 +24,10 @@ class Player {
 
     set_Operators_Frame_State(state){
         this.socket.emit('fromServer_toClient_setOperatorsState', state);
+    }
+
+    set_Questions_Frame_State(state){
+        this.socket.emit('fromServer_toClient_set_question_frame_state', state);
     }
 
     update_Client_Stats(dataPlayersStatsArray){

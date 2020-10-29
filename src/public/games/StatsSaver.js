@@ -14,6 +14,7 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
         numOfCorrectAnswers: p_stats._getTotalAmountCorrectAnswer(),
         additionalInfo: p_stats.subFields
     });
+    console.log(newSheet);
 
     let fieldName = game.field.nameEng;
     try {
@@ -24,25 +25,3 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
         return console.log(`Failed to update Stats.`);
     }
 }
-
-// function field_To_English(fieldName) {
-//     let res = '';
-//     switch (fieldName) {
-//         case 'חשבון':
-//             res = 'math'
-//             break;
-//         case 'אנגלית':
-//             res = 'english'
-//             break;
-//         case 'צבעים':
-//             res = 'color'
-//             break;
-//         case 'זכרון':
-//             res = 'memory'
-//             break;
-//         default:
-//             res = 'general'
-//             break;
-//     }
-//     return res;
-// }

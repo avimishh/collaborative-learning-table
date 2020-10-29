@@ -44,7 +44,6 @@ class MathGame { // @@@@CHANGING
         this._startNextRound();
     }
 
-    // #### Global ####
     // Message to 1 player
     _sendToPlayer(playerIndex, type, msg) {
         this._players[playerIndex].send_Message_To_Client(type, msg);
@@ -107,9 +106,8 @@ class MathGame { // @@@@CHANGING
         else
             this._isPlayersAnswerCorrect[playerIndex] = false;
     }
-
-    // check round over after every answer one of the player made
-    _checkRoundOver() {
+    
+    _checkRoundOver() { // check round over after every answer one of the player made
         let is_Round_End = true;
         this._isPlayersAnswerCorrect.forEach((a) => {
             if (a === null) is_Round_End = false;

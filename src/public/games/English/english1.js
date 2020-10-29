@@ -1,250 +1,202 @@
-const saveData = require('../StatsSaver');
+const save_Data_DB = require('../StatsSaver');
+const {
+    Player
+} = require('../models/player');
+const {
+    Game
+} = require('../models/game');
+const {
+    Stats
+} = require('../models/stats');
 
+// @@@@CHANGING
+const field = 'english';
+const subFields = [{
+    eng: 'wordMatchToPicture',
+    heb: 'התאמת מילה לתמונה'
+}];
 
-// const
 const MAX_ROUNDS = 3;
 var questions = [];
-var askedQuestions = [];
+var potentialQuestionsCollection = [];
+const P0 = 0,
+    P1 = 1;
+// @@@@
 
-class EnglishGame {
-    constructor(p0, p1) {
-        this._players = [new Player(p0.sock, p0.stats), new Player(p1.sock, p1.stats)];
-        this._whoseTurn = 0;    // By default player0 starts
-        this._isPlayersAnswerCorrect = [null, null];
-        this._roundCounter = 0;
 
-        this._sendToPlayers('fromServer_toClients_instruction_game', 'התחלנו לשחק');
-        this._generate_questions();
+class EnglishGame { // @@@@CHANGING
+    constructor(player0, player1, game) {
+        this._game_id = game.id;
 
-        // Add listener 
+        this._players = [player0, player1];
+        this._players.forEach(p => p.set_Player_Stat(new Stats(field, subFields)));
+
+        this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק החל');
+        this._generate_questions(); //@@
+
+        // #### Specific Listeners ####
+        // Add listeners
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player._socket.on('fromClient_toServer_player_chose_word', (question) => {
-                this._askQuestion(idx, question);
+            player.socket.on('fromClient_toServer_player_chose_questionWord', (question) => { // @@@@CHANGING
+                this._askNewQuestion(idx, question);
             });
 
-            player._socket.on('fromClient_toServer_player_submitted_answer', (question) => {
-                this._checkAnswer(idx, question);
+            player.socket.on('fromClient_toServer_player_submitted_answer', (answer) => {
+                this._checkPlayerAnswer(idx, answer);
                 this._checkRoundOver();
             });
         });
+        // ############################
 
-        this._startRound();
+        this._sendToPlayers('fromServer_toClient_send_questions_collection', potentialQuestionsCollection);
+        this._isPlayersAnswerCorrect = [null, null];
+        this._roundCounter = 0;
+        this._whoseTurn = P0; // By default player0 starts
+        this._update_Clients_Stats(); // first initialize all to 0
+        this._startNextRound();
     }
 
     // Message to 1 player
-    _sendToPlayer(playerIndex, msg) {
-        this._players[playerIndex]._socket.emit('fromServer_toClients_instruction_game', msg);
+    _sendToPlayer(playerIndex, type, msg) {
+        this._players[playerIndex].send_Message_To_Client(type, msg);
     }
 
     // Message for both players
     _sendToPlayers(type, msg) {
         this._players.forEach((player) => {
-            player._socket.emit(type, msg)
+            player.send_Message_To_Client(type, msg)
         });
     }
 
-    _startRound() {
-        this._sendToPlayers('set_questions', questions);
-        let idx_turn = this._determineTurn();
+    _startNextRound() {
+        this._sendToPlayers('fromServer_toClient_send_questions_collection', potentialQuestionsCollection);
+        this._isPlayersAnswerCorrect = [null, null];
+        this._roundCounter++;
+        this._determineTurn();
     }
 
+    // @@@@CHANGING
     _determineTurn() {
-        let playerToPlay = this._whoseTurn;
-        let playerToWait = (this._whoseTurn === 1) ? 0 : 1;
-        this._sendToPlayer(playerToPlay, 'תורך לבחור פעולה');
-        this._setPlayerToAsk(playerToPlay, 'enable');
-        this._sendToPlayer(playerToWait, 'המתן לחברך בבחירת פעולה');
-        this._setPlayerToAsk(playerToWait, 'disable');
-        return playerToPlay;
+        let playerToPlay = this._players[this._whoseTurn];
+        playerToPlay.send_Message_To_Client('fromServer_toClients_instruction_game', 'תורך לבחור פעולה');
+        playerToPlay.set_Questions_Frame_State('enable');
+
+        let playerToWait = this._players[(this._whoseTurn === P1) ? P0 : P1];
+        playerToWait.send_Message_To_Client('fromServer_toClients_instruction_game', 'המתן לחברך בבחירת פעולה');
+        playerToWait.set_Questions_Frame_State('disable');
     }
 
-    _changeWhoseTurn() {
-        if (this._whoseTurn === 1)
-            this._whoseTurn = 0;
-        else
-            this._whoseTurn = 1;
+    _set_Next_Player_Turn() {
+        this._whoseTurn = (this._whoseTurn === P1) ? P0 : P1;
     }
 
-    _setPlayerToAsk(playerIndex, state) {
-        this._players[playerIndex]._socket.emit('chooseWordScreen', state);
-    }
-
-    // numbers pad = where the player write his answer
-    _setAnswersPadState(state) {
+    // @@@@CHANGING
+    _setPlayersAnswerFrameState(state) {
         this._sendToPlayers('fromServer_toClient_set_answer_frame_state', state)
     }
 
-    _askQuestion(playerIndex, question) {
-        // After player chose operator disable his game operators
-        this._setPlayerToAsk(playerIndex, 'disable');
-        this._players.forEach(p => p._updateAskedQuestion());
-        // Remove question from original array
-        let qIdx = questions.findIndex(q => q._word === question._word);
-        if (qIdx !== -1) askedQuestions.push(questions.splice(qIdx, 1));
-        ////
-        this._sendToPlayers('fromServer_toClient_show_the_new_question', question._word);
-        this._setAnswersPadState('enable'); // set enable so player can answer
+    // @@@@CHANGING
+    _askNewQuestion(playerIndex, question) {
+        // After player chose operator/question disable his game operators
+        this._players[playerIndex].set_Questions_Frame_State('disable');
+        // Remove question from potential collection
+        let qIdx = potentialQuestionsCollection.findIndex(q => q._word === question._word);
+        if (qIdx !== -1) questions.push(potentialQuestionsCollection.splice(qIdx, 1)[0]);
+        this._sendToPlayers('fromServer_toClient_show_the_new_question', questions[questions.length-1].toString());
+        this._players.forEach(p => p.stats._add_AskedQuestion(questions[questions.length-1]._operator));
+
+        this._setPlayersAnswerFrameState('enable'); // set enable so player can answer
     }
 
-    _checkAnswer(playerIndex, player_answer_question) {
-        let asked_question = askedQuestions[askedQuestions.length - 1];
-        if (asked_question[0]._word === player_answer_question._word) {
-            this._players[playerIndex]._addScore();
+    _checkPlayerAnswer(playerIndex, answer_From_Player) {
+        let asked_Question = questions[questions.length - 1];
+
+        if (asked_Question._word === answer_From_Player._word) { // @@@@CHANGING
+            this._players[playerIndex].stats._add_CorrectAnswer(asked_Question._operator);
             this._isPlayersAnswerCorrect[playerIndex] = true;
-            return true;
-        }
-        else {
+        } else // if wrong answer
             this._isPlayersAnswerCorrect[playerIndex] = false;
-            return false;
-        }
     }
 
-    // check round over after every answer one of the player made
-    _checkRoundOver() {
-        let isRoundEnd = true;
+    _checkRoundOver() { // check round over after every answer one of the player made
+        let is_Round_End = true;
         this._isPlayersAnswerCorrect.forEach((a) => {
-            if (a === null) isRoundEnd = false;
+            if (a === null) is_Round_End = false;
         });
-        if (isRoundEnd === false) return;
+        if (is_Round_End === false) return;
 
         this._endRound();
     }
 
     _endRound() {
-        this._statsUpdate();
-        this._isPlayersAnswerCorrect = [null, null];
-        this._changeWhoseTurn();
-        this._roundCounter++;
+        this._update_Clients_Stats();
 
         if (this._roundCounter >= MAX_ROUNDS) {
+            this._roundCounter = 0;
             this._sendToPlayers('fromServer_toClients_instruction_game', 'המשחק הסתיים');
-            this._statsSaveInDB();
+            this._save_Stats_in_DB();
+            setTimeout(() => {
+                this._end_Game_Back_To_Games_Gallery()
+            }, 5000);
             // this._sendToPlayers('end');
             // this._players[0]._socket.disconnect(true);
             // this._players[1]._socket.disconnect(true);
             return;
         }
 
-        this._startRound();
+        this._set_Next_Player_Turn();
+        this._startNextRound();
     }
 
-    _statsUpdate() {
-        this._players[0]._socket.emit('stats', [this._players[0]._stats, this._players[1]._stats]);
-        this._players[1]._socket.emit('stats', [this._players[1]._stats, this._players[0]._stats]);
+    _update_Clients_Stats() {
+        this._players[P0].update_Client_Stats([this._players[P0].stats, this._players[P1].stats]);
+        this._players[P1].update_Client_Stats([this._players[P1].stats, this._players[P0].stats]);
     }
 
-    _statsSaveInDB() {
-        this._players.forEach(p => {
-            saveData(p._statsObject_id, p._stats, questions.length);
+    _save_Stats_in_DB() {
+        this._players.forEach(async (p) => {
+            await save_Data_DB(p.id, p.stats, this._game_id);
         });
     }
 
-    _generate_questions(){
-        questions = [
-            new Question('Apple', 'תפוח'), new Question('House', 'בית'), 
+    _end_Game_Back_To_Games_Gallery() {
+        this._removeListeners();
+        this._sendToPlayers('fromServer_toClient_players_ready_hostPlayer_choose_game');
+    }
+
+    // @@@@CHANGING
+    _removeListeners() {
+        this._players.forEach(p => {
+            p.socket.removeAllListeners('fromClient_toServer_player_chose_questionWord');
+            p.socket.removeAllListeners('fromClient_toServer_player_submitted_answer');
+            // console.log(p.socket.eventNames());
+        });
+    }
+
+    // @@@@CHANGING
+    _generate_questions() {
+        potentialQuestionsCollection = [
+            new Question('Apple', 'תפוח'), new Question('House', 'בית'),
             new Question('Dog', 'כלב'), new Question('Sun', 'שמש'),
             new Question('Ball', 'כדור')
         ];
     }
 }
 
+
+// @@@@CHANGING
+// #### specific ####
 class Question {
-    constructor(word, answer) {
+    constructor(word, answer, operator = subFields[0].eng) {
         this._word = word;
         this._answer = answer;
-        // this._oprnd1 = this._randomNum();
-        // this._oprnd2 = this._randomNum();
-        // this._operator = operator;
-        // this._result = Math.abs(this._calculateQuestionResult());
+        this._operator = operator;
     }
-
-    // _randomNum(factor = 10) {
-    //     return Math.floor(Math.random() * factor) + 1;
-    // }
-
-    // _calculateQuestionResult() {
-    //     let res = 0;
-    //     switch (this._operator) {
-    //         case 'plus':
-    //             res = this._oprnd1 + this._oprnd2;
-    //             break;
-    //         case 'minus':
-    //             res = this._oprnd1 - this._oprnd2;
-    //             break;
-    //         case 'mult':
-    //             res = this._oprnd1 * this._oprnd2;
-    //             break;
-    //         default:
-    //             console.log('DEBUG: error in _calculateQuestionResult()');
-    //     }
-
-    //     return res;
-    // }
 
     toString() {
-
-        return `${this._word}?`;
+        return `${this._word}`;
     }
 }
-
-
-class Player {
-    constructor(socket, stats) {
-        this._socket = socket;
-        this._statsObject_id = stats;
-        this._stats = {
-            asked: 0,
-            correct: 0
-        };
-        
-        // [{
-        //     operator: 'Plus',
-        //     asked: 0,
-        //     correct: 0
-        // },
-        // {
-        //     operator: 'Minus',
-        //     asked: 0,
-        //     correct: 0
-        // },
-        // {
-        //     operator: 'Multi',
-        //     asked: 0,
-        //     correct: 0
-        // }]
-    }
-
-    _addScore() {
-        this._stats.correct++;
-        // switch (operation) {
-        //     case 'plus':
-        //         this._stats[0].correct++;
-        //         break;
-        //     case 'minus':
-        //         this._stats[1].correct++;
-        //         break;
-        //     case 'mult':
-        //         this._stats[2].correct++;
-        //         break;
-        // }
-    }
-
-    _updateAskedQuestion() {
-        this._stats.asked++;
-        // switch (operation) {
-        //     case 'plus':
-        //         this._stats[0].asked++;
-        //         break;
-        //     case 'minus':
-        //         this._stats[1].asked++;
-        //         break;
-        //     case 'mult':
-        //         this._stats[2].asked++;
-        //         break;
-        // }
-    }
-}
-
 
 module.exports = EnglishGame;

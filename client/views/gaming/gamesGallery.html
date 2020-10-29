@@ -65,14 +65,19 @@
       display: table;
       clear: both;
     }
+
+    #guest-client-message{
+      color: aliceblue;
+      font-size: 32px;
+      text-align: center;
+    }
   </style>
 </head>
 
 <body dir="rtl">
   <div class="clearfix"></div>
-  <div id="guest-client-message" class="w3-display-container">
-    <h4 id="msg" class="w3-display-middle"></h4>
-  </div>
+  <!-- class="w3-display-container" -->
+    <div id="guest-client-message" class="w3-display-middle"></div>
   <script type="module">
     import { getGamesRequest } from "./api.js";
     import { URL } from "./consts.js";
@@ -89,7 +94,7 @@
 
       function init() {
         if (isHost) getGamesRequest(showGames);
-        else $("#msg").text("המתן לחברך בבחירת משחק");
+        else $("#guest-client-message").text("המתן לחברך בבחירת משחק");
       }
 
       function showGames(games) {

@@ -30,7 +30,7 @@
       direction: rtl;
     }
 
-    #cards_div {
+    #div-questions {
       text-align: center;
       height: 150px;
       padding-top: 20px;
@@ -39,21 +39,21 @@
       font-family: "Josefin Sans", sans-serif;
     }
 
-    #cards_div button {
+    #div-questions button {
       margin: 10px;
       width: 150px;
       height: 100px;
     }
 
-    #answers_div {
+    #div-answers {
       text-align: center;
       height: 150px;
       /* padding-top: 20px; */
-      margin-top: 20px;
+      margin-top: 50px;
     }
 
-    #answers_div button {
-      margin: 10px;
+    #div-answers button {
+      margin: 20px;
       width: 80px;
     }
 
@@ -67,30 +67,33 @@
       width: 150px;
       height: 150px;
     }
+    #instruction-top{
+      color: black;
+    }
   </style>
 </head>
 
-<body>
-  <div style="height:100vh;" class="w3-container w3-display-container" id="message_div">
+<body dir="rtl">
+  <!-- style="height:100vh;" -->
+  <div  class="w3-container w3-display-container" id="message_div">
     <div class="w3-display-topmiddle w3-padding w3-hide-small">
       <h1 id="instruction-top">שלום</h1>
   </div>
     <div id="stats" class="w3-table-all">
       <table class="w3-table">
-        <tr>
-          <th>אתה</th>
-          <th>חברך</th>
-        </tr>
-        <tr id="score">
-          <td>0</td>
-          <td>0</td>
-        </tr>
-      </table>
+        <thead class="border_bottom">
+            <th></th>
+            <th>אתה</th>
+            <th>חברך</th>
+        </thead>
+        <tbody id="table-stats-body">
+        </tbody>
+    </table>
     </div>
     <!-- <h4 id="message_box">message</h4> -->
   </div>
-  <div class="w3-container" id="cards_div"></div>
-  <div class="w3-container" id="answers_div"></div>
+  <div class="w3-container w3-display-middle" id="div-questions"></div>
+  <div class="w3-container w3-display-middle" id="div-answers"></div>
 
   <!-- The Instruction Modal -->
   <div id="modal-game-instruction" class="modal" onclick="hideModal()">

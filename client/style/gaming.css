@@ -25,3 +25,7 @@ div {
     background-color: cornflowerblue;
     cursor: pointer;
 }
+
+#instruction-top{
+    color: snow;
+}

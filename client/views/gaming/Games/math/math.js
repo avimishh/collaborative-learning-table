@@ -5,6 +5,7 @@ $(document).ready(function () {
     addAnswerKeys();
     addSubFieldsOperators();
     sock.emit('fromClient_toServer_startGame');
+    setChildName();
 });
 
 
@@ -28,7 +29,6 @@ function addAnswerKeys() {
     setAnswerContainerState('disable');
 }
 
-
 function addSubFieldsOperators() {
     var subFields = ['plus', 'minus', 'multi'];
     var subFieldsSigns = {
@@ -49,7 +49,6 @@ function addSubFieldsOperators() {
     });
 }
 
-
 function submitAnswer() {
     // event.preventDefault();
     let answer = $('#field-answer').text();
@@ -62,15 +61,15 @@ function submitAnswer() {
 function addSocketEvents(){
     var msg_counter = 0;
     sock.on('fromServer_toClients_instruction_game', (text) => {
-        $('#instruction-top').text(text);
-        show_modal(text);
+        $('#instruction-top').text(`${childName}, ${text}`);
+        showModal(`${childName}, ${text}`);
         console.log(`${++msg_counter}: ${text}`);
     });
 
     sock.on('fromServer_toClient_show_the_new_question', (question_string) => {
-        let pre_question = 'פתור את התרגיל: '
+        let pre_question = `${childName}, ` + 'פתור את התרגיל: '
         $('#instruction-top').text(pre_question + question_string);
-        show_modal(pre_question + question_string);
+        showModal(pre_question + question_string);
     });
 
     sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
@@ -109,7 +108,7 @@ function setAnswerContainerState(state) {
 }
 
 // Modal
-function show_modal(text) {
+function showModal(text) {
     $('#modal-game-instruction-text').text(text);
     $("#modal-game-instruction").fadeIn("slow");
     setTimeout(() => {
@@ -121,6 +120,12 @@ function hideModal() {
     $('#modal-game-instruction').hide();
 }
 
+var childName = "";
+function setChildName() {
+  let child = JSON.parse(localStorage.getItem('child'));
+  childName = child.firstName;
+  // $('#childName').text(`${child.firstName}`);
+}
 
 // function setMathOperators() {
 //     let $img1 = $('<img>').attr('src', './plus.png').addClass('img_op');
