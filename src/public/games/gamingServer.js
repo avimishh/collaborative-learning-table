@@ -1,11 +1,16 @@
 const express = require('express');
 const socketio = require('socket.io');
-const {Player} = require('./models/player');
-const {Game} = require('./models/game');
+const {
+    Player
+} = require('./models/player');
+const {
+    Game
+} = require('./models/game');
 
 var io;
 
-var playerHost = null, playerGuest = null;
+var playerHost = null,
+    playerGuest = null;
 var gameToPlay = null;
 
 var statusHost = 'disconnect';
@@ -50,7 +55,7 @@ function init(io_startup) {
 //     io.emit(type, text);
 // }
 
-function set_Connection_Status_To_Clients(){
+function set_Connection_Status_To_Clients() {
     statusHost = (playerHost === null) ? 'disconnect' : 'connect';
     statusGuest = (playerGuest === null) ? 'disconnect' : 'connect';
     io.emit('fromServer_toClient_players_conn_status', statusHost, statusGuest);
@@ -72,7 +77,7 @@ function init_Host_player(socket) {
         gameToPlay = new Game(title, id, url);
         io.emit('fromServer_toClients_openGameUrl', gameToPlay.url);
     });
-    socket.on('fromClient_toServer_startGame',startGame);
+    socket.on('fromClient_toServer_startGame', startGame);
 }
 
 function init_Guest_player(socket) {
@@ -91,6 +96,8 @@ function init_Guest_player(socket) {
 
 const MathGame = require('./Math/math1');
 const EnglishGame = require('./English/english1');
+const ColorsGame = require('./Colors/ColorSquares_Server');
+// const MemoryGame = require('./Memory/MemoryCards_Server');
 
 var playingGame;
 
@@ -110,6 +117,12 @@ async function startGame() {
         case 'התאמת תמונות למילים':
             playingGame = new EnglishGame(playerHost, playerGuest, gameToPlay);
             break;
+        case 'ריבועי צבעים':
+            playingGame = new ColorsGame(playerHost, playerGuest, gameToPlay);
+            break;
+        // case 'כרטיסיות זכרון':
+        //     playingGame = new MemoryGame(playerHost, playerGuest, gameToPlay);
+        //     break;
         default:
             console.log('wrong game reference');
             break;
@@ -118,8 +131,8 @@ async function startGame() {
 
 function sleep(ms) {
     return new Promise((resolve) => {
-      setTimeout(resolve, ms);
+        setTimeout(resolve, ms);
     });
-  }   
+}
 
 module.exports.init = init;

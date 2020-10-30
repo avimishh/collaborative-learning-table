@@ -1,21 +1,124 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
-    <title>משחק צבעים</title>
+    <title>Colors Game</title>
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/modal.css" rel="stylesheet" />
+    <link href="/lib/w3.css" rel="stylesheet" />
+    <link href="/style/gaming.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image:unset;
+            background-color: #232323;
+            margin: 0;
+            font-family: "Montserrat", "Avenir";
+        }
 
-    <script src="../../../../../lib/jquery.js"></script>
-    <link type="text/css" href="ColorGame2.css" rel="stylesheet" />
+        .square {
+            cursor: pointer;
+            width: 30%;
+            margin: 1.66%;
+            padding-bottom: 30%;
+            background: blue;
+            float: left;
+            border-radius: 15%;
+            transition: background 0.6s;
+        }
 
+        #message {
+            display: inline-block;
+            width: 20%;
+        }
+
+        #colorDisplay {
+            font-size: 200%;
+        }
+
+        #colorDisplayResult {
+            font-size: 200%;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: normal;
+            text-transform: uppercase;
+            line-height: 1.1;
+            padding: 20px 0;
+            color: white;
+            background: steelblue;
+            margin: 0;
+        }
+
+        #stripe {
+            background: white;
+            height: 30px;
+            text-align: center;
+            color: black;
+        }
+
+        .selected {
+            color: white;
+            background: steelblue;
+        }
+
+        button {
+            border: none;
+            background: none;
+            text-transform: uppercase;
+            height: 100%;
+            font-weight: 700;
+            color: steelblue;
+            letter-spacing: 1px;
+            font-size: inherit;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        button:hover {
+            color: white;
+            background: steelblue;
+        }
+
+        #div-stats {
+      width: 100px;
+      float: left;
+      position: relative;
+    }
+    </style>
 </head>
+
 <body dir="rtl">
     <h1>
-        איזה צבע אני?
+        <span id="instruction-top"></span>
         <br />
-        <span id="colorDisplay"></span><span id="colorDisplayResult"></span>
+        <span id="colorDisplay"></span>
+        <span id="colorDisplayResult"></span>
         <br />
         בחרו צבע:
     </h1>
+    <div>
+        <img id="img-question" src="" alt="">
+    </div>
+    
+
+    <div id="div-stats" class="w3-table-all">
+        <table class="w3-table">
+            <thead class="border_bottom">
+                <th></th>
+                <th>אתה</th>
+                <th>חברך</th>
+            </thead>
+            <tbody id="table-stats-body">
+            </tbody>
+        </table>
+    </div>
 
     <div id="stripe">
         <button id="reset">צבעים חדשים</button>
@@ -33,7 +136,18 @@
         <div class="square"></div>
     </div>
 
+
+    <!-- The Instruction Modal -->
+    <div id="modal-game-instruction" class="modal" onclick="hideModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <h1 id="modal-game-instruction-text"></h1>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="ColorGame2.js"></script>
-    
 </body>
+
 </html>

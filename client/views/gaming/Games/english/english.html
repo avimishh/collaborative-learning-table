@@ -20,21 +20,11 @@
       text-align: center;
     }
 
-    #message_box {
-      /* width: 300px; */
-      height: 40px;
-      /* border: black 1px solid; */
-      margin: 10px auto;
-      font-weight: 900;
-      font-size: 30px;
-      direction: rtl;
-    }
-
     #div-questions {
       text-align: center;
-      height: 150px;
+      /* height: 150px;
       padding-top: 20px;
-      margin-top: 50px;
+      margin-top: 50px; */
       font-size: 32px;
       font-family: "Josefin Sans", sans-serif;
     }
@@ -47,14 +37,15 @@
 
     #div-answers {
       text-align: center;
-      height: 150px;
+      /* height: 150px; */
       /* padding-top: 20px; */
-      margin-top: 50px;
+      /* margin-top: 50px; */
     }
 
-    #div-answers button {
+    .img_answers {
       margin: 20px;
-      width: 80px;
+      width: 150px;
+      height: 150px;
     }
 
     #stats {
@@ -62,12 +53,7 @@
       float: left;
     }
 
-    .img_answers {
-      margin: 10px;
-      width: 150px;
-      height: 150px;
-    }
-    #instruction-top{
+    #instruction-top {
       color: black;
     }
   </style>
@@ -75,25 +61,26 @@
 
 <body dir="rtl">
   <!-- style="height:100vh;" -->
-  <div  class="w3-container w3-display-container" id="message_div">
+  <div class="w3-container w3-display-container" id="message_div">
     <div class="w3-display-topmiddle w3-padding w3-hide-small">
       <h1 id="instruction-top">שלום</h1>
-  </div>
+    </div>
     <div id="stats" class="w3-table-all">
       <table class="w3-table">
         <thead class="border_bottom">
-            <th></th>
-            <th>אתה</th>
-            <th>חברך</th>
+          <th></th>
+          <th>אתה</th>
+          <th>חברך</th>
         </thead>
         <tbody id="table-stats-body">
         </tbody>
-    </table>
+      </table>
     </div>
-    <!-- <h4 id="message_box">message</h4> -->
   </div>
-  <div class="w3-container w3-display-middle" id="div-questions"></div>
-  <div class="w3-container w3-display-middle" id="div-answers"></div>
+  <div>
+    <div class="w3-container w3-display-middle" id="div-questions"></div>
+    <div class="w3-container w3-display-middle" id="div-answers"></div>
+  </div>
 
   <!-- The Instruction Modal -->
   <div id="modal-game-instruction" class="modal" onclick="hideModal()">

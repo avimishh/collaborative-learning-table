@@ -23,7 +23,7 @@ class Player {
     }
 
     set_Operators_Frame_State(state){
-        this.socket.emit('fromServer_toClient_setOperatorsState', state);
+        this.socket.emit('fromServer_toClient_set_operators_state', state);
     }
 
     set_Questions_Frame_State(state){

@@ -128,7 +128,6 @@ var childName = "";
 function setChildName() {
   let child = JSON.parse(localStorage.getItem('child'));
   childName = child.firstName;
-  // $('#childName').text(`${child.firstName}`);
 }
 
 
@@ -139,38 +138,3 @@ function setChildName() {
   // sock.on('fromServer_toClient_set_answer_frame_state', (state) => {
   //     setAnswerContainerState(state)
   // });
-
-// print messages to player from server
-// var msg_counter = 0;
-// const messageEvent = (text) => {
-//   // $('#message_box').text(`${msg_counter}: ${text}`);
-//   $("#message_box").text(`${childName} ${text}`);
-//   // let $new_li = $("<li>").text(`${msg_counter}: ${text}`);
-//   // $('#events').prepend($new_li);
-//   msg_counter++;
-// };
-
-
-// // Game frame buttons initizalization
-// function answers_frame_init() {
-//   $("#div-answers").empty();
-//   var answers_buttons = [];
-//   for (let i = 0; i < questions.length; i++) {
-//     let $btn = $("<button>").text(questions[i]._answer);
-//     // w3-css style
-//     $btn.addClass("w3-button w3-card");
-//     $btn.on("click", function () {
-//       $(this).hide();
-//       // console.log('DEBUG: ' + words[i]);
-//       sock.emit("fromClient_toServer_player_submitted_answer", questions[i]);
-//       set_answers_frame_state("disable");
-//     });
-//     answers_buttons.push($btn);
-//   }
-
-//   for (let i = 0; i < answers_buttons.length; i++) {
-//     $("#div-answers").append(answers_buttons[i]);
-//     if (i === 2) $("#div-answers").append($("<br>"));
-//   }
-//   set_answers_frame_state("disable");
-// }

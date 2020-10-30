@@ -1,54 +1,52 @@
-﻿let constColors = [
-    {
-        'name': 'אדום',             // constColors[0]
-        'val': '255, 0, 0',
-        'result': 'אדום'
-    }, {
-        'name': 'ירוק',             // constColors[1]
-        'val': '0, 255, 0',
-        'result': 'ירוק'
-    }, {
-        'name': 'כחול',             // constColors[2]
-        'val': '0, 0, 255',
-        'result': 'כחול'
-    }, {
-        'name': 'תכלת',             // constColors[3]
-        'val': '0, 255, 255',
-        'result': 'ירוק + כחול'
-    }, {
-        'name': 'צהוב',             // constColors[4]
-        'val': '255, 255, 0',
-        'result': 'אדום + ירוק'
-    }, {
-        'name': 'אפור',             // constColors[5]
-        'val': '128, 128, 128',
-        'result': 'שחור + לבן'
-    }, {
-        'name': 'לבן',              // constColors[6]
-        'val': '255, 255, 255',
-        'result': 'אדום + ירוק + כחול'
-    }, {
-        'name': 'סגול',             // constColors[7]
-        'val': '139, 0, 139',
-        'result': 'אדום + כחול'
-    }, {
-        'name': 'כתום',             // constColors[8]
-        'val': '255, 165, 0',
-        'result': 'צהוב + אדום'
-    }, {
-        'name': 'חום',              // constColors[9]
-        'val': '139, 69, 19',
-        'result': 'כתום + שחור'
-    }, {
-        'name': 'ורוד',             // constColors[10]
-        'val': '255, 182, 193',
-        'result': 'לבן + אדום'
-    }, {
-        'name': 'ירוק כהה',         // constColors[11]
-        'val': '25, 89, 5',
-        'result': 'כחול + ירוק'
-    }
-];
+﻿let constColors = [{
+    'name': 'אדום', // constColors[0]
+    'val': '255, 0, 0',
+    'result': 'אדום'
+}, {
+    'name': 'ירוק', // constColors[1]
+    'val': '0, 255, 0',
+    'result': 'ירוק'
+}, {
+    'name': 'כחול', // constColors[2]
+    'val': '0, 0, 255',
+    'result': 'כחול'
+}, {
+    'name': 'תכלת', // constColors[3]
+    'val': '0, 255, 255',
+    'result': 'ירוק + כחול'
+}, {
+    'name': 'צהוב', // constColors[4]
+    'val': '255, 255, 0',
+    'result': 'אדום + ירוק'
+}, {
+    'name': 'אפור', // constColors[5]
+    'val': '128, 128, 128',
+    'result': 'שחור + לבן'
+}, {
+    'name': 'לבן', // constColors[6]
+    'val': '255, 255, 255',
+    'result': 'אדום + ירוק + כחול'
+}, {
+    'name': 'סגול', // constColors[7]
+    'val': '139, 0, 139',
+    'result': 'אדום + כחול'
+}, {
+    'name': 'כתום', // constColors[8]
+    'val': '255, 165, 0',
+    'result': 'צהוב + אדום'
+}, {
+    'name': 'חום', // constColors[9]
+    'val': '139, 69, 19',
+    'result': 'כתום + שחור'
+}, {
+    'name': 'ורוד', // constColors[10]
+    'val': '255, 182, 193',
+    'result': 'לבן + אדום'
+}, {
+    'name': 'ירוק כהה', // constColors[11]
+    'val': '25, 89, 5',
+    'result': 'כחול + ירוק'
+}];
 
 var numSquares = 6;
 var colors = generatrRandomColors(numSquares);
@@ -84,8 +82,7 @@ for (var i = 0; i < squares.length; i++) {
             if (pickedColor != "rgb(" + constColors[0].val + ")" && pickedColor != "rgb(" + constColors[1].val + ")" && pickedColor != "rgb(" + constColors[2].val + ")") {
                 colorDisplayResult.textContent = colorDisplayTextResult();
             }
-        }
-        else {
+        } else {
             this.style.background = "#232323";
             messageDisplay.text("נסה שוב");
         }
@@ -96,16 +93,14 @@ easyBtn.on("click", function () {
     hardBtn.removeClass("selected");
     easyBtn.addClass("selected");
     numSquares = 3;
-    colors = generatrRandomColors(numSquares);
-    pickedColor = pickColor();
+    sock.emit("fromClient_toServer_player_chose_questionWord", "easy");
     colorDisplay.textContent = colorDisplayText();
     colorDisplayResult.textContent = "";
 
     for (var i = 0; i < squares.length; i++) {
         if (colors[i]) {
             squares[i].style.background = colors[i];
-        }
-        else {
+        } else {
             squares[i].style.display = "none";
         }
     }
@@ -116,14 +111,13 @@ hardBtn.on("click", function () {
     easyBtn.removeClass("selected");
     hardBtn.addClass("selected");
     numSquares = 6;
-    colors = generatrRandomColors(numSquares);
-    pickedColor = pickColor();
+    sock.emit("fromClient_toServer_player_chose_questionWord", "hard");
     colorDisplay.textContent = colorDisplayText();
     colorDisplayResult.textContent = "";
 
     for (var i = 0; i < squares.length; i++) {
-            squares[i].style.background = colors[i];
-            squares[i].style.display = "block";
+        squares[i].style.background = colors[i];
+        squares[i].style.display = "block";
     }
     resetMessColor();
 });
@@ -193,7 +187,7 @@ function randomColor() {
 
 function colorDisplayText() {
     var title;
- 
+
     switch (pickedColor) {
         case "rgb(" + constColors[0].val + ")":
             title = constColors[0].result;
@@ -282,3 +276,135 @@ function colorDisplayTextResult() {
     return titleResult;
 
 }
+
+
+
+
+// Multiplayer
+const sock = parent.sock;
+var questions = [];
+
+$(document).ready(function () {
+    addSocketEvents();
+    initGameFrames();
+    sock.emit("fromClient_toServer_startGame");
+    setChildName();
+});
+
+function addSocketEvents() {
+    var msg_counter = 0;
+    sock.on('fromServer_toClients_instruction_game', (text) => {
+        // $('#instruction-top').text(`${childName}, ${text}`);
+        showModal(`${childName}, ${text}`);
+        console.log(`${++msg_counter}: ${text}`);
+    });
+
+    sock.on('fromServer_toClient_show_the_new_question', (question) => {
+        // console.log(question_string);
+        colors = generatrRandomColors(numSquares);
+        let correctAnswerConstColor = constColors.find(c => c.name === question._objectColor);
+        let correctAnswerVal = correctAnswerConstColor.val;
+        let correctAnswerIndex = Math.floor( Math.random() * colors.length);
+        colors[correctAnswerIndex] = `rgb(${correctAnswerVal})`
+        
+        // pickedColor = question._objectNameEng;
+        pickedColor = correctAnswerConstColor;
+
+        let pre_question = `${childName}, ` + 'איזה צבע אני? '
+        $('#instruction-top').text(pre_question + question_string);
+        showModal(pre_question + question_string);
+        $('#img-question').attr('src', './pics/' + question._objectNameEng + '.png');
+    });
+
+    sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
+        $('#table-stats-body').empty();
+        playersStatsArray[0].subFields.forEach((subField, index) => {
+            $('<tr>').append(
+                $('<td>').text(subField.operatorHeb),
+                $('<td>').text(playersStatsArray[0].subFields[index].correct), // player
+                $('<td>').text(playersStatsArray[1].subFields[index].correct) // friend
+            ).appendTo('#table-stats-body');
+        });
+    });
+
+    sock.on("fromServer_toClient_set_operators_state", (state) => {
+        set_operators_frame_state(state);
+    });
+
+    sock.on("fromServer_toClient_set_answer_frame_state", (state) => {
+        set_answers_frame_state(state);
+    });
+
+    sock.on("fromServer_toClient_send_questions_collection", (new_questions) => {
+        questions = new_questions;
+        initGameFrames();
+    });
+}
+
+function initGameFrames() {
+    // initQuestionsWordsFrame();
+    initAnswersImagesFrame();
+}
+
+// change to choose operator-level of question
+function initQuestionsWordsFrame() {
+    $("#div-questions").empty();
+
+    questions.forEach(question => {
+        let $btn = $("<button>").text(question._word);
+        $btn.addClass("w3-button w3-card w3-ripple w3-yellow w3-hover-red");
+        $btn.click(function () {
+            $(this).hide();
+            sock.emit("fromClient_toServer_player_chose_questionWord", question);
+        });
+        $("#div-questions").append($btn);
+    });
+
+    set_questions_frame_state("disable");
+}
+
+function initAnswersImagesFrame() {
+
+    set_answers_frame_state("disable");
+}
+
+function set_answers_frame_state(state) {
+    if (state === "disable") {
+        $("#div-answers").hide();
+        $("#div-answers button").attr("disabled", "true");
+    } else { // only enabled after question was asked
+        $("#div-answers button").removeAttr("disabled");
+        $("#div-answers").show();
+    }
+}
+
+function set_operators_frame_state(state) {
+    // math operators disabled after player chose, enabled when new round started
+    if (state === "disable") {
+        $("#div-operators").hide();
+        $("#div-operators button").attr("disabled", "true");
+    } else {
+        $("#div-operators").show();
+        $("#div-operators button").removeAttr("disabled");
+    }
+}
+
+
+// Modal
+function showModal(text) {
+    $('#modal-game-instruction-text').text(text);
+    $("#modal-game-instruction").fadeIn("slow");
+    setTimeout(() => {
+        $("#modal-game-instruction").fadeOut("slow");
+    }, 2000);
+  }
+  
+  function hideModal() {
+    $('#modal-game-instruction').hide();
+  }
+  
+  var childName = "";
+  function setChildName() {
+    let child = JSON.parse(localStorage.getItem('child'));
+    childName = child.firstName;
+  }

@@ -83,7 +83,7 @@ function addSocketEvents(){
         });
     });
 
-    sock.on('fromServer_toClient_setOperatorsState', (state) => {
+    sock.on('fromServer_toClient_set_operators_state', (state) => {
         setOperatorsState(state)
     });
 
