@@ -8,9 +8,10 @@
     <link href="/style/modal.css" rel="stylesheet" />
     <link href="/lib/w3.css" rel="stylesheet" />
     <link href="/style/gaming.css" rel="stylesheet" />
+    <script type="text/javascript" src="ColorGame2.js"></script>
     <style>
         body {
-            background-image:unset;
+            background-image: unset;
             background-color: #232323;
             margin: 0;
             font-family: "Montserrat", "Avenir";
@@ -69,6 +70,7 @@
         }
 
         button {
+            cursor: pointer;
             border: none;
             background: none;
             text-transform: uppercase;
@@ -76,9 +78,10 @@
             font-weight: 700;
             color: steelblue;
             letter-spacing: 1px;
-            font-size: inherit;
+            font-size: 20px;
             transition: all 0.3s;
             outline: none;
+            padding: 20px;
         }
 
         button:hover {
@@ -87,10 +90,28 @@
         }
 
         #div-stats {
-      width: 100px;
-      float: left;
-      position: relative;
-    }
+            width: 100px;
+            float: left;
+            position: relative;
+        }
+
+        #modal-game-operator{
+            cursor: unset;
+        }
+
+        .modal-content:hover {
+    background-color: default;
+    cursor: unset;
+}
+#img-question{
+    width: 100px;
+    height: 100px;
+    display: none;
+}
+button:disabled{
+    cursor: not-allowed;
+    opacity: 0.5;
+}
     </style>
 </head>
 
@@ -100,13 +121,11 @@
         <br />
         <span id="colorDisplay"></span>
         <span id="colorDisplayResult"></span>
-        <br />
-        בחרו צבע:
+        <img id="img-question" src="" alt="">
     </h1>
     <div>
-        <img id="img-question" src="" alt="">
     </div>
-    
+
 
     <div id="div-stats" class="w3-table-all">
         <table class="w3-table">
@@ -120,25 +139,18 @@
         </table>
     </div>
 
-    <div id="stripe">
-        <button id="reset">צבעים חדשים</button>
-        <span id="message"></span>
-        <button id="easyBtn">קל</button>
-        <button id="hardBtn" class="selected">קשה</button>
-    </div>
-
     <div id="container">
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
+        <button class="square w3-large w3-ripple"></button>
+        <button class="square w3-large w3-ripple"></button>
+        <button class="square w3-large w3-ripple"></button>
+        <button class="square w3-large w3-ripple"></button>
+        <button class="square w3-large w3-ripple"></button>
+        <button class="square w3-large w3-ripple"></button>
     </div>
 
 
     <!-- The Instruction Modal -->
-    <div id="modal-game-instruction" class="modal" onclick="hideModal()">
+    <div id="modal-game-instruction" class="modal" onclick="hideModal(this.id)">
         <div class="modal-content">
             <div class="modal-header">
             </div>
@@ -147,7 +159,23 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="ColorGame2.js"></script>
+
+    <!-- The Operator Modal -->
+    <div id="modal-game-operator" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>בחר רמת קושי:</h2>
+            </div>
+            <div class="modal-body">
+                <!-- <h1 id="modal-game-operator-text"></h1> -->
+                <button id="easyBtn">קל - 1 נקודות</button>
+                <button id="hardBtn">קשה - 2 נקודות</button>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

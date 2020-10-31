@@ -102,7 +102,7 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
                 math: [],
                 english: [],
                 memory: [],
-                color: [],
+                colors: [],
             }
         });
         stat = await stat.save();

@@ -30,6 +30,14 @@ class Player {
         this.socket.emit('fromServer_toClient_set_question_frame_state', state);
     }
 
+    show_Client_New_Question(questionLevel, question){
+        this.socket.emit('fromServer_toClient_show_the_new_question', questionLevel, question);
+    }
+
+    send_Solution_To_Client(isPlayerAnswerCorrect, solution){
+        this.socket.emit('fromServer_toClient_show_solution_to_players', isPlayerAnswerCorrect, solution);
+    }
+
     update_Client_Stats(dataPlayersStatsArray){
         this.socket.emit('fromServer_toClient_updated_stats', dataPlayersStatsArray)
     }

@@ -48,108 +48,65 @@
     'result': 'כחול + ירוק'
 }];
 
-var numSquares = 6;
-var colors = generatrRandomColors(numSquares);
-var squares = $(".square");
-var pickedColor = pickColor();
-var colorDisplay = document.getElementById("colorDisplay");
-var colorDisplayResult = document.getElementById("colorDisplayResult");
-colorDisplay.textContent = colorDisplayText();
+var colors, numSquares = 6,
+    pickedColor, h1, colorSquares;
 
-var h1 = $("h1");
-var messageDisplay = $("#message");
-var resetButton = document.getElementById("reset");
-var easyBtn = $("#easyBtn");
-var hardBtn = $("#hardBtn");
-var varRandomColor;
+// Multiplayer
+const sock = parent.sock;
+var questions = [];
+
+$(document).ready(function () {
+    addSocketEvents();
+    initialSetup();
+    initOperatorButtons();
+    initGameFrames();
+    sock.emit("fromClient_toServer_startGame");
+    setChildName();
+});
 
 
-for (var i = 0; i < squares.length; i++) {
-    // add initial colors to squares
-    squares[i].style.background = colors[i];
+function initOperatorButtons() {
+    $("#easyBtn").on("click", function () {
+        $("#hardBtn").removeClass("selected");
+        $("#easyBtn").addClass("selected");
+        sock.emit("fromClient_toServer_player_chose_operator", "easy");
+    });
 
-    // add click Listeners to squares
-    squares[i].addEventListener("click", function () {
-        // grab color of clicked square
-        var clickedColor = this.style.background;
-        // compare color to pickedColor
-        if (clickedColor === pickedColor) {
-            messageDisplay.text("נכון!");
-            changeColors(clickedColor);
-            h1.css("background", pickedColor);
-            resetButton.textContent = "שחק שוב?";
-
-            if (pickedColor != "rgb(" + constColors[0].val + ")" && pickedColor != "rgb(" + constColors[1].val + ")" && pickedColor != "rgb(" + constColors[2].val + ")") {
-                colorDisplayResult.textContent = colorDisplayTextResult();
-            }
-        } else {
-            this.style.background = "#232323";
-            messageDisplay.text("נסה שוב");
-        }
+    $("#hardBtn").on("click", function () {
+        $("#easyBtn").removeClass("selected");
+        $("#hardBtn").addClass("selected");
+        sock.emit("fromClient_toServer_player_chose_operator", "hard");
     });
 }
 
-easyBtn.on("click", function () {
-    hardBtn.removeClass("selected");
-    easyBtn.addClass("selected");
-    numSquares = 3;
-    sock.emit("fromClient_toServer_player_chose_questionWord", "easy");
-    colorDisplay.textContent = colorDisplayText();
-    colorDisplayResult.textContent = "";
-
-    for (var i = 0; i < squares.length; i++) {
-        if (colors[i]) {
-            squares[i].style.background = colors[i];
-        } else {
-            squares[i].style.display = "none";
-        }
+function initialSetup() { // can remove
+    colorSquares = $(".square");
+    h1 = $("h1");
+    colors = generateRandomColors(numSquares);
+    for (var i = 0; i < colorSquares.length; i++) {
+        // add initial colors to colorSquares
+        colorSquares.eq(i).css('background', colors[i]);
+        // colorSquares[i].style.background = colors[i];
+        colorSquares.eq(i).click(function () {
+            let clickedColor = colorValToName($(this).css('backgroundColor')); // this.style.background;
+            console.log(clickedColor);
+            sock.emit('fromClient_toServer_player_submitted_answer', clickedColor);
+            $(this).hide();
+            set_answers_frame_state('disable');
+            showModal('המתן לחברך');
+        });
     }
-    resetMessColor();
-});
+}
 
-hardBtn.on("click", function () {
-    easyBtn.removeClass("selected");
-    hardBtn.addClass("selected");
-    numSquares = 6;
-    sock.emit("fromClient_toServer_player_chose_questionWord", "hard");
-    colorDisplay.textContent = colorDisplayText();
-    colorDisplayResult.textContent = "";
-
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].style.background = colors[i];
-        squares[i].style.display = "block";
-    }
-    resetMessColor();
-});
-
-resetButton.addEventListener("click", function () {
-    // generate all new colors
-    colors = generatrRandomColors(numSquares);
-    // peack a new random color from array
-    pickedColor = pickColor();
-    // change colorDisplay to match pickedColor
-    colorDisplay.textContent = colorDisplayText();
-    colorDisplayResult.textContent = "";
-    // change colors to squares
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].style.background = colors[i];
-    }
-    resetMessColor();
-});
 
 function resetMessColor() {
     h1.css("background", "steelblue");
-    messageDisplay.text("");
-    resetButton.textContent = "צבעים חדשים";
-    colorDisplay.style.color = "white";
+    $('#colorDisplay').css('color', 'white');
 }
 
 function changeColors(color) {
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].style.background = color;
-    }
-    if (colorDisplay.textContent == 'אדום + ירוק + כחול') {
-        colorDisplay.style.color = "black";
+    for (var i = 0; i < colorSquares.length; i++) {
+        colorSquares[i].style.background = color;
     }
 }
 
@@ -158,16 +115,17 @@ function pickColor() {
     return colors[random];
 }
 
-function generatrRandomColors(num) {
+function generateRandomColors(num, correctAnswerConstColor) {
     // make an array
     var arr = [];
+    var varRandomColor;
 
     // repeat num times
     for (var i = 0; i < num; i++) {
         // check if exist in arr
         varRandomColor = randomColor();
 
-        while (arr.includes(varRandomColor)) {
+        while (arr.includes(varRandomColor) || varRandomColor === "rgb(" + correctAnswerConstColor.val + ")") {
             varRandomColor = randomColor();
         }
         // add num random colors to array
@@ -181,8 +139,52 @@ function generatrRandomColors(num) {
 function randomColor() {
     // peack a color from 0 - 11
     var index = Math.floor(Math.random() * 12);
-
     return "rgb(" + constColors[index].val + ")";
+}
+
+
+function colorValToName(colorVal) {
+    var title;
+
+    switch (colorVal) {
+        case "rgb(" + constColors[0].val + ")":
+            title = constColors[0].name;
+            break;
+        case "rgb(" + constColors[1].val + ")":
+            title = constColors[1].name;
+            break;
+        case "rgb(" + constColors[2].val + ")":
+            title = constColors[2].name;
+            break;
+        case "rgb(" + constColors[3].val + ")":
+            title = constColors[3].name;
+            break;
+        case "rgb(" + constColors[4].val + ")":
+            title = constColors[4].name;
+            break;
+        case "rgb(" + constColors[5].val + ")":
+            title = constColors[5].name;
+            break;
+        case "rgb(" + constColors[6].val + ")":
+            title = constColors[6].name;
+            break;
+        case "rgb(" + constColors[7].val + ")":
+            title = constColors[7].name;
+            break;
+        case "rgb(" + constColors[8].val + ")":
+            title = constColors[8].name;
+            break;
+        case "rgb(" + constColors[9].val + ")":
+            title = constColors[9].name;
+            break;
+        case "rgb(" + constColors[10].val + ")":
+            title = constColors[10].name;
+            break;
+        case "rgb(" + constColors[11].val + ")":
+            title = constColors[11].name;
+            break;
+    }
+    return title;
 }
 
 function colorDisplayText() {
@@ -226,9 +228,7 @@ function colorDisplayText() {
             title = constColors[11].result;
             break;
     }
-
     return title;
-
 }
 
 function colorDisplayTextResult() {
@@ -278,42 +278,49 @@ function colorDisplayTextResult() {
 }
 
 
-
-
-// Multiplayer
-const sock = parent.sock;
-var questions = [];
-
-$(document).ready(function () {
-    addSocketEvents();
-    initGameFrames();
-    sock.emit("fromClient_toServer_startGame");
-    setChildName();
-});
-
 function addSocketEvents() {
     var msg_counter = 0;
     sock.on('fromServer_toClients_instruction_game', (text) => {
-        // $('#instruction-top').text(`${childName}, ${text}`);
         showModal(`${childName}, ${text}`);
         console.log(`${++msg_counter}: ${text}`);
     });
 
-    sock.on('fromServer_toClient_show_the_new_question', (question) => {
-        // console.log(question_string);
-        colors = generatrRandomColors(numSquares);
+    sock.on('fromServer_toClient_show_the_new_question', (operator, question) => {
+        if (operator === "easy")
+            numSquares = 3;
+        else if (operator === "hard")
+            numSquares = 6;
+
         let correctAnswerConstColor = constColors.find(c => c.name === question._objectColor);
+        console.log(correctAnswerConstColor);
+        colors = generateRandomColors(numSquares, correctAnswerConstColor);
+
         let correctAnswerVal = correctAnswerConstColor.val;
-        let correctAnswerIndex = Math.floor( Math.random() * colors.length);
+        let correctAnswerIndex = Math.floor(Math.random() * colors.length);
         colors[correctAnswerIndex] = `rgb(${correctAnswerVal})`
-        
+
         // pickedColor = question._objectNameEng;
         pickedColor = correctAnswerConstColor;
+        // $('#colorDisplay').text(colorDisplayText());
+
+        let question_string = colorDisplayText();
+        console.log(colorDisplayText());
 
         let pre_question = `${childName}, ` + 'איזה צבע אני? '
-        $('#instruction-top').text(pre_question + question_string);
-        showModal(pre_question + question_string);
-        $('#img-question').attr('src', './pics/' + question._objectNameEng + '.png');
+        $('#instruction-top').text(pre_question);
+        showModal(pre_question);
+        $('#img-question').attr('src', '../pics/' + question._objectNameEng + '.png').show();
+
+        for (var i = 0; i < colorSquares.length; i++) {
+            if (colors[i]) {
+                colorSquares[i].style.display = "block";
+                colorSquares[i].style.background = colors[i];
+            } else {
+                colorSquares[i].style.display = "none";
+            }
+        }
+
+        resetMessColor();
     });
 
     sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
@@ -339,53 +346,41 @@ function addSocketEvents() {
         questions = new_questions;
         initGameFrames();
     });
+
+    sock.on("fromServer_toClient_show_solution_to_players", (isPlayerAnswerCorrect, solution) => {
+        if (isPlayerAnswerCorrect) {
+            showModal("נכון!");
+        } else {
+            // this.style.background = "#232323";
+            showModal("נסה שוב");
+        }
+        // show solution
+        changeColors(pickedColor);
+        h1.css("background", pickedColor);
+
+        $('#colorDisplayResult').text(colorDisplayTextResult());
+
+        // resetButton.textContent = "שחק שוב?";
+    });
 }
 
 function initGameFrames() {
-    // initQuestionsWordsFrame();
-    initAnswersImagesFrame();
-}
-
-// change to choose operator-level of question
-function initQuestionsWordsFrame() {
-    $("#div-questions").empty();
-
-    questions.forEach(question => {
-        let $btn = $("<button>").text(question._word);
-        $btn.addClass("w3-button w3-card w3-ripple w3-yellow w3-hover-red");
-        $btn.click(function () {
-            $(this).hide();
-            sock.emit("fromClient_toServer_player_chose_questionWord", question);
-        });
-        $("#div-questions").append($btn);
-    });
-
-    set_questions_frame_state("disable");
-}
-
-function initAnswersImagesFrame() {
-
     set_answers_frame_state("disable");
 }
 
 function set_answers_frame_state(state) {
-    if (state === "disable") {
-        $("#div-answers").hide();
-        $("#div-answers button").attr("disabled", "true");
-    } else { // only enabled after question was asked
-        $("#div-answers button").removeAttr("disabled");
-        $("#div-answers").show();
-    }
+    if (state === 'disable') // operators disabled after player chose
+        $('#container').children().attr('disabled', 'true');
+    else // enabled when new round started
+        $('#container').children().removeAttr('disabled');
 }
 
 function set_operators_frame_state(state) {
-    // math operators disabled after player chose, enabled when new round started
+    // operators disabled after player chose, enabled when new round started
     if (state === "disable") {
-        $("#div-operators").hide();
-        $("#div-operators button").attr("disabled", "true");
+        hideModal('modal-game-operator');
     } else {
-        $("#div-operators").show();
-        $("#div-operators button").removeAttr("disabled");
+        showOperatorModal();
     }
 }
 
@@ -397,14 +392,21 @@ function showModal(text) {
     setTimeout(() => {
         $("#modal-game-instruction").fadeOut("slow");
     }, 2000);
-  }
-  
-  function hideModal() {
-    $('#modal-game-instruction').hide();
-  }
-  
-  var childName = "";
-  function setChildName() {
+}
+
+// Modal
+function showOperatorModal(text) {
+    // $('#modal-game-operator-text').text(text);
+    $("#modal-game-operator").fadeIn("slow");
+}
+
+function hideModal(modalType) {
+    $(`#${modalType}`).hide();
+}
+
+var childName = "";
+
+function setChildName() {
     let child = JSON.parse(localStorage.getItem('child'));
     childName = child.firstName;
-  }
+}

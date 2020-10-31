@@ -17,6 +17,7 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
     console.log(newSheet);
 
     let fieldName = game.field.nameEng;
+    console.log(fieldName);
     try {
         let stat = await Stat.findOne({ child_id: p_child_id });
         stat.sheets[fieldName].push(newSheet);

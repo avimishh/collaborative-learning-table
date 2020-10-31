@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
                 math: [],
                 english: [],
                 memory: [],
-                color: [],
+                colors: [],
             }
         });
         stat = await stat.save();

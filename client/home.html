@@ -1,50 +1,52 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Collaborative Learning</title>
-    <link rel="icon" type="image/png" href="./pics/logo3.png" />
-    <script src="./lib/jquery.js"></script>
-    <link href="./style/global.css" rel="stylesheet" />
-    <link href="./style/modal.css" rel="stylesheet" />
-    <style>
-      .bgimg {
-        background-image: url("./pics/background/c.jpg");
-      }
 
-      .container {
-        width: 700px;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collaborative Learning</title>
+  <link rel="icon" type="image/png" href="./pics/logo3.png" />
+  <script src="./lib/jquery.js"></script>
+  <link href="./style/global.css" rel="stylesheet" />
+  <link href="./style/modal.css" rel="stylesheet" />
+  <style>
+    .bgimg {
+      background-image: url("./pics/background/c.jpg");
+    }
 
-      .box {
-        width: 200px;
-        height: 200px;
-        font-size: 34px;
-      }
+    .container {
+      width: 700px;
+    }
 
-      .tooltip .tooltiptext {
-        background-color: black;
-      }
+    .box {
+      width: 200px;
+      height: 200px;
+      font-size: 34px;
+    }
 
-      #logo-cont {
-        text-align: left;
-      }
+    .tooltip .tooltiptext {
+      background-color: black;
+    }
 
-      #img-edition {
-        width: 400px;
-        height: 400px;
-      }
+    #logo-cont {
+      text-align: left;
+    }
 
-      #modal_edition {
-        padding-top: 50px;
-      }
+    #img-edition {
+      width: 80%;
+      height: 80%;
+    }
 
-      #modal_development_connect {
-        padding-top: 50px;
-      }
+    #modal-edition {
+      padding-top: 50px;
+      cursor: pointer;
+    }
 
-      /* #btn-admin {
+    #modal-development-connect {
+      padding-top: 50px;
+    }
+
+    /* #btn-admin {
         height: 40px;
         width: 50px;
         background-color: Transparent;
@@ -52,99 +54,97 @@
         outline: none;
       } */
 
-      .container div {
-    background: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 1);
+    .container div {
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 1);
+    }
+
+    .modal-content {
+    -webkit-animation-name: unset;
+    -webkit-animation-duration: unset;
+    animation-name: unset;
+    animation-duration: unset;
 }
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-      <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
-        Make Learning Fun
-        <br />
-        <!-- Put in a comment -->
-        <button id="btn-admin">Admin</button>
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
+      Make Learning Fun
+      <br />
+      <!-- Put in a comment -->
+      <button id="btn-admin">Admin</button>
 
-        <!-- Delete the comment -->
-        <!-- <button id="btn-admin"></button> -->
+      <!-- Delete the comment -->
+      <!-- <button id="btn-admin"></button> -->
+    </div>
+    <div class="w3-display-topmiddle" style="margin-top: 100px; margin-right: 100px">
+      <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
+        למידה שיתופית
+      </h1>
+      <hr class="w3-border-grey" style="margin: auto; width: 40%" />
+      <p class="w3-large w3-center">ברוכים הבאים!</p>
+    </div>
+    <div class="w3-display-bottommiddle container" style="margin-top: 100px; margin-right: 100px">
+      <div id="btn_Parent" class="w3-text-white w3-light-blue tooltip w3-animate-right">
+        <img src="/pics/v2/parents.png" alt="" />
+        <span class="tooltiptext">הורים</span>
       </div>
-      <div
-        class="w3-display-topmiddle"
-        style="margin-top: 100px; margin-right: 100px"
-      >
-        <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
-          למידה שיתופית
-        </h1>
-        <hr class="w3-border-grey" style="margin: auto; width: 40%" />
-        <p class="w3-large w3-center">ברוכים הבאים!</p>
+      <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
+        <img src="/pics/v2/teacher.png" alt="" />
+        <span class="tooltiptext">מורים</span>
       </div>
-      <div
-        class="w3-display-bottommiddle container"
-        style="margin-top: 100px; margin-right: 100px"
-      >
-        <div
-          id="btn_Parent"
-          class="w3-text-white w3-light-blue tooltip w3-animate-right"
-        >
-          <img src="/pics/v2/parents.png" alt="" />
-          <span class="tooltiptext">הורים</span>
-        </div>
-        <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
-          <img src="/pics/v2/teacher.png" alt="" />
-          <span class="tooltiptext">מורים</span>
-        </div>
-        <div id="btn_Child" class="w3-green tooltip w3-animate-left">
-          <img src="/pics/v2/kid.png" alt="" />
-          <span class="tooltiptext">ילדים</span>
-        </div>
-      </div>
-
-      <div class="w3-display-bottomleft w3-padding-large">
-        Avi Mishayev & Ido Yehezkel
+      <div id="btn_Child" class="w3-green tooltip w3-animate-left">
+        <img src="/pics/v2/kid.png" alt="" />
+        <span class="tooltiptext">ילדים</span>
       </div>
     </div>
 
-    <!-- The Modal -->
-    <div id="modal_edition" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" id="btn_exit_modal">&times;</span>
-          <h2 style="text-align: center">COVID-19 EDITION</h2>
-          <h2 style="text-align: center">Play&Learn From Home</h2>
-        </div>
-        <div class="modal-body">
-          <img id="img-edition" src="./pics/covid19_edition.png" alt="" />
-        </div>
-        <div class="modal-footer">
-          <!-- <button id="btn_child_chose" type="button">בחר</button> -->
-          <div id="err_text"></div>
-        </div>
+    <div class="w3-display-bottomleft w3-padding-large">
+      Avi Mishayev & Ido Yehezkel
+    </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="modal-edition" class="modal w3-animate-opacity" onclick="hideModal(this.id)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" id="btn_exit_modal">&times;</span>
+        <h2 style="text-align: center">COVID-19 EDITION</h2>
+        <h2 style="text-align: center">Play&Learn From Home</h2>
+      </div>
+      <div class="modal-body">
+        <img id="img-edition" src="./pics/covid19_edition.png" alt="" />
+      </div>
+      <div class="modal-footer">
+        <!-- <button id="btn_child_chose" type="button">בחר</button> -->
+        <div id="err_text"></div>
       </div>
     </div>
+  </div>
 
-    <!-- The Development Modal -->
-    <div id="modal_development_connect" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" id="btn_exit_modal1"> &times; </span>
-          <h2 style="text-align: center">כניסת מפתח מערכת:</h2>
-        </div>
-        <div class="modal-body w3-padding-large">
-          <input type="text" id="user_name" placeholder="שם משתמש" />
-          <br /><br />
-          <input type="password" id="password" placeholder="סיסמא" />
-        </div>
-        <div class="modal-footer">
-          <button id="btn_dev_connect" type="button">התחבר</button>
-          <div id="err_text"></div>
-        </div>
+  <!-- The Development Modal -->
+  <div id="modal-development-connect" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" id="btn_exit_modal1"> &times; </span>
+        <h2 style="text-align: center">כניסת מפתח מערכת:</h2>
+      </div>
+      <div class="modal-body w3-padding-large">
+        <input type="text" id="user_name" placeholder="שם משתמש" />
+        <br /><br />
+        <input type="password" id="password" placeholder="סיסמא" />
+      </div>
+      <div class="modal-footer">
+        <button id="btn_dev_connect" type="button">התחבר</button>
+        <div id="err_text"></div>
       </div>
     </div>
+  </div>
 
-    <script type="module">
-      const URL = {
+  <script type="text/javascript">
+    const URL = {
         PARENT_SIGNIN: "views/Parent/SignIn.html",
         TEACHER_SIGNIN: "views/Teacher/SignIn.html",
         CHILD_SIGNIN: "views/Child/SignIn.html",
@@ -156,11 +156,12 @@
       $(document).ready(() => {
         localStorage.clear();
         init();
-        $("#modal_edition").show();
-        $("#modal_development_connect").hide();
-        setTimeout(() => {
-          $("#modal_edition").hide();
-        }, 5000);
+        showModal()
+        // $("#modal-edition").show();
+        $("#modal-development-connect").hide();
+        // setTimeout(() => {
+        //   $("#modal-edition").hide();
+        // }, 5000);
       });
 
       function init() {
@@ -184,19 +185,19 @@
         $("#btn-admin").on("click", () => {
           window.location.href = URL.Admin; // Put in a comment
           // nextChildPage = URL.Admin;                               // Delete the comment
-          // $("#modal_development_connect").css("display", "block"); // Delete the comment
+          // $("#modal-development-connect").css("display", "block"); // Delete the comment
         });
 
         initModal();
       }
 
       function initModal() {
-        $("#btn_exit_modal").on("click", () => {
-          $("#modal_edition").css("display", "none");
-        });
+        // $("#btn_exit_modal").on("click", () => {
+        //   $("#modal-edition").css("display", "none");
+        // });
 
         // $("#btn_exit_modal1").on("click", () => {                    // Delete the comment
-        //   $("#modal_development_connect").css("display", "none");
+        //   $("#modal-development-connect").css("display", "none");
         // });
 
         // $("#btn_dev_connect").on("click", () => {
@@ -208,13 +209,28 @@
         // });
 
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          let modal = document.getElementById("modal_edition");
-          let modalDev = document.getElementById("modal_development_connect");
-          if (event.target == modal || event.target == modalDev)
-            modal.style.display = "none";
-        };
+        // window.onclick = function (event) {
+        //   let modal = document.getElementById("modal-edition");
+        //   let modalDev = document.getElementById("modal-development-connect");
+        //   if (event.target == modal || event.target == modalDev)
+        //     modal.style.display = "none";
+        // };
+      }
+
+      // Modal
+function showModal(text) {
+    // $('#modal-edition-text').text(text);
+    $("#modal-edition").fadeIn("slow");
+    setTimeout(() => {
+        $("#modal-edition").fadeOut("slow");
+    }, 5000);
+}
+
+      function hideModal(modalType) {
+        console.log(modalType);
+        $(`#${modalType}`).hide();
       }
     </script>
-  </body>
+</body>
+
 </html>

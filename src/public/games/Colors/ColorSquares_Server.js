@@ -38,7 +38,7 @@ module.exports = class ColorsGame { // @@@@CHANGING
         // Add listeners
         this._players.forEach((player, idx) => {
             // after player chose operator create new question
-            player.socket.on('fromClient_toServer_player_chose_operator', (question) => { // @@@@CHANGING
+            player.socket.on('fromClient_toServer_player_chose_operator', (operator) => { // @@@@CHANGING
                 this._askNewQuestion(idx, operator);
             });
 
@@ -58,14 +58,14 @@ module.exports = class ColorsGame { // @@@@CHANGING
     }
 
     // Message to 1 player
-    _sendToPlayer(playerIndex, type, msg) {
-        this._players[playerIndex].send_Message_To_Client(type, msg);
+    _sendToPlayer(playerIndex, type, param) {
+        this._players[playerIndex].send_Message_To_Client(type, param);
     }
 
     // Message for both players
-    _sendToPlayers(type, msg) {
+    _sendToPlayers(type, param) {
         this._players.forEach((player) => {
-            player.send_Message_To_Client(type, msg)
+            player.send_Message_To_Client(type, param)
         });
     }
 
@@ -97,26 +97,29 @@ module.exports = class ColorsGame { // @@@@CHANGING
     }
 
     // @@@@CHANGING
-    _askNewQuestion(playerIndex, question, operator) {
+    _askNewQuestion(playerIndex, questionLevel) {
         // After player chose operator/question disable his game operators
         this._players[playerIndex].set_Operators_Frame_State('disable');
         // Remove question from potential collection
-        let qIdx = potentialQuestionsCollection.findIndex(q => q._word === question._word);
+        let qIdx = Math.floor( Math.random() * potentialQuestionsCollection.length );
         if (qIdx !== -1) questions.push(potentialQuestionsCollection.splice(qIdx, 1)[0]);
-        this._sendToPlayers('fromServer_toClient_show_the_new_question', questions[questions.length - 1].toString());
+        console.log(questions[questions.length - 1]);
+        this._players.forEach(p => p.show_Client_New_Question(questionLevel, questions[questions.length - 1]));
         this._players.forEach(p => p.stats._add_AskedQuestion(questions[questions.length - 1]._operator));
 
         this._setPlayersAnswerFrameState('enable'); // set enable so player can answer
     }
 
+
+
     _checkPlayerAnswer(playerIndex, answer_From_Player) {
         let asked_Question = questions[questions.length - 1];
-
-        if (asked_Question._color === answer_From_Player._color) { // @@@@CHANGING
+        if (asked_Question._objectColor === answer_From_Player) { // @@@@CHANGING
             this._players[playerIndex].stats._add_CorrectAnswer(asked_Question._operator);
             this._isPlayersAnswerCorrect[playerIndex] = true;
         } else // if wrong answer
             this._isPlayersAnswerCorrect[playerIndex] = false;
+        console.log(this._isPlayersAnswerCorrect);
     }
 
     _checkRoundOver() { // check round over after every answer one of the player made
@@ -129,8 +132,14 @@ module.exports = class ColorsGame { // @@@@CHANGING
         this._endRound();
     }
 
+    _showToPlayersSolution(){
+        this._players[P0].send_Solution_To_Client(this._isPlayersAnswerCorrect[P0], '');
+        this._players[P1].send_Solution_To_Client(this._isPlayersAnswerCorrect[P1], '');
+    }
+
     _endRound() {
         this._update_Clients_Stats();
+        this._showToPlayersSolution();
 
         if (this._roundCounter >= MAX_ROUNDS) {
             this._roundCounter = 0;
@@ -139,14 +148,13 @@ module.exports = class ColorsGame { // @@@@CHANGING
             setTimeout(() => {
                 this._end_Game_Back_To_Games_Gallery()
             }, 5000);
-            // this._sendToPlayers('end');
-            // this._players[0]._socket.disconnect(true);
-            // this._players[1]._socket.disconnect(true);
             return;
         }
 
         this._set_Next_Player_Turn();
-        this._startNextRound();
+        setTimeout(() => {
+            this._startNextRound()
+        }, 2000);
     }
 
     _update_Clients_Stats() {
@@ -176,7 +184,7 @@ module.exports = class ColorsGame { // @@@@CHANGING
 
     // @@@@CHANGING
     _generate_questions() {
-        generatedQuestions = [{
+        var generatedQuestions = [{
             objectColor: "אדום",
             objectNameHeb: "תפוח",
             objectNameEng: "Apple",
@@ -245,9 +253,5 @@ class Question {
         this._objectNameHeb = objectNameHeb;
         this._objectNameEng = objectNameEng;
         this._operator = operator;
-    }
-
-    toString() {
-        return `${this._objectNameEng}`;
     }
 }
