@@ -15,7 +15,7 @@
       }
 
       .bgimg {
-        background-image: url("/pics/background/back-register.jpg");
+        background-image: url("/pics/background/cactus.jpg");
       }
 
       #err_text {
@@ -154,7 +154,7 @@
     <div class="w3-display-bottomleft w3-padding-large">Make Learning Fun</div>
 
     <!-- The Modal -->
-    <div id="modal-success" class="modal">
+    <div id="modal-success" class="modal w3-animate-opacity">
       <div class="modal-content">
         <div class="modal-header">
           <span class="close" id="btn_exit_modal">&times;</span>
@@ -174,6 +174,8 @@
       import { URL } from "../consts.js";
 
       $(document).ready(() => {
+        $('button, .input-box').addClass('w3-animate-zoom');
+
         console.log("jquery work");
         init();
         window.passwordToggle = passwordToggle;

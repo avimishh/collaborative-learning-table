@@ -4,20 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
-    <link href="../../style/signin.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/signin.css" rel="stylesheet" />
     <style>
-      .form-box {
-        margin: 4% auto 1% auto;
-      }
-
       .bgimg {
-        background-image: url("../../pics/background/cactus.jpg");
-      }
-
-      .homeBtn {
-        width: 20%;
+        background-image: url("/pics/background/cactus.jpg");
       }
 
       #err_text {
@@ -29,11 +21,6 @@
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
       <div class="w3-display-topleft w3-padding-large w3-xlarge">
         שולחן משחקים שיתופי
-        <!-- <div>
-          <button type="button" class="homeBtn" id="btn_goToHome">
-            <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
-          </button>
-        </div> -->
         <div>
           <button type="button" class="homeBtn" id="btn_goToHome">
             <img id="homeImg" src="/pics/homeBtn.png" alt="" />
@@ -44,7 +31,7 @@
         </div>      
       </div>
     </div>
-    <div class="form-box w3-display-topmiddle">
+    <div class="form-box w3-display-middle">
       <h1>הרשמה הורה</h1>
       <div class="input-box">
         <i class="fa fa-address-card"></i>
@@ -83,6 +70,7 @@
       <div id="err_text"></div>
 
       <button type="button" class="register-btn" id="register">הרשמה</button>
+      <button type="button" class="register-btn" id="btn-back-to-login">חזור להתחברות</button>
     </div>
 
     <div class="w3-display-bottomleft w3-padding-large">Make Learning Fun</div>
@@ -90,7 +78,7 @@
     <script type="module">
       import { userRegisterRequest } from "./api.js";
       import { URL } from "./consts.js";
-      import { initSignInPage } from "../../globalDeclarations.js";
+      import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
         console.log("jquery work");
@@ -100,6 +88,8 @@
       });
 
       function init() {
+        $('.input-box, .register-btn').addClass('w3-animate-zoom');
+
         $("#register").on("click", () => {
           let newUser = {};
           newUser.firstName = $("#user_fname").val();
@@ -114,6 +104,10 @@
           window.location.href = URL.HOME;
         });
 
+        $("#btn-back-to-login").on("click", () => {
+          window.location.href = URL.PARENT_SIGNIN;
+        });
+        
         $("#user_password").on("focus", () => {
           $("#user_password").attr("type", "password");
         });

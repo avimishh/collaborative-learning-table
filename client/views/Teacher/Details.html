@@ -121,7 +121,7 @@
     </div>
 
     <!-- The Change Password Modal -->
-    <div id="modal-change-password" class="modal">
+    <div id="modal-change-password" class="modal w3-animate-opacity">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close btn_exit_modal" id="">&times;</span>
@@ -146,6 +146,8 @@
         import { URL } from './consts.js';
 
         $(document).ready(function () {
+            $('button, input, .details').addClass('w3-animate-zoom');
+
             showTeacherDetails();
 
             $('#btn_goToHome').on('click', () => {

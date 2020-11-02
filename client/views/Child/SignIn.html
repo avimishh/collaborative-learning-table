@@ -91,6 +91,8 @@
       });
 
       function init() {
+        $('button, .input-box').addClass('w3-animate-zoom');
+
         $("#login").on("click", () => {
           let child_id = $("#id_user").val();
           let gamesPassword = $("#user_password").val();

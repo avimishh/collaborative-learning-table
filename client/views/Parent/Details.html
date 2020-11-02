@@ -11,7 +11,7 @@
     <link href="/style/modal.css" rel="stylesheet" />
     <style>
         .bgimg {
-            background-image: url('../../pics/background/homeParents.jpg');
+            background-image: url('/pics/background/homeParents.jpg');
         }
 
         .homeBtn {
@@ -27,6 +27,10 @@
         #err_text {
             height: 22px;
         }
+
+        button {
+            padding: 10px;
+        }
     </style>
 </head>
 
@@ -36,7 +40,7 @@
             שולחן משחקים שיתופי
             <br>
             <button type="button" class="homeBtn" id="btn_goToHome">
-                <img id="homeImg" src="../../pics/homeBtn.png" alt="">
+                <img id="homeImg" src="/pics/homeBtn.png" alt="">
             </button>
         </div>
 
@@ -97,8 +101,6 @@
                         </td>
                         <td>
                             <button id="btn-change-password">לחץ להחלפת סיסמה</button>
-                            <!-- <span id="password"></span> -->
-                            <!-- <input type="password" id="password" placeholder="הכנס סיסמה לאישור"/> -->
                         </td>
                     </tr>
                     <!--6. Update-->
@@ -114,19 +116,13 @@
 
         </div>
 
-        <!-- <div class="w3-display-bottommiddle container" style="margin-top:100px;margin-right: 100px;">
-
-        </div> -->
-
         <div class="w3-display-bottomleft w3-padding-large">
-            <!-- <button id='btn_goToHome' class="w3-btn">חזרה לעמוד הראשי <i class="fa fa-home"
-                    aria-hidden="true"></i></button> -->
             Make Learning Fun
         </div>
     </div>
 
     <!-- The Change Password Modal -->
-    <div id="modal-change-password" class="modal">
+    <div id="modal-change-password" class="modal w3-animate-opacity">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close btn_exit_modal" id="">&times;</span>
@@ -153,6 +149,8 @@
         import { URL } from './consts.js';
 
         $(document).ready(function () {
+            $('button, input, .details').addClass('w3-animate-zoom');
+
             showParentDetails();
 
             $('#btn_goToHome').on('click', () => {

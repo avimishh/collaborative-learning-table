@@ -5,12 +5,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title></title>
-  <script src="../../lib/jquery.js"></script>
-  <link href="../../style/global.css" rel="stylesheet" />
-  <link href="../../style/signin.css" rel="stylesheet" />
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <link href="/style/signin.css" rel="stylesheet" />
   <style>
     .bgimg {
-      background-image: url("../../pics/background/cactus.jpg");
+      background-image: url("/pics/background/cactus.jpg");
     }
   </style>
 </head>
@@ -60,7 +60,7 @@
   <script type="module">
     import { userLoginRequest } from "./api.js";
       import { URL } from "./consts.js";
-      import { initSignInPage } from "../../globalDeclarations.js";
+      import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
         console.log("jquery work");
@@ -69,6 +69,8 @@
       });
 
       function init() {
+        $('button, .input-box').addClass('w3-animate-zoom');
+
         $("#login").on("click", () => {
           let userId = $("#user_id").val();
           let userPassword = $("#user_password").val();

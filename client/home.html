@@ -60,11 +60,11 @@
     }
 
     .modal-content {
-    -webkit-animation-name: unset;
-    -webkit-animation-duration: unset;
-    animation-name: unset;
-    animation-duration: unset;
-}
+      -webkit-animation-name: unset;
+      -webkit-animation-duration: unset;
+      animation-name: unset;
+      animation-duration: unset;
+    }
   </style>
 </head>
 
@@ -125,7 +125,7 @@
   </div>
 
   <!-- The Development Modal -->
-  <div id="modal-development-connect" class="modal">
+  <div id="modal-development-connect" class="modal w3-animate-opacity">
     <div class="modal-content">
       <div class="modal-header">
         <span class="close" id="btn_exit_modal1"> &times; </span>
@@ -145,92 +145,87 @@
 
   <script type="text/javascript">
     const URL = {
-        PARENT_SIGNIN: "views/Parent/SignIn.html",
-        TEACHER_SIGNIN: "views/Teacher/SignIn.html",
-        CHILD_SIGNIN: "views/Child/SignIn.html",
-        Admin: "./admin.html",
-      };
+      PARENT_SIGNIN: "views/Parent/SignIn.html",
+      TEACHER_SIGNIN: "views/Teacher/SignIn.html",
+      CHILD_SIGNIN: "views/Child/SignIn.html",
+      Admin: "./admin.html",
+    };
 
-      var nextChildPage;
+    var nextChildPage;
 
-      $(document).ready(() => {
-        localStorage.clear();
-        init();
-        showModal()
-        // $("#modal-edition").show();
-        $("#modal-development-connect").hide();
-        // setTimeout(() => {
-        //   $("#modal-edition").hide();
-        // }, 5000);
+    $(document).ready(() => {
+      localStorage.clear();
+      init();
+      showModal()
+      // $("#modal-edition").show();
+      $("#modal-development-connect").hide();
+      // setTimeout(() => {
+      //   $("#modal-edition").hide();
+      // }, 5000);
+    });
+
+    function init() {
+      $(".container div").addClass(
+        "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
+      );
+      $(".container div img").addClass("btn_home_img");
+
+      $("#btn_Parent").on("click", () => {
+        window.location.href = URL.PARENT_SIGNIN;
       });
 
-      function init() {
-        $(".container div").addClass(
-          "box w3-hover-text-black w3-hover-opacity w3-hover-shadow"
-        );
-        $(".container div img").addClass("btn_home_img");
+      $("#btn_Teacher").on("click", () => {
+        window.location.href = URL.TEACHER_SIGNIN;
+      });
 
-        $("#btn_Parent").on("click", () => {
-          window.location.href = URL.PARENT_SIGNIN;
-        });
+      $("#btn_Child").on("click", () => {
+        window.location.href = URL.CHILD_SIGNIN;
+      });
 
-        $("#btn_Teacher").on("click", () => {
-          window.location.href = URL.TEACHER_SIGNIN;
-        });
+      $("#btn-admin").on("click", () => {
+        window.location.href = URL.Admin; // Put in a comment
+        // nextChildPage = URL.Admin;                               // Delete the comment
+        // $("#modal-development-connect").css("display", "block"); // Delete the comment
+      });
 
-        $("#btn_Child").on("click", () => {
-          window.location.href = URL.CHILD_SIGNIN;
-        });
+      initModal();
+    }
 
-        $("#btn-admin").on("click", () => {
-          window.location.href = URL.Admin; // Put in a comment
-          // nextChildPage = URL.Admin;                               // Delete the comment
-          // $("#modal-development-connect").css("display", "block"); // Delete the comment
-        });
+    function initModal() {
+      // $("#btn_exit_modal1").on("click", () => {                    // Delete the comment
+      //   $("#modal-development-connect").css("display", "none");
+      // });
 
-        initModal();
-      }
+      // $("#btn_dev_connect").on("click", () => {
+      //   if (
+      //     ($("#user_name").val() == "1234") &
+      //     ($("#password").val() == "1234")
+      //   )
+      //     window.location.href = URL.Admin;
+      // });
 
-      function initModal() {
-        // $("#btn_exit_modal").on("click", () => {
-        //   $("#modal-edition").css("display", "none");
-        // });
+      // When the user clicks anywhere outside of the modal, close it
+      // window.onclick = function (event) {
+      //   let modalDev = document.getElementById("modal-development-connect");
+      //   if (event.target == modalDev)
+      //     modal.style.display = "none";
+      // };
+    }
 
-        // $("#btn_exit_modal1").on("click", () => {                    // Delete the comment
-        //   $("#modal-development-connect").css("display", "none");
-        // });
-
-        // $("#btn_dev_connect").on("click", () => {
-        //   if (
-        //     ($("#user_name").val() == "1234") &
-        //     ($("#password").val() == "1234")
-        //   )
-        //     window.location.href = URL.Admin;
-        // });
-
-        // When the user clicks anywhere outside of the modal, close it
-        // window.onclick = function (event) {
-        //   let modal = document.getElementById("modal-edition");
-        //   let modalDev = document.getElementById("modal-development-connect");
-        //   if (event.target == modal || event.target == modalDev)
-        //     modal.style.display = "none";
-        // };
-      }
-
-      // Modal
-function showModal(text) {
-    // $('#modal-edition-text').text(text);
-    $("#modal-edition").fadeIn("slow");
-    setTimeout(() => {
+    // Modal
+    function showModal(text) {
+      // $('#modal-edition-text').text(text);
+      $("#modal-edition").fadeIn("slow");
+      setTimeout(() => {
         $("#modal-edition").fadeOut("slow");
-    }, 5000);
-}
+      }, 5000);
+    }
 
-      function hideModal(modalType) {
-        console.log(modalType);
-        $(`#${modalType}`).hide();
-      }
-    </script>
+    function hideModal(modalType) {
+      console.log(modalType);
+      $(`#${modalType}`).hide();
+    }
+  </script>
 </body>
 
 </html>
