@@ -1,10 +1,10 @@
-@import "../lib/w3.css";
-@import "../lib/font-awesome-4.7.0/css/font-awesome.min.css";
+@import "/lib/w3.css";
+@import "/lib/font-awesome-4.7.0/css/font-awesome.min.css";
 /* font */
 
 @font-face {
     font-family: heb_font_Varela;
-    src: url('../lib/VarelaRound-Regular.ttf');
+    src: url('/lib/VarelaRound-Regular.ttf');
 }
 
 *, h1 {

@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title></title>
-  <link rel="icon" type="image/png" href="./pics/logo2.png" />
-  <script src="./lib/jquery.js"></script>
+  <link rel="icon" type="image/png" href="/pics/logo2.png" />
+  <script src="/lib/jquery.js"></script>
   <link href="/style/global.css" rel="stylesheet" />
   <link href="/style/modal.css" rel="stylesheet" />
   <style>
@@ -160,10 +160,10 @@
   </div>
 
   <script type="module">
-    import { getServerUrl } from "../../globalDeclarations.js";
-    import { getTeachersRequest, deleteTeacherRequest, teacherRegisterRequest } from "./views/Teacher/api.js";
-    import { getParentsRequest } from "./views/Parent/api.js";
-    import { getChildsRequest } from "./views/Child/api.js";
+    import { getServerUrl, alertMessage } from "/globalDeclarations.js";
+    import { getTeachersRequest, deleteTeacherRequest, teacherRegisterRequest } from "/views/Teacher/api.js";
+    import { getParentsRequest } from "/views/Parent/api.js";
+    import { getChildsRequest } from "/views/Child/api.js";
 
       const server = getServerUrl();
       const adminUrl = server + "admin/";
@@ -175,6 +175,7 @@
       };
 
       $(document).ready(() => {
+        alertMessage();
         localStorage.clear();
         init();
       });

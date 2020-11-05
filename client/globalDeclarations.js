@@ -24,10 +24,12 @@ export function initSignInPage() {
   window.passwordToggle = passwordToggle;
 }
 
-
+export function alertMessage(){
+  alert("Hello");
+}
 
 export function globalInit() {
-  include(".././pics/logo3.png");
+  include("./../pics/logo3.png");
 }
 
 function include(file) {

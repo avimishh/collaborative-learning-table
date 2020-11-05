@@ -88,7 +88,7 @@ footer {
 
     main {
         background: no-repeat center center;
-        background-image: url('../../pics/bacground_study.png');
+        background-image: url('/pics/bacground_study.png');
         background-size: cover;
         font-family: sans-serif;
         width: 100%;
