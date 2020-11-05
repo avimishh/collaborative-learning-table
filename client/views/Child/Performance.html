@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <script src="../../lib/jquery.js"></script>
-    <link href="../../style/global.css" rel="stylesheet" />
+    <script src="/lib/jquery.js"></script>
+    <link href="/style/global.css" rel="stylesheet" />
     <style>
       .bgimg {
-        background-image: url("../../pics/background/back3.jpg");
+        background-image: url("/pics/background/back3.jpg");
       }
 
       .homeBtn {
@@ -118,7 +118,7 @@
         שולחן משחקים שיתופי
         <br />
         <button type="button" class="homeBtn" id="btn_goToHome">
-          <img id="homeImg" src="../../pics/homeBtn.png" alt="" />
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
         </button>
       </div>
       <div class="form-box w3-display-middle">
@@ -139,10 +139,8 @@
       import { URL } from "./consts.js";
 
       $(document).ready(() => {
-        console.log("jquery work");
         let child_id = JSON.parse(localStorage.getItem("child")).id;
         let fieldName = localStorage.getItem("selectedField");
-        console.log(fieldName);
         getStatsRequest(child_id, fieldName, setData, printErrorToUser);
 
         init();
@@ -230,8 +228,6 @@
         $("#data").append($table);
 
         // $('tr:even').css('backgroundColor', 'gray');
-
-        // console.log();
       }
 
       function calculateScore(sheet) {
@@ -261,13 +257,6 @@
 
         return [day, month, year].join("-");
       }
-
-      // function disableBackBtn() {
-      //     history.pushState(null, null, document.URL);
-      //     window.addEventListener('popstate', function () {
-      //         history.pushState(null, null, document.URL);
-      //     });
-      // }
 
       function printErrorToUser(code, err) {
         // popup

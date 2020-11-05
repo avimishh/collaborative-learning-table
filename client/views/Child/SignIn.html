@@ -1,93 +1,91 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <script src="/lib/jquery.js"></script>
-    <link href="/style/global.css" rel="stylesheet" />
-    <link href="/style/signin.css" rel="stylesheet" />
-    <style>
-      span {
-        font-size: 16px;
-      }
 
-      .mess {
-        text-align: center;
-        margin-bottom: 20px;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <link href="/style/signin.css" rel="stylesheet" />
+  <style>
+    span {
+      font-size: 16px;
+    }
 
-      .form-box {
-        background: brown; /*rgba(0, 0, 0, 1);*/
-        /* margin: 3% auto 1% auto; */
-        box-shadow: 0 0 80px 10px black;
-        border-radius: 50px;
-      }
+    .mess {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-      .bgimg {
-        background-image: url("/pics/background/2.jpg");
-      }
-    </style>
-  </head>
+    .form-box {
+      background: brown;
+      /*rgba(0, 0, 0, 1);*/
+      /* margin: 3% auto 1% auto; */
+      box-shadow: 0 0 80px 10px black;
+      border-radius: 50px;
+    }
 
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-      <div class="w3-display-topleft w3-padding-large w3-xlarge">
-        שולחן משחקים שיתופי
-        <div>
-          <button type="button" class="homeBtn" id="btn_goToHome">
-            <img id="homeImg" src="/pics/homeBtn.png" alt="" />
-            חזרה לעמוד
-            <br />
-            הראשי
-          </button>
-        </div>
-      </div>
-      <div class="form-box w3-display-middle">
-        <h1>התחברות ילד</h1>
+    .bgimg {
+      background-image: url("/pics/background/2.jpg");
+    }
+  </style>
+</head>
 
-        <div class="mess">
-          <!-- <span>נא העבר צ'יפ במקום המיועד </span>
-          <br /> -->
-          <span>הכנס תעודת זהות </span>
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge">
+      שולחן משחקים שיתופי
+      <div>
+        <button type="button" class="homeBtn" id="btn_goToHome">
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
+          חזרה לעמוד
           <br />
-          <span>ולאחר מכן לחץ על כניסה</span>
-        </div>
-
-        <div class="input-box">
-          <i class="fa fa-user"></i>
-          <input type="text" id="id_user" placeholder="תעודת זהות" />
-        </div>
-
-        <div class="input-box">
-          <i class="fa fa-key"></i>
-          <input type="password" placeholder="סיסמת משחקים" id="user_password" />
-          <span class="icon-eye" onclick="passwordToggle()">
-            <i class="fa fa-eye-slash"></i>
-          </span>
-        </div>
-        <div id="err_text"></div>
-
-        <button type="button" class="login-btn" id="login">כניסה</button>
-
-
-      </div>
-
-      <div class="w3-display-bottomleft w3-padding-large">
-        Make Learning Fun
+          הראשי
+        </button>
       </div>
     </div>
+    <div class="form-box w3-display-middle">
+      <h1>התחברות ילד</h1>
 
-    <script type="module">
-      import { childLoginRequest } from "./api.js";
+      <div class="mess">
+        <!-- <span>נא העבר צ'יפ במקום המיועד </span>
+          <br /> -->
+        <span>הכנס תעודת זהות </span>
+        <br />
+        <span>ולאחר מכן לחץ על כניסה</span>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" id="id_user" placeholder="תעודת זהות" />
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-key"></i>
+        <input type="password" placeholder="סיסמת משחקים" id="user_password" />
+        <span class="icon-eye" onclick="passwordToggle()">
+          <i class="fa fa-eye-slash"></i>
+        </span>
+      </div>
+      <div id="err_text"></div>
+
+      <button type="button" class="login-btn" id="login">כניסה</button>
+    </div>
+
+    <div class="w3-display-bottomleft w3-padding-large">
+      Make Learning Fun
+    </div>
+  </div>
+
+  <script type="module">
+    import { childLoginRequest } from "./api.js";
       import { URL } from "./consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
-        console.log("jquery work");
         init();
         initSignInPage();
-        // window.passwordToggle = passwordToggle;
       });
 
       function init() {
@@ -118,5 +116,6 @@
         $("#err_text").text(err);
       }
     </script>
-  </body>
+</body>
+
 </html>

@@ -192,7 +192,6 @@
             $new_input.focusout(function () {
                 let data = $(this).val();
                 let atr_id = $(this).attr('id');
-                console.log(data);
                 let $new_span = $('<span></span>', { 'id': atr_id }).text(data);
                 $new_span.click(function () { spanToInput($new_span); });
                 $(this).parent().append($new_span);
@@ -223,7 +222,6 @@
             let parent = JSON.parse(localStorage.getItem('parent'));
             if (parent === null)
                 return printErrorToUser(0, 'לא התקבלו נתונים מהשרת.');
-            // console.log(parent);
             $("#firstName").text(parent.firstName);                   // firstName
             $("#lastName").text(parent.lastName);                     // lastName
             $("#id_parent").text(parent.id);                          // id

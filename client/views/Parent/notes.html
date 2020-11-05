@@ -187,7 +187,6 @@
 
         var child;
         $(document).ready(() => {
-            console.log('jquery work');
             init();
             // let child_id = JSON.parse(localStorage.getItem('child')).id;
             showStudentDetails();
@@ -210,7 +209,6 @@
         }
 
         function showNotes(notes) {
-            // console.log(notes);
             notes.forEach((note, index) => {
                 let $td1 = $('<td>', { class: 'teacher' })
                     .text(`המורה: `).append($('<br>')).append(`${note.teacher.firstName} ${note.teacher.lastName}`);

@@ -180,13 +180,11 @@
         });
 
         function showStudentDetails() {
-            // console.log(localStorage.getItem('child'));
             let data = JSON.parse(localStorage.getItem('child'));
             // birth and age
             let year = Number(data.birth.substr(0, 4));
             let month = Number(data.birth.substr(5, 2));
             let day = Number(data.birth.substr(8, 2));
-            //console.log(day + "/" + month + "/" + year);
             let today = new Date();
             let age = today.getFullYear() - year;
             if (today.getMonth() < month || (today.getMonth() == month && today.getDate() < day)) {

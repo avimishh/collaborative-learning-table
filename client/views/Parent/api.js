@@ -10,7 +10,6 @@ const notesApi = server + "notes/";
 
 
 export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: authApi,
@@ -21,10 +20,7 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
             password: userPassword
         }),
         success: function (data, textStatus, xhr) {
-            // console.log(data);
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-            // console.log(localStorage.getItem('token'));
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -36,7 +32,6 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
 
 
 export function userRegisterRequest(newUser, successFunction, errorFunction, completeFunction) {
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: parentsApi,
@@ -45,8 +40,6 @@ export function userRegisterRequest(newUser, successFunction, errorFunction, com
         data: JSON.stringify(newUser),
         success: function (data, textStatus, xhr) {
             localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-            // console.log(localStorage.getItem('token'));
-            console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -58,7 +51,6 @@ export function userRegisterRequest(newUser, successFunction, errorFunction, com
 
 
 export function getUserRequest(successFunction, errorFunction, completeFunction) {
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: usersApi + "me/",
@@ -66,7 +58,6 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
         success: function (data, textStatus, xhr) {
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -78,8 +69,6 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
 
 
 export function getParentRequest(parent_id, successFunction, errorFunction, completeFunction) {
-    console.log(parent_id);
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: parentsApi + parent_id,
@@ -87,7 +76,6 @@ export function getParentRequest(parent_id, successFunction, errorFunction, comp
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
         success: function (data, textStatus, xhr) {
-            console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -99,7 +87,6 @@ export function getParentRequest(parent_id, successFunction, errorFunction, comp
 
 
 export function getParentsRequest(successFunction, errorFunction, completeFunction) {
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: parentsApi,
@@ -107,7 +94,6 @@ export function getParentsRequest(successFunction, errorFunction, completeFuncti
         // headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify({}),
         success: function (data, textStatus, xhr) {
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -119,8 +105,6 @@ export function getParentsRequest(successFunction, errorFunction, completeFuncti
 
 
 export function updateParentRequest(parent_id, parentToUpdate, successFunction, errorFunction, completeFunction) {
-    // console.log(parentToUpdate);
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: parentsApi + parent_id,
@@ -129,7 +113,6 @@ export function updateParentRequest(parent_id, parentToUpdate, successFunction, 
         data: JSON.stringify(parentToUpdate),
         success: function (data, textStatus, xhr) {
             localStorage.setItem('parent', JSON.stringify(data));
-            // console.log(data);
             successFunction();
         },
         error: function (xhr) {
@@ -141,7 +124,6 @@ export function updateParentRequest(parent_id, parentToUpdate, successFunction, 
 
 
 export function updateParentPasswordRequest(parent_id, newPassword, successFunction, errorFunction) {
-    console.log('work api');
     let request = {
       contentType: "application/json",
       url: parentsApi + 'changePassword/' + parent_id,
@@ -160,30 +142,7 @@ export function updateParentPasswordRequest(parent_id, newPassword, successFunct
     $.ajax(request);
   }
 
-// export function firstDetailsParentRequest(parentToUpdate, successFunction, errorFunction, completeFunction) {
-//     console.log('work api');
-//     let request = {
-//         contentType: "application/json",
-//         url: parentsApi,
-//         method: "POST",
-//         headers: { 'x-auth-token' : localStorage.getItem('token') },
-//         data: JSON.stringify(parentToUpdate),
-//         success: function (data, textStatus, xhr) {
-//             localStorage.setItem('parent', JSON.stringify(data));
-//             // console.log(data);
-//             successFunction();
-//         },
-//         error: function (xhr) {
-//             errorFunction(xhr.status, xhr.responseText);
-//         }
-//     };
-//     $.ajax(request);
-// }
-
-
 export function getChildRequest(child_id, successFunction, errorFunction, completeFunction) {
-    console.log(child_id);
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: childsApi + child_id,
@@ -191,7 +150,6 @@ export function getChildRequest(child_id, successFunction, errorFunction, comple
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
         success: function (data, textStatus, xhr) {
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {
@@ -203,8 +161,6 @@ export function getChildRequest(child_id, successFunction, errorFunction, comple
 
 
 export function getChildNotesRequest(child_id, successFunction, errorFunction, completeFunction) {
-    console.log(child_id);
-    console.log('work api');
     let request = {
         contentType: "application/json",
         url: notesApi + child_id,
@@ -212,7 +168,6 @@ export function getChildNotesRequest(child_id, successFunction, errorFunction, c
         headers: { 'x-auth-token' : localStorage.getItem('token') },
         // data: JSON.stringify(),
         success: function (data, textStatus, xhr) {
-            // console.log(data);
             successFunction(data);
         },
         error: function (xhr) {

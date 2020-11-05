@@ -94,8 +94,8 @@ function init_Guest_player(socket) {
 }
 
 
-const MathGame = require('./Math/math1');
-const EnglishGame = require('./English/english1');
+const MathGame = require('./Math/MathQuests_Server');
+const EnglishGame = require('./English/EnglishCards_Server');
 const ColorsGame = require('./Colors/ColorSquares_Server');
 // const MemoryGame = require('./Memory/MemoryCards_Server');
 
@@ -120,9 +120,9 @@ async function startGame() {
         case 'ריבועי צבעים':
             playingGame = new ColorsGame(playerHost, playerGuest, gameToPlay);
             break;
-        // case 'כרטיסיות זכרון':
-        //     playingGame = new MemoryGame(playerHost, playerGuest, gameToPlay);
-        //     break;
+            // case 'כרטיסיות זכרון':
+            //     playingGame = new MemoryGame(playerHost, playerGuest, gameToPlay);
+            //     break;
         default:
             console.log('wrong game reference');
             break;

@@ -10,7 +10,6 @@ const childsApi = server + "childs/";
 const notesApi = server + "notes/";
 
 export function getChildsRequest(successFunction, errorFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi,
@@ -30,7 +29,6 @@ export function getChildsRequest(successFunction, errorFunction) {
 }
 
 export function getChildRequest(childId, successFunction, errorFunction, completeFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi + childId,
@@ -40,7 +38,6 @@ export function getChildRequest(childId, successFunction, errorFunction, complet
     },
     // data: JSON.stringify({}),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -51,7 +48,6 @@ export function getChildRequest(childId, successFunction, errorFunction, complet
 }
 
 export function childRegisterRequest(newChild, successFunction, errorFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi,
@@ -61,7 +57,6 @@ export function childRegisterRequest(newChild, successFunction, errorFunction) {
     },
     data: JSON.stringify(newChild),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -72,7 +67,6 @@ export function childRegisterRequest(newChild, successFunction, errorFunction) {
 }
 
 export function childUpdateRequest(toUpdateChild, successFunction, errorFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi + toUpdateChild.id,
@@ -82,7 +76,6 @@ export function childUpdateRequest(toUpdateChild, successFunction, errorFunction
     },
     data: JSON.stringify(toUpdateChild),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -93,7 +86,6 @@ export function childUpdateRequest(toUpdateChild, successFunction, errorFunction
 }
 
 export function deleteChildRequest(toDeleteChildId, successFunction, errorFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: childsApi + toDeleteChildId,
@@ -103,7 +95,6 @@ export function deleteChildRequest(toDeleteChildId, successFunction, errorFuncti
     },
     // data: JSON.stringify(),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -114,7 +105,6 @@ export function deleteChildRequest(toDeleteChildId, successFunction, errorFuncti
 }
 
 export function teacherRegisterRequest(user, successFunction, errorFunction, completeFunction) {
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi,
@@ -123,11 +113,9 @@ export function teacherRegisterRequest(user, successFunction, errorFunction, com
     data: JSON.stringify(user),
     success: function (data, textStatus, xhr) {
       localStorage.setItem('token', xhr.getResponseHeader('x-auth-token'));
-      //  console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
-      // console.log(xhr.status, xhr.responseText);
       errorFunction(xhr.status, xhr.responseText);
     }
   };
@@ -136,7 +124,6 @@ export function teacherRegisterRequest(user, successFunction, errorFunction, com
 
 
 export function getUserRequest(successFunction, errorFunction, completeFunction) {
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi + "me/",
@@ -146,7 +133,6 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
     },
     // data: JSON.stringify(),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -157,7 +143,6 @@ export function getUserRequest(successFunction, errorFunction, completeFunction)
 }
 
 export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: authApi,
@@ -168,7 +153,6 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
       password: userPassword,
     }),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       localStorage.setItem("token", xhr.getResponseHeader("x-auth-token"));
       successFunction(data);
     },
@@ -180,7 +164,6 @@ export function userLoginRequest(userId, userPassword, successFunction, errorFun
 }
 
 export function userRegisterRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi,
@@ -192,7 +175,6 @@ export function userRegisterRequest(userId, userPassword, successFunction, error
     }),
     success: function (data, textStatus, xhr) {
       localStorage.setItem("token", xhr.getResponseHeader("x-auth-token"));
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -203,7 +185,6 @@ export function userRegisterRequest(userId, userPassword, successFunction, error
 }
 
 export function getTeachersRequest(successFunction, errorFunction, completeFunction) {
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi,
@@ -211,7 +192,6 @@ export function getTeachersRequest(successFunction, errorFunction, completeFunct
     // headers: { 'x-auth-token' : localStorage.getItem('token') },
     // data: JSON.stringify({}),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -223,8 +203,6 @@ export function getTeachersRequest(successFunction, errorFunction, completeFunct
 
 
 export function deleteTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
-  console.log(teacher_id);
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi + teacher_id,
@@ -232,11 +210,9 @@ export function deleteTeacherRequest(teacher_id, successFunction, errorFunction,
     // headers: { 'x-auth-token' : localStorage.getItem('token') },
     // data: JSON.stringify({}),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
-      // console.log(xhr.status, xhr.responseText);
       errorFunction(xhr.status, xhr.responseText);
     }
   };
@@ -245,8 +221,6 @@ export function deleteTeacherRequest(teacher_id, successFunction, errorFunction,
 
 
 export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunction, errorFunction, completeFunction) {
-  // console.log(teacherToUpdate);
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi + teacher_id,
@@ -257,7 +231,6 @@ export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunctio
     data: JSON.stringify(teacherToUpdate),
     success: function (data, textStatus, xhr) {
       localStorage.setItem('teacher', JSON.stringify(data));
-      console.log(data);
       successFunction();
     },
     error: function (xhr) {
@@ -269,7 +242,6 @@ export function updateTeacherRequest(teacher_id, teacherToUpdate, successFunctio
 
 
 export function updateTeacherPasswordRequest(teacher_id, newPassword, successFunction, errorFunction) {
-  console.log('work api');
   let request = {
     contentType: "application/json",
     url: teachersApi + 'changePassword/' + teacher_id,
@@ -290,8 +262,6 @@ export function updateTeacherPasswordRequest(teacher_id, newPassword, successFun
 
 
 export function getTeacherRequest(teacher_id, successFunction, errorFunction, completeFunction) {
-  console.log(teacher_id);
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi + teacher_id,
@@ -301,7 +271,6 @@ export function getTeacherRequest(teacher_id, successFunction, errorFunction, co
     },
     // data: JSON.stringify(),
     success: function (data, textStatus, xhr) {
-      console.log(data);
       successFunction(data);
     },
     error: function (xhr) {
@@ -312,7 +281,6 @@ export function getTeacherRequest(teacher_id, successFunction, errorFunction, co
 }
 
 export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, errorFunction, completeFunction) {
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: teachersApi,
@@ -323,7 +291,6 @@ export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, err
     data: JSON.stringify(teacherToUpdate),
     success: function (data, textStatus, xhr) {
       localStorage.setItem("teacher", JSON.stringify(data));
-      // console.log(data);
       successFunction();
     },
     error: function (xhr) {
@@ -334,9 +301,6 @@ export function firstDetailsTeacherRequest(teacherToUpdate, successFunction, err
 }
 
 export function postChildNotesRequest(childId, newNote, successFunction, errorFunction, completeFunction) {
-  console.log(childId);
-  console.log(newNote);
-  console.log("work api");
   let request = {
     contentType: "application/json",
     url: notesApi + childId,
@@ -346,7 +310,6 @@ export function postChildNotesRequest(childId, newNote, successFunction, errorFu
     },
     data: JSON.stringify(newNote),
     success: function (data, textStatus, xhr) {
-      // console.log(data);
       successFunction(data);
     },
     error: function (xhr) {

@@ -13,12 +13,12 @@ function init() {
     });
 
     $('#socket_connect').on('click', () => {
-        console.log('socket connected');
+        console.log('Socket Connected');
         connectToSocket();
     });
     $('#socket_disconnect').on('click', () => {
         player_status_update('', '');
-        console.log('socket disconnected');
+        console.log('Socket Disconnected');
         sock.disconnect(true);
     });
 }
@@ -38,11 +38,11 @@ function connectToSocket() {
 
     sock.on('fromServer_toClient_set_player_role', (role) => {
         if (role === 'Host') {
-            console.log('host');
+            console.log('You Are HostPlayer');
             isHost = true;
             $('#host_player').addClass('thicker');
         } else {
-            console.log('guest');
+            console.log('You Are GuestPlayer');
             $('#guest_player').addClass('thicker');
         }
     });
