@@ -29,7 +29,7 @@
     }
 
     #logo-cont {
-      text-align: left;
+      text-align: center;
     }
 
     #img-edition {
@@ -107,10 +107,10 @@
   </div>
 
   <!-- The Modal -->
-  <div id="modal-edition" class="modal w3-animate-opacity" onclick="hideModal(this.id)">
+  <div id="modal-edition" class="modal w3-animate-opacity" onclick="this.style.display='none'">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" id="btn_exit_modal">&times;</span>
+        <span class="close">&times;</span>
         <h2 style="text-align: center">COVID-19 EDITION</h2>
         <h2 style="text-align: center">Play&Learn From Home</h2>
       </div>
@@ -118,7 +118,6 @@
         <img id="img-edition" src="/pics/covid19_edition.png" alt="" />
       </div>
       <div class="modal-footer">
-        <!-- <button id="btn_child_chose" type="button">בחר</button> -->
         <div id="err_text"></div>
       </div>
     </div>
@@ -128,13 +127,13 @@
   <div id="modal-development-connect" class="modal w3-animate-opacity">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" id="btn_exit_modal1"> &times; </span>
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'"> &times; </span>
         <h2 style="text-align: center">כניסת מפתח מערכת:</h2>
       </div>
       <div class="modal-body w3-padding-large">
         <input type="text" id="user_name" placeholder="שם משתמש" />
         <br /><br />
-        <input type="password" id="password" placeholder="סיסמא" />
+        <input type="password" id="password" placeholder="סיסמה" />
       </div>
       <div class="modal-footer">
         <button id="btn_dev_connect" type="button">התחבר</button>
@@ -145,18 +144,13 @@
 
   <script type="module">
     import { URL } from '/consts.js';
-
     var nextChildPage;
 
     $(document).ready(() => {
       localStorage.clear();
       init();
-      showModal()
-      // $("#modal-edition").show();
-      $("#modal-development-connect").hide();
-      // setTimeout(() => {
-      //   $("#modal-edition").hide();
-      // }, 5000);
+      showModal("#modal-edition");
+      // $("#modal-development-connect").hide();
     });
 
     function init() {
@@ -180,17 +174,13 @@
       $("#btn-admin").on("click", () => {
         window.location.href = URL.ADMIN; // Put in a comment
         // nextChildPage = URL.ADMIN;                               // Delete the comment
-        // $("#modal-development-connect").css("display", "block"); // Delete the comment
+        // $("#modal-development-connect").show(); // Delete the comment
       });
 
       initModal();
     }
 
     function initModal() {
-      // $("#btn_exit_modal1").on("click", () => {                    // Delete the comment
-      //   $("#modal-development-connect").css("display", "none");
-      // });
-
       // $("#btn_dev_connect").on("click", () => {
       //   if (
       //     ($("#user_name").val() == "1234") &
@@ -198,21 +188,14 @@
       //   )
       //     window.location.href = URL.Admin;
       // });
-
-      // When the user clicks anywhere outside of the modal, close it
-      // window.onclick = function (event) {
-      //   let modalDev = document.getElementById("modal-development-connect");
-      //   if (event.target == modalDev)
-      //     modal.style.display = "none";
-      // };
     }
 
     // Modal
-    function showModal(text) {
+    function showModal(modalName) {
       // $('#modal-edition-text').text(text);
-      $("#modal-edition").fadeIn("slow");
+      $(modalName).fadeIn("slow");
       setTimeout(() => {
-        $("#modal-edition").fadeOut("slow");
+        $(modalName).fadeOut("slow");
       }, 5000);
     }
 

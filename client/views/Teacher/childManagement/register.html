@@ -157,7 +157,7 @@
     <div id="modal-success" class="modal w3-animate-opacity">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="close" id="btn_exit_modal">&times;</span>
+          <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
           <h2 style="text-align: center">הרישום הצליח!</h2>
         </div>
         <div class="modal-body">
@@ -170,7 +170,7 @@
     </div>
 
     <script type="module">
-      import { childRegisterRequest } from "../api.js";
+      import { childRegisterRequest } from "/api.js";
       import { URL } from "/consts.js";
 
       $(document).ready(() => {

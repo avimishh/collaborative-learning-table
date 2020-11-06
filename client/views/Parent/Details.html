@@ -50,60 +50,26 @@
 
             <div class="mess">
                 <table>
-                    <!--1. First Name-->
                     <tr>
-                        <td>
-                            <span>שם פרטי:</span>
-                        </td>
-                        <td class="details">
-                            <!-- <input id="firstName" class="answer" /> -->
-                            <span id="firstName"></span>
-                        </td>
-
+                        <td><span>שם פרטי:</span></td>
+                        <td class="details"><span id="firstName"></span></td>
                     </tr>
-                    <!--2. Last Name-->
                     <tr>
-                        <td>
-                            <span>שם משפחה:</span>
-                        </td>
-                        <td class="details">
-                            <!-- <input id="lastName" class="answer" /> -->
-                            <span id="lastName"></span>
-
-                        </td>
+                        <td><span>שם משפחה:</span></td>
+                        <td class="details"><span id="lastName"></span></td>
                     </tr>
-                    <!--3. id parent-->
                     <tr>
-                        <td>
-                            <span>תעודת זהות:</span>
-                        </td>
-                        <td class="details">
-                            <span id="id_parent"></span>
-
-                            <!-- <input id="id_parent" class="answer" /> -->
-                        </td>
+                        <td><span>תעודת זהות:</span></td>
+                        <td class="details"><span id="id_parent"></span></td>
                     </tr>
-                    <!--4. Phone Number-->
                     <tr>
-                        <td>
-                            <span>טלפון:</span>
-                        </td>
-                        <td class="details">
-                            <span id="phoneNumber"></span>
-
-                            <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
-                        </td>
+                        <td><span>טלפון:</span></td>
+                        <td class="details"><span id="phoneNumber"></span></td>
                     </tr>
-                    <!--5. Password-->
                     <tr>
-                        <td>
-                            <span>סיסמא:</span>
-                        </td>
-                        <td>
-                            <button id="btn-change-password">לחץ להחלפת סיסמה</button>
-                        </td>
+                        <td><span>סיסמה:</span></td>
+                        <td><button id="btn-change-password">לחץ להחלפת סיסמה</button></td>
                     </tr>
-                    <!--6. Update-->
                     <tr>
                         <td></td>
                         <td>
@@ -130,10 +96,10 @@
             </div>
             <div class="modal-body">
                 <!-- סיסמה ישנה: 
-              <input type="password" id="input-old-password" placeholder="סיסמא ישנה" /> -->
+              <input type="password" id="input-old-password" placeholder="סיסמה ישנה" /> -->
                 <!-- <br><br> -->
-                סיסמא חדשה:
-                <input type="password" id="input-new-password" placeholder="סיסמא חדשה" />
+                סיסמה חדשה:
+                <input type="password" id="input-new-password" placeholder="סיסמה חדשה" />
             </div>
             <div class="modal-footer">
                 <button id="btn-save-new-password" type="button">שמור</button>
@@ -143,7 +109,7 @@
     </div>
 
     <script type="module">
-        import { updateParentRequest, updateParentPasswordRequest } from './api.js';
+        import { updateParentByIdRequest, updateParentPasswordByIdRequest } from '/api.js';
         import { URL } from '/consts.js';
 
         $(document).ready(function () {
@@ -206,14 +172,13 @@
                 lastName: $("#lastName").text(),
                 id: $("#id_parent").text(),
                 phone: $("#phoneNumber").text()
-                // password: $("#password").val()
             };
-            updateParentRequest(parent.id, updatedParent, showUpdatedDetails, printErrorToUser);
+            updateParentByIdRequest(parent.id, updatedParent, showUpdatedDetails, printErrorToUser);
         }
 
         function updateParentPassword() {
             let parent = JSON.parse(localStorage.getItem('parent'));
-            updateParentPasswordRequest(parent.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
+            updateParentPasswordByIdRequest(parent.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
         }
 
         function showParentDetails() {
@@ -224,7 +189,6 @@
             $("#lastName").text(parent.lastName);                     // lastName
             $("#id_parent").text(parent.id);                          // id
             $("#phoneNumber").text(parent.phone);                     // phoneNumber
-            // $("#password").text(parent.password);                     // password
         }
 
         function showUpdatedDetails() {
@@ -247,14 +211,12 @@
             $(".modal").hide();
             });
 
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                let modal = document.getElementById("modal-change-password");
-                if (event.target == modal)
-                modal.style.display = "none";
-            }
-        }
-
+        $(window).click((event) => {
+          let modalIds = ["modal-change-password"];
+          if(modalIds.includes(event.target.id))
+            $(`#${event.target.id}`).hide();
+        });
+    }
     </script>
 </body>
 

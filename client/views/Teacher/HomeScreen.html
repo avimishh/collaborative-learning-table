@@ -74,10 +74,10 @@
   </div>
 
   <!-- The Modal -->
-  <div id="modal_choose_child" class="modal w3-animate-opacity">
+  <div id="modal-choose-child" class="modal w3-animate-opacity">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" id="btn_exit_modal">&times;</span>
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
         <h2 style="text-align: center">בחר ילד:</h2>
       </div>
       <div class="modal-body">
@@ -91,10 +91,10 @@
   </div>
 
   <!-- The Modal Field -->
-  <div id="modal_choose_field" class="modal w3-animate-opacity">
+  <div id="modal-choose-field" class="modal w3-animate-opacity">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" id="btn_exit_modal_field">&times;</span>
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
         <h2 style="text-align: center">בחר תחום:</h2>
       </div>
       <div class="modal-body">
@@ -109,11 +109,9 @@
 
   <script type="module">
     import {
-        getUserRequest,
-        getTeacherRequest,
-        getChildRequest,
+        getChildByIdRequest,
         getChildsRequest,
-      } from "./api.js";
+      } from "/api.js";
       import { URL } from "/consts.js";
 
       var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
@@ -133,17 +131,17 @@
 
         $("#btn_child_details").on("click", () => {
           nextChildPage = URL.CHILD.DETAILS;
-          $("#modal_choose_child").css("display", "block");
+          $("#modal-choose-child").show();
         });
 
         $("#btn_child_performance").on("click", () => {
           nextChildPage = URL.CHILD.PERFORMANCE;
-          $("#modal_choose_child").css("display", "block");
+          $("#modal-choose-child").show();
         });
 
         $("#btn_notes").on("click", () => {
           nextChildPage = URL.TEACHER.NOTES;
-          $("#modal_choose_child").css("display", "block");
+          $("#modal-choose-child").show();
         });
 
         $("#btn_details").on("click", () => {
@@ -202,15 +200,11 @@
         $("#btn_child_chose").on("click", () => {
           childId = $("select[name=children] option").filter(":selected").val();
           if (nextChildPage != URL.CHILD.PERFORMANCE)
-            getChildRequest(childId, getChildSuccess, printErrorToUser);
+            getChildByIdRequest(childId, getChildSuccess, printErrorToUser);
           else {
-            $("#modal_choose_field").css("display", "block");
-            $("#btn_exit_modal").trigger("click");
+            $("#modal-choose-field").show();
+            $("#modal-choose-child").hide();
           }
-        });
-
-        $("#btn_exit_modal").on("click", () => {
-          $("#modal_choose_child").css("display", "none");
         });
 
         $("#btn_field_chose").on("click", () => {
@@ -219,23 +213,14 @@
             .val();
           // store field for next page import performance according to field
           localStorage.setItem("selectedField", fields[selectedId]);
-          getChildRequest(childId, getChildSuccess, printErrorToUser);
+          getChildByIdRequest(childId, getChildSuccess, printErrorToUser);
         });
 
-        $("#btn_exit_modal_field").on("click", () => {
-          $("#modal_choose_field").css("display", "none");
+        $(window).click((event) => {
+          let modalIds = ["modal-choose-child", "modal-choose-field"];
+          if(modalIds.includes(event.target.id))
+            $(`#${event.target.id}`).hide();
         });
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          let modal = document.getElementById("modal_choose_child");
-          let modal_field = document.getElementById("modal_choose_field");
-          if (event.target == modal) {
-            modal.style.display = "none";
-          } else if (event.target == modal_field) {
-            modal_field.style.display = "none";
-          }
-        };
       }
     </script>
 </body>

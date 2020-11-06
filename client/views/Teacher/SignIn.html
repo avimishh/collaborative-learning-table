@@ -38,7 +38,7 @@
 
       <div class="input-box">
         <i class="fa fa-key"></i>
-        <input type="password" placeholder="סיסמא" id="user_password" />
+        <input type="password" placeholder="סיסמה" id="user_password" />
         <span class="icon-eye" onclick="passwordToggle()">
           <i class="fa fa-eye-slash"></i>
         </span>
@@ -58,7 +58,7 @@
   </div>
 
   <script type="module">
-    import { userLoginRequest } from "./api.js";
+    import { userLoginRequest } from "/api.js";
       import { URL } from "/consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
@@ -74,7 +74,7 @@
         $("#login").on("click", () => {
           let userId = $("#user_id").val();
           let userPassword = $("#user_password").val();
-          userLoginRequest(userId, userPassword, loginSuccess, printErrorToUser);
+          userLoginRequest("teacher", userId, userPassword, loginSuccess, printErrorToUser);
         });
 
         // $('#register').on('click', () => {

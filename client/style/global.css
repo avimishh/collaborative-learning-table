@@ -13,6 +13,10 @@
 
 /* global */
 
+button{
+    padding:0 10px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -37,6 +41,7 @@ body, html {
 /* holds the interactive buttons in home screens */
 
 .container {
+    cursor: pointer;
     width: 90%;
     /* width: 1000px; */
     height: auto;

@@ -1,82 +1,74 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <script src="/lib/jquery.js"></script>
-    <link href="/style/global.css" rel="stylesheet" />
-    <link href="/style/signin.css" rel="stylesheet" />
-    <style>
-      .bgimg {
-        background-image: url("/pics/background/cactus.jpg");
-      }
 
-      #err_text {
-        height: 22px;
-      }
-    </style>
-  </head>
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-      <div class="w3-display-topleft w3-padding-large w3-xlarge w3-text-black">
-        שולחן משחקים שיתופי
-        <div>
-          <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
-            <img id="homeImg" src="/pics/homeBtn.png" alt="" />
-            חזרה לעמוד
-            <br />
-            הראשי
-          </button>
-        </div>      
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <link href="/style/signin.css" rel="stylesheet" />
+  <style>
+    .bgimg {
+      background-image: url("/pics/background/cactus.jpg");
+    }
+
+    #err_text {
+      height: 22px;
+    }
+  </style>
+</head>
+
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge w3-text-black">
+      שולחן משחקים שיתופי
+      <div>
+        <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
+          <img id="homeImg" src="/pics/homeBtn.png" alt="" />
+          חזרה לעמוד
+          <br />
+          הראשי
+        </button>
       </div>
     </div>
-    <div class="form-box w3-display-middle">
-      <h1>הרשמה הורה</h1>
-      <div class="input-box">
-        <i class="fa fa-address-card"></i>
-        <input type="text" id="user_fname" placeholder="שם פרטי" />
-      </div>
-      <div class="input-box">
-        <i class="fa fa-address-card"></i>
-        <input type="text" id="user_lname" placeholder="שם משפחה" />
-      </div>
-      <div class="input-box">
-        <i class="fa fa-phone"></i>
-        <input type="text" id="user_phone" placeholder="טלפון" />
-      </div>
-      <div class="input-box">
-        <i class="fa fa-user"></i>
-        <input
-          type="text"
-          id="user_id"
-          placeholder="תעודת זהות"
-          autocomplete="off"
-        />
-      </div>
-
-      <div class="input-box">
-        <i class="fa fa-key"></i>
-        <input
-          type="text"
-          placeholder="סיסמא"
-          id="user_password"
-          autocomplete="off"
-        />
-        <span class="icon-eye" onclick="passwordToggle()">
-          <i class="fa fa-eye-slash"></i>
-        </span>
-      </div>
-      <div id="err_text"></div>
-
-      <button type="button" class="register-btn" id="register">הרשמה</button>
-      <button type="button" class="register-btn" id="btn-back-to-login">חזור להתחברות</button>
+  </div>
+  <div class="form-box w3-display-middle">
+    <h1>הרשמה הורה</h1>
+    <div class="input-box">
+      <i class="fa fa-address-card"></i>
+      <input type="text" id="user_fname" placeholder="שם פרטי" />
+    </div>
+    <div class="input-box">
+      <i class="fa fa-address-card"></i>
+      <input type="text" id="user_lname" placeholder="שם משפחה" />
+    </div>
+    <div class="input-box">
+      <i class="fa fa-phone"></i>
+      <input type="text" id="user_phone" placeholder="טלפון" />
+    </div>
+    <div class="input-box">
+      <i class="fa fa-user"></i>
+      <input type="text" id="user_id" placeholder="תעודת זהות" autocomplete="off" />
     </div>
 
-    <div class="w3-display-bottomleft w3-padding-large w3-text-black">Make Learning Fun</div>
+    <div class="input-box">
+      <i class="fa fa-key"></i>
+      <input type="text" placeholder="סיסמה" id="user_password" autocomplete="off" />
+      <span class="icon-eye" onclick="passwordToggle()">
+        <i class="fa fa-eye-slash"></i>
+      </span>
+    </div>
+    <div id="err_text"></div>
 
-    <script type="module">
-      import { userRegisterRequest } from "./api.js";
+    <button type="button" class="register-btn" id="register">הרשמה</button>
+    <button type="button" class="register-btn" id="btn-back-to-login">חזור להתחברות</button>
+  </div>
+
+  <div class="w3-display-bottomleft w3-padding-large w3-text-black">Make Learning Fun</div>
+
+  <script type="module">
+    import { userRegisterRequest } from "/api.js";
       import { URL } from "/consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
@@ -91,13 +83,13 @@
         $('.input-box, .register-btn').addClass('w3-animate-zoom');
 
         $("#register").on("click", () => {
-          let newUser = {};
-          newUser.firstName = $("#user_fname").val();
-          newUser.lastName = $("#user_lname").val();
-          newUser.phone = $("#user_phone").val();
-          newUser.id = $("#user_id").val();
-          newUser.password = $("#user_password").val();
-          userRegisterRequest(newUser, registerSuccess, printErrorToUser);
+          userRegisterRequest("parent",
+          $("#user_fname").val(),
+          $("#user_lname").val(),
+          $("#user_phone").val(),
+          $("#user_id").val(),
+          $("#user_password").val(),
+          registerSuccess, printErrorToUser);
         });
 
         $("#btn_goToHome").on("click", () => {
@@ -122,5 +114,6 @@
         $("#err_text").text(err);
       }
     </script>
-  </body>
+</body>
+
 </html>

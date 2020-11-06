@@ -72,64 +72,37 @@
         <div class="form-box">
             <br>
             <h1>כתיבת הערות להורי הילד<span></span></h1>
-
             <div class="mess">
-                <form>
-                    <table>
-                        <!--1. First Name-->
-                        <tr>
-                            <td>
-                                <span>שם פרטי:</span>
-                            </td>
-                            <td>
-                                <span id="firstName"></span>
-                            </td>
-
-                        </tr>
-                        <!--2. Last Name-->
-                        <tr>
-                            <td>
-                                <span>שם משפחה:</span>
-                            </td>
-                            <td>
-                                <span id="lastName"></span>
-                            </td>
-                        </tr>
-                        <!--3. ID-->
-                        <tr>
-                            <td>
-                                <span>תעודת זהות:</span>
-                            </td>
-                            <td>
-                                <span id="ID"></span>
-                            </td>
-                        </tr>
-                        <!--4. Notes Date-->
-                        <tr>
-                            <td>
-                                <span>תאריך כתיבה:</span>
-                            </td>
-                            <td>
-                                <span id="notesDate"></span>
-                            </td>
-                        </tr>
-                        <!--5. Notes-->
-                        <tr>
-                            <td colspan="2">
-                                <textarea rows="5" cols="35" id="note_message"
-                                    placeholder="הוסף הערות בתיבה זה"></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <input type="button" id="btn" value="שלח" />
-                                <input type="reset" id="rst" value="נקה" />
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                <table>
+                    <tr>
+                        <td><span>שם פרטי:</span></td>
+                        <td><span id="firstName"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span>שם משפחה:</span></td>
+                        <td><span id="lastName"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span>תעודת זהות:</span></td>
+                        <td><span id="ID"></span></td>
+                    </tr>
+                    <tr>
+                        <td><span>תאריך כתיבה:</span></td>
+                        <td><span id="notesDate"></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea rows="5" cols="35" id="note_message" placeholder="הוסף הערות בתיבה זה"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center;">
+                            <input type="button" id="btn" value="שלח" />
+                            <input type="reset" id="rst" value="נקה" />
+                        </td>
+                    </tr>
+                </table>
             </div>
-
         </div>
 
         <div class="w3-display-bottomleft w3-padding-large">
@@ -143,7 +116,7 @@
     </div>
 
     <script type="module">
-        import { getChildRequest, postChildNotesRequest } from './api.js';
+        import { postChildNotesRequest } from '/api.js';
         import { URL } from '/consts.js';
 
         $(document).ready(() => {
@@ -158,9 +131,9 @@
             });
 
             $('#btn').on('click', () => {
-                let message = $('#note_message').val();
+                let noteContent = $('#note_message').val();
                 let teacherId = JSON.parse(localStorage.getItem('teacher')).id;
-                postChildNotesRequest(child.id, { teacherId, message }, noteSuccess, noteFailed);
+                postChildNotesRequest(child.id, teacherId, noteContent, noteSuccess, noteFailed);
             });
 
             $('#rst').on('click', () => {

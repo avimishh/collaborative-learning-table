@@ -82,10 +82,10 @@
   </div>
 
   <!-- The Modal -->
-  <div id="modal_choose_child" class="modal">
+  <div id="modal-choose-child" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close btn_exit_modal" id="">&times;</span>
+        <span class="close">&times;</span>
         <h2 style="text-align: center">בחר ילד:</h2>
       </div>
       <div class="modal-body">
@@ -98,10 +98,10 @@
     </div>
 
     <!-- The Modal -->
-    <div id="modal_choose_child" class="modal w3-animate-opacity">
+    <div id="modal-choose-child" class="modal w3-animate-opacity">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="close btn_exit_modal" id="">&times;</span>
+          <span class="close">&times;</span>
           <h2 style="text-align: center">בחר ילד:</h2>
         </div>
         <div class="modal-body">
@@ -119,7 +119,7 @@
     <div id="modal-child-delete" class="modal w3-animate-opacity">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="close btn_exit_modal" id="">&times;</span>
+          <span class="close">&times;</span>
           <h2 style="text-align: center">בחר ילד:</h2>
         </div>
         <div class="modal-body">
@@ -140,7 +140,7 @@
     <div id="modal-success" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <span class="close" id="btn_exit_modal">&times;</span>
+          <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
           <h2 style="text-align: center">המחיקה הצליחה!</h2>
         </div>
         <div class="modal-body">
@@ -152,7 +152,7 @@
       </div>
     </div>
     <script type="module">
-      import { getChildsRequest , getChildRequest, deleteChildRequest } from "../api.js";
+      import { getChildsRequest , getChildByIdRequest, deleteChildByIdRequest } from "/api.js";
       import { URL } from "/consts.js";
 
       $(document).ready(() => {
@@ -175,7 +175,7 @@
 
         $("#btn_child_update").on("click", () => {
           nextPage = URL.TEACHER.CHILD_MANAGEMENT.UPDATE;
-          $("#modal_choose_child").show();
+          $("#modal-choose-child").show();
         });
 
         $("#btn_child_delete").on("click", () => {
@@ -233,12 +233,8 @@
       var childId;
       function initModal() {
         $("#btn_child_chose").on("click", () => {
-          childId = $("#modal_choose_child select[name=children] option").filter(":selected").val();
-          getChildRequest(childId, getChildSuccess, printErrorToUser);
-        });
-
-        $(".btn_exit_modal").on("click", () => {
-          $(".modal").css("display", "none");
+          childId = $("#modal-choose-child select[name=children] option").filter(":selected").val();
+          getChildByIdRequest(childId, getChildSuccess, printErrorToUser);
         });
 
         $('#btn-child-delete').click(function() {
@@ -248,22 +244,17 @@
         $('#btn-child-delete-yes').click(() => {
           childId = $("#modal-child-delete select[name=children] option").filter(":selected").val();
           console.log('childDelete:' + childId);
-          deleteChildRequest(childId, deleteChildSuccess);
+          deleteChildByIdRequest(childId, deleteChildSuccess);
         });
         $('#btn-child-delete-no').click(() => {
-          $(".modal").css("display", "none");
+          $(".modal").hide();
         });
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-          let modal = document.getElementById("modal_choose_child");
-          let modal_child_delete = document.getElementById("modal-child-delete");
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }else if(event.target == modal_child_delete){
-            modal_child_delete.style.display = "none";
-          }
-        };
+        $(window).click((event) => {
+          let modalIds = ["modal-choose-child", "modal-child-delete"];
+          if(modalIds.includes(event.target.id))
+            $(`#${event.target.id}`).hide();
+        });
       }
     </script>
 </body>

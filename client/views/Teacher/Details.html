@@ -94,7 +94,7 @@
                     <!--5. Password-->
                     <tr>
                         <td>
-                            <span>סיסמא:</span>
+                            <span>סיסמה:</span>
                         </td>
                         <td>
                             <button id="btn-change-password">לחץ להחלפת סיסמה</button>
@@ -129,10 +129,10 @@
             </div>
             <div class="modal-body">
                 <!-- סיסמה ישנה: 
-              <input type="password" id="input-old-password" placeholder="סיסמא ישנה" /> -->
+              <input type="password" id="input-old-password" placeholder="סיסמה ישנה" /> -->
                 <!-- <br><br> -->
-                סיסמא חדשה:
-                <input type="password" id="input-new-password" placeholder="סיסמא חדשה" />
+                סיסמה חדשה:
+                <input type="password" id="input-new-password" placeholder="סיסמה חדשה" />
             </div>
             <div class="modal-footer">
                 <button id="btn-save-new-password" type="button">שמור</button>
@@ -142,7 +142,7 @@
     </div>
 
     <script type="module">
-        import { updateTeacherRequest, updateTeacherPasswordRequest } from './api.js';
+        import { updateTeacherByIdRequest, updateTeacherPasswordByIdRequest } from '/api.js';
         import { URL } from '/consts.js';
 
         $(document).ready(function () {
@@ -207,12 +207,12 @@
                 phone: $("#phoneNumber").text()
                 // password: $("#password").val()
             };
-            updateTeacherRequest(teacher.id, updatedTeacher, showUpdatedDetails, printErrorToUser);
+            updateTeacherByIdRequest(teacher.id, updatedTeacher, showUpdatedDetails, printErrorToUser);
         }
 
         function updateTeacherPassword() {
             let teacher = JSON.parse(localStorage.getItem('teacher'));
-            updateTeacherPasswordRequest(teacher.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
+            updateTeacherPasswordByIdRequest(teacher.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
         }
 
         function showTeacherDetails() {
@@ -246,12 +246,11 @@
             $(".modal").hide();
             });
 
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function (event) {
-                let modal = document.getElementById("modal-change-password");
-                if (event.target == modal)
-                modal.style.display = "none";
-            }
+            $(window).click((event) => {
+          let modalIds = ["modal-change-password"];
+          if(modalIds.includes(event.target.id))
+            $(`#${event.target.id}`).hide();
+        });
         }
 
     </script>
