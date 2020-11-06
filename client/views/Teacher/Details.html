@@ -143,7 +143,7 @@
 
     <script type="module">
         import { updateTeacherRequest, updateTeacherPasswordRequest } from './api.js';
-        import { URL } from './consts.js';
+        import { URL } from '/consts.js';
 
         $(document).ready(function () {
             $('button, input, .details').addClass('w3-animate-zoom');
@@ -151,7 +151,7 @@
             showTeacherDetails();
 
             $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.TEACHER_HOME;
+                window.location.href = URL.TEACHER.HOME;
             });
 
             $('#btn_update').on('click', () => {
@@ -232,7 +232,7 @@
             printErrorToUser(0,'הנתונים עודכנו בהצלחה.');
             showTeacherDetails();
             setTimeout(() => {
-                    window.location.href = URL.TEACHER_HOME;
+                    window.location.href = URL.TEACHER.HOME;
             }, 2000);
         }
 

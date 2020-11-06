@@ -9,12 +9,10 @@ const notesApi = server + "notes/";
 
 
 
-export function userLoginRequest(userId, userPassword, successFunction, errorFunction, completeFunction) {
+export function userLoginRequest(userId, userPassword, successFunction, errorFunction) {
     let request = {
-        contentType: "application/json",
         url: authApi,
         method: "POST",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
         data: JSON.stringify({
             id: userId,
             password: userPassword

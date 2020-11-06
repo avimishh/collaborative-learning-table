@@ -5,13 +5,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collaborative Learning</title>
-  <link rel="icon" type="image/png" href="./pics/logo3.png" />
-  <script src="./lib/jquery.js"></script>
-  <link href="./style/global.css" rel="stylesheet" />
-  <link href="./style/modal.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/pics/logo3.png" />
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <link href="/style/modal.css" rel="stylesheet" />
   <style>
     .bgimg {
-      background-image: url("./pics/background/c.jpg");
+      background-image: url("/pics/background/c.jpg");
     }
 
     .container {
@@ -115,7 +115,7 @@
         <h2 style="text-align: center">Play&Learn From Home</h2>
       </div>
       <div class="modal-body">
-        <img id="img-edition" src="./pics/covid19_edition.png" alt="" />
+        <img id="img-edition" src="/pics/covid19_edition.png" alt="" />
       </div>
       <div class="modal-footer">
         <!-- <button id="btn_child_chose" type="button">בחר</button> -->
@@ -143,13 +143,8 @@
     </div>
   </div>
 
-  <script type="text/javascript">
-    const URL = {
-      PARENT_SIGNIN: "views/Parent/SignIn.html",
-      TEACHER_SIGNIN: "views/Teacher/SignIn.html",
-      CHILD_SIGNIN: "views/Child/SignIn.html",
-      Admin: "./admin.html",
-    };
+  <script type="module">
+    import { URL } from '/consts.js';
 
     var nextChildPage;
 
@@ -171,20 +166,20 @@
       $(".container div img").addClass("btn_home_img");
 
       $("#btn_Parent").on("click", () => {
-        window.location.href = URL.PARENT_SIGNIN;
+        window.location.href = URL.PARENT.SIGNIN;
       });
 
       $("#btn_Teacher").on("click", () => {
-        window.location.href = URL.TEACHER_SIGNIN;
+        window.location.href = URL.TEACHER.SIGNIN;
       });
 
       $("#btn_Child").on("click", () => {
-        window.location.href = URL.CHILD_SIGNIN;
+        window.location.href = URL.CHILD.SIGNIN;
       });
 
       $("#btn-admin").on("click", () => {
-        window.location.href = URL.Admin; // Put in a comment
-        // nextChildPage = URL.Admin;                               // Delete the comment
+        window.location.href = URL.ADMIN; // Put in a comment
+        // nextChildPage = URL.ADMIN;                               // Delete the comment
         // $("#modal-development-connect").css("display", "block"); // Delete the comment
       });
 

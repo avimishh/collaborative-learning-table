@@ -171,11 +171,9 @@
         </div>
     </div>
 
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
     <script type="module">
         import { getChildRequest, getChildNotesRequest } from './api.js';
-        import { URL } from './consts.js';
+        import { URL } from '/consts.js';
 
         var child;
         $(document).ready(() => {
@@ -187,7 +185,7 @@
 
         function init() {
             $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.PARENT_HOME;
+                window.location.href = URL.PARENT.HOME;
             });
 
         }

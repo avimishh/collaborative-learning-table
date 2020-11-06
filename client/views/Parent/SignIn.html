@@ -60,7 +60,7 @@
 
     <script type="module">
       import { userLoginRequest } from "./api.js";
-      import { URL } from "./consts.js";
+      import { URL } from "/consts.js";
       import { initSignInPage } from "../../globalDeclarations.js";
 
       $(document).ready(() => {
@@ -84,7 +84,7 @@
         });
 
         $("#register").on("click", () => {
-          window.location.href = URL.PARENT_REGISTER;
+          window.location.href = URL.PARENT.REGISTER;
         });
 
         $("#btn_goToHome").on("click", () => {
@@ -94,7 +94,7 @@
 
       function loginSuccess(parent) {
         localStorage.setItem("parent", JSON.stringify(parent));
-        window.location.href = URL.PARENT_HOME;
+        window.location.href = URL.PARENT.HOME;
       }
 
       function printErrorToUser(code, err) {

@@ -142,11 +142,9 @@
         </div>
     </div>
 
-    <script type="module" src="api.js"></script>
-    <script type="module" src="consts.js"></script>
     <script type="module">
         import { updateParentRequest, updateParentPasswordRequest } from './api.js';
-        import { URL } from './consts.js';
+        import { URL } from '/consts.js';
 
         $(document).ready(function () {
             $('button, input, .details').addClass('w3-animate-zoom');
@@ -154,7 +152,7 @@
             showParentDetails();
 
             $('#btn_goToHome').on('click', () => {
-                window.location.href = URL.PARENT_HOME;
+                window.location.href = URL.PARENT.HOME;
             });
 
             $('#btn_update').on('click', () => {
@@ -235,7 +233,7 @@
             printErrorToUser(0,'הנתונים עודכנו בהצלחה.');
             showParentDetails();
             setTimeout(() => {
-                    window.location.href = URL.PARENT_HOME;
+                    window.location.href = URL.PARENT.HOME;
             }, 2000);
         }
 

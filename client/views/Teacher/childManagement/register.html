@@ -171,7 +171,7 @@
 
     <script type="module">
       import { childRegisterRequest } from "../api.js";
-      import { URL } from "../consts.js";
+      import { URL } from "/consts.js";
 
       $(document).ready(() => {
         $('button, .input-box').addClass('w3-animate-zoom');
@@ -213,14 +213,14 @@
         });
 
         $("#btn-cancel").on("click", () => {
-          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          window.location.href = URL.TEACHER.CHILD_MANAGEMENT.HOME;
         });
       }
 
       function registerSuccess() {
         $("#modal-success").show();
         setTimeout(() => {
-          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          window.location.href = URL.TEACHER.CHILD_MANAGEMENT.HOME;
         }, 5000);
       }
 

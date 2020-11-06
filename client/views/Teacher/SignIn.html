@@ -59,7 +59,7 @@
 
   <script type="module">
     import { userLoginRequest } from "./api.js";
-      import { URL } from "./consts.js";
+      import { URL } from "/consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
@@ -78,7 +78,7 @@
         });
 
         // $('#register').on('click', () => {
-        //     location.replace(URL.TEACHER_REGISTER);
+        //     location.replace(URL.TEACHER.REGISTER);
         // });
 
         $("#btn_goToHome").on("click", () => {
@@ -88,7 +88,7 @@
 
       function loginSuccess(teacher) {
         localStorage.setItem("teacher", JSON.stringify(teacher));
-        window.location.href = URL.TEACHER_HOME;
+        window.location.href = URL.TEACHER.HOME;
       }
 
       function printErrorToUser(code, err) {

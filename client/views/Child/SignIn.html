@@ -79,8 +79,8 @@
   </div>
 
   <script type="module">
-    import { childLoginRequest } from "./api.js";
-      import { URL } from "./consts.js";
+    import { childLoginRequest } from "/api.js";
+      import { URL } from "/consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
@@ -109,7 +109,7 @@
 
       function loginSuccess(child) {
         localStorage.setItem("child", JSON.stringify(child));
-        window.location.href = URL.CHILD_HOME;
+        window.location.href = URL.CHILD.HOME;
       }
 
       function printErrorToUser(code, err) {

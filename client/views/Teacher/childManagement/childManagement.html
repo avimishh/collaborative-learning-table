@@ -153,7 +153,7 @@
     </div>
     <script type="module">
       import { getChildsRequest , getChildRequest, deleteChildRequest } from "../api.js";
-      import { URL } from "../consts.js";
+      import { URL } from "/consts.js";
 
       $(document).ready(() => {
         console.log("jquery work");
@@ -170,23 +170,23 @@
         $(".container div img").addClass("btn_home_img");
 
         $("#btn_child_register").on("click", () => {
-          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.REGISTER;
+          window.location.href = URL.TEACHER.CHILD_MANAGEMENT.REGISTER;
         });
 
         $("#btn_child_update").on("click", () => {
-          nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
+          nextPage = URL.TEACHER.CHILD_MANAGEMENT.UPDATE;
           $("#modal_choose_child").show();
         });
 
         $("#btn_child_delete").on("click", () => {
-          // nextPage = URL.TEACHER_CHILD_MANAGEMENT.UPDATE;
+          // nextPage = URL.TEACHER.CHILD_MANAGEMENT.UPDATE;
           $("#modal-child-delete").show();
           $("#btn-child-delete").show();
           $("#div-child-delete-ask").hide();
         });
 
         $("#btn_goToHome").on("click", () => {
-          window.location.href = URL.TEACHER_HOME;
+          window.location.href = URL.TEACHER.HOME;
         });
 
         displayNameTitle();

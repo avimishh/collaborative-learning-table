@@ -163,15 +163,14 @@
         </div>
     </div>
 
-    <script type="module" src="consts.js"></script>
     <script type="module">
-        import { URL } from './consts.js';
+        import { URL } from '/consts.js';
 
         $(document).ready(function () {
             showStudentDetails();
 
             $('#btn_goToHome').on('click', () => {
-                // window.location.href = URL.CHILD_HOME;
+                // window.location.href = URL.CHILD.HOME;
                 window.history.back();
             });
 

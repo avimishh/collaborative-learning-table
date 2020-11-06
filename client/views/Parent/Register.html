@@ -77,7 +77,7 @@
 
     <script type="module">
       import { userRegisterRequest } from "./api.js";
-      import { URL } from "./consts.js";
+      import { URL } from "/consts.js";
       import { initSignInPage } from "/globalDeclarations.js";
 
       $(document).ready(() => {
@@ -105,7 +105,7 @@
         });
 
         $("#btn-back-to-login").on("click", () => {
-          window.location.href = URL.PARENT_SIGNIN;
+          window.location.href = URL.PARENT.SIGNIN;
         });
         
         $("#user_password").on("focus", () => {
@@ -115,7 +115,7 @@
 
       function registerSuccess(parent) {
         localStorage.setItem("parent", JSON.stringify(parent));
-        window.location.href = URL.PARENT_HOME;
+        window.location.href = URL.PARENT.HOME;
       }
 
       function printErrorToUser(code, err) {

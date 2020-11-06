@@ -107,8 +107,6 @@
     </div>
   </div>
 
-  <script type="module" src="api.js"></script>
-  <script type="module" src="consts.js"></script>
   <script type="module">
     import {
         getUserRequest,
@@ -116,7 +114,7 @@
         getChildRequest,
         getChildsRequest,
       } from "./api.js";
-      import { URL } from "./consts.js";
+      import { URL } from "/consts.js";
 
       var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
       $(document).ready(() => {
@@ -134,29 +132,26 @@
         $(".container div img").addClass("btn_home_img");
 
         $("#btn_child_details").on("click", () => {
-          nextChildPage = URL.CHILD_DETAILS;
+          nextChildPage = URL.CHILD.DETAILS;
           $("#modal_choose_child").css("display", "block");
-          // window.location.href = URL.CHILD_DETAILS;
         });
 
         $("#btn_child_performance").on("click", () => {
-          nextChildPage = URL.CHILD_PERFORMANCE;
+          nextChildPage = URL.CHILD.PERFORMANCE;
           $("#modal_choose_child").css("display", "block");
-          // window.location.href = URL.CHILD_PERFORMANCE;
         });
 
         $("#btn_notes").on("click", () => {
-          nextChildPage = URL.TEACHER_NOTES;
+          nextChildPage = URL.TEACHER.NOTES;
           $("#modal_choose_child").css("display", "block");
-          // window.location.href = URL.TEACHER_NOTES;
         });
 
         $("#btn_details").on("click", () => {
-          window.location.href = URL.TEACHER_DETAILS;
+          window.location.href = URL.TEACHER.DETAILS;
         });
 
         $("#btn_child_management").on("click", () => {
-          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          window.location.href = URL.TEACHER.CHILD_MANAGEMENT.HOME;
         });
 
         $("#btn_goToHome").on("click", () => {
@@ -206,7 +201,7 @@
       function initModal() {
         $("#btn_child_chose").on("click", () => {
           childId = $("select[name=children] option").filter(":selected").val();
-          if (nextChildPage != URL.CHILD_PERFORMANCE)
+          if (nextChildPage != URL.CHILD.PERFORMANCE)
             getChildRequest(childId, getChildSuccess, printErrorToUser);
           else {
             $("#modal_choose_field").css("display", "block");
