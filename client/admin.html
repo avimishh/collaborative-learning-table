@@ -161,7 +161,7 @@
 
   <script type="module">
     import { getServerUrl, alertMessage } from "/globalDeclarations.js";
-    import { getTeachersRequest, getParentsRequest, getChildsRequest, deleteTeacherByIdRequest, deleteParentByIdRequest, userRegisterRequest} from "/api.js";
+    import { getTeachersRequest, getParentsRequest, getChildsRequest, deleteTeacherByIdRequest, deleteParentByIdRequest, teacherRegisterRequest} from "/api.js";
 
       const server = getServerUrl();
       const adminUrl = server + "admin/";
@@ -208,7 +208,7 @@
           $("#user_phone").val('')
 
           $("#btn_add_teacher").on("click", () => {
-            userRegisterRequest("teacher",
+            teacherRegisterRequest("teacher",
               $("#user_firstName").val(),
               $("#user_lastName").val(),
               $("#user_id").val(),

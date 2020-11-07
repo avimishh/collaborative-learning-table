@@ -51,15 +51,15 @@
       }
 
       #input-gender {
-        margin: unset;
+        margin: auto;
         text-align: center;
-        width: 50%;
+        width: 30%;
         border: white 2px solid;
         outline: none;
         background: black;
         color: #fff;
         font-size: 16px;
-        padding: 5px 50px 5px 5px;
+        padding: 0px 20px 0px 5px;
         height: unset;
       }
 
@@ -96,29 +96,27 @@
       <h1 style="font-weight: bold">עדכון פרטים</h1>
       <div class="input-box">
         <i class="fa fa-user-circle-o"></i>
+        <input type="text" placeholder="שם פרטי" disabled/>
         <input type="text" id="input-firstName" placeholder="שם פרטי" />
       </div>
       <div class="input-box">
         <i class="fa fa-user-circle-o"></i>
+        <input type="text" placeholder="שם משפחה" disabled />
         <input type="text" id="input-lastName" placeholder="שם משפחה" />
       </div>
       <div class="input-box">
         <i class="fa fa-address-card-o"></i>
+        <input type="text" placeholder="תעודת זהות" disabled/>
         <input type="text" id="input-id" placeholder="תעודת זהות" />
       </div>
       <div class="input-box">
         <i class="fa fa-birthday-cake"></i>
-        <input
-          type="text"
-          placeholder="תאריך לידה:"
-          disabled
-          style="width: 40%; left: 0"
-        />
+        <input type="text" placeholder="תאריך לידה" disabled/>
         <input type="date" id="input-birth" style="width: 40%" />
       </div>
       <div class="input-box">
         <i class="fa fa-intersex"></i>
-        <input type="text" placeholder="מין:" disabled style="width: 20%" />
+        <input type="text" placeholder="מין" disabled />
         <select name="gender" id="input-gender">
           <option value="זכר">זכר</option>
           <option value="נקבה">נקבה</option>
@@ -126,14 +124,17 @@
       </div>
       <div class="input-box">
         <i class="fa fa-map-signs"></i>
-        <input type="text" id="input-address" placeholder="כתובת (לא חובה)" />
+        <input type="text" placeholder="כתובת" disabled />
+        <input type="text" id="input-address" placeholder="-----" />
       </div>
       <div class="input-box">
         <i class="fa fa-phone-square"></i>
-        <input type="text" id="input-phone" placeholder="טלפון (לא חובה)" />
+        <input type="text" placeholder="טלפון" disabled />
+        <input type="text" id="input-phone" placeholder="-----" />
       </div>
       <div class="input-box">
         <i class="fa fa-gamepad"></i>
+        <input type="text" placeholder="סיסמת משחקים" disabled />
         <input
           type="text"
           placeholder="סיסמת משחקים"
@@ -190,9 +191,9 @@
         );
         $(".icon-eye").find("i").toggleClass("fa-eye fa-eye-slash");
       }
-
+      var child;
       function initInputDetails(){
-        var child = JSON.parse(localStorage.getItem('child'));
+        child = JSON.parse(localStorage.getItem('child'));
         childProperties.forEach((prop) => {
             $(`#input-${prop}`).val(child[prop]);
           });

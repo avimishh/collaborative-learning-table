@@ -70,18 +70,51 @@ export function userLoginRequest(userType, userId, userPassword, successFunction
 
 //#region Register Requests
 
-export function userRegisterRequest(userType, firstName, lastName, id, password, phone, successFunction, errorFunction) {
+export function childRegisterRequest({
+    firstName,
+    lastName,
+    id,
+    birth,
+    gender,
+    address,
+    phone,
+    level,
+    gamesPassword
+}, successFunction, errorFunction) {
+    let newChildData = arguments[0];
+    userRegisterRequest("child", newChildData, successFunction, errorFunction)
+}
+
+export function teacherRegisterRequest(firstName, lastName, id, password, phone, successFunction, errorFunction) {
+    let newTeacherData = {
+        firstName,
+        lastName,
+        id,
+        password,
+        phone
+    };
+    userRegisterRequest("teacher", newTeacherData, successFunction, errorFunction)
+}
+
+export function parentRegisterRequest(firstName, lastName, id, password, phone, successFunction, errorFunction) {
+    let newParentData = {
+        firstName,
+        lastName,
+        id,
+        password,
+        phone
+    };
+    userRegisterRequest("parent", newParentData, successFunction, errorFunction)
+}
+
+function userRegisterRequest(userType, newUserData, successFunction, errorFunction) {
     $.ajax({
-        url: (userType === "teacher") ? teachersApi : parentsApi,
+        url: getApiRouteByUserType(userType),
         method: "POST",
-        // headers: { 'x-auth-token' : localStorage.getItem('token') },
-        data: JSON.stringify({
-            firstName,
-            lastName,
-            id,
-            password,
-            phone
-        }),
+        headers: {
+            'x-auth-token': localStorage.getItem('token')
+        },
+        data: JSON.stringify(newUserData),
         success: function (data, textStatus, xhr) {
             if (userType === "parent")
                 localStorage.setItem("token", xhr.getResponseHeader("x-auth-token"));
@@ -317,26 +350,7 @@ export function getStatsRequest(childId, fieldId, successFunction, errorFunction
     $.ajax(request);
 }
 
-export function childRegisterRequest(newChild, successFunction, errorFunction) {
-    let request = {
-      contentType: "application/json",
-      url: childsApi,
-      method: "POST",
-      headers: {
-        'x-auth-token': localStorage.getItem('token')
-      },
-      data: JSON.stringify(newChild),
-      success: function (data, textStatus, xhr) {
-        successFunction(data);
-      },
-      error: function (xhr) {
-        errorFunction(xhr.status, xhr.responseText);
-      },
-    };
-    $.ajax(request);
-  }
-
-  export function getGamesRequest(successFunction, errorFunction, completeFunction) {
+export function getGamesRequest(successFunction, errorFunction) {
     let request = {
         contentType: "application/json",
         url: gamesApi,
@@ -346,7 +360,7 @@ export function childRegisterRequest(newChild, successFunction, errorFunction) {
             successFunction(data);
         },
         error: function (xhr) {
-            // errorFunction(xhr.status, xhr.responseText);
+            errorFunction(xhr.status, xhr.responseText);
         }
     };
     $.ajax(request);
