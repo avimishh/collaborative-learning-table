@@ -15,6 +15,10 @@ const Stat = mongoose.model('Stat', new mongoose.Schema({
         type: String,
         required: true
     },
+    childName: {
+        type: String
+        // required: true
+    },
     sheets: {
         math:[{type: sheetSchema}],
         english:[{type: sheetSchema}],

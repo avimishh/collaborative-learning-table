@@ -56,6 +56,7 @@ router.post('/', async (req, res) => {
     if (!stat) {
         stat = new Stat({
             child_id: req.body.id,
+            childName: `${req.body.firstName} ${req.body.lastName}`,
             sheets: {
                 math: [],
                 english: [],

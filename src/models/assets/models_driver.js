@@ -98,6 +98,7 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     if (!stat) {
         stat = new Stat({
             child_id: id,
+            childName: `${firstName} ${lastName}`,
             sheets: {
                 math: [],
                 english: [],

@@ -137,6 +137,8 @@
         }
 
         function updateSelectOptions(children) { // popup
+            if (children===undefined)
+                return;
             children.forEach(child => {
                 $('#children_selector')
                     .append($("<option></option>")

@@ -103,7 +103,8 @@
   <div id="modal-add-teacher" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'"> &times; </span>
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'"> &times;
+        </span>
         <h2 style="text-align: center">הוספת מורה:</h2>
       </div>
       <div class="modal-body w3-padding-large">
@@ -208,7 +209,7 @@
           $("#user_phone").val('')
 
           $("#btn_add_teacher").on("click", () => {
-            teacherRegisterRequest("teacher",
+            teacherRegisterRequest(
               $("#user_firstName").val(),
               $("#user_lastName").val(),
               $("#user_id").val(),

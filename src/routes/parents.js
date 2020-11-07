@@ -1,209 +1,214 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Parent, validateParent } = require('../models/parent');
-const { Child } = require('../models/child');
+const {
+    Parent,
+    validateParent
+} = require('../models/parent');
+const {
+    Child
+} = require('../models/child');
 const auth = require('../middleware/auth'); // Authorization
 const bcrypt = require('bcrypt'); // Password Hash
 const _ = require('lodash'); // Pick/Select values from object
+const {
+    format
+} = require('morgan');
 // const admin = require('../middleware/admin');
 
-// HTTP Handling
-// debug? permissions of admin or teacher.
+const errText = {
+    failedToUpdate: "העדכון נכשל.",
+    passwordInvalid: "הסיסמה חייבת להכיל לפחות 5 תווים.",
+    parentsNotExist: "לא קיימים הורים במערכת.",
+    parentByIdNotExist: "הורה בעל ת.ז. {0} לא קיים במערכת.",
+    parentByIdAlreadyExist: "הורה בעל ת.ז. {0} כבר קיים במערכת.",
+    childByIdNotExist: "ילד בעל ת.ז. {0} לא קיים במערכת.",
+}
+const StringFormat = (str, ...args) =>
+    str.replace(/{(\d+)}/g, (match, index) => args[index] || '')
+
+//@@@@permissions of admin or teacher.
 // GET ['api/parents']
 router.get('/', async (req, res) => {
     const parents = await Parent.find().select('-password').sort('id');
+    if (!parents)
+        return res.status(404).send(errText.parentsNotExist);
+
     res.send(parents);
-    // Check if not exist Parents
-    if (parents.length < 1 || parents == undefined) return res.status(404).send("לא קיימים הורים במערכת.");
 });
 
 
 // change from byId to findOne and by userId/name
 // GET ['api/parents/me']
 router.get('/me', auth, async (req, res) => {
-    // Find
     const parent = await Parent.findById(req.user._id).populate({
         path: 'children',
         select: 'id firstName lastName',
     }).select('-password');
-    // Check if exist? User exist beacuse was authorization at first
-    // if(!user) 
-    // return res.status(404).send(`User ${req.params.id} was not found.`);
-    // Send to client
+    // Check if exist? User exist beacuse he authorizied at first
     res.status(200).send(parent);
 });
 
 
-// admin/teacher get parent by id?,
-// parent want his details? maybe get it from user obj by using /me? 
+//@@@@permissions of admin or teacher.
 // GET ['api/parents/:id']
 router.get('/:id', async (req, res) => {
-    // Find
-    const parent = await Parent.findOne({ id: req.params.id }).populate('children', 'id firstName lastName').select('-password');
-    // const parent = await Parent.findOne({id:req.params.id});
-    // Check if exist
+    const parent = await Parent.findOne({
+        id: req.params.id
+    }).populate('children', 'id firstName lastName').select('-password');
     if (!parent)
-        return res.status(404).send(`parents ${req.params.id} was not found.`);
-    // Send to client
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
     res.status(200).send(parent);
 });
 
 
 // POST ['api/parents'] -   Register
 router.post('/', async (req, res) => {
-    // Validate client input
-    const { error } = validateParent(req.body);
-    // Assert validation
+    const {
+        error
+    } = validateParent(req.body);
+    console.log(error);
     if (error)
         return res.status(400).send(error.details[0].message);
+
     // Check if the parent exist
-    let parent = await Parent.findOne({ id: req.body.id });
-    // Response 400 Bad Request if the parent exist
-    if (parent) return res.status(400).send(`הורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
-    // Create new document
-    parent = new Parent({
+    let parentExist = await Parent.findOne({
+        id: req.body.id
+    });
+    console.log(parentExist);
+    if (parentExist)
+        return res.status(400).send(StringFormat(errText.parentByIdAlreadyExist, req.body.id));
+
+    let parent = new Parent({ // Create new document
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id,
         password: req.body.password,
         phone: req.body.phone
     });
+
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     parent.password = await bcrypt.hash(parent.password, salt);
-    // Save to DataBase
+
     parent = await parent.save();
-    // In order login the parent immidiately after registarion, use this
+    // In order to login the parent immidiately after registarion, use this
     // for creating token and send back to parent with the header of the response
     const token = parent.generateAuthToken();
-    // Send response to client
+
     res.status(200).header('x-auth-token', token).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
 
 
 // PUT ['api/parents/:id']
 router.put('/:id', auth, async (req, res) => {
-    // Validate client input
-    var { error } = validateParent(req.body);
-    // console.log(error);
-    // Assert validation
+    const { // Validate client input
+        error
+    } = validateParent(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
-    // Try to update the selected document
-    try {
-        // res.status(200).send(user);
-        const parent = await Parent.findOneAndUpdate({ id: req.params.id }, {
+
+    var parent;
+    try { // Try to update the selected document
+        parent = await Parent.findOneAndUpdate({
+            id: req.params.id
+        }, {
             "$set": {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 id: req.body.id,
-                // password: req.body.password,
                 phone: req.body.phone
             },
             // "$push": { children: req.body.children }
         }, {
-            new: true, useFindAndModify: false
+            new: true
         }).populate('children', 'id firstName lastName');
-        // Password Hash
-        // const salt = await bcrypt.genSalt(10);
-        // parent.password = await bcrypt.hash(parent.password, salt);
-        // await parent.save();
-        // Assert update completed successfully
-        if (!parent)
-            return res.status(404).send(`Parents ${req.params.id} was not found.`);
-        // Send response to client
-        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(404).send(errText.failedToUpdate);
     }
+
+    if (!parent)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
 
 
 // PUT ['api/parents/changePassword/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
     if (req.body.newPassword === null || req.body.newPassword.length < 5)
-        return res.status(400).send("הסיסמה חייבת להכיל לפחות 5 תווים.");
+        return res.status(400).send(errText.passwordInvalid);
 
+    // Password Hash
+    let newPassword = await bcrypt.hash(req.body.newPassword, await bcrypt.genSalt(10));
+
+    var parent;
     try {
-        const parent = await Parent.findOneAndUpdate({
+        parent = await Parent.findOneAndUpdate({
             id: req.params.id
         }, {
-            password: req.body.newPassword
+            password: newPassword
         }, {
-            new: true,
-            useFindAndModify: false
+            new: true
         }).populate('children', 'id firstName lastName');
-        // Assert update completed successfully
-        if (!parent)
-            return res.status(404).send(`parent ${req.params.id} was not found.`);
-        // Password Hash
-        const salt = await bcrypt.genSalt(10);
-        parent.password = await bcrypt.hash(parent.password, salt);
-        await parent.save();
-
-        // Send response to client
-        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
     } catch (ex) {
-        return res.status(404).send(`סיסמה שגויה`);
+        return res.status(404).send(errText.failedToUpdate);
     }
+
+    if (!parent)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
 
 
 // admin permission?
 // DELETE ['api/parents/:id']
 router.delete('/:id', async (req, res) => {
-    // Try to delete the selected document
-    try {
-        const parent = await Parent.findOneAndRemove({ id: req.params.id });
-        // Assert delete completed successfully
-        if (!parent)
-            return res.status(404).send(`Parents ${req.params.id} was not found.`);
+    var parent;
+    try { // Try to delete the selected document
+        parent = await Parent.findOneAndRemove({
+            id: req.params.id
+        });
+    } catch (ex) {
+        return res.status(404).send(errText.failedToUpdate);
+    }
+    if (!parent)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
 
-        // Send response to client
-        res.send(parent);
-    }
-    catch (ex) {
-        return res.status(404).send(`Faild to deleting.`);
-    }
+    res.status(200).send(true);
 });
 
 
 // PUT ['api/parents/:id']
 router.put('/addchild/:id', /*auth,*/ async (req, res) => {
-    // // Validate client input
-    // var { error } = validateParent(req.body);
-    // // console.log(error);
-    // // Assert validation
-    // if (error)
-    //     return res.status(400).send(error.details[0].message);
-    const child = await Child.findOne({ id: req.body.childId });
-    // Assert Child data
+    const child = await Child.findOne({
+        id: req.body.childId
+    });
     if (!child)
-        return res.status(404).send(`Child ${req.body.childId} was not found.`);
-    // Try to update the selected document
-    try {
-        // res.status(200).send(user);
-        const parent = await Parent.findOneAndUpdate({ id: req.params.id }, {
-            "$push": { children: child._id }
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.body.childId));
+
+    var parent;
+    try { // Try to update the selected document
+        parent = await Parent.findOneAndUpdate({
+            id: req.params.id
         }, {
-            new: true, useFindAndModify: false
+            "$push": {
+                children: child._id
+            }
+        }, {
+            new: true
         }).populate('children', 'id firstName lastName');
-        // await parent.save();
-        // Assert update completed successfully
-        if (!parent)
-            return res.status(404).send(`Parent ${req.params.id} was not found.`);
-        // Send response to client
-        res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(404).send(errText.failedToUpdate);
     }
+    if (!parent)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
 
-async function addChild(parent, childId) {
-    parent.children.push(childId);
-    await parent.save();
-}
 
 // Module exports
 module.exports = router;

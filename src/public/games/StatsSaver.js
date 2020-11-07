@@ -1,7 +1,6 @@
 const { Game } = require('../../models/game');
 const { Stat } = require('../../models/stat');
 const { Sheet } = require('../../models/sheet');
-const { mathSheetSchema } = require('../../models/sheets/math');
 
 module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now()) {
     let game = await Game.findById(gameRefId);

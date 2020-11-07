@@ -44,14 +44,13 @@
       <input type="text" id="user_lname" placeholder="שם משפחה" />
     </div>
     <div class="input-box">
-      <i class="fa fa-phone"></i>
-      <input type="text" id="user_phone" placeholder="טלפון" />
-    </div>
-    <div class="input-box">
       <i class="fa fa-user"></i>
       <input type="text" id="user_id" placeholder="תעודת זהות" autocomplete="off" />
     </div>
-
+    <div class="input-box">
+      <i class="fa fa-phone"></i>
+      <input type="text" id="user_phone" placeholder="טלפון" />
+    </div>
     <div class="input-box">
       <i class="fa fa-key"></i>
       <input type="text" placeholder="סיסמה" id="user_password" autocomplete="off" />
@@ -83,12 +82,12 @@
         $('.input-box, .register-btn').addClass('w3-animate-zoom');
 
         $("#register").on("click", () => {
-          parentRegisterRequest("parent",
+          parentRegisterRequest(
           $("#user_fname").val(),
           $("#user_lname").val(),
-          $("#user_phone").val(),
           $("#user_id").val(),
           $("#user_password").val(),
+          $("#user_phone").val(),
           registerSuccess, printErrorToUser);
         });
 
