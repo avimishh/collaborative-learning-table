@@ -8,6 +8,7 @@
   <script src="/lib/jquery.js"></script>
   <link href="/style/global.css" rel="stylesheet" />
   <link href="/style/signin.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="#" />
   <style>
     span {
       font-size: 16px;
@@ -33,8 +34,11 @@
 </head>
 
 <body dir="rtl">
-  <audio controls src="/audio/return home page.mpeg" id="myAudio" style="display: none;">
+  <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
   </audio>
+  <audio controls src="/audio/login.mpeg" id="myAudioLogin" style="display: none;">
+  </audio>
+
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-display-topleft w3-padding-large w3-xlarge">
       שולחן משחקים שיתופי
@@ -81,9 +85,16 @@
   </div>
 
   <script>
-    function hideEditionModal() {
+    function returnHomePage() {
       $("#modal-edition").fadeOut("slow");
-      $("#myAudio").get(0).play();
+      $("#myAudioReturn").get(0).play();
+    }
+
+    function loginVoice() {
+      // $("#modal-edition").fadeOut("slow");
+      // $("#myAudioLogin").get(0).play();
+      var audioLogin = new Audio('/audio/login.mpeg');
+      audioLogin.play();
     }
   </script>
 
@@ -94,12 +105,16 @@
 
       $(document).ready(() => {
         init();
+        loginVoice();
+        setTimeout(() => { console.log("stop"); initBtn(); }, 7500);
         initSignInPage();
       });
 
       function init() {
         $('button, .input-box').addClass('w3-animate-zoom');
+      }
 
+      function initBtn() {
         $("#login").on("click", () => {
           let child_id = $("#id_user").val();
           let gamesPassword = $("#user_password").val();
@@ -112,10 +127,11 @@
         });
 
         $("#btn_goToHome").on("click", () => {
-          hideEditionModal();
+          returnHomePage();
+          document.getElementById("login").disabled = true;
           setTimeout(() => {
             window.location.href = URL.HOME;
-          }, 3200);
+          }, 3000);
           
         });
       }
