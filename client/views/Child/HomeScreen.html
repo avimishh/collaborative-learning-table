@@ -142,6 +142,10 @@
 
         $("#btn_goToHome").on("click", () => {
           returnHomePage();
+          document.getElementById("btn_details").disabled = true;
+          document.getElementById("btn_performance").disabled = true;
+          document.getElementById("btn_game").disabled = true;
+
           setTimeout(() => {
             window.location.href = URL.HOME;
           }, 3000);
