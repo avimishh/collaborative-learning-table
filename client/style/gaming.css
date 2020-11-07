@@ -8,7 +8,7 @@
 }
 
 body {
-    background-image: url('/pics/background/board.png');
+    background-image: url('/images/background/board.png');
     /* min-height: 100%; */
     background-position: center;
     background-size: cover;

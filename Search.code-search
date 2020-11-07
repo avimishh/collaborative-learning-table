@@ -1,0 +1,331 @@
+# Query: /pics/
+# Flags: CaseSensitive
+# ContextLines: 1
+
+84 results - 31 files
+
+client\admin.html:
+    7    <title></title>
+    8:   <link rel="icon" type="image/png" href="/images/logo2.png" />
+    9    <script src="/lib/jquery.js"></script>
+
+  156        <div class="modal-body">
+  157:         <img id="img-modal" src="/images/kid_success.png" alt="" />
+  158        </div>
+
+client\globalDeclarations.js:
+  31  export function globalInit() {
+  32:   include("./../images/logo3.png");
+  33  }
+
+client\home.html:
+    7    <title>Collaborative Learning</title>
+    8:   <link rel="icon" type="image/png" href="/images/logo3.png" />
+    9    <script src="/lib/jquery.js"></script>
+
+   13      .bgimg {
+   14:       background-image: url("/images/background/c.jpg");
+   15      }
+
+   90        <div id="btn_Parent" class="w3-text-white w3-light-blue tooltip w3-animate-right">
+   91:         <img src="/images/v2/parents.png" alt="" />
+   92          <span class="tooltiptext">הורים</span>
+
+   94        <div id="btn_Teacher" class="w3-red tooltip w3-animate-bottom">
+   95:         <img src="/images/v2/teacher.png" alt="" />
+   96          <span class="tooltiptext">מורים</span>
+
+   98        <div id="btn_Child" class="w3-green tooltip w3-animate-left">
+   99:         <img src="/images/v2/kid.png" alt="" />
+  100          <span class="tooltiptext">ילדים</span>
+
+  117        <div class="modal-body">
+  118:         <img id="img-edition" src="/images/covid19_edition.png" alt="" />
+  119        </div>
+
+client\style\gaming.css:
+  10  body {
+  11:     background-image: url('/images/background/board.png');
+  12      /* min-height: 100%; */
+
+client\style\global.css:
+  31  .bgimg {
+  32:     background-image: url('/images/background/homeParents.jpg');
+  33      /*default*/
+
+client\style\home.css:
+  90          background: no-repeat center center;
+  91:         background-image: url('/images/bacground_study.png');
+  92          background-size: cover;
+
+client\style\modal.css:
+  110      appearance: none;
+  111:     background: url('/images/kid.png') 96% / 15% no-repeat #EEE;
+  112  }
+
+client\views\Child\Details.html:
+  36          .bgimg {
+  37:             background-image: url('/images/background/back3.jpg');
+  38          }
+
+  57              <button type="button" class="homeBtn" id="btn_goToHome">
+  58:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  59              </button>
+
+client\views\Child\HomeScreen.html:
+  19      .bgimg {
+  20:       background-image: url("/images/background/back8.jpg");
+  21      }
+
+  57        <button type="button" class="homeBtn" id="btn_goToHome">
+  58:         <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  59        </button>
+
+  69        <div id="btn_game" class="w3-green tooltip w3-animate-right">
+  70:         <img src="/images/play3.png" alt="" />
+  71          <span class="tooltiptext">שחק משחקים</span>
+
+  73        <div id="btn_details" class="w3-light-blue w3-text-white tooltip w3-animate-bottom">
+  74:         <img src="/images/v2/details.png" alt="" />
+  75          <span class="tooltiptext">פרטים אישיים</span>
+
+  77        <div id="btn_performance" class="w3-red tooltip w3-animate-left">
+  78:         <img src="/images/grades.png" alt="" />
+  79          <span class="tooltiptext">הצגת ציונים</span>
+
+client\views\Child\Performance.html:
+   10        .bgimg {
+   11:         background-image: url("/images/background/back3.jpg");
+   12        }
+
+  120          <button type="button" class="homeBtn" id="btn_goToHome">
+  121:           <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  122          </button>
+
+client\views\Child\SignIn.html:
+  29      .bgimg {
+  30:       background-image: url("/images/background/2.jpg");
+  31      }
+
+  40          <button type="button" class="homeBtn" id="btn_goToHome">
+  41:           <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  42            חזרה לעמוד
+
+client\views\gaming\gamingClient.html:
+  47              background: no-repeat center center fixed;
+  48:             background-image: url('/images/background/1.jpg');
+  49              background-size: cover;
+
+client\views\gaming\Games\ColorGame\ColorGame2.js:
+  311          showModal(pre_question);
+  312:         $('#img-question').attr('src', '../images/' + question._objectNameEng + '.png').show();
+  313  
+
+client\views\gaming\Games\ColorGame2\color2.html:
+    9          #frame {
+   10:             background-image: url("../images/back.jpg");
+   11              background-repeat: no-repeat;
+
+  156              $newColor.css("left", getBallColorPosition() + "px");
+  157:             $newColor.attr("src", "../images/" + arr_color[i] + "Color.png");
+  158              $("#frame").append($newColor);
+
+  240          <div id="player-div">
+  241:             <img id="player-image" src="../images/basket.png" />
+  242              <span id="score" class="bck_color_score">0</span>
+
+client\views\gaming\Games\english\english.html:
+  14      body {
+  15:       background-image: url("/images/background/back10.jpg");
+  16        /* background-color: darkolivegreen; */
+
+client\views\gaming\Games\math\math.html:
+  14          body {
+  15:             background-image: url('/images/background/board.png');
+  16          }
+
+client\views\gaming\Games\memoryCard\memoryGame2\memoryGame2.css:
+  11      background: no-repeat center center fixed;
+  12:     background-image: url('/images/back1.jpg');
+  13      background-size: cover;
+
+client\views\gaming\Games\memoryCard\memoryGame2\memoryGame2.js:
+   13  var cards_arr = [
+   14:     "../../images/home.jpg", "../../images/airplane.jpg", "../../images/apple.jpg",
+   15:     "../../images/books.jpg", "../../images/car.jpg", "../../images/clock.jpg",
+   16:     "../../images/computer.jpg", "../../images/football.jpg", "../../images/pencil.jpg",
+   17:     "../../images/shirt.jpg", "../../images/shoes.jpg", "../../images/phone.jpg"
+   18  ];
+
+   64      for (let i = 0; i < arrBackCard.length; i++) {
+   65:         arrBackCard[i].src = "../../images/pokemon.jpg";
+   66      }
+
+  337      for (var i = 0; i < cards_arr.length; i++) {
+  338:         if (cards_arr[i] === '../../images/' + nameCard + '.jpg') {
+  339              soundCard[position] = new Audio();
+
+client\views\Parent\Details.html:
+  13          .bgimg {
+  14:             background-image: url('/images/background/homeParents.jpg');
+  15          }
+
+  42              <button type="button" class="homeBtn" id="btn_goToHome">
+  43:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  44              </button>
+
+client\views\Parent\HomeScreen.html:
+  12          .bgimg {
+  13:             background-image: url('/images/background/homeParents.jpg');
+  14          }
+
+  22              <button type="button" class="homeBtn" id="btn_goToHome">
+  23:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  24              </button>
+
+  34              <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
+  35:                 <img src="/images/v2/kidid.png" alt="">
+  36                  <span class="tooltiptext">פרטי הילד</span>
+
+  38              <div id="btn_child_performance" class="w3-red tooltip">
+  39:                 <img src="/images/grades.png" alt="">
+  40                  <span class="tooltiptext">הצגת ציונים</span>
+
+  42              <div id="btn_notes" class="w3-green tooltip">
+  43:                 <img src="/images/note1.png" alt="">
+  44                  <span class="tooltiptext">הצגת הערות</span>
+
+  46              <div id="btn_details" class="w3-yellow w3-text-white tooltip">
+  47:                 <img src="/images/idcard.png" alt="">
+  48                  <span class="tooltiptext">פרטים אישיים</span>
+
+client\views\Parent\notes.html:
+   24          .bgimg {
+   25:             background-image: url('/images/background/book.jpg');
+   26          }
+
+  123              <button type="button" class="homeBtn" id="btn_goToHome">
+  124:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  125              </button>
+
+client\views\Parent\Register.html:
+  12      .bgimg {
+  13:       background-image: url("/images/background/cactus.jpg");
+  14      }
+
+  27          <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
+  28:           <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  29            חזרה לעמוד
+
+client\views\Parent\SignIn.html:
+  11        .bgimg {
+  12:         background-image: url("/images/background/cactus.jpg");
+  13        }
+
+  22            <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
+  23:             <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  24              חזרה לעמוד
+
+client\views\Teacher\Details.html:
+  13          .bgimg {
+  14:             background-image: url('/images/background/homeParents.jpg');
+  15          }
+
+  39              <button type="button" class="homeBtn" id="btn_goToHome">
+  40:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  41              </button>
+
+client\views\Teacher\HomeScreen.html:
+  13      .bgimg {
+  14:       background-image: url("/images/background/homeParents.jpg");
+  15      }
+
+  37        <button type="button" class="homeBtn" id="btn_goToHome">
+  38:         <img id="homeImg" src="/images/homeBtn.png" alt="">
+  39        </button>
+
+  47        <div id='btn_child_details' class="w3-light-blue w3-text-white tooltip">
+  48:         <img src="/images/v2/kidid.png" alt="">
+  49          <span class="tooltiptext">פרטי הילדים</span>
+
+  51        <div id="btn_child_performance" class="w3-red tooltip">
+  52:         <img src="/images/grades.png" alt="">
+  53          <span class="tooltiptext">הצגת ציונים</span>
+
+  55        <div id="btn_notes" class="w3-green tooltip">
+  56:         <img src="/images/note1.png" alt="">
+  57          <span class="tooltiptext">כתיבת הערות</span>
+
+  59        <div id="btn_details" class="w3-yellow w3-text-white tooltip">
+  60:         <img src="/images/idcard.png" alt="">
+  61          <span class="tooltiptext">פרטים אישיים</span>
+
+  64        <div id="btn_child_management" class="box w3-pink w3-text-white tooltip">
+  65:         <img src="/images/v2/details.png" alt="">
+  66          <span class="tooltiptext">עדכון ילד</span>
+
+client\views\Teacher\notes.html:
+  41          .bgimg {
+  42:             background-image: url('/images/background/book.jpg');
+  43          }
+
+  67              <button type="button" class="homeBtn" id="btn_goToHome">
+  68:                 <img id="homeImg" src="/images/homeBtn.png" alt="">
+  69              </button>
+
+client\views\Teacher\SignIn.html:
+  12      .bgimg {
+  13:       background-image: url("/images/background/cactus.jpg");
+  14      }
+
+  23          <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
+  24:           <img id="homeImg" src="/images/homeBtn.png" alt="" />
+  25            חזרה לעמוד
+
+client\views\Teacher\childManagement\childManagement.html:
+   13      .bgimg {
+   14:       background-image: url("/images/background/homeParents.jpg");
+   15      }
+
+   52        <button type="button" class="homeBtn" id="btn_goToHome">
+   53:         <img id="homeImg" src="/images/homeBtn.png" alt="" />
+   54        </button>
+
+   65        <div id="btn_child_register" class="w3-light-blue w3-text-white tooltip">
+   66:         <img src="/images/child_register.png" alt="" />
+   67          <span class="tooltiptext">רישום ילד חדש</span>
+
+   69        <div id="btn_child_update" class="w3-red tooltip">
+   70:         <img src="/images/children.png" alt="" />
+   71          <span class="tooltiptext">שינוי ילד קיים</span>
+
+   73        <div id="btn_child_delete" class="w3-green tooltip">
+   74:         <img src="/images/child_remove.png" alt="" />
+   75          <span class="tooltiptext">מחיקת ילד</span>
+
+  146          <div class="modal-body">
+  147:           <img id="img-modal" src="/images/kid_success.png" alt="" />
+  148          </div>
+
+client\views\Teacher\childManagement\register.html:
+   17        .bgimg {
+   18:         background-image: url("/images/background/cactus.jpg");
+   19        }
+
+  163          <div class="modal-body">
+  164:           <img id="img-modal" src="/images/kid_success.png" alt="" />
+  165          </div>
+
+client\views\Teacher\childManagement\update.html:
+   17        .bgimg {
+   18:         background-image: url("/images/background/cactus.jpg");
+   19        }
+
+  164          <div class="modal-body">
+  165:           <img id="img-modal" src="/images/kid_success.png" alt="" />
+  166          </div>
+
+src\startup\debug.js:
+  10              if(res.statusCode === 304){
+  11:                 if(req.originalUrl.startsWith("/lib/") || req.originalUrl.startsWith("/images/"))
+  12                      return true;

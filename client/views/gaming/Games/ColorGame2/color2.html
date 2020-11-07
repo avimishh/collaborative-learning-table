@@ -7,7 +7,7 @@
     <link href="/lib/w3.css" rel="stylesheet" />
     <style>
         #frame {
-            background-image: url("../pics/back.jpg");
+            background-image: url("../images/back.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             /* width: 1400px;
@@ -154,7 +154,7 @@
             let i = Math.floor(Math.random() * 4); // random num between 0 to 3
             let $newColor = $("<img>").addClass(arr_color[i]);
             $newColor.css("left", getBallColorPosition() + "px");
-            $newColor.attr("src", "../pics/" + arr_color[i] + "Color.png");
+            $newColor.attr("src", "../images/" + arr_color[i] + "Color.png");
             $("#frame").append($newColor);
             $newColor.animate({
                 top: "530px" // where the ball color stop from top to bottom
@@ -238,7 +238,7 @@
 <body style="margin:25px;">
     <div id="frame">
         <div id="player-div">
-            <img id="player-image" src="../pics/basket.png" />
+            <img id="player-image" src="../images/basket.png" />
             <span id="score" class="bck_color_score">0</span>
         </div>
     </div>

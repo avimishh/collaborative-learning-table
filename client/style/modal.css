@@ -108,7 +108,7 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: url('/pics/kid.png') 96% / 15% no-repeat #EEE;
+    background: url('/images/kid.png') 96% / 15% no-repeat #EEE;
 }
 
 .modal-footer button{

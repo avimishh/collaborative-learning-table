@@ -309,7 +309,7 @@ function addSocketEvents() {
         let pre_question = `${childName}, ` + 'איזה צבע אני? '
         $('#instruction-top').text(pre_question);
         showModal(pre_question);
-        $('#img-question').attr('src', '../pics/' + question._objectNameEng + '.png').show();
+        $('#img-question').attr('src', '../images/' + question._objectNameEng + '.png').show();
 
         for (var i = 0; i < colorSquares.length; i++) {
             if (colors[i]) {

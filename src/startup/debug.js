@@ -5,9 +5,13 @@ const morgan = require('morgan');
 const morganFormat = '[:date] [:method :status] [:response-time ms]  :url :res[content-length]';
 
 module.exports = function(app){
-    app.use(morgan(morganFormat));
-    // app.use(morgan('dev', {
-    //     skip: function (req, res) { return res.statusCode < 400 }
-    //   }));
+    app.use(morgan(morganFormat, {
+        skip: function (req, res) { 
+            if(res.statusCode === 304){
+                if(req.originalUrl.startsWith("/lib/") || req.originalUrl.startsWith("/images/"))
+                    return true;
+            }
+            return false; }
+    }));
     debug('Morgan enabled...');
 }

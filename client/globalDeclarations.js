@@ -29,7 +29,7 @@ export function alertMessage(){
 }
 
 export function globalInit() {
-  include("./../pics/logo3.png");
+  include("./../images/logo3.png");
 }
 
 function include(file) {

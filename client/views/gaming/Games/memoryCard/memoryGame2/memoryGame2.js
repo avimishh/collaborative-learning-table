@@ -11,10 +11,10 @@ var nameCard;
 
 // arr of path pic cards
 var cards_arr = [
-    "../../pics/home.jpg", "../../pics/airplane.jpg", "../../pics/apple.jpg",
-    "../../pics/books.jpg", "../../pics/car.jpg", "../../pics/clock.jpg",
-    "../../pics/computer.jpg", "../../pics/football.jpg", "../../pics/pencil.jpg",
-    "../../pics/shirt.jpg", "../../pics/shoes.jpg", "../../pics/phone.jpg"
+    "../../images/home.jpg", "../../images/airplane.jpg", "../../images/apple.jpg",
+    "../../images/books.jpg", "../../images/car.jpg", "../../images/clock.jpg",
+    "../../images/computer.jpg", "../../images/football.jpg", "../../images/pencil.jpg",
+    "../../images/shirt.jpg", "../../images/shoes.jpg", "../../images/phone.jpg"
 ];
 
 // arr of path audio cards
@@ -62,7 +62,7 @@ function ready() {
 function backCardInsert() {
     arrBackCard = document.getElementsByClassName('pokemon');
     for (let i = 0; i < arrBackCard.length; i++) {
-        arrBackCard[i].src = "../../pics/pokemon.jpg";
+        arrBackCard[i].src = "../../images/pokemon.jpg";
     }
 }
 
@@ -262,11 +262,11 @@ function checkForCardMatch(card) {
     // get name card into nameCard variable.
     if (!getCardType(card).includes("Txt")){
         getCard = getCardType(card).split(".jpg")[0] + 'Txt.jpg';
-        nameCard = getCardType(card).split(".jpg")[0].split("pics/")[1];
+        nameCard = getCardType(card).split(".jpg")[0].split("images/")[1];
     }
     else {
         getCard = getCardType(card).split("Txt")[0] + '.jpg';
-        nameCard = getCardType(card).split("Txt")[0].split("pics/")[1];
+        nameCard = getCardType(card).split("Txt")[0].split("images/")[1];
     }
 
     // check if cards match or mismatch
@@ -283,7 +283,7 @@ function checkForCardMatch(card) {
 // card1 match to card2
 function cardMatch(card1, card2) {
     console.log(getCardType(card1));
-    console.log(getCardType(card1).split(".jpg")[0].split("pics/")[1]);
+    console.log(getCardType(card1).split(".jpg")[0].split("images/")[1]);
 
     matchedCards.push(card1);
     matchedCards.push(card2);
@@ -335,7 +335,7 @@ function listenWord() {
 
     // find name card and start nameCard.mp3 for listen word
     for (var i = 0; i < cards_arr.length; i++) {
-        if (cards_arr[i] === '../../pics/' + nameCard + '.jpg') {
+        if (cards_arr[i] === '../../images/' + nameCard + '.jpg') {
             soundCard[position] = new Audio();
             soundCard[position].src = record_arr[i];
             soundCard[position].volume = 0.8;
