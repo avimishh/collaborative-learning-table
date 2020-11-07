@@ -69,6 +69,8 @@
 </head>
 
 <body dir="rtl">
+  <audio controls src="/audio/welcome.mpeg" id="myAudio" style="display: none;">
+  </audio>
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
       Make Learning Fun
@@ -107,7 +109,7 @@
   </div>
 
   <!-- The Modal -->
-  <div id="modal-edition" class="modal w3-animate-opacity" onclick="this.style.display='none'">
+  <div id="modal-edition" class="modal w3-animate-opacity" onclick="hideEditionModal()">
     <div class="modal-content">
       <div class="modal-header">
         <span class="close">&times;</span>
@@ -118,7 +120,7 @@
         <img id="img-edition" src="/images/covid19_edition.png" alt="" />
       </div>
       <div class="modal-footer">
-        <div id="err_text"></div>
+        <div style="font-size: 30px;">לחץ כאן לכניסה לעולם הלמידה השיתופית</div>
       </div>
     </div>
   </div>
@@ -127,7 +129,8 @@
   <div id="modal-development-connect" class="modal w3-animate-opacity">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'"> &times; </span>
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'"> &times;
+        </span>
         <h2 style="text-align: center">כניסת מפתח מערכת:</h2>
       </div>
       <div class="modal-body w3-padding-large">
@@ -141,9 +144,17 @@
       </div>
     </div>
   </div>
+  <script>
+    function hideEditionModal() {
+      $("#modal-edition").fadeOut("slow");
+      $("#myAudio").get(0).play();
+    }
+  </script>
 
   <script type="module">
-    import { URL } from '/consts.js';
+    import {
+      URL
+    } from '/consts.js';
     var nextChildPage;
 
     $(document).ready(() => {
@@ -200,7 +211,7 @@
     }
 
     function hideModal(modalType) {
-      $(`#${modalType}`).hide();
+      $(`#${modalType}`).fadeOut("slow");
     }
   </script>
 </body>
