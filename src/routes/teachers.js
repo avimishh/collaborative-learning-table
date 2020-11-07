@@ -6,177 +6,165 @@ const {
     validateTeacher
 } = require('../models/teacher');
 const auth = require('../middleware/auth'); // Authorization
-// const admin = require('../middleware/admin');
-
 const bcrypt = require('bcrypt'); // Password Hash
 const _ = require('lodash'); // Pick/Select values from object
+// const admin = require('../middleware/admin');
 
-// HTTP Handling
-// debug? permissions of admin or teacher.
+const errText = {
+    failedToUpdate: "העדכון נכשל.",
+    passwordInvalid: "הסיסמה חייבת להכיל לפחות 5 תווים.",
+    parentsNotExist: "לא קיימים מורים במערכת.",
+    parentByIdNotExist: "מורה בעל ת.ז. {0} לא קיים במערכת.",
+    parentByIdAlreadyExist: "מורה בעל ת.ז. {0} כבר קיים במערכת.",
+    childByIdNotExist: "ילד בעל ת.ז. {0} לא קיים במערכת.",
+}
+const StringFormat = (str, ...args) =>
+    str.replace(/{(\d+)}/g, (match, index) => args[index] || '')
+
+
+//@@@@permissions of admin or teacher.
 // GET ['api/teachers']
 router.get('/', async (req, res) => {
-    // Find
     const teachers = await Teacher.find().select('-password').sort('id');
-    res.send(teachers);
-    // Check if not exist Teachers
-    if (teachers.length < 1 || teachers == undefined) return res.status(404).send("לא קיימים מורים במערכת.");
+    if (!teachers)
+        return res.status(404).send(errText.teachersNotExist);
+
+    res.status(200).send(teachers);
 });
 
 // change from byId to findOne and by userId/name
 // GET ['api/teachers/me']
 router.get('/me', auth, async (req, res) => {
-    // Find
     const teacher = await Teacher.findById(req.user._id).select('-password');
-    // Send to client
+    // Check if exist? User exist beacuse he authorizied at first
     res.status(200).send(teacher);
 });
 
 
-// admin/teacher get teacher by id?,
-// teacher want his details? maybe get it from user obj by using /me? 
+//@@@@permissions of admin or teacher.
 // GET ['api/teachers/:id']
 router.get('/:id', async (req, res) => {
-    // Find
     const teacher = await Teacher.findOne({
         id: req.params.id
     }).select('-password');
-    // const teacher = await teacher.findOne({id:req.params.id});
-    // Check if exist
     if (!teacher)
         return res.status(404).send(`teachers ${req.params.id} was not found.`);
-    // Send to client
+
     res.status(200).send(teacher);
 });
-
 
 
 // POST ['api/teachers'] -   Register
 router.post('/', async (req, res) => {
-    // Validate client input
     const {
         error
     } = validateTeacher(req.body);
-    // Assert validation
     if (error) {
-        console.log(error.details[0].message);
         return res.status(400).send(error.details[0].message);
     }
+
     // Check if the teacher exist
-    let teacher = await Teacher.findOne({
+    let teacherExist = await Teacher.findOne({
         id: req.body.id
     });
-    // Response 400 Bad Request if the teacher exist
-    if (teacher) return res.status(400).send(`מורה בעל ת"ז ${req.body.id} כבר קיים במערכת.`);
-    // Create new document
-    teacher = new Teacher({
+    if (teacherExist)
+        return res.status(400).send(StringFormat(errText.parentByIdAlreadyExist, req.body.id));
+
+
+    let teacher = new Teacher({ // Create new document
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id,
         password: req.body.password,
         phone: req.body.phone
     });
-    teacher.assignToClassroom(req.body.classroomCode);
+    // teacher.assignToClassroom(req.body.classroomCode);
+
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     teacher.password = await bcrypt.hash(teacher.password, salt);
-    // Save to DataBase
+
     teacher = await teacher.save();
     // In order login the teacher immidiately after registarion, use this
     // for creating token and send back to teacher with the header of the response
     const token = teacher.generateAuthToken();
-    // Send response to client
+
     res.status(200).header('x-auth-token', token).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone']));
 });
 
+
 // PUT ['api/teachers/:id']
 router.put('/:id', auth, async (req, res) => {
-    // Validate client input
-    var {
+    var { // Validate client input
         error
     } = validateTeacher(req.body);
-    // console.log(error);
-    // Assert validation
     if (error)
         return res.status(400).send(error.details[0].message);
-    // Try to update the selected document
-    try {
-        // res.status(200).send(user);
-        const teacher = await Teacher.findOneAndUpdate({
+
+    var teacher;
+    try { // Try to update the selected document
+        teacher = await Teacher.findOneAndUpdate({
             id: req.params.id
         }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             id: req.body.id,
-            // password: req.body.password,
             phone: req.body.phone
         }, {
-            new: true,
-            useFindAndModify: false
-        }).populate('children', 'id firstName lastName');
-        // Password Hash
-        // const salt = await bcrypt.genSalt(10);
-        // teacher.password = await bcrypt.hash(teacher.password, salt);
-        // await teacher.save();
-        // Assert update completed successfully
-        if (!teacher)
-            return res.status(404).send(`teacher ${req.params.id} was not found.`);
-        // Send response to client
-        res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
+            new: true
+        });
     } catch (ex) {
-        return res.status(404).send(`סיסמה שגויה`);
+        return res.status(400).send(errText.failedToUpdate);
     }
+    if (!teacher)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
 
 
 // PUT ['api/teachers/changePassword/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
     if (req.body.newPassword === null || req.body.newPassword.length < 5)
-        return res.status(400).send("הסיסמה חייבת להכיל לפחות 5 תווים.");
+        return res.status(400).send(errText.passwordInvalid);
 
+    // Password Hash
+    let newPassword = await bcrypt.hash(req.body.newPassword, await bcrypt.genSalt(10));
+
+    var teacher;
     try {
-        const teacher = await Teacher.findOneAndUpdate({
+        teacher = await Teacher.findOneAndUpdate({
             id: req.params.id
         }, {
-            password: req.body.newPassword
+            password: newPassword
         }, {
-            new: true,
-            useFindAndModify: false
-        }).populate('children', 'id firstName lastName');
-        // Assert update completed successfully
-        if (!teacher)
-            return res.status(404).send(`teacher ${req.params.id} was not found.`);
-        // Password Hash
-        const salt = await bcrypt.genSalt(10);
-        teacher.password = await bcrypt.hash(teacher.password, salt);
-        await teacher.save();
-
-        // Send response to client
-        res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
+            new: true
+        });
     } catch (ex) {
-        return res.status(404).send(`סיסמה שגויה`);
+        return res.status(400).send(errText.failedToUpdate);
     }
+    if (!teacher)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
+
 
 // admin permission?
 // DELETE ['api/teachers/:id']
 router.delete('/:id', async (req, res) => {
-    // Try to delete the selected document
-    try {
-        const teacher = await Teacher.findOneAndRemove({
+    var teacher;
+    try { // Try to delete the selected document
+        teacher = await Teacher.findOneAndRemove({
             id: req.params.id
         });
-        // Assert delete completed successfully
-        if (!teacher) {
-            console.log('1');
-            return res.status(404).send(`המורה בעל ת"ז: ${req.params.id} לא נמצא/ה.`);
-        }
-
-        // Send response to client
-        res.send(teacher);
     } catch (ex) {
-        console.log('2');
-        return res.status(404).send(`בעיה במחיקת המורה.`);
+        return res.status(400).send(errText.failedToUpdate);
     }
+    if (!teacher)
+        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+
+    res.status(200).send(true);
 });
 
 

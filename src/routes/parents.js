@@ -11,9 +11,6 @@ const {
 const auth = require('../middleware/auth'); // Authorization
 const bcrypt = require('bcrypt'); // Password Hash
 const _ = require('lodash'); // Pick/Select values from object
-const {
-    format
-} = require('morgan');
 // const admin = require('../middleware/admin');
 
 const errText = {
@@ -27,6 +24,7 @@ const errText = {
 const StringFormat = (str, ...args) =>
     str.replace(/{(\d+)}/g, (match, index) => args[index] || '')
 
+
 //@@@@permissions of admin or teacher.
 // GET ['api/parents']
 router.get('/', async (req, res) => {
@@ -34,7 +32,7 @@ router.get('/', async (req, res) => {
     if (!parents)
         return res.status(404).send(errText.parentsNotExist);
 
-    res.send(parents);
+    res.status(200).send(parents);
 });
 
 
@@ -68,7 +66,6 @@ router.post('/', async (req, res) => {
     const {
         error
     } = validateParent(req.body);
-    console.log(error);
     if (error)
         return res.status(400).send(error.details[0].message);
 
@@ -76,7 +73,6 @@ router.post('/', async (req, res) => {
     let parentExist = await Parent.findOne({
         id: req.body.id
     });
-    console.log(parentExist);
     if (parentExist)
         return res.status(400).send(StringFormat(errText.parentByIdAlreadyExist, req.body.id));
 
@@ -125,9 +121,8 @@ router.put('/:id', auth, async (req, res) => {
             new: true
         }).populate('children', 'id firstName lastName');
     } catch (ex) {
-        return res.status(404).send(errText.failedToUpdate);
+        return res.status(400).send(errText.failedToUpdate);
     }
-
     if (!parent)
         return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
 
@@ -153,9 +148,8 @@ router.put('/changePassword/:id', auth, async (req, res) => {
             new: true
         }).populate('children', 'id firstName lastName');
     } catch (ex) {
-        return res.status(404).send(errText.failedToUpdate);
+        return res.status(400).send(errText.failedToUpdate);
     }
-
     if (!parent)
         return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
 
@@ -172,7 +166,7 @@ router.delete('/:id', async (req, res) => {
             id: req.params.id
         });
     } catch (ex) {
-        return res.status(404).send(errText.failedToUpdate);
+        return res.status(400).send(errText.failedToUpdate);
     }
     if (!parent)
         return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));

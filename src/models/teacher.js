@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const {
+    customError
+} = require('./assets/customError.js');
+const {
     Classroom
 } = require('./classroom');
 
@@ -77,11 +80,9 @@ teacherSchema.methods.assignToClassroom = async function (classroomCode) {
 const Teacher = mongoose.model('Teacher', teacherSchema);
 
 
-
-
 // Essential functions
 function validateTeacher(teacher) {
-    const schema = {
+    const schema = Joi.object().keys({
         firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
             return customError(errors, 'שם פרטי')
         }),
@@ -97,32 +98,9 @@ function validateTeacher(teacher) {
         phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {
             return customError(errors, 'טלפון')
         })
-    };
-    // return true;
+    }).unknown(true);
+
     return Joi.validate(teacher, schema);
-}
-
-
-function customError(errors, key) {
-    errors.forEach(err => {
-        switch (err.type) {
-            case 'any.empty':
-                err.message = `'${key}' לא יכול להיות ריק`;
-                break;
-            case 'any.required':
-                err.message = `'${key}' נדרש`;
-                break;
-            case 'string.min':
-                err.message = `'${key}' נדרש להכיל יותר מ-${err.context.limit} תוים`;
-                break;
-            case 'string.max':
-                err.message = `'${key}' נדרש להכיל פחות מ-${err.context.limit} תוים`;
-                break;
-            default:
-                break;
-        }
-    });
-    return errors;
 }
 
 

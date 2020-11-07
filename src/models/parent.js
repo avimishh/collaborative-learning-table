@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { customError } = require('./assets/customError.js');
+const {
+    customError
+} = require('./assets/customError.js');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
@@ -54,20 +56,22 @@ const parentSchema = new mongoose.Schema({
 });
 
 
-parentSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id }, config.get('jwtPrivateKey'));
+parentSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        _id: this._id
+    }, config.get('jwtPrivateKey'));
     return token;
 }
 
 // parentSchema.methods.assignParent = async function(userId, _parentObjectId) {
-    // try {
-    //     await User.findByIdAndUpdate({ id: userId },
-    //         {_parent: _parentObjectId}, {
-    //        new: true, useFindAndModify: false
-    //    }); 
-    // } catch (error) {
-    //     return res.status(404).send(`Failed to update User.`);
-    // }
+// try {
+//     await User.findByIdAndUpdate({ id: userId },
+//         {_parent: _parentObjectId}, {
+//        new: true, useFindAndModify: false
+//    }); 
+// } catch (error) {
+//     return res.status(404).send(`Failed to update User.`);
+// }
 // }
 
 // Model
@@ -77,21 +81,21 @@ const Parent = mongoose.model('Parent', parentSchema);
 // Essential functions
 function validateParent(parent) {
     const schema = Joi.object().keys({
-        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { 
-            return customError(errors, 'שם פרטי') 
+        firstName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם פרטי')
         }),
-        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => { 
-            return customError(errors, 'שם משפחה') 
+        lastName: Joi.string().min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
+            return customError(errors, 'שם משפחה')
         }),
-        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => { 
-            return customError(errors, 'תעודת זהות') 
+        id: Joi.string().min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {
+            return customError(errors, 'תעודת זהות')
         }),
         // password: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => { return customError(errors, 'סיסמה') }),
-        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => { 
-            return customError(errors, 'טלפון') 
+        phone: Joi.string().min(PHONE_LEN[0]).max(PHONE_LEN[1]).required().error(errors => {
+            return customError(errors, 'טלפון')
         })
     }).unknown(true);
-    // return true;
+
     return Joi.validate(parent, schema);
 }
 

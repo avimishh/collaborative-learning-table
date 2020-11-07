@@ -15,63 +15,29 @@ const bcrypt = require('bcrypt'); // Password Hash
 var notes = [];
 
 async function createParent(firstName, lastName, id, password, phone) {
-    const { error } = validateParent({ firstName, lastName, id, password, phone });
-    // Assert validation
-    if (error) {
-        notes.push(error.details[0].message);
-        return console.log(reverseString(error.details[0].message));
-    }
-    // Check if the parent exist
-    let parent = await Parent.findOne({ id });
-    // Response 400 Bad Request if the parent exist
-    if (parent) {
-        notes.push(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`);
-        return console.log(reverseString(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`));
-    }
-    // Create new document
-    parent = new Parent({
+    let parent = new Parent({
         firstName,
         lastName,
         id,
-        password,
+        password:await bcrypt.hash(password, await bcrypt.genSalt(10)),
         phone
     });
-    // Password Hash
-    const salt = await bcrypt.genSalt(10);
-    parent.password = await bcrypt.hash(parent.password, salt);
-    // Save to DataBase
-    parent = await parent.save();
+
+    await parent.save();
     notes.push(`הורה "${firstName} ${lastName}" נוצר בDB.`);
 }
 
 async function createTeacher(firstName, lastName, id, password, phone) {
-    const { error } = validateTeacher({ firstName, lastName, id, password, phone });
-    // Assert validation
-    if (error) {
-        notes.push(error.details[0].message);
-        return console.log(reverseString(error.details[0].message));
-    }
-    // Check if the teacher exist
-    let teacher = await Teacher.findOne({ id });
-    // Response 400 Bad Request if the teacher exist
-    if (teacher) {
-        notes.push(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`);
-        return console.log(reverseString(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`));
-    }
-    // Create new document
     teacher = new Teacher({
         firstName,
         lastName,
         id,
-        password,
+        password:await bcrypt.hash(password, await bcrypt.genSalt(10)),
         phone
     });
-    teacher.assignToClassroom(req.body.classroomCode);
-    // Password Hash
-    const salt = await bcrypt.genSalt(10);
-    teacher.password = await bcrypt.hash(teacher.password, salt);
-    // Save to DataBase
-    teacher = await teacher.save();
+    // teacher.assignToClassroom(req.body.classroomCode);
+
+    await teacher.save();
     notes.push(`מורה "${firstName} ${lastName}" נוצר בDB.`);
 }
 
