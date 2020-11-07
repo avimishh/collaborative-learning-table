@@ -9,7 +9,7 @@ export const URL = {
         DETAILS: '/views/Child/Details.html',
         PERFORMANCE: '/views/Child/Performance.html',
         SIGNIN: '/views/Child/SignIn.html',
-        GAME: '/views/Child/gaming/gamingClient.html'
+        GAME: '/views/gaming/gamingClient.html'
     },
     gaming:{
         GAMES_GALLERY: '/views/Child/gaming/gamesGallery.html'
