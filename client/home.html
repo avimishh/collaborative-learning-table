@@ -185,6 +185,7 @@
       $("#btn-admin").on("click", () => {
         // window.location.href = URL.ADMIN;        // Delete the comment
         nextChildPage = URL.ADMIN;                  // Put in a comment
+        clearPasswordAndUserNameTxt();              // Put in a comment
         $("#modal-development-connect").show();     // Put in a comment
       });
 
@@ -197,6 +198,11 @@
           window.location.href = URL.ADMIN;
         }
       });
+    }
+
+    function clearPasswordAndUserNameTxt(){
+      $("#user_name").val() == "";
+      $("#password").val() == "";
     }
 
     // Modal
