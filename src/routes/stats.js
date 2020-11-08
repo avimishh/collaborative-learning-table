@@ -4,63 +4,50 @@ const admin = require('../middleware/admin');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Stat } = require('../models/stat');
+const {errText, StringFormat} = require("../models/assets/dataError");
+const {
+    Stat
+} = require('../models/stat');
 
 
-// GET 'api/fields'
+// GET ['api/fields']
 router.get('/', async (req, res, next) => {
-    // DEBUG
-    // throw new Error('Could not get the fields.');
-
-    const stats = await Stat.find();//.sort('name');
+    const stats = await Stat.find();
     res.send(stats);
 });
 
 
-// GET 'api/fields/:id'
-router.get('/:id', async (req, res) => {
-    const stats = await Stat.find({ child_id: req.params.id });
-
-    if (!stats) return res.status(404).send(`Stat ${req.params.id} was not found.`);
+// GET ['api/fields/:childId']
+router.get('/:childId', async (req, res) => {
+    const stats = await Stat.find({
+        childId: req.params.childId
+    });
+    if (!stats)
+        return res.status(404).send(StringFormat(errText.statByChildIdNotExist, req.params.childId));
 
     res.send(stats);
 });
 
-// GET 'api/fields/:id/:field'
-router.get('/:id/:field', async (req, res) => {
-    let field = field_To_English(req.params.field);
-    console.log(field);
-    const stats = await Stat.findOne({ child_id: req.params.id }).populate({
-        path: `sheets.${field}.game`,
+// GET ['api/fields/:id/:field']
+router.get('/:childId/:fieldName', async (req, res) => {
+    const field = await Field.findOne({
+        name: req.params.fieldName
+    });
+    if (!field)
+        return res.status(404).send(StringFormat(errText.fieldByNameNotExist, req.params.fieldName));
+
+    const stats = await Stat.findOne({
+        childId: req.params.childId
+    }).populate({
+        path: `sheets.${field.nameEng}.game`,
         select: '-_id title icon',
     });
 
-    if (!stats) return res.status(404).send(`Stat ${req.params.id} was not found.`);
-    // console.log(stats.sheets[field]);
+    if (!stats)
+        return res.status(404).send(StringFormat(errText.statByChildIdNotExist, req.params.childId));
+
     res.send(stats.sheets[field]);
 });
 
-
-function field_To_English(fieldName) {
-    let res = '';
-    switch (fieldName) {
-        case 'חשבון':
-            res = 'math'
-            break;
-        case 'אנגלית':
-            res = 'english'
-            break;
-        case 'צבעים':
-            res = 'color'
-            break;
-        case 'זכרון':
-            res = 'memory'
-            break;
-        default:
-            res = 'general'
-            break;
-    }
-    return res;
-}
 
 module.exports = router;

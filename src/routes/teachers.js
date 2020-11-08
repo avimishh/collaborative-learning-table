@@ -1,25 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const {errText, StringFormat} = require("../models/assets/dataError");
 const {
     Teacher,
     validateTeacher
 } = require('../models/teacher');
 const auth = require('../middleware/auth'); // Authorization
-const bcrypt = require('bcrypt'); // Password Hash
+const bcrypt = require('bcrypt');
 const _ = require('lodash'); // Pick/Select values from object
 // const admin = require('../middleware/admin');
-
-const errText = {
-    failedToUpdate: "העדכון נכשל.",
-    passwordInvalid: "הסיסמה חייבת להכיל לפחות 5 תווים.",
-    parentsNotExist: "לא קיימים מורים במערכת.",
-    parentByIdNotExist: "מורה בעל ת.ז. {0} לא קיים במערכת.",
-    parentByIdAlreadyExist: "מורה בעל ת.ז. {0} כבר קיים במערכת.",
-    childByIdNotExist: "ילד בעל ת.ז. {0} לא קיים במערכת.",
-}
-const StringFormat = (str, ...args) =>
-    str.replace(/{(\d+)}/g, (match, index) => args[index] || '')
 
 
 //@@@@permissions of admin or teacher.
@@ -68,8 +58,7 @@ router.post('/', async (req, res) => {
         id: req.body.id
     });
     if (teacherExist)
-        return res.status(400).send(StringFormat(errText.parentByIdAlreadyExist, req.body.id));
-
+        return res.status(400).send(StringFormat(errText.teacherByIdAlreadyExist, req.body.id));
 
     let teacher = new Teacher({ // Create new document
         firstName: req.body.firstName,
@@ -117,7 +106,7 @@ router.put('/:id', auth, async (req, res) => {
         return res.status(400).send(errText.failedToUpdate);
     }
     if (!teacher)
-        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+        return res.status(404).send(StringFormat(errText.teacherByIdNotExist, req.params.id));
 
     res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
@@ -125,7 +114,7 @@ router.put('/:id', auth, async (req, res) => {
 
 // PUT ['api/teachers/changePassword/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
-    if (req.body.newPassword === null || req.body.newPassword.length < 5)
+    if (req.body.newPassword === null || req.body.newPassword.length < 2)
         return res.status(400).send(errText.passwordInvalid);
 
     // Password Hash
@@ -144,7 +133,7 @@ router.put('/changePassword/:id', auth, async (req, res) => {
         return res.status(400).send(errText.failedToUpdate);
     }
     if (!teacher)
-        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+        return res.status(404).send(StringFormat(errText.teacherByIdNotExist, req.params.id));
 
     res.status(200).send(_.pick(teacher, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
@@ -162,7 +151,7 @@ router.delete('/:id', async (req, res) => {
         return res.status(400).send(errText.failedToUpdate);
     }
     if (!teacher)
-        return res.status(404).send(StringFormat(errText.parentByIdNotExist, req.params.id));
+        return res.status(404).send(StringFormat(errText.teacherByIdNotExist, req.params.id));
 
     res.status(200).send(true);
 });

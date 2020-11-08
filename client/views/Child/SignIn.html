@@ -92,11 +92,9 @@
         $('button, .input-box').addClass('w3-animate-zoom');
 
         $("#login").on("click", () => {
-          let child_id = $("#id_user").val();
-          let gamesPassword = $("#user_password").val();
           childLoginRequest(
-            child_id,
-            gamesPassword,
+            $("#id_user").val(),
+            $("#user_password").val(),
             loginSuccess,
             printErrorToUser
           );

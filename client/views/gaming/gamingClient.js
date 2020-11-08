@@ -28,7 +28,7 @@ function connectToSocket() {
     // sock = io();
     let child = JSON.parse(localStorage.getItem('child'));
     sock = io.connect('', {
-        query: `child_ID=${child.id}&child_Name=${child.firstName}`
+        query: `childId=${child.id}&child_Name=${child.firstName}`
     });
 
     sock.emit('fromClient_toServer_client_asks_players_conn_status');

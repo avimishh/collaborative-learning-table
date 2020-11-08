@@ -8,7 +8,7 @@ module.exports = function(app){
     app.use(morgan(morganFormat, {
         skip: function (req, res) { 
             if(res.statusCode === 304){
-                if(req.originalUrl.startsWith("/lib/") || req.originalUrl.startsWith("/images/"))
+                if(req.originalUrl.startsWith("/lib/") || req.originalUrl.startsWith("/images/") || req.originalUrl.startsWith("/audio/"))
                     return true;
             }
             return false; }

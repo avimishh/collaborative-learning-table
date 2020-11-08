@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const {errText, StringFormat} = require("../models/assets/dataError");
 const {
     Parent,
     validateParent
@@ -12,18 +13,6 @@ const auth = require('../middleware/auth'); // Authorization
 const bcrypt = require('bcrypt'); // Password Hash
 const _ = require('lodash'); // Pick/Select values from object
 // const admin = require('../middleware/admin');
-
-const errText = {
-    failedToUpdate: "העדכון נכשל.",
-    passwordInvalid: "הסיסמה חייבת להכיל לפחות 5 תווים.",
-    parentsNotExist: "לא קיימים הורים במערכת.",
-    parentByIdNotExist: "הורה בעל ת.ז. {0} לא קיים במערכת.",
-    parentByIdAlreadyExist: "הורה בעל ת.ז. {0} כבר קיים במערכת.",
-    childByIdNotExist: "ילד בעל ת.ז. {0} לא קיים במערכת.",
-}
-const StringFormat = (str, ...args) =>
-    str.replace(/{(\d+)}/g, (match, index) => args[index] || '')
-
 
 //@@@@permissions of admin or teacher.
 // GET ['api/parents']
@@ -132,7 +121,7 @@ router.put('/:id', auth, async (req, res) => {
 
 // PUT ['api/parents/changePassword/:id']
 router.put('/changePassword/:id', auth, async (req, res) => {
-    if (req.body.newPassword === null || req.body.newPassword.length < 5)
+    if (req.body.newPassword === null || req.body.newPassword.length < 2)
         return res.status(400).send(errText.passwordInvalid);
 
     // Password Hash

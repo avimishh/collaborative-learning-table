@@ -1,61 +1,69 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Child, validateChild } = require('../models/child');
-const { Stat } = require('../models/stat');
+const {errText, StringFormat} = require("../models/assets/dataError");
+const {
+    Child,
+    validateChild
+} = require('../models/child');
+const {
+    Stat
+} = require('../models/stat');
 // const admin = require('../middleware/admin');
 
-// HTTP Handling
 
 // GET ['api/childs'] - only DEV, auth, admin
 router.get('/', async (req, res) => {
-    // Find
     const childs = await Child.find().select('-notes -stats').sort('id');
-    res.send(childs);
-    // Check if not exist Children
-    if (childs.length < 1 || childs == undefined) return res.status(404).send("לא קיימים ילדים במערכת.");
+    if (!childs)
+        return res.status(404).send(errText.childsNotExist);
+
+    res.status(200).send(childs);
 });
 
 
 // GET ['api/childs/:id'] - auth
 router.get('/:id', async (req, res) => {
-    // Find
-    const child = await Child.findOne({ id: req.params.id }).select('-notes');
-    // Check if exist
+    const child = await Child.findOne({
+        id: req.params.id
+    }).select('-notes');
     if (!child)
-        return res.status(404).send(`ילד בעל ת"ז ${req.params.id} אינו קיים במערכת.`);
-    // Send to client
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.params.id));
+
     res.status(200).send(child);
 });
 
 
-// GET ['api/childs/:id/:password'] - Login
-router.get('/:id/:password', async (req, res) => {
-    // Find
-    const child = await Child.findOne({ id: req.params.id }).select('-notes');;
-    // Check if exist
+// POST ['api/childs/login'] - Login
+router.post('/login', async (req, res) => {
+    const child = await Child.findOne({
+        id: req.body.id
+    }).select('-notes');
     if (!child)
-        return res.status(404).send(`ילד בעל ת"ז ${req.params.id} לא קיים במערכת`);
-    // Check if password is correct
-    if (child.gamesPassword !== req.params.password)
-        return res.status(400).send(`סיסמת המשחקים ${req.params.password} אינה נכונה.`);
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.body.id));
 
-    // Send to client
+    // Check if password is correct
+    if (child.gamesPassword !== req.body.password)
+        return res.status(400).send(errText.gamesPasswordNotMatch);
+
     res.status(200).send(child);
 });
 
 
 // POST ['api/childs']
 router.post('/', async (req, res) => {
-    // Validate client input
-    const { error } = validateChild(req.body);
-    // Assert validation
+    const {
+        error
+    } = validateChild(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
-    let stat = await Stat.findOne({ child_id: req.body.id });
+
+    let stat = await Stat.findOne({
+        childId: req.body.id
+    });
     if (!stat) {
         stat = new Stat({
-            child_id: req.body.id,
+            childId: req.body.id,
             childName: `${req.body.firstName} ${req.body.lastName}`,
             sheets: {
                 math: [],
@@ -64,9 +72,17 @@ router.post('/', async (req, res) => {
                 colors: [],
             }
         });
-        stat = await stat.save();
+        await stat.save();
     }
-    // Create new document
+
+    // Check if the child exist
+    let childExist = await Child.findOne({
+        id: req.body.id
+    });
+    if (childExist)
+        return res.status(400).send(StringFormat(errText.childByIdAlreadyExist, req.body.id));
+
+
     let child = new Child({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -79,23 +95,26 @@ router.post('/', async (req, res) => {
         // classroom: child.assignToClassroom(req.body.classroom),
         stats: stat._id
     });
-    // Save to DataBase
-    child = await child.save();
-    // Send response to client
+
+    await child.save();
+
     res.status(200).send(child);
 });
 
 
 // PUT ['api/childs/:id']
 router.put('/:id', async (req, res) => {
-    // Validate client input
-    const { error } = validateChild(req.body);
-    // Assert validation
+    const { // Validate client input
+        error
+    } = validateChild(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
-    // Try to update the selected document
-    try {
-        const child = await Child.findOneAndUpdate({ id: req.params.id }, {
+
+    var child;
+    try { // Try to update the selected document
+        child = await Child.findOneAndUpdate({
+            id: req.params.id
+        }, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             id: req.body.id,
@@ -106,34 +125,32 @@ router.put('/:id', async (req, res) => {
             phone: req.body.phone,
             level: req.body.level
         }, {
-            new: true, useFindAndModify: false
+            new: true
         });
-        // Assert update completed successfully
-        if (!child)
-            return res.status(404).send(`Childs ${req.params.id} was not found.`);
-        // Send response to client
-        res.status(200).send(child);
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(400).send(errText.failedToUpdate);
     }
+    if (!child)
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.params.id));
+
+    res.status(200).send(child);
 });
 
 
 // DELETE ['api/childs/:id'] - admin, teacher
 router.delete('/:id', async (req, res) => {
-    // Try to delete the selected document
-    try {
-        const child = await Child.findOneAndRemove({ id: req.params.id });
-        // Assert delete completed successfully
-        if (!child)
-            return res.status(404).send(`Childs ${req.params.id} was not found.`);
+    var child;
+    try { // Try to delete the selected document
+        child = await Child.findOneAndRemove({
+            id: req.params.id
+        });
+    } catch (ex) {
+        return res.status(400).send(errText.failedToUpdate);
+    }
+    if (!child)
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.params.id));
 
-        // Send response to client
-        res.send(child);
-    }
-    catch (ex) {
-        return res.status(404).send(`Faild to deleting.`);
-    }
+    res.status(200).send(true);
 });
 
 

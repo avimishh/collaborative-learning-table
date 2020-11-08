@@ -1,20 +1,23 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { customError } = require('./assets/customError.js');
+const {
+    customError
+} = require('./assets/customError.js');
 const {
     noteSchema
 } = require('./note');
 const {
     Classroom
 } = require('./classroom');
+const {
+    NAME_LEN,
+    ID_LEN,
+    GAMESPASSWORD_LEN,
+    ADDRESS_LEN,
+    PHONE_LEN,
+    GENDER_ENUM
+} = require('./assets/consts');
 
-// Const Lengths [min_length, max_length]
-const NAME_LEN = [2, 50];
-const ID_LEN = [2, 9];
-const PASSWORD_LEN = [2, 10];
-const ADDRESS_LEN = [3, 255];
-const PHONE_LEN = [9, 10];
-const GENDER_ENUM = ['זכר', 'נקבה'];
 
 // Schema
 const childSchema = new mongoose.Schema({
@@ -69,8 +72,8 @@ const childSchema = new mongoose.Schema({
     gamesPassword: {
         type: String,
         required: true,
-        minlength: PASSWORD_LEN[0],
-        maxlength: PASSWORD_LEN[1]
+        minlength: GAMESPASSWORD_LEN[0],
+        maxlength: GAMESPASSWORD_LEN[1]
     },
     notes: [{
         type: noteSchema
@@ -126,7 +129,7 @@ function validateChild(child) {
         phone: Joi.string().allow(null, '').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => {
             return customError(errors, 'טלפון')
         }),
-        gamesPassword: Joi.string().min(PASSWORD_LEN[0]).max(PASSWORD_LEN[1]).required().error(errors => {
+        gamesPassword: Joi.string().min(GAMESPASSWORD_LEN[0]).max(GAMESPASSWORD_LEN[1]).required().error(errors => {
             return customError(errors, 'סיסמת משחקים')
         })
     };

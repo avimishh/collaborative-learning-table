@@ -86,7 +86,7 @@
             color: #aaa;
         }
 
-        #notes_container .message {
+        #notes_container .content {
             width: 40%;
         }
 
@@ -178,7 +178,7 @@
         var child;
         $(document).ready(() => {
             init();
-            // let child_id = JSON.parse(localStorage.getItem('child')).id;
+            // let childId = JSON.parse(localStorage.getItem('child')).id;
             showStudentDetails();
             getChildNotesRequest(child.id, showNotes);
         });
@@ -202,7 +202,7 @@
             notes.forEach((note, index) => {
                 let $td1 = $('<td>', { class: 'teacher' })
                     .text(`המורה: `).append($('<br>')).append(`${note.teacher.firstName} ${note.teacher.lastName}`);
-                let $td2 = $('<td>', { class: 'message' }).text(note.message);
+                let $td2 = $('<td>', { class: 'content' }).text(note.content);
                 let $td3 = $('<td>', { class: 'date' }).text(formatDate(note.date));
                 $('#notes_container').append(
                     $('<div>', { class: 'container' }).append(

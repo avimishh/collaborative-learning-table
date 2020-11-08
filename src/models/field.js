@@ -38,24 +38,7 @@ function validateField(field) {
 }
 
 
-async function createField(name, description, nameEng) {
-    // validate input
-    const { error } = validateField({ name, description, nameEng });
-    if (error) 
-        return error.details[0].message;
-    // Check if the child exist
-    if (await Field.findOne({ name }))
-        return `תחום בשם "${name}" כבר קיים במערכת.`;
-    let field = new Field({
-        name,
-        description,
-        nameEng
-    });
-    return await field.save();
-}
-
 // Module exports
 exports.Field = Field;
-exports.createField = createField;
 exports.fieldSchema = fieldSchema;
 exports.validateField = validateField;

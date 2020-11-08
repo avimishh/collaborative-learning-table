@@ -1,17 +1,11 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const { sheetSchema } = require('./sheet');
-// const Field = require('./field').Field;
-
-
-// Const Lengths [min_length, max_length]
-const TITLE_LEN = [3, 50];
-const DESCRIPTION_LEN = [5, 1024];
 
 
 // Model
 const Stat = mongoose.model('Stat', new mongoose.Schema({
-    child_id: {
+    childId: {
         type: String,
         required: true
     },

@@ -5,82 +5,91 @@ const validateObjectId = require('../middleware/validateObjectId');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Field, validateField } = require('../models/field');
+const {errText, StringFormat} = require("../models/assets/dataError");
+const {
+    Field,
+    validateField
+} = require('../models/field');
 
 
-// GET 'api/fields'
+// GET ['api/fields']
 router.get('/', async (req, res, next) => {
-    // DEBUG
-    // throw new Error('Could not get the fields.');
     const fields = await Field.find().select('-__v').sort('name');
-    res.send(fields);
+    res.status(200).send(fields);
 });
 
 
-// GET 'api/fields/:id'
+// GET ['api/fields/:id']
 router.get('/:id', validateObjectId, async (req, res) => {
     const field = await Field.findById(req.params.id);
-    if (!field) return res.status(404).send(`Field ${req.params.id} was not found.`);
+    if (!field)
+        return res.status(404).send(StringFormat(errText.fieldByIdNotExist, req.params.id));
 
-    res.send(field);
+    res.status(200).send(field);
 });
 
 
 // POST
 // router.post('/', [auth,admin], async (req,res) => {
 router.post('/', auth, async (req, res) => {
-    // validate input
-    const { error } = validateField(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    const {
+        error
+    } = validateField(req.body);
+    if (error)
+        return res.status(400).send(error.details[0].message);
+
+    // Check if the field exist
+    let fieldExist = await Field.findOne({
+        name: req.body.name
+    });
+    if (fieldExist)
+        return res.status(400).send(StringFormat(errText.fieldByNameAlreadyExist, req.body.name));
 
     let field = new Field({
         name: req.body.name,
         description: req.body.description,
         nameEng: req.body.nameEng
     });
-
     field = await field.save();
+
     res.status(200).send(field);
 });
 
 
 // PUT
-router.put('/:id', async (req, res) => {
-    const { error } = validateField(req.body);
+router.put('/:id', validateObjectId, async (req, res) => {
+    const {
+        error
+    } = validateField(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
 
-    try {
-        const field = await Field.findByIdAndUpdate(req.params.id, {
+    var field;
+    try { // Try to update the selected document
+        field = await Field.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
             description: req.body.description,
             nameEng: req.body.nameEng
-        },
-            {
-                new: true,
-                usefindAndModify: false
-            });
-
-        if (!field)
-            return res.status(404).send(`Field ${req.params.id} was not found.`);
-
+        }, {
+            new: true
+        });
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(404).send(errText.failedToUpdate);
     }
+    if (!field)
+        return res.status(404).send(StringFormat(errText.fieldByIdNotExist, req.params.id));
 
     res.status(200).send(field);
-
 });
 
 
 // DELETE
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', validateObjectId, [auth, admin], async (req, res) => {
     const field = await Field.findByIdAndRemove(req.params.id);
-
     if (!field)
-        return res.status(404).send(`Field ${req.params.id} was not found.`);
+        return res.status(404).send(StringFormat(errText.fieldByIdNotExist, req.params.id));
 
-    res.send(field);
+    res.status(200).send(field);
 });
 
 

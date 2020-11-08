@@ -2,12 +2,12 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 const { customError } = require('./assets/customError.js');
 const { Field, fieldSchema } = require('./field');
+const {
+    GAMETITLE_LEN,
+    DESCRIPTION_LEN,
+    LINK_LEN,
+} = require('./assets/consts');
 
-
-// Const Lengths [min_length, max_length]
-const TITLE_LEN = [3, 50];
-const DESCRIPTION_LEN = [5, 1024];
-const LINK_LEN = [5, 1024];
 
 // Model
 const Game = mongoose.model('Game', new mongoose.Schema({
@@ -15,8 +15,8 @@ const Game = mongoose.model('Game', new mongoose.Schema({
         type: String,
         required: true,
         // trim: true,
-        minlength: TITLE_LEN[0],
-        maxlength: TITLE_LEN[1]
+        minlength: GAMETITLE_LEN[0],
+        maxlength: GAMETITLE_LEN[1]
     },
     description: {
         type: String,
@@ -48,7 +48,7 @@ const Game = mongoose.model('Game', new mongoose.Schema({
 // Essential functions
 function validateGame(game) {
     const schema = Joi.object().keys({
-        title: Joi.string().min(TITLE_LEN[0]).max(TITLE_LEN[1]).required().error(errors => { return customError(errors, 'שם המשחק') }),
+        title: Joi.string().min(GAMETITLE_LEN[0]).max(GAMETITLE_LEN[1]).required().error(errors => { return customError(errors, 'שם המשחק') }),
         description: Joi.string().min(DESCRIPTION_LEN[0]).max(DESCRIPTION_LEN[1]).required().error(errors => { return customError(errors, 'תיאור המשחק') }),
         // field: Joi.,
         icon: Joi.string().min(LINK_LEN[0]).max(LINK_LEN[1]).required(),

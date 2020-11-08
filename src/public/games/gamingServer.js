@@ -21,7 +21,7 @@ function init(io_startup) {
     // io.eio.pingTimeout = 100;
     // io.eio.pingInterval = 10;
     io.on('connection', (socket) => {
-        console.log('player connected, child id: ' + socket.handshake.query.child_ID);
+        console.log('player connected, child id: ' + socket.handshake.query.childId);
 
         if (playerHost != null && playerGuest != null) {
             console.log(`There already two connections: ${playerHost.id} ${playerHost.name}, and ${playerGuest.id} ${playerGuest.name}.`);
@@ -63,7 +63,7 @@ function set_Connection_Status_To_Clients() {
 
 function init_Host_player(socket) {
     // get queries from socket connection
-    playerHost = new Player(socket, socket.handshake.query.child_ID, socket.handshake.query.child_Name);
+    playerHost = new Player(socket, socket.handshake.query.childId, socket.handshake.query.child_Name);
     playerHost.send_Welcome_Message_To_Client(`שלום ${playerHost.name}! אתה השחקן המארח, מחכים לאורח`);
     playerHost.set_Player_Role_To_Client('Host');
 
@@ -82,7 +82,7 @@ function init_Host_player(socket) {
 
 function init_Guest_player(socket) {
     // get queries from socket connection
-    playerGuest = new Player(socket, socket.handshake.query.child_ID, socket.handshake.query.child_Name);
+    playerGuest = new Player(socket, socket.handshake.query.childId, socket.handshake.query.child_Name);
     playerGuest.send_Welcome_Message_To_Client(`שלום ${playerGuest.name}! אתה השחקן השני, אפשר להתחיל`);
     playerGuest.set_Player_Role_To_Client('guest');
 

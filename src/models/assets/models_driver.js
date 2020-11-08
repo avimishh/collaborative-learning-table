@@ -3,7 +3,7 @@ const config = require('config');
 const { Parent, validateParent } = require('../parent');
 const { Teacher, validateTeacher } = require('../teacher');
 const { Child, validateChild } = require('../child');
-const { Field, createField } = require('../field');
+const { Field } = require('../field');
 const { Game, validateGame } = require('../game');
 const { Stat } = require('../stat');
 const { createClassroom } = require('../classroom');
@@ -14,30 +14,80 @@ const bcrypt = require('bcrypt'); // Password Hash
 
 var notes = [];
 
+async function createField(name, description, nameEng) {
+    // validate input
+    const { error } = validateField({ name, description, nameEng });
+    if (error) 
+        return error.details[0].message;
+    // Check if the child exist
+    if (await Field.findOne({ name }))
+        return `תחום בשם "${name}" כבר קיים במערכת.`;
+    let field = new Field({
+        name,
+        description,
+        nameEng
+    });
+    return await field.save();
+}
+
 async function createParent(firstName, lastName, id, password, phone) {
-    let parent = new Parent({
+    const { error } = validateParent({ firstName, lastName, id, password, phone });
+    // Assert validation
+    if (error) {
+        notes.push(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
+    }
+    // Check if the parent exist
+    let parent = await Parent.findOne({ id });
+    // Response 400 Bad Request if the parent exist
+    if (parent) {
+        notes.push(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`);
+        return console.log(reverseString(`הורה בעל ת"ז "${id}" כבר קיים במערכת.`));
+    }
+    // Create new document
+    parent = new Parent({
         firstName,
         lastName,
         id,
-        password:await bcrypt.hash(password, await bcrypt.genSalt(10)),
+        password,
         phone
     });
-
-    await parent.save();
+    // Password Hash
+    const salt = await bcrypt.genSalt(10);
+    parent.password = await bcrypt.hash(parent.password, salt);
+    // Save to DataBase
+    parent = await parent.save();
     notes.push(`הורה "${firstName} ${lastName}" נוצר בDB.`);
 }
 
 async function createTeacher(firstName, lastName, id, password, phone) {
+    const { error } = validateTeacher({ firstName, lastName, id, password, phone });
+    // Assert validation
+    if (error) {
+        notes.push(error.details[0].message);
+        return console.log(reverseString(error.details[0].message));
+    }
+    // Check if the teacher exist
+    let teacher = await Teacher.findOne({ id });
+    // Response 400 Bad Request if the teacher exist
+    if (teacher) {
+        notes.push(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`);
+        return console.log(reverseString(`מורה בעל ת"ז "${id}" כבר קיים במערכת.`));
+    }
+    // Create new document
     teacher = new Teacher({
         firstName,
         lastName,
         id,
-        password:await bcrypt.hash(password, await bcrypt.genSalt(10)),
+        password,
         phone
     });
-    // teacher.assignToClassroom(req.body.classroomCode);
-
-    await teacher.save();
+    teacher.assignToClassroom(req.body.classroomCode);
+    // Password Hash
+    const salt = await bcrypt.genSalt(10);
+    teacher.password = await bcrypt.hash(teacher.password, salt);
+    // Save to DataBase
+    teacher = await teacher.save();
     notes.push(`מורה "${firstName} ${lastName}" נוצר בDB.`);
 }
 
@@ -64,7 +114,6 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
     if (!stat) {
         stat = new Stat({
             child_id: id,
-            childName: `${firstName} ${lastName}`,
             sheets: {
                 math: [],
                 english: [],

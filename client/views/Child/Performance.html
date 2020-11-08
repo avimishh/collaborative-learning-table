@@ -137,9 +137,9 @@
       import { URL } from "/consts.js";
 
       $(document).ready(() => {
-        let child_id = JSON.parse(localStorage.getItem("child")).id;
+        let childId = JSON.parse(localStorage.getItem("child")).id;
         let fieldName = localStorage.getItem("selectedField");
-        getStatsRequest(child_id, fieldName, setData, printErrorToUser);
+        getStatsRequest(childId, fieldName, setData, printErrorToUser);
 
         init();
       });

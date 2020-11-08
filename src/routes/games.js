@@ -1,126 +1,120 @@
-// add get by field
-
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Game, validateGame } = require('../models/game');
-const { Field } = require('../models/field');
+const {errText, StringFormat} = require("../models/assets/dataError");
+const validateObjectId = require('../middleware/validateObjectId');
+const {
+    Game,
+    validateGame
+} = require('../models/game');
+const {
+    Field
+} = require('../models/field');
 
-// HTTP Handling
 
 // GET ['api/games']
 router.get('/', async (req, res) => {
     const games = await Game.find().sort('name');
-    res.send(games);
+    if (!games)
+        return res.status(404).send(errText.gamesNotExist);
+
+    res.status(200).send(games);
 });
 
 
 // GET ['api/games/:id']
-router.get('/:id', async (req, res) => {
-    // Find
+router.get('/:id', validateObjectId, async (req, res) => {
     const game = await Game.findById(req.params.id);
-    // Check if exist
     if (!game)
-        return res.status(404).send(`Game ${req.params.id} was not found.`);
-    // Send to client
+        return res.status(404).send(StringFormat(errText.gameByIdNotExist, req.params.id));
+
     res.status(200).send(game);
 });
 
 
 // GET ['api/games/:field'] - get games by field
-router.get('/:field', async (req, res) => {
-    // Find
-    const games = await Game.find({ field: req.params.field });
-    // Check if exist
+router.get('/getByFieldName/:fieldName', async (req, res) => {
+    const games = await Game.find({
+        "field.name": req.params.fieldName
+    });
     if (!games)
-        return res.status(404).send(`Games with the field ${req.params.field} was not found.`);
-    // Send to client
-    res.status(200).send(game);
+        return res.status(404).send(StringFormat(errText.gamesByFieldNotExist, req.params.fieldName));
+
+    res.status(200).send(games);
 });
 
 
 // POST ['api/games']
 router.post('/', async (req, res) => {
-    // Validate client input
-    const { error } = validateGame(req.body);
-    // Assert validation
+    const {
+        error
+    } = validateGame(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
+
     // Validate field
-    const field = await Field.findOne({ name: req.body.field });
-    if (!field) return res.status(400).send(`תחום הלימודים ${req.body.field} אינו קיים במערכת.`);
-    // Create new document
+    const field = await Field.findOne({
+        name: req.body.fieldName
+    }).select("_id name description nameEng");
+    if (!field)
+        return res.status(400).send(StringFormat(errText.fieldByNameNotExist, req.body.fieldName));
+
+    // Check if the game exist
+    let gameExist = await Game.findOne({
+        title: req.body.title
+    });
+    if (gameExist)
+        return res.status(400).send(StringFormat(errText.gameByNameAlreadyExist, req.body.title));
+
+
     let game = new Game({
         title: req.body.title,
         description: req.body.description,
-        field: {
-            _id: field._id,
-            name: field.name,
-            description: field.description,
-            nameEng: field.nameEng
-        },
+        field,
         icon: req.body.icon,
         link: req.body.link
     });
-    // Save to DataBase
     await game.save();
-    // Send response to client
+
     res.status(200).send(game);
 });
 
 
 // PUT ['api/games/:id']
-router.put('/:id', async (req, res) => {
-    // Validate client input
-    const { error } = validateGame(req.body);
-    // Assert validation
+router.put('/:id', validateObjectId, async (req, res) => {
+    const {
+        error
+    } = validateGame(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
-    // Validate field
-    const field = await Field.findOne({ name: req.body.field });
-    if (!field) return res.status(400).send(`תחום הלימודים ${req.body.field} אינו קיים במערכת.`);
-    // Try to update the selected document
+
+    var game;
     try {
-        const game = await Game.findByIdAndUpdate(req.params.id, {
+        game = await Game.findByIdAndUpdate(req.params.id, {
             title: req.body.title,
             description: req.body.description,
-            field: {
-                _id: field._id,
-                name: field.name,
-                description: field.description,
-                nameEng: field.nameEng
-            },
             icon: req.body.icon,
             link: req.body.link
         }, {
-            new: true, useFindAndModify: false
+            new: true
         });
-        // Assert update completed successfully
-        if (!game)
-            return res.status(404).send(`Game ${req.params.id} was not found.`);
-        // Send response to client
-        res.status(200).send(game);
     } catch (ex) {
-        return res.status(404).send(`Failed to update.`);
+        return res.status(400).send(errText.failedToUpdate);
     }
+    if (!game)
+        return res.status(404).send(StringFormat(errText.gameByIdNotExist, req.params.id));
+
+    res.status(200).send(game);
 });
 
 
 // DELETE ['api/games/:id']
-router.delete('/:id', async (req, res) => {
-    // Try to delete the selected document
-    try {
-        const game = await Game.findByIdAndRemove(req.params.id);
-        // Assert delete completed successfully
-        if (!game)
-            return res.status(404).send(`Game ${req.params.id} was not found.`);
+router.delete('/:id', validateObjectId, async (req, res) => {
+    const game = await Game.findByIdAndRemove(req.params.id);
+    if (!game)
+        return res.status(404).send(StringFormat(errText.gameByIdNotExist, req.params.id));
 
-        // Send response to client
-        res.send(game);
-    }
-    catch (ex) {
-        return res.status(404).send(`Faild to deleting.`);
-    }
+    res.status(200).send(game);
 });
 
 

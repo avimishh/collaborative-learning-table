@@ -1,9 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Note, validate } = require('../models/note');
-const { Teacher } = require('../models/teacher');
-const { Child } = require('../models/child');
+const {errText, StringFormat} = require("../models/assets/dataError");
+const validateObjectId = require('../middleware/validateObjectId');
+const {
+    Note,
+    validate
+} = require('../models/note');
+const {
+    Teacher
+} = require('../models/teacher');
+const {
+    Child
+} = require('../models/child');
+
 
 // // GET ['api/notes']
 // router.get('/', async (req, res) => {
@@ -12,102 +22,77 @@ const { Child } = require('../models/child');
 // });
 
 
-// GET ['api/notes/:child_id'] - id=child.id
+// GET ['api/notes/:childId'] - id=child.id
 router.get('/:childId', async (req, res) => {
-    // Find
-    // const note = await Note.findById(req.params.id);
-    // const note = await Note.find({child:req.params.id});
-    // var notes = list();
-    const child = await Child.findOne({ id: req.params.childId }).populate('notes.teacher', '_id firstName lastName');
-    // Check if exist
+    const child = await Child.findOne({
+        id: req.params.childId
+    }).populate('notes.teacher', '_id firstName lastName');
     if (!child)
-        return res.status(404).send(`Child ${req.params.childId} was not found.`);
-    // parent.children.forEach(async (child_id) => {
-    //     var newNotes = await Note.find({ child: child_id });
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.params.childId));
+
+    // parent.children.forEach(async (childId) => {
+    //     var newNotes = await Note.find({ child: childId });
     //     notes.push(newNotes);
     // });
-    const notes = child.notes;
-    // Send to client
-    res.status(200).send(notes);
+
+    res.status(200).send(child.notes);
 });
 
 
 // POST ['api/notes/:childId']
 router.post('/:childId', async (req, res) => {
-    // Validate client input
-    const { error } = validate(req.body);
-    // Assert validation
+    const {
+        error
+    } = validate(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);
+
     // Validate teacher
-    let teacher = await Teacher.findOne({ id: req.body.teacherId });
-    if (!teacher) return res.status(400).send(`מורה בעל ת"ז ${req.body.teacherId} אינו קיים במערכת.`);
-    // Create new document
-    let newNote = new Note({
+    let teacher = await Teacher.findOne({
+        id: req.body.teacherId
+    });
+    if (!teacher)
+        return res.status(404).send(StringFormat(errText.teacherByIdNotExist, req.body.teacherId));
+
+    let newNote = new Note({ // Create new document
         teacher: teacher._id,
-        // date: Date.now(),
-        message: req.body.message
+        content: req.body.content
     });
 
+    var child;
     try {
-        let child = await Child.findOneAndUpdate({ id: req.params.childId },
-            {
-                $push: { notes: newNote }
-            }, {
-            new: true, useFindAndModify: false
+        child = await Child.findOneAndUpdate({
+            id: req.params.childId
+        }, {
+            $push: {
+                notes: newNote
+            }
+        }, {
+            new: true
         });
     } catch (ex) {
-        return console.log(`Failed to add new note.`);
+        return res.status(400).send(errText.failedToUpdate);
     }
-    // Send response to client
+    if (!child)
+        return res.status(404).send(StringFormat(errText.childByIdNotExist, req.params.childId));
+
     res.status(200).send(newNote);
 });
 
 
-// // PUT ['api/notes/:id']
-// router.put('/:id', async (req, res) => {
-//     // Validate client input
-//     const { error } = validate(req.body);
-//     // Assert validation
-//     if (error)
-//         return res.status(400).send(error.details[0].message);
-//     // Try to update the selected document
-//     try {
-//         const note = await Note.findByIdAndUpdate(req.params.id, {
-//             child: req.body.child,
-//             teacher: req.body.teacher,
-//             date: req.body.date,
-//             message: req.body.message
-//         }, {
-//             new: true, useFindAndModify: false
-//         });
-//         // Assert update completed successfully
-//         if (!note)
-//             return res.status(404).send(`Note ${req.params.id} was not found.`);
-//         // Send response to client
-//         res.status(200).send(note);
-//     } catch (ex) {
-//         return res.status(404).send(`Failed to update.`);
-//     }
-// });
+// DELETE ['api/notes/:id']
+router.delete('/:id', validateObjectId, async (req, res) => {
+    try {
+        const note = await Note.findByIdAndRemove(req.params.id);
+        if (!note)
+            return res.status(404).send(StringFormat(errText.noteByIdNotExist, req.params.id));
+    }
+    catch (ex) {
+        return res.status(400).send(errText.failedToUpdate);
+    }
 
-
-// // DELETE ['api/notes/:id']
-// router.delete('/:id', async (req, res) => {
-//     // Try to delete the selected document
-//     try {
-//         const note = await Note.findByIdAndRemove(req.params.id);
-//         // Assert delete completed successfully
-//         if (!note)
-//             return res.status(404).send(`Note ${req.params.id} was not found.`);
-
-//         // Send response to client
-//         res.send(note);
-//     }
-//     catch (ex) {
-//         return res.status(404).send(`Faild to deleting.`);
-//     }
-// });
+    res.status(200).send(note);
+});
 
 
 // Module exports

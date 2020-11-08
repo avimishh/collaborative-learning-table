@@ -36,10 +36,15 @@ function getApiRouteByUserType(userType) {
 //#region Login Requests
 
 export function childLoginRequest(childId, gamesPassword, successFunction, errorFunction) {
+    if(childId.length < 2 || gamesPassword.length < 2)
+        return;
     $.ajax({
-        url: childsApi + childId + "/" + gamesPassword,
-        method: "GET",
-        // data: JSON.stringify(),
+        url: childsApi + "login/",
+        method: "POST",
+        data: JSON.stringify({
+            id:childId,
+            password: gamesPassword
+        }),
         success: function (data, textStatus, xhr) {
             successFunction(data);
         },

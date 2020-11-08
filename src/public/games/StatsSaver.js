@@ -2,7 +2,7 @@ const { Game } = require('../../models/game');
 const { Stat } = require('../../models/stat');
 const { Sheet } = require('../../models/sheet');
 
-module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now()) {
+module.exports = async function (p_childId, p_stats, gameRefId, date = Date.now()) {
     let game = await Game.findById(gameRefId);
     if (!game) return console.log(`Failed to Find game.`);
 
@@ -18,7 +18,7 @@ module.exports = async function (p_child_id, p_stats, gameRefId, date = Date.now
     let fieldName = game.field.nameEng;
     console.log(fieldName);
     try {
-        let stat = await Stat.findOne({ child_id: p_child_id });
+        let stat = await Stat.findOne({ childId: p_childId });
         stat.sheets[fieldName].push(newSheet);
         await stat.save();
     } catch (ex) {

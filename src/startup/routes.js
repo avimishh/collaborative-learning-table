@@ -7,7 +7,6 @@ const admin = require('../routes/admin');
 const home = require('../routes/home');
 const fields = require('../routes/fields');
 const games = require('../routes/games');
-// const users = require('../routes/users');
 const auth = require('../routes/auth');
 const childs = require('../routes/childs');
 const parents = require('../routes/parents');
@@ -34,7 +33,6 @@ module.exports = function(app) {
     app.use('/admin', admin);
     app.use('/api/fields', fields);
     app.use('/api/games', games);
-    // app.use('/api/users', users);
     app.use('/api/auth', auth);
     app.use('/api/childs', childs);
     app.use('/api/parents', parents);

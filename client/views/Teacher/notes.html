@@ -92,7 +92,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <textarea rows="5" cols="35" id="note_message" placeholder="הוסף הערות בתיבה זה"></textarea>
+                            <textarea rows="5" cols="35" id="note_content" placeholder="הוסף הערות בתיבה זה"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -131,13 +131,13 @@
             });
 
             $('#btn').on('click', () => {
-                let noteContent = $('#note_message').val();
+                let noteContent = $('#note_content').val();
                 let teacherId = JSON.parse(localStorage.getItem('teacher')).id;
                 postChildNotesRequest(child.id, teacherId, noteContent, noteSuccess, noteFailed);
             });
 
             $('#rst').on('click', () => {
-                $('#note_message').text();
+                $('#note_content').text();
             });
         }
 

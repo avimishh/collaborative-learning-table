@@ -8,12 +8,12 @@ const {
 const {
     Classroom
 } = require('./classroom');
-
-// Const Lengths [min_length, max_length]
-const NAME_LEN = [2, 50];
-const ID_LEN = [2, 9];
-const PHONE_LEN = [9, 10];
-const PASSWORD_LEN = [5, 1024];
+const {
+    NAME_LEN,
+    ID_LEN,
+    PHONE_LEN,
+    PASSWORD_LEN
+} = require('./assets/consts');
 
 
 // Schema
