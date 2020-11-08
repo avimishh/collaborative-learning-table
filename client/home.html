@@ -183,22 +183,20 @@
       });
 
       $("#btn-admin").on("click", () => {
-        window.location.href = URL.ADMIN; // Put in a comment
-        // nextChildPage = URL.ADMIN;                               // Delete the comment
-        // $("#modal-development-connect").show(); // Delete the comment
+        // window.location.href = URL.ADMIN;        // Delete the comment
+        nextChildPage = URL.ADMIN;                  // Put in a comment
+        $("#modal-development-connect").show();     // Put in a comment
       });
 
       initModal();
     }
 
     function initModal() {
-      // $("#btn_dev_connect").on("click", () => {
-      //   if (
-      //     ($("#user_name").val() == "1234") &
-      //     ($("#password").val() == "1234")
-      //   )
-      //     window.location.href = URL.Admin;
-      // });
+      $("#btn_dev_connect").on("click", () => {
+        if (($("#user_name").val() == "1234") & ($("#password").val() == "1234")){    // Put all this in comment
+          window.location.href = URL.ADMIN;
+        }
+      });
     }
 
     // Modal
