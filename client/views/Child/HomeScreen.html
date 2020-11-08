@@ -8,6 +8,7 @@
   <script src="/lib/jquery.js"></script>
   <link href="/style/global.css" rel="stylesheet" />
   <link href="/style/modal.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="#" />
   <style>
     body,
     h1,
@@ -52,6 +53,15 @@
 
 <body dir="rtl">
   <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
+  </audio>
+  <audio controls src="/audio/welcom child.mpeg" id="myWelcomChild" style="display: none;">
+  </audio>
+
+  <audio controls src="/audio/performance child.mpeg" id="myPerformanceChild" style="display: none;">
+  </audio>
+  <audio controls src="/audio/details child.mpeg" id="myDetailsChild" style="display: none;">
+  </audio>
+  <audio controls src="/audio/game child.mpeg" id="myGameChild" style="display: none;">
   </audio>
 
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
@@ -107,10 +117,33 @@
 
   <script>
     function returnHomePage() {
-      $("#modal-edition").fadeOut("slow");
       $("#myAudioReturn").get(0).play();
     }
 
+    function welcomChildVoice() {
+      // $("#myWelcomChild").get(0).play();
+      var audioWelcomChild = new Audio('/audio/welcom child.mpeg');
+      audioWelcomChild.play();
+    }
+
+    function detailsChildVoice() {
+      $("#myDetailsChild").get(0).play();
+    }
+
+    function performanceChildVoice() {
+      $("#myPerformanceChild").get(0).play();
+    }
+
+    function gameChildVoice() {
+      $("#myGameChild").get(0).play();
+    }
+
+    function disabledBtn() {
+      $("#btn_performance").prop("disabled", true);
+      $("#btn_game").prop("disabled", true);
+      $("#btn_goToHome").prop("disabled", true);
+      $("#btn_details").prop("disabled", true);
+    }
   </script>
 
   <script type="module">
@@ -120,6 +153,8 @@
       var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
       $(document).ready(() => {
         init();
+        welcomChildVoice();
+        setTimeout(() => { console.log("stop"); initBtn(); }, 3500);
       });
 
       function init() {
@@ -128,31 +163,40 @@
         );
         $(".container div img").addClass("btn_home_img");
 
+        displayNameTitle();
+      }
+
+      function initBtn() {
         $("#btn_details").on("click", () => {
-          window.location.href = URL.CHILD.DETAILS;
+          detailsChildVoice();
+          disabledBtn();
+          setTimeout(() => {
+            window.location.href = URL.CHILD.DETAILS;
+          }, 3000);
         });
 
         $("#btn_performance").on("click", () => {
+          performanceChildVoice();
+          disabledBtn();
           $("#modal-choose-child").show();
         });
 
         $("#btn_game").on("click", () => {
-          window.location.href = URL.CHILD.GAME;
+          gameChildVoice();
+          disabledBtn();
+          setTimeout(() => {
+            window.location.href = URL.CHILD.GAME;
+          }, 2000);
         });
 
         $("#btn_goToHome").on("click", () => {
           returnHomePage();
-          document.getElementById("btn_details").disabled = true;
-          document.getElementById("btn_performance").disabled = true;
-          document.getElementById("btn_game").disabled = true;
-
+          disabledBtn();
           setTimeout(() => {
             window.location.href = URL.HOME;
           }, 3000);
           
         });
-
-        displayNameTitle();
 
         updateSelectOptions();
         initModal();
