@@ -125,8 +125,11 @@ function generateRandomColors(num, correctAnswerConstColor) {
         // check if exist in arr
         varRandomColor = randomColor();
 
-        while (arr.includes(varRandomColor) || varRandomColor === "rgb(" + correctAnswerConstColor.val + ")") {
-            varRandomColor = randomColor();
+        if (correctAnswerConstColor != null) {
+            while (arr.includes(varRandomColor) || varRandomColor === "rgb(" + correctAnswerConstColor.val + ")") 
+            {
+                varRandomColor = randomColor();
+            }
         }
         // add num random colors to array
         arr.push(varRandomColor);
