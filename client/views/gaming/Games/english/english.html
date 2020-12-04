@@ -56,6 +56,18 @@
     #instruction-top {
       color: black;
     }
+
+    .container_class {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: center;
+      color: #27980a;
+      margin: 50px;
+      /* margin-top: 60px; */
+      background: #e5f6fd;
+      padding: 0 20px;
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.8);
+    }
   </style>
 </head>
 
@@ -65,7 +77,8 @@
     <div class="w3-display-topmiddle w3-padding w3-hide-small">
       <h1 id="instruction-top">שלום</h1>
     </div>
-    <div id="stats" class="w3-table-all">
+
+    <div class="w3-display-topleft w3-padding container_class w3-round-xlarge">
       <table class="w3-table">
         <thead class="border_bottom">
           <th></th>
@@ -76,6 +89,18 @@
         </tbody>
       </table>
     </div>
+
+    <!-- <div id="stats" class="w3-table-all">
+      <table class="w3-table">
+        <thead class="border_bottom">
+          <th></th>
+          <th>אתה</th>
+          <th>חברך</th>
+        </thead>
+        <tbody id="table-stats-body">
+        </tbody>
+      </table>
+    </div> -->
   </div>
   <div>
     <div class="w3-container w3-display-middle" id="div-questions"></div>
