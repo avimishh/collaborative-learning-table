@@ -74,6 +74,17 @@
 </head>
 
 <body dir="rtl">
+  <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
+    <!-- שולחן משחקים שיתופי -->
+    <img src="/images/logo1.jpeg" alt=""
+      style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;" />
+    <br />
+    <button type="button" class="homeBtn tooltip" id="btn_goToHome">
+      <img id="homeImg" src="/images/homeBtn.png" alt="" style="background-color: white; margin-bottom: 5px;">
+      חזרה לעמוד הבית
+    </button>
+  </div>
+
   <h1>אפשרויות מנהל מערכת:</h1>
   <div id="div_general">
     <span>כללי:</span>
@@ -255,6 +266,10 @@
           getRequest(COMMAND.ADD_STATS, printToUser);
           resultColor("children");
         });
+
+        $('#btn_goToHome').on('click', () => {
+                window.history.back();
+            });
 
         initModal();
       }

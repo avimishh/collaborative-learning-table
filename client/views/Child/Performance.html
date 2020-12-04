@@ -1,139 +1,147 @@
 ﻿<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-    <script src="/lib/jquery.js"></script>
-    <link href="/style/global.css" rel="stylesheet" />
-    <style>
-      .bgimg {
-        background-image: url("/images/background/back3.jpg");
-      }
 
-      .homeBtn {
-        border: 1px solid #000;
-        color: #000;
-        margin-left: 0;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="/lib/jquery.js"></script>
+  <link href="/style/global.css" rel="stylesheet" />
+  <style>
+    .bgimg {
+      background-image: url("/images/background/back3.jpg");
+    }
 
-      #btnDiv,
-      #bottomDiv {
-        color: black;
-      }
+    .homeBtn {
+      border: 1px solid #000;
+      color: #000;
+      margin-left: 0;
+    }
 
-      h1 {
-        text-align: center;
-        margin-bottom: 40px;
-      }
+    #btnDiv,
+    #bottomDiv {
+      color: black;
+    }
 
-      table tr td {
-        padding: 10px 30px;
-      }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
 
-      .mess {
-        text-align: center;
-        margin-bottom: 30px;
-      }
+    table tr td {
+      padding: 10px 30px;
+    }
 
-      #chartContainer {
-        margin: auto;
-      }
+    .mess {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-      .form-box {
-        width: 80%;
-        background: rgba(50, 50, 50, 0.9);
-        margin: 1% auto 1% auto;
-        padding: 10px 20px 0 20px;
-        color: #fff;
-        box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
-        overflow: scroll;
-        height: 500px;
-      }
+    #chartContainer {
+      margin: auto;
+    }
 
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        width: 100%;
-        border: 1px solid #ddd;
-      }
+    .form-box {
+      width: 80%;
+      background: rgba(50, 50, 50, 0.9);
+      margin: 1% auto 1% auto;
+      padding: 10px 20px 0 20px;
+      color: #fff;
+      box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
+      overflow: scroll;
+      height: 500px;
+    }
 
-      th,
-      td {
-        text-align: center;
-        padding: 10px;
-        width: 10%;
-      }
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+      border: 1px solid #ddd;
+    }
 
-      /* th:first-child,
+    th,
+    td {
+      text-align: center;
+      padding: 10px;
+      width: 10%;
+    }
+
+    /* th:first-child,
         td:first-child {
             text-align: left;
         } */
 
-      .fa-check {
-        color: green;
-      }
+    .fa-check {
+      color: green;
+    }
 
-      .fa-remove {
-        color: red;
-      }
+    .fa-remove {
+      color: red;
+    }
 
-      .dataDate {
-        width: 15%;
-      }
+    .dataDate {
+      width: 15%;
+    }
 
-      .dataGame {
-        width: 20%;
-      }
+    .dataGame {
+      width: 20%;
+    }
 
-      .goodScore {
-        background-color: rgba(100, 240, 10, 0.4);
-      }
+    .goodScore {
+      background-color: rgba(100, 240, 10, 0.4);
+    }
 
-      .badScore {
-        background: rgba(240, 21, 13, 0.4);
-      }
+    .badScore {
+      background: rgba(240, 21, 13, 0.4);
+    }
 
-      .tableHead {
-        background: rgba(4, 32, 41, 0.4);
-      }
+    .tableHead {
+      background: rgba(4, 32, 41, 0.4);
+    }
 
-      .emptyScore {
-        background: rgba(4, 32, 41, 0.4);
-      }
+    .emptyScore {
+      background: rgba(4, 32, 41, 0.4);
+    }
 
-      .gameIconImg {
-        width: 50px;
-        height: 50px;
-        max-height: 50px;
-        height: auto;
-        margin-bottom: 10px;
-      }
-    </style>
-  </head>
+    .gameIconImg {
+      width: 50px;
+      height: 50px;
+      max-height: 50px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
 
-  <body dir="rtl">
-    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
-      <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
-        שולחן משחקים שיתופי
-        <br />
-        <button type="button" class="homeBtn" id="btn_goToHome">
-          <img id="homeImg" src="/images/homeBtn.png" alt="" />
-        </button>
-      </div>
-      <div class="form-box w3-display-middle">
-        <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
-        <div id="err_text"></div>
-        <div class="mess" id="data"></div>
-      </div>
+<body dir="rtl">
+  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
+      <!-- שולחן משחקים שיתופי -->
+      <img src="/images/logo1.jpeg" alt="" style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;"/>
+      <br />
+      <button type="button" class="homeBtn" id="btn_goToHome">
+        <img id="homeImg" src="/images/homeBtn.png" alt="" />
+      </button>
 
-      <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
-        Make Learning Fun
-      </div>
+      <!-- שולחן משחקים שיתופי
+      <br />
+      <button type="button" class="homeBtn" id="btn_goToHome">
+        <img id="homeImg" src="/images/homeBtn.png" alt="" />
+      </button> -->
+    </div>
+    <div class="form-box w3-display-middle">
+      <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
+      <div id="err_text"></div>
+      <div class="mess" id="data"></div>
     </div>
 
-    <script type="module">
-      import { getStatsRequest } from "/api.js";
+    <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
+      Make Learning Fun
+    </div>
+  </div>
+
+  <script type="module">
+    import { getStatsRequest } from "/api.js";
       import { URL } from "/consts.js";
 
       $(document).ready(() => {
@@ -261,5 +269,6 @@
         $("#err_text").text(err);
       }
     </script>
-  </body>
+</body>
+
 </html>
