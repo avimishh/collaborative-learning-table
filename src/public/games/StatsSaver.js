@@ -14,6 +14,7 @@ module.exports = async function (p_childId, p_stats, gameRefId, date = Date.now(
         additionalInfo: p_stats.subFields
     });
     console.log(newSheet);
+    console.log(p_stats._getTotalAmountCorrectAnswer());
 
     let fieldName = game.field.nameEng;
     console.log(fieldName);

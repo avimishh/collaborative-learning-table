@@ -31,7 +31,7 @@ class Stats {
 
     _getTotalAmountCorrectAnswer(){
         let totalCorrect = 0;
-        this.subFields.forEach(sf => totalCorrect += sf.asked);
+        this.subFields.forEach(sf => totalCorrect += sf.correct);
         return totalCorrect;
     }
 }
