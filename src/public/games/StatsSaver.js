@@ -13,16 +13,17 @@ module.exports = async function (p_childId, p_stats, gameRefId, date = Date.now(
         numOfCorrectAnswers: p_stats._getTotalAmountCorrectAnswer(),
         additionalInfo: p_stats.subFields
     });
-    console.log(newSheet);
-    console.log(p_stats._getTotalAmountCorrectAnswer());
+    // console.log(newSheet);
 
     let fieldName = game.field.nameEng;
-    console.log(fieldName);
+    // console.log(fieldName);
     try {
         let stat = await Stat.findOne({ childId: p_childId });
         stat.sheets[fieldName].push(newSheet);
+        // console.log(stat);
         await stat.save();
     } catch (ex) {
+        // console.log(ex);
         return console.log(`Failed to update Stats.`);
     }
 }

@@ -16,7 +16,7 @@ const subFields = [{
     heb: 'התאמת צבע לתמונה'
 }];
 
-const MAX_ROUNDS = 3;
+const MAX_ROUNDS = 1;
 var questions = [];
 var potentialQuestionsCollection = [];
 const P0 = 0,
@@ -103,7 +103,7 @@ module.exports = class ColorsGame { // @@@@CHANGING
         // Remove question from potential collection
         let qIdx = Math.floor( Math.random() * potentialQuestionsCollection.length );
         if (qIdx !== -1) questions.push(potentialQuestionsCollection.splice(qIdx, 1)[0]);
-        console.log(questions[questions.length - 1]);
+        // console.log(questions[questions.length - 1]);
         this._players.forEach(p => p.show_Client_New_Question(questionLevel, questions[questions.length - 1]));
         this._players.forEach(p => p.stats._add_AskedQuestion(questions[questions.length - 1]._operator));
 
@@ -119,7 +119,7 @@ module.exports = class ColorsGame { // @@@@CHANGING
             this._isPlayersAnswerCorrect[playerIndex] = true;
         } else // if wrong answer
             this._isPlayersAnswerCorrect[playerIndex] = false;
-        console.log(this._isPlayersAnswerCorrect);
+        // console.log(this._isPlayersAnswerCorrect);
     }
 
     _checkRoundOver() { // check round over after every answer one of the player made
