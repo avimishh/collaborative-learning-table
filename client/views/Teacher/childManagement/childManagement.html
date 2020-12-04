@@ -96,63 +96,46 @@
         <div id="err_text"></div>
       </div>
     </div>
+  </div>
 
-    <!-- The Modal -->
-    <div id="modal-choose-child" class="modal w3-animate-opacity">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close">&times;</span>
-          <h2 style="text-align: center">בחר ילד:</h2>
-        </div>
-        <div class="modal-body">
-          <select name="children" class="children_selector"></select>
-        </div>
-        <div class="modal-footer">
-          <button id="btn_child_chose" type="button">בחר</button>
-          <div id="err_text"></div>
+  <!-- The Delete Child Modal -->
+  <div id="modal-child-delete" class="modal w3-animate-opacity">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 style="text-align: center">בחר ילד:</h2>
+      </div>
+      <div class="modal-body">
+        <select name="children" class="children_selector" size="3" style="height: 120px;width: 80%;"></select>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-child-delete" type="button">בחר</button>
+        <div id="div-child-delete-ask">
+          האם אתה בטוח?
+          <button id="btn-child-delete-yes" type="button">כן</button>
+          <button id="btn-child-delete-no" type="button">לא</button>
         </div>
         <div id="err_text"></div>
       </div>
     </div>
-
-    <!-- The Delete Child Modal -->
-    <div id="modal-child-delete" class="modal w3-animate-opacity">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close">&times;</span>
-          <h2 style="text-align: center">בחר ילד:</h2>
-        </div>
-        <div class="modal-body">
-          <select name="children" class="children_selector" size="3" style="height: 120px;width: 80%;"></select>
-        </div>
-        <div class="modal-footer">
-          <button id="btn-child-delete" type="button">בחר</button>
-          <div id="div-child-delete-ask">
-            האם אתה בטוח?
-            <button id="btn-child-delete-yes" type="button">כן</button>
-            <button id="btn-child-delete-no" type="button">לא</button>
-          </div>
-          <div id="err_text"></div>
-        </div>
+  </div>
+  <!-- The Modal -->
+  <div id="modal-success" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
+        <h2 style="text-align: center">המחיקה הצליחה!</h2>
       </div>
-    </div>
-    <!-- The Modal -->
-    <div id="modal-success" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
-          <h2 style="text-align: center">המחיקה הצליחה!</h2>
-        </div>
-        <div class="modal-body">
-          <img id="img-modal" src="/images/kid_success.png" alt="" />
-        </div>
-        <!-- <div class="modal-footer">
+      <div class="modal-body">
+        <img id="img-modal" src="/images/kid_success.png" alt="" />
+      </div>
+      <!-- <div class="modal-footer">
           <div id="err_text">אנא המתן לרענון הנתונים...</div>
         </div> -->
-      </div>
     </div>
-    <script type="module">
-      import { getChildsRequest , getChildByIdRequest, deleteChildByIdRequest } from "/api.js";
+  </div>
+  <script type="module">
+    import { getChildsRequest , getChildByIdRequest, deleteChildByIdRequest } from "/api.js";
       import { URL } from "/consts.js";
 
       $(document).ready(() => {
