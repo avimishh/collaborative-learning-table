@@ -76,7 +76,7 @@ function initAnswersImagesFrame() {
   $("#div-answers").empty();
 
   questions.forEach(question => {
-    let $btn = $("<input>", {"type": "image", "src": imagesPath + question._word + ".png"});
+    let $btn = $("<input>", {"type": "image", "src": imagesPath + question._word.toLowerCase() + ".png"});
     $btn.addClass("img_answers w3-ripple");
     $btn.on("click", function () {
       $(this).hide();
