@@ -16,7 +16,7 @@ const subFields = [{
     heb: 'התאמת צבע לתמונה'
 }];
 
-const MAX_ROUNDS = 1;
+const MAX_ROUNDS = 3;
 var questions = [];
 var potentialQuestionsCollection = [];
 const P0 = 0,

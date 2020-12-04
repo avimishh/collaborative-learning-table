@@ -93,25 +93,46 @@
             width: 100px;
             float: left;
             position: relative;
+            margin-left: 100px;
+            margin-top: 20px;
+            border-radius: 20px;
         }
 
-        #modal-game-operator{
+        #div-stats-table {
+            border-radius: 20px;
+        }
+
+        #modal-game-operator {
             cursor: unset;
         }
 
         .modal-content:hover {
-    background-color: default;
-    cursor: unset;
-}
-#img-question{
-    width: 100px;
-    height: 100px;
-    display: none;
-}
-button:disabled{
-    cursor: not-allowed;
-    opacity: 0.5;
-}
+            background-color: default;
+            cursor: unset;
+        }
+
+        #img-question {
+            width: 100px;
+            height: 100px;
+            display: none;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .container {
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            color: #000;
+            margin: 50px;
+            margin-top: 220px;
+            background: rgb(255, 255, 255);
+            padding: 0 20px;
+            box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 
@@ -126,8 +147,19 @@ button:disabled{
     <div>
     </div>
 
+    <!-- <div id="div-stats" class="w3-table-all">
+        <table id="div-stats-table" class="w3-table">
+            <thead class="border_bottom">
+                <th></th>
+                <th>אתה</th>
+                <th>חברך</th>
+            </thead>
+            <tbody id="table-stats-body">
+            </tbody>
+        </table>
+    </div> -->
 
-    <div id="div-stats" class="w3-table-all">
+    <div class="w3-display-topleft w3-padding container w3-round-xlarge">
         <table class="w3-table">
             <thead class="border_bottom">
                 <th></th>
