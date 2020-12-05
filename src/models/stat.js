@@ -18,6 +18,7 @@ const Stat = mongoose.model('Stat', new mongoose.Schema({
         english:[{type: sheetSchema}],
         memory:[{type: sheetSchema}],
         colors:[{type: sheetSchema}],
+        hebrew:[{type: sheetSchema}],
     }
 }));
 

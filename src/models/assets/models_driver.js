@@ -119,6 +119,7 @@ async function createChild(firstName, lastName, id, birth, gender, gamesPassword
                 english: [],
                 memory: [],
                 colors: [],
+                hebrew: [],
             }
         });
         stat = await stat.save();
@@ -242,6 +243,7 @@ async function addFields() {
     await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
     await createField('צבעים', 'תרגול הכרת צבעים', 'colors');
     await createField('זכרון', 'תרגול ואימון הזכרון', 'memory');
+    await createField('עברית', 'תרגול מילים בשפה העברית', 'hebrew');
 }
 
 

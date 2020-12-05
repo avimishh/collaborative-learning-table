@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hebrew Game</title>
+    <script src="/lib/jquery.js"></script>
+    <link href="/lib/w3.css" rel="stylesheet" />
+    <link href="/style/modal.css" rel="stylesheet" />
+    <link href="/style/gaming.css" rel="stylesheet" />
+    <script src="./hebrew.js"></script>
+    <style>
+        body {
+            background-image: url("/images/background/back10.jpg");
+            /* background-color: darkolivegreen; */
+        }
+
+        #message_div {
+            text-align: center;
+        }
+
+        #div-questions {
+            text-align: center;
+            /* height: 150px;
+            padding-top: 20px;
+            margin-top: 50px; */
+            font-size: 32px;
+            font-family: "Josefin Sans", sans-serif;
+        }
+
+        #div-questions button {
+            margin: 10px;
+            width: 150px;
+            height: 100px;
+        }
+
+        #div-answers {
+            text-align: center;
+            /* height: 150px; */
+            /* padding-top: 20px; */
+            /* margin-top: 50px; */
+        }
+
+        .img_answers {
+            margin: 20px;
+            width: 150px;
+            height: 150px;
+        }
+
+        #stats {
+            width: 100px;
+            float: left;
+        }
+
+        #instruction-top {
+            color: black;
+        }
+
+        #img-question {
+            width: 50px;
+            height: 50px;
+            display: none;
+        }
+
+        #modal-game-instruction-img {
+            width: 50px;
+            height: 50px;
+            display: none;
+        }
+
+        .container_class {
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: center;
+            color: #27980a;
+            margin: 50px;
+            /* margin-top: 60px; */
+            background: #e5f6fd;
+            padding: 0 20px;
+            box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+
+<body dir="rtl">
+    <!-- style="height:100vh;" -->
+    <div class="w3-container w3-display-container" id="message_div">
+        <div class="w3-display-topmiddle w3-padding w3-hide-small">
+            <!-- <h1 id="instruction-top">שלום</h1> -->
+            <h1>
+                <span id="instruction-top">שלום</span>
+                <br />
+                <img id="img-question" src="" alt="">
+            </h1>
+        </div>
+
+        <div class="w3-display-topleft w3-padding container_class w3-round-xlarge">
+            <table class="w3-table">
+                <thead class="border_bottom">
+                    <th></th>
+                    <th>אתה</th>
+                    <th>חברך</th>
+                </thead>
+                <tbody id="table-stats-body">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div>
+        <div class="w3-container w3-display-middle" id="div-questions"></div>
+        <div class="w3-container w3-display-middle" id="div-answers"></div>
+    </div>
+
+    <!-- The Instruction Modal -->
+    <div id="modal-game-instruction" class="modal w3-animate-opacity" onclick="hideModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <h1>
+                    <span id="modal-game-instruction-text"></span>
+                    <br />
+                    <img id="modal-game-instruction-img" src="" alt="">
+                </h1>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

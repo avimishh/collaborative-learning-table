@@ -20,7 +20,7 @@ function addSocketEvents(){
 
   sock.on('fromServer_toClient_show_the_new_question', (question_string) => {
     console.log(question_string);
-      let pre_question = `${childName}, ` + 'בחר את התמונה שמתמאימה ל: '
+      let pre_question = `${childName}, ` + 'בחר את התמונה שמתאימה ל: '
       $('#instruction-top').text(pre_question + question_string);
       showModal(pre_question + question_string);
   });

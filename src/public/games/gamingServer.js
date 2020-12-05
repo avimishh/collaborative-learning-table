@@ -97,7 +97,8 @@ function init_Guest_player(socket) {
 const MathGame = require('./Math/MathQuests_Server');
 const EnglishGame = require('./English/EnglishCards_Server');
 const ColorsGame = require('./Colors/ColorSquares_Server');
-// const MemoryGame = require('./Memory/MemoryCards_Server');
+const HebrewGame = require('./Hebrew/HebrewGame_Server');
+// const MemoryGame = require('./Hebrew/HebrewGame_Server');
 
 var playingGame;
 
@@ -119,6 +120,9 @@ async function startGame() {
             break;
         case 'ריבועי צבעים':
             playingGame = new ColorsGame(playerHost, playerGuest, gameToPlay);
+            break;
+        case 'גלגל המזל בשפה העברית':
+            playingGame = new HebrewGame(playerHost, playerGuest, gameToPlay);
             break;
             // case 'כרטיסיות זכרון':
             //     playingGame = new MemoryGame(playerHost, playerGuest, gameToPlay);
