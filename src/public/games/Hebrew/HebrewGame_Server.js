@@ -22,7 +22,6 @@ var potentialQuestionsCollection = [];
 const P0 = 0,
     P1 = 1;
 // @@@@
-console.log("AA");
 
 class HebrewGame { // @@@@CHANGING
     constructor(player0, player1, game) {
@@ -42,9 +41,8 @@ class HebrewGame { // @@@@CHANGING
                 this._askNewQuestion(idx, question);
             });
 
-            player.socket.on('fromClient_toServer_player_submitted_answer', (answer) => {
-                this._checkPlayerAnswer(idx, answer);
-                console.log(idx, answer);
+            player.socket.on('fromClient_toServer_player_submitted_answer', (nameAnswer, answer) => {
+                this._checkPlayerAnswer(idx, nameAnswer, answer);
                 this._checkRoundOver();
             });
         });
@@ -99,6 +97,8 @@ class HebrewGame { // @@@@CHANGING
 
     // @@@@CHANGING
     _askNewQuestion(playerIndex, question) {
+        console.log("== 101: ==");
+        console.log(playerIndex, question);
         // After player chose operator/question disable his game operators
         this._players[playerIndex].set_Questions_Frame_State('disable');
         // Remove question from potential collection
@@ -110,10 +110,12 @@ class HebrewGame { // @@@@CHANGING
         this._setPlayersAnswerFrameState('enable'); // set enable so player can answer
     }
 
-    _checkPlayerAnswer(playerIndex, answer_From_Player) {
+    _checkPlayerAnswer(playerIndex, nameAnswer, answer_From_Player) {
+        console.log("== 116: ==");
         let asked_Question = questions[questions.length - 1];
+        console.log(asked_Question._answer, nameAnswer);
 
-        if (asked_Question._word === answer_From_Player._word) { // @@@@CHANGING
+        if (nameAnswer.ques === nameAnswer.ans) { // @@@@CHANGING
             this._players[playerIndex].stats._add_CorrectAnswer(asked_Question._operator);
             this._isPlayersAnswerCorrect[playerIndex] = true;
         } else // if wrong answer
@@ -178,20 +180,36 @@ class HebrewGame { // @@@@CHANGING
     // @@@@CHANGING
     _generate_questions() {
         potentialQuestionsCollection = [
-            new Question('Apple', 'תפוח'), new Question('House', 'בית'),
-            new Question('Dog', 'כלב'), new Question('Sun', 'שמש'),
-            new Question('Ball', 'כדור')
+            new Question('Apple',
+                'תפוח',
+                ['תפוח', 'טפוח', 'תפוך', 'תפואח']
+            ),
+            new Question('House',
+                'בית',
+                ['בית', 'ביט', 'באית', 'ביית']
+            ),
+            new Question('Dog',
+                'כלב',
+                ['כלב', 'קלב', 'כלאב', 'קאלב']
+            ), new Question('Sun',
+                'שמש',
+                ['שמש', 'שמס', 'סמס', 'שאמאש']
+            ),
+            new Question('Ball',
+                'כדור',
+                ['כדור', 'קדור', 'כאדור', 'כדר']
+            )
         ];
     }
 }
 
-
 // @@@@CHANGING
 // #### specific ####
 class Question {
-    constructor(word, answer, operator = subFields[0].eng) {
+    constructor(word, answer, wrongAnswers, operator = subFields[0].eng) {
         this._word = word;
         this._answer = answer;
+        this._wrongAnswers = wrongAnswers;
         this._operator = operator;
     }
 

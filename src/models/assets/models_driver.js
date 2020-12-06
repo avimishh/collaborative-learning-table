@@ -273,6 +273,7 @@ async function initDB() {
     await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
     await createField('צבעים', 'תרגול הכרת צבעים', 'colors');
     await createField('זכרון', 'תרגול ואימון הזכרון', 'memory');
+    await createField('עברית', 'תרגול מילים בשפה העברית', 'hebrew');
 
 
     await createGame('תרגילי חשבון', 'שחק בפעולות חשבון עם חברך!', 'חשבון', 'icons/math.png', './math/math.html');
