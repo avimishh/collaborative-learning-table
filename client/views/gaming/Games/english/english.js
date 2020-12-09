@@ -38,10 +38,12 @@ function addSocketEvents(){
 
   sock.on("fromServer_toClient_set_question_frame_state", (state) => {
     set_questions_frame_state(state);
+    console.log(state);
   });
 
   sock.on("fromServer_toClient_set_answer_frame_state", (state) => {
     set_answers_frame_state(state);
+    console.log(state);
   });
   
   sock.on("fromServer_toClient_send_questions_collection", (new_questions) => {
@@ -78,6 +80,8 @@ function initAnswersImagesFrame() {
   questions.forEach(question => {
     let $btn = $("<input>", {"type": "image", "src": imagesPath + question._word.toLowerCase() + ".png"});
     $btn.addClass("img_answers w3-ripple");
+    console.log(question._word.toLowerCase());
+
     $btn.on("click", function () {
       $(this).hide();
       sock.emit("fromClient_toServer_player_submitted_answer", question);

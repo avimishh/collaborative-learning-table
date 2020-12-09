@@ -6,7 +6,7 @@ var isFirst = true;
 
 $(document).ready(function () {
     addSocketEvents();
-    initGameFrames(); // check
+    // initGameFrames(); // check
     sock.emit("fromClient_toServer_startGame");
     setChildName();
 });
@@ -21,15 +21,15 @@ function addSocketEvents() {
     });
 
     sock.on('fromServer_toClient_show_the_new_question', (question_string) => {
-        // console.log(question_string);
+        console.log(question_string);
 
         let pre_question = `${childName}, ` + 'בחר את המילה שמתאימה לתמונה: '
         $('#instruction-top').text(pre_question);
         $('#img-question').attr('src', './images/' + question_string.toLowerCase() + '.png').show();
         showModal(pre_question, question_string.toLowerCase());
 
-        // $('#instruction-top').text(pre_question + question_string);
-        // showModal(pre_question + question_string);
+        chooseQuestions = question_string;
+        initAnswersWordsFrame(question_string);
     });
 
     sock.on('fromServer_toClient_updated_stats', (playersStatsArray) => {
@@ -57,16 +57,18 @@ function addSocketEvents() {
         questions = new_questions;
         console.log("== 57 ==");
         console.log(questions);
+
         // initGameFrames();
-        initQuestionsImagesFrame();
-        // initAnswersWordsFrame();
+
+        chooseQuestions = initQuestionsImagesFrame();
+        // initAnswersWordsFrame(chooseQuestions);
     });
 }
 
 
 function initGameFrames() {
-    initQuestionsImagesFrame();
-    initAnswersWordsFrame();
+    chooseQuestions = initQuestionsImagesFrame();
+    initAnswersWordsFrame(chooseQuestions);
 }
 
 function initQuestionsImagesFrame() {
@@ -80,50 +82,52 @@ function initQuestionsImagesFrame() {
         });
         $btn.addClass("img_answers w3-ripple");
 
-        // let $btn = $("<button>").text(question._word);
-        // $btn.addClass("w3-button w3-card w3-ripple w3-yellow w3-hover-red");
         $btn.click(function () {
             $(this).hide();
             sock.emit("fromClient_toServer_player_chose_questionWord", question);
             chooseQuestions = question._word;
+            console.log("=====>" + chooseQuestions);
 
             if (isFirst) {
                 isFirst = false;
-                $("#div-questions").append($btn);
-                set_questions_frame_state("disable");
-                initAnswersWordsFrame();
-                return;
+                // $("#div-questions").append($btn);
+                // set_questions_frame_state("disable");
+
+                // initAnswersWordsFrame();
+                return chooseQuestions;
             }
         });
         $("#div-questions").append($btn);
     });
 
     set_questions_frame_state("disable");
+    return chooseQuestions;
 }
 
-function initAnswersWordsFrame() {
+function initAnswersWordsFrame(chooseQuestions) {
     // $('#img-question').hide();
     $("#div-answers").empty();
 
-    (questions).forEach(question => {
-        // let $btn = $("<button>").text(question._word);
+    questions.forEach(question => {
 
-        if (question._word == chooseQuestions) {
-            for (var i = 0; i < question._wrongAnswers.length; i++) {
-                let $btn = $("<button>").text(question._wrongAnswers[i]);
-                $btn.addClass("w3-button img_answers w3-card w3-ripple w3-yellow w3-hover-red");
-                console.log(question._wrongAnswers[i]);
+        console.log("---->" + chooseQuestions);
+        for (var i = 0; i < question._wrongAnswers.length; i++) {
+            let $btn = $("<button>").text(question._wrongAnswers[i]);
+            $btn.addClass("w3-button img_answers w3-card w3-ripple w3-yellow w3-hover-red");
+            console.log(question._wrongAnswers[i]);
 
-                $btn.on("click", function () {
-                    console.log("11111111111333");
-                    console.log($btn.text());
-                    $(this).hide();
-                    sock.emit("fromClient_toServer_player_submitted_answer", {
-                        ques: question._answer,
-                        ans: $btn.text()
-                    }, question);
-                    set_answers_frame_state("disable");
-                });
+            $btn.on("click", function () {
+                console.log("11111111111333");
+                console.log($btn.text());
+                $(this).hide();
+                sock.emit("fromClient_toServer_player_submitted_answer", {
+                    ques: question._answer,
+                    ans: $btn.text()
+                }, question);
+                set_answers_frame_state("disable");
+            });
+
+            if (question._word == chooseQuestions) {
                 $("#div-answers").append($btn);
             }
         }
