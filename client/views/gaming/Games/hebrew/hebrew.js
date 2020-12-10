@@ -1,6 +1,7 @@
 const sock = parent.sock;
 const imagesPath = "./images/";
 var questions = [];
+var arrQuestions = [];
 var chooseQuestions = null;
 var isFirst = true;
 
@@ -128,12 +129,27 @@ function initAnswersWordsFrame(chooseQuestions) {
             });
 
             if (question._word == chooseQuestions) {
-                $("#div-answers").append($btn);
+                // $("#div-answers").append($btn);
+                shuffleCards(arrQuestions, $btn, question._wrongAnswers.length);
             }
         }
     });
 
+    for (var i = 0; i < arrQuestions.length; i++) {
+        $("#div-answers").append(arrQuestions[i]);
+    }
+    arrQuestions = [];
     set_answers_frame_state("disable");
+}
+
+// shuffle cards
+function shuffleCards(arrQuestions, cardsBtn, place) { // Fisher-Yates Shuffle Algorithm.
+    
+        let randIndex = Math.floor(Math.random() * (place + 1));
+        while(arrQuestions[randIndex]){
+            randIndex = Math.floor(Math.random() * (place + 1));
+        }
+        arrQuestions[randIndex] = cardsBtn;
 }
 
 function set_answers_frame_state(state) {
