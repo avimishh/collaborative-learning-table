@@ -78,7 +78,7 @@ function initQuestionsImagesFrame() {
     questions.forEach(question => {
         let $btn = $("<input>", {
             "type": "image",
-            "src": imagesPath + question._word + ".png"
+            "src": imagesPath + question._word.toLowerCase() + ".png"
         });
         $btn.addClass("img_answers w3-ripple");
 
