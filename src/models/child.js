@@ -82,7 +82,10 @@ const childSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Stat'
         // required: true
-    }
+    },
+    parentsId: [{
+        type: String
+    }]
 });
 
 
@@ -109,7 +112,7 @@ childSchema.methods.assignToClassroom = async function (classroomCode) {
 
 // Essential functions
 function validateChild(child) {
-    const schema = {
+    const schema = Joi.object().keys({
         firstName: Joi.string().regex(/^[א-ת]+$/).min(NAME_LEN[0]).max(NAME_LEN[1]).required().error(errors => {
             return customError(errors, 'שם פרטי')
         }),
@@ -126,13 +129,14 @@ function validateChild(child) {
         address: Joi.string().allow(null, '').min(ADDRESS_LEN[0]).max(ADDRESS_LEN[1]).error(errors => {
             return customError(errors, 'כתובת')
         }),
-        phone: Joi.string().allow(null, '').min(PHONE_LEN[0]).max(PHONE_LEN[1]).regex(/0[1-9][0-9]{7}|05[0-9]{8}/).error(errors => {
+        // .regex(/0[1-9][0-9]{7}|05[0-9]{8}/)
+        phone: Joi.string().allow(null, '').min(PHONE_LEN[0]).max(PHONE_LEN[1]).error(errors => {
             return customError(errors, 'טלפון')
         }),
         gamesPassword: Joi.string().min(GAMESPASSWORD_LEN[0]).max(GAMESPASSWORD_LEN[1]).required().error(errors => {
             return customError(errors, 'סיסמת משחקים')
         })
-    };
+    }).unknown(true);
     // return true;
     return Joi.validate(child, schema);
 }

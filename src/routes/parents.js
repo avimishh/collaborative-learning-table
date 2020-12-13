@@ -65,12 +65,23 @@ router.post('/', async (req, res) => {
     if (parentExist)
         return res.status(400).send(StringFormat(errText.parentByIdAlreadyExist, req.body.id));
 
+    // Find children
+    let children = await getChildrenOfParent(req.body.id);
+    let childrenId = [];
+    (children).forEach(child => {
+        childrenId.push(child._id);
+    });
+
     let parent = new Parent({ // Create new document
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         id: req.body.id,
         password: req.body.password,
-        phone: req.body.phone
+        phone: req.body.phone,
+        children: childrenId
+    }).populate({
+        path: 'children',
+        select: 'id firstName lastName',
     });
 
     // Password Hash
@@ -191,6 +202,12 @@ router.put('/addchild/:id', /*auth,*/ async (req, res) => {
 
     res.status(200).send(_.pick(parent, ['firstName', 'lastName', 'id', 'phone', 'children']));
 });
+
+
+async function getChildrenOfParent(parentId){
+    let children = await Child.find({parentsId: parentId});
+    return children;
+}
 
 
 // Module exports

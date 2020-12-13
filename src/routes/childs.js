@@ -7,6 +7,10 @@ const {
     validateChild
 } = require('../models/child');
 const {
+    Parent,
+    validateParent
+} = require('../models/parent');
+const {
     Stat
 } = require('../models/stat');
 // const admin = require('../middleware/admin');
@@ -70,6 +74,7 @@ router.post('/', async (req, res) => {
                 english: [],
                 memory: [],
                 colors: [],
+                hebrew: [],
             }
         });
         await stat.save();
@@ -82,7 +87,7 @@ router.post('/', async (req, res) => {
     if (childExist)
         return res.status(400).send(StringFormat(errText.childByIdAlreadyExist, req.body.id));
 
-
+    console.log(req.body);
     let child = new Child({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -93,7 +98,8 @@ router.post('/', async (req, res) => {
         address: req.body.address,
         phone: req.body.phone,
         // classroom: child.assignToClassroom(req.body.classroom),
-        stats: stat._id
+        stats: stat._id,
+        parentsId: [req.body.parent1, req.body.parent2]
     });
 
     await child.save();
@@ -123,7 +129,8 @@ router.put('/:id', async (req, res) => {
             gamesPassword: req.body.gamesPassword,
             address: req.body.address,
             phone: req.body.phone,
-            level: req.body.level
+            level: req.body.level,
+            // parentsId: [req.body.parentId1, req.body.parentId2]
         }, {
             new: true
         });
@@ -144,6 +151,15 @@ router.delete('/:id', async (req, res) => {
         child = await Child.findOneAndRemove({
             id: req.params.id
         });
+        console.log(child);
+
+        Parent.update( {"children._id": child._id}, { $pullAll: {"children": [child._id] } } )
+        console.log(child);
+    // let parents = await Parent.find({"children._id": child._id});
+    // parents.forEach(parent =>{
+    //     parent.children.
+    // });
+
     } catch (ex) {
         return res.status(400).send(errText.failedToUpdate);
     }

@@ -49,7 +49,7 @@
       color: #fff;
       box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
       overflow: scroll;
-      height: 500px;
+      height: 80%;
     }
 
     table {
@@ -84,7 +84,7 @@
     }
 
     .dataGame {
-      width: 20%;
+      width: 10%;
     }
 
     .goodScore {
@@ -104,9 +104,9 @@
     }
 
     .gameIconImg {
-      width: 50px;
-      height: 50px;
-      max-height: 50px;
+      width: 100px;
+      height: 100px;
+      max-height: 100px;
       height: auto;
       margin-bottom: 10px;
     }
@@ -117,7 +117,8 @@
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
       <!-- שולחן משחקים שיתופי -->
-      <img src="/images/logo1.jpeg" alt="" style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;"/>
+      <img src="/images/logo1.jpeg" alt=""
+        style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;" />
       <br />
       <button type="button" class="homeBtn" id="btn_goToHome">
         <img id="homeImg" src="/images/homeBtn.png" alt="" />
@@ -171,6 +172,7 @@
         let $h_tr = $("<tr>").append(
           $("<th>").text("תאריך"),
           $("<th>").text("סמל משחק"),
+          $("<th>").text("שם משחק"),
           $("<th>").text("סך הכל שאלות"),
           $("<th>").text("סך הכל תשובות נכונות")
         );
@@ -197,8 +199,9 @@
                 .attr("src", "../gaming/" + sheets[i].game.icon)
                 .addClass("gameIconImg")
             )
-            .append($("<div>").text(sheets[i].game.title))
+            // .append($("<div>").text(sheets[i].game.title))
             .addClass("dataGame");
+          let $td5 = $("<td>").append($("<div>").text(sheets[i].game.title));
           // Total Questions Data
           let $td2 = $("<td>").text(sheets[i].numOfQuestions);
           let $td3 = $("<td>").text(sheets[i].numOfCorrectAnswers);
@@ -214,9 +217,6 @@
                 $("<td>").text(` - `) /*.addClass('emptyScore')*/
               );
           });
-          // let $td3 = $('<td>').text(`${sheets[i].questions[0].asked} / ${sheets[i].questions[0].correct} `);
-          // let $td4 = $('<td>').text(`${sheets[i].questions[1].asked} / ${sheets[i].questions[1].correct} `);
-          // let $td5 = $('<td>').text(`${sheets[i].questions[2].asked} / ${sheets[i].questions[2].correct} `);
 
           // Score
           // let score = calculateScore(sheets[i].additionalInfo);
@@ -227,7 +227,7 @@
 
           $table.append(
             $("<tr>")
-              .append($td0, $td1, $td2, $td3, $tdDynamicData, $td4)
+              .append($td0, $td1, $td5, $td2, $td3, $tdDynamicData, $td4)
               .addClass(score >= 60 ? "goodScore" : "badScore")
           );
         }
@@ -237,10 +237,8 @@
       }
 
       function calculateScore(sheet) {
-        // let sumOfCorrect = 0;
-        // sheet.questions.forEach(q => {
-        //     sumOfCorrect = sumOfCorrect + q.correct;
-        // });
+        if(sheet.numOfQuestions <= 0)
+          return 0;
 
         return parseInt(
           (sheet.numOfCorrectAnswers * 100) / sheet.numOfQuestions

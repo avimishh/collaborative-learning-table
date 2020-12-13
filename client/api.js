@@ -84,9 +84,12 @@ export function childRegisterRequest({
     address,
     phone,
     level,
-    gamesPassword
+    gamesPassword,
+    parent1,
+    parent2
 }, successFunction, errorFunction) {
     let newChildData = arguments[0];
+    console.log(newChildData);
     userRegisterRequest("child", newChildData, successFunction, errorFunction)
 }
 
@@ -327,7 +330,7 @@ export function postChildNotesRequest(childId, teacherId, noteContent, successFu
         },
         data: JSON.stringify({
             teacherId,
-            noteContent
+            content:noteContent
         }),
         success: function (data, textStatus, xhr) {
             successFunction(data);

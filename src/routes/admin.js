@@ -2,15 +2,19 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const {
+    check,
     initDB,
     belongChildrenToParent,
-    addStats,
-    addTeacher,
-    addFields
+    addStats
 } = require('../models/assets/models_driver');
 
 router.get('/', async (req, res) => {
     res.sendFile(path.resolve(__dirname + '/../../client/admin.html'));
+});
+
+router.get('/check', async (req, res) => {
+    let notes = await check();
+    res.status(200).send();
 });
 
 router.get('/initdb', async (req, res) => {
@@ -42,11 +46,5 @@ router.get('/addstats', async (req, res) => {
     res.set('Content-Type', 'text/html');
     res.status(200).send(htmlString);
 });
-
-router.post('/addField', async (req, res) => {
-    addFields();
-    res.status(200);
-});
-
 
 module.exports = router;

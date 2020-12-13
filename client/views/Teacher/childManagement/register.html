@@ -142,6 +142,14 @@
         <i class="fa fa-eye"></i>
       </span>
     </div>
+    <div class="input-box">
+      <i class="fa fa-heart-o"></i>
+      <input type="text" id="input-parent1" placeholder="ת.ז. הורה 1" />
+    </div>
+    <div class="input-box">
+      <i class="fa fa-heart-o"></i>
+      <input type="text" id="input-parent2" placeholder="ת.ז. הורה 2 (לא חובה)" />
+    </div>
     <div id="err_text"></div>
 
     <button type="button" class="register-btn" id="btn-register">
@@ -199,6 +207,8 @@
         "phone",
         "level",
         "gamesPassword",
+        "parent1",
+        "parent2"
       ];
       function init() {
         $("#btn-register").on("click", () => {
