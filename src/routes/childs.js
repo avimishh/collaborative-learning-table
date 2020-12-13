@@ -153,7 +153,7 @@ router.delete('/:id', async (req, res) => {
         });
         console.log(child);
 
-        Parent.update( {"children._id": child._id}, { $pullAll: {"children": [child._id] } } )
+        Parent.update( {"children._id": child._id}, { $pullAll: {"children._id": [child._id] } } )
         console.log(child);
     // let parents = await Parent.find({"children._id": child._id});
     // parents.forEach(parent =>{

@@ -3,6 +3,7 @@ const { Stat } = require('../../models/stat');
 const { Sheet } = require('../../models/sheet');
 
 module.exports = async function (p_childId, p_stats, gameRefId, date = Date.now()) {
+    // console.log(p_stats);
     let game = await Game.findById(gameRefId);
     if (!game) return console.log(`Failed to Find game.`);
 

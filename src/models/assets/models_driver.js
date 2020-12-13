@@ -290,41 +290,6 @@ async function createGame({
 }
 //#endregion
 
-async function addStat(child_id, stats, game_id) {
-
-    await save_Data_DB(child_id, stats, game_id);
-
-    const child = await Child.findOne({
-        id: childId
-    });
-    // Assert Child data
-    if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
-    // Try to update the selected document
-    try {
-        // res.status(200).send(user);
-        const parent = await Parent.findOneAndUpdate({
-            id: parentId
-        }, {
-            "$addToSet": {
-                children: child._id
-            }
-        }, {
-            new: true,
-            useFindAndModify: false
-        }).populate('children', 'id firstName lastName');
-        // await parent.save();
-        // Assert update completed successfully
-        if (!parent) {
-            notes.push(`Parent ${parentId} was not found.`);
-            return console.log(reverseString(`Parent ${parentId} was not found.`));
-        }
-        // Send response to client
-        notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
-    } catch (ex) {
-        notes.push(`Failed to update.`);
-        return console.log(reverseString(`Failed to update.`));
-    }
-}
 
 //#region Add New Data To DB
 
@@ -553,20 +518,22 @@ async function initDB() {
 
 async function addStats() {
     notes = [];
-
-    const date = [new Date(2020, 05, 03), new Date(2020, 05, 04),
-        new Date(2020, 05, 04), new Date(2020, 05, 12),
-        new Date(2020, 05, 14), new Date(2020, 05, 18),
-        new Date(2020, 05, 21), new Date(2020, 06, 02),
-        new Date(2020, 06, 04), new Date(2020, 06, 06)
+    const date = [new Date(2020, 10, 03), new Date(2020, 10, 04),
+        new Date(2020, 10, 04), new Date(2020, 10, 12),
+        new Date(2020, 11, 14), new Date(2020, 11, 18),
+        new Date(2020, 11, 21), new Date(2020, 12, 02),
+        new Date(2020, 12, 04), new Date(2020, 12, 06)
     ];
 
     for (let i = 0; i < date.length; i++) {
-        await addMathStat('123456', date[i]);
-        await addEnglishStat('123456', date[i]);
+        await addMathStat('10033', date[i]);
+        await addEnglishStat('10033', date[i]);
+        await addMathStat('10011', date[i]);
+        await addEnglishStat('10011', date[i]);
     }
 
     notes.push('success');
+    console.log('success');
     return notes;
 }
 
@@ -625,6 +592,43 @@ function reverseString(str) {
 }
 
 //#region Old Code
+// async function addStat(child_id, stats, game_id) {
+
+//     await save_Data_DB(child_id, stats, game_id);
+
+//     const child = await Child.findOne({
+//         id: childId
+//     });
+//     // Assert Child data
+//     if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
+//     // Try to update the selected document
+//     try {
+//         // res.status(200).send(user);
+//         const parent = await Parent.findOneAndUpdate({
+//             id: parentId
+//         }, {
+//             "$addToSet": {
+//                 children: child._id
+//             }
+//         }, {
+//             new: true,
+//             useFindAndModify: false
+//         }).populate('children', 'id firstName lastName');
+//         // await parent.save();
+//         // Assert update completed successfully
+//         if (!parent) {
+//             notes.push(`Parent ${parentId} was not found.`);
+//             return console.log(reverseString(`Parent ${parentId} was not found.`));
+//         }
+//         // Send response to client
+//         notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
+//     } catch (ex) {
+//         notes.push(`Failed to update.`);
+//         return console.log(reverseString(`Failed to update.`));
+//     }
+// }
+
+
 async function addChild(parentId, childId) {
     const child = await Child.findOne({
         id: childId

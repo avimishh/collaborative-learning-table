@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/check', async (req, res) => {
-    let notes = await check();
+    await check();
     res.status(200).send();
 });
 
