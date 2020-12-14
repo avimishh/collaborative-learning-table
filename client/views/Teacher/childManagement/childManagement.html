@@ -29,10 +29,6 @@
       color: white;
     }
 
-    .modal {
-      /* padding-top: 50px; */
-    }
-
     .homeBtn {
       border: 1px solid #000;
       color: #000;
@@ -89,7 +85,7 @@
     </div>
   </div>
 
-  <!-- The Modal -->
+  <!-- The Choose Child Modal -->
   <div id="modal-choose-child" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -212,7 +208,8 @@
       function deleteChildSuccess() {
         $("#modal-success").show();
         setTimeout(() => {
-          window.location.href = URL.TEACHER_CHILD_MANAGEMENT.HOME;
+          // window.location.href = URL.TEACHER.HOME;
+          location.reload();
         }, 2000);
       }
 
@@ -228,15 +225,21 @@
           getChildByIdRequest(childId, getChildSuccess, printErrorToUser);
         });
 
+        $('.close').click(function() {
+          $(".modal").hide();
+        });
+
         $('#btn-child-delete').click(function() {
           $('#btn-child-delete').hide();
           $('#div-child-delete-ask').show();
         });
+
         $('#btn-child-delete-yes').click(() => {
           childId = $("#modal-child-delete select[name=children] option").filter(":selected").val();
           console.log('childDelete:' + childId);
           deleteChildByIdRequest(childId, deleteChildSuccess);
         });
+
         $('#btn-child-delete-no').click(() => {
           $(".modal").hide();
         });
