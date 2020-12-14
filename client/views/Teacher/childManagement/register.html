@@ -96,10 +96,18 @@
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-display-topleft w3-padding-large w3-xlarge">
       <!-- שולחן משחקים שיתופי -->
-      <img src="/images/logo1.jpeg" alt=""
-        style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px 10px;" />
+      <img src="/images/logo1.png" alt=""
+        style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -13px;" />
+      <br />
+      <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
+        <img id="homeImg" src="/images/homeBtn.png" alt="" />
+        חזרה לעמוד
+        <br />
+        הקודם
+      </button>
     </div>
   </div>
+  
   <div class="form-box w3-display-middle">
     <h1 style="font-weight: bold">רישום ילד חדש</h1>
     <div class="input-box">
@@ -182,6 +190,10 @@
 
       $(document).ready(() => {
         $('button, .input-box').addClass('w3-animate-zoom');
+
+        $('#btn_goToHome').on('click', () => {
+                window.location.href = URL.TEACHER.CHILD_MANAGEMENT.HOME;
+            });
 
         console.log("jquery work");
         init();
