@@ -40,15 +40,15 @@ var notes = [];
 
 async function createField(name, description, nameEng) {
     // validate input
-    const {
-        error
-    } = validateField({
-        name,
-        description,
-        nameEng
-    });
-    if (error)
-        return error.details[0].message;
+    // const {
+    //     error
+    // } = validateField({
+    //     name,
+    //     description,
+    //     nameEng
+    // });
+    // if (error)
+    //     return error.details[0].message;
     // Check if the field already exist
     if (await Field.findOne({
             name
@@ -288,17 +288,14 @@ async function createGame({
     await game.save();
     notes.push(`משחק "${title}" נוצר בDB.`);
 }
+
 //#endregion
 
 
 //#region Add New Data To DB
 
 async function addFields() {
-    await createField(
-        'חשבון',
-        'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל',
-        'math'
-    );
+    await createField('חשבון', 'תרגול פעולות חשבון בסיסיות: חיבור, חיסור וכפל', 'math');
     await createField('אנגלית', 'תרגול אותיות ומילים בשפה האנגלית', 'english');
     await createField('צבעים', 'תרגול הכרת צבעים', 'colors');
     await createField('זכרון', 'תרגול ואימון הזכרון', 'memory');
@@ -307,7 +304,7 @@ async function addFields() {
 
 async function addParents() {
 
-    // יוסי אבוקסיס
+    // 1. יוסי אבוקסיס
     await createParent({
         firstName: "יוסי",
         lastName: "אבוקסיס",
@@ -315,7 +312,7 @@ async function addParents() {
         password: "12345",
         phone: "05" + "278945"
     });
-    // משה פרץ
+    // 2. משה פרץ
     await createParent({
         firstName: "משה",
         lastName: "פרץ",
@@ -323,7 +320,7 @@ async function addParents() {
         password: "12345",
         phone: "05" + "111945"
     });
-    // אביב גפן
+    // 3. אביב גפן
     await createParent({
         firstName: "אביב",
         lastName: "גפן",
@@ -331,7 +328,7 @@ async function addParents() {
         password: "12345",
         phone: "05" + "221922"
     });
-    // אילנה גפן
+    // 4. אילנה גפן
     await createParent({
         firstName: "אילנה",
         lastName: "גפן",
@@ -339,22 +336,78 @@ async function addParents() {
         password: "12345",
         phone: "05" + "221944"
     });
-    // שימי תבורי
+    // 5. שימי תבורי
     await createParent({
         firstName: "שימי",
         lastName: "תבורי",
         id: "206054133",
         password: "12345",
-        phone: "05" + "221944"
+        phone: "05" + "221484"
+    });
+    // 6. איציק זוהר
+    await createParent({
+        firstName: "איציק",
+        lastName: "זוהר",
+        id: "208163427",
+        password: "12345",
+        phone: "05" + "775468"
+    });
+    // 7. מושיק עפיה
+    await createParent({
+        firstName: "מושיק",
+        lastName: "עפיה",
+        id: "208163741",
+        password: "12345",
+        phone: "05" + "111682"
+    });
+    // 8. אביבית אבוקסיס
+    await createParent({
+        firstName: "אביבית",
+        lastName: "אבוקסיס",
+        id: "208163432",
+        password: "12345",
+        phone: "05" + "221725"
+    });
+    // 9. גל גדות
+    await createParent({
+        firstName: "גל",
+        lastName: "גדות",
+        id: "208163284",
+        password: "12345",
+        phone: "05" + "221789"
+    });
+    // 10. בר רפאלי
+    await createParent({
+        firstName: "בר",
+        lastName: "רפאלי",
+        id: "208163358",
+        password: "12345",
+        phone: "05" + "221938"
+    });
+    // 11. אמנון אברמוביץ'
+    await createParent({
+        firstName: "אמנון",
+        lastName: "אברמוביץ'",
+        id: "208163518",
+        password: "12345",
+        phone: "05" + "221938"
+    });
+    // 11. צילה אברמוביץ'
+    await createParent({
+        firstName: "צילה",
+        lastName: "אברמוביץ'",
+        id: "208163528",
+        password: "12345",
+        phone: "05" + "221458"
     });
 }
 
 async function addTeachers() {
 
-    // שולה זקן
+    // עליזה שמשוני
     await createTeacher({
-        firstName: "שולה",
-        lastName: "זקן",
+        firstName: "עליזה",
+        lastName: "שמשוני",
         id: "201132541",
         password: "12345",
         phone: "05" + "7698745"
@@ -367,18 +420,18 @@ async function addTeachers() {
         password: "12345",
         phone: "05" + "8768645"
     });
-    // אייל ברקוביץ'
+    // אברי גלעד'
     await createTeacher({
-        firstName: "אייל",
-        lastName: "ברקוביץ'",
+        firstName: "אברי",
+        lastName: "גלעד",
         id: "208851202",
         password: "12345",
         phone: "05" + "657522"
     });
-    // אלון מזרחי
+    // אדיר מילר
     await createTeacher({
-        firstName: "אלון",
-        lastName: "מזרחי",
+        firstName: "אדיר",
+        lastName: "מילר",
         id: "204564780",
         password: "12345",
         phone: "05" + "223564"
@@ -387,25 +440,80 @@ async function addTeachers() {
 
 async function addChildren() {
 
-    // יותם גפן
+    // 1. אלחנן פרץ
+    await createChild({
+        firstName: "אלחנן",
+        lastName: "פרץ",
+        id: "10005",
+        gamesPassword: "12",
+        phone: "05" + "879412",
+        address: "תל אביב, דיזינגוף 2",
+        birth: new Date(2011, 10, 12),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "206054100"
+    });
+    // 2. הילה אבוקסיס
+    await createChild({
+        firstName: "הילה",
+        lastName: "אבוקסיס",
+        id: "10006",
+        gamesPassword: "12",
+        phone: "05" + "879456",
+        address: "חיפה, רוממה 42",
+        birth: new Date(2013, 11, 7),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "206054874",
+        parentId2: "208163432"
+    });
+    // 3. שמעון אבוקסיס
+    await createChild({
+        firstName: "שמעון",
+        lastName: "אבוקסיס",
+        id: "10007",
+        gamesPassword: "12",
+        phone: "05" + "879212",
+        address: "חיפה, רוממה 42",
+        birth: new Date(2013, 11, 7),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "206054874",
+        parentId2: "208163432"
+    });
+    // 4. יעל אבוקסיס
+    await createChild({
+        firstName: "יעל",
+        lastName: "אבוקסיס",
+        id: "10008",
+        gamesPassword: "12",
+        phone: "05" + "879256",
+        address: "חיפה, רוממה 42",
+        birth: new Date(2015, 2, 5),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "206054874",
+        parentId2: "208163432"
+    });
+    // 5. יותם גפן
     await createChild({
         firstName: "יותם",
         lastName: "גפן",
-        id: "10011",
+        id: "10001",
         gamesPassword: "12",
         phone: "05" + "879212",
         address: "נתניה, שלום חבר 94",
-        birth: new Date(2011, 10, 12),
+        birth: new Date(2012, 10, 12),
         gender: "זכר",
         level: "רופין",
         parentId1: "206054101",
         parentId2: "206054102"
     });
-    // ליאור גפן
+    // 6. ליאור גפן
     await createChild({
         firstName: "ליאור",
         lastName: "גפן",
-        id: "10022",
+        id: "10002",
         gamesPassword: "12",
         phone: "05" + "879256",
         address: "נתניה, שלום חבר 94",
@@ -415,32 +523,191 @@ async function addChildren() {
         parentId1: "206054101",
         parentId2: "206054102"
     });
-    // אלרואי תבורי
+    // 7. אלרואי תבורי
     await createChild({
         firstName: "אלרואי",
         lastName: "תבורי",
-        id: "10033",
+        id: "10003",
         gamesPassword: "12",
-        phone: "05" + "879212",
-        address: "נתניה, שלום חבר 94",
-        birth: new Date(2011, 10, 12),
+        phone: "05" + "879312",
+        address: "נתניה, המלאכה 55",
+        birth: new Date(2013, 10, 31),
         gender: "זכר",
         level: "רופין",
         parentId1: "206054133"
     });
-    // בנאל תבורי
+    // 8. בנאל תבורי
     await createChild({
         firstName: "בנאל",
         lastName: "תבורי",
-        id: "10044",
+        id: "10004",
         gamesPassword: "12",
-        phone: "05" + "879256",
-        address: "נתניה, שלום חבר 94",
-        birth: new Date(2013, 3, 4),
-        gender: "נקבה",
+        phone: "05" + "879356",
+        address: "נתניה, המלאכה 55",
+        birth: new Date(2015, 8, 5),
+        gender: "זכר",
         level: "רופין",
         parentId1: "206054133"
     });
+    // 9. יוחנן זוהר
+    await createChild({
+        firstName: "יוחנן",
+        lastName: "זוהר",
+        id: "10009",
+        gamesPassword: "12",
+        phone: "05" + "879512",
+        address: "תל אביב, הגבעתון 88",
+        birth: new Date(2011, 10, 22),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163427"
+    });
+    // 10. שירי זוהר
+    await createChild({
+        firstName: "שירי",
+        lastName: "זוהר",
+        id: "10010",
+        gamesPassword: "12",
+        phone: "05" + "879556",
+        address: "תל אביב, הגבעתון 88",
+        birth: new Date(2013, 1, 27),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "208163427"
+    });
+    // 11. אלי עפיה
+    await createChild({
+        firstName: "אלי",
+        lastName: "עפיה",
+        id: "10011",
+        gamesPassword: "12",
+        phone: "05" + "879212",
+        address: "חדרה, העמק 12",
+        birth: new Date(2012, 12, 27),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163741"
+    });
+    // 12. יעל עפיה
+    await createChild({
+        firstName: "יעל",
+        lastName: "עפיה",
+        id: "10012",
+        gamesPassword: "12",
+        phone: "05" + "879256",
+        address: "חדרה, העמק 12",
+        birth: new Date(2014, 2, 15),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "208163741"
+    });
+    // 13. יוחנן גדות
+    await createChild({
+        firstName: "פיני",
+        lastName: "גדות",
+        id: "10013",
+        gamesPassword: "12",
+        phone: "05" + "879612",
+        address: "תל אביב, אחד העם 1",
+        birth: new Date(2011, 10, 22),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163284"
+    });
+    // 14. לינוי גדות
+    await createChild({
+        firstName: "לינוי",
+        lastName: "גדות",
+        id: "10014",
+        gamesPassword: "12",
+        phone: "05" + "879656",
+        address: "תל אביב, אחד העם 1",
+        birth: new Date(2012, 10, 27),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "208163284"
+    });
+    // 15. אבשלום גדות
+    await createChild({
+        firstName: "אבשלום",
+        lastName: "גדות",
+        id: "10015",
+        gamesPassword: "12",
+        phone: "05" + "879712",
+        address: "תל אביב, אחד העם 1",
+        birth: new Date(2013, 12, 27),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163284"
+    });
+    // 16. ציפי רפאלי
+    await createChild({
+        firstName: "ציפי",
+        lastName: "רפאלי",
+        id: "10016",
+        gamesPassword: "12",
+        phone: "05" + "879116",
+        address: "תל אביב, שלום העם 1",
+        birth: new Date(2011, 2, 22),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "208163358"
+    });
+    // 17. ציפי רפאלי
+    await createChild({
+        firstName: "ארנון",
+        lastName: "רפאלי",
+        id: "10017",
+        gamesPassword: "12",
+        phone: "05" + "879856",
+        address: "תל אביב, שלום העם 1",
+        birth: new Date(2013, 6, 15),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163358"
+    });
+    // 18. קובי רפאלי
+    await createChild({
+        firstName: "קובי",
+        lastName: "רפאלי",
+        id: "10018",
+        gamesPassword: "12",
+        phone: "05" + "879956",
+        address: "תל אביב, שלום העם 1",
+        birth: new Date(2014, 5, 15),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163358"
+    });
+    // 19. יובל אברמוביץ'
+    await createChild({
+        firstName: "יובל",
+        lastName: "אברמוביץ'",
+        id: "10019",
+        gamesPassword: "12",
+        phone: "05" + "879222",
+        address: "נתניה, שלום חבר 21",
+        birth: new Date(2012, 10, 12),
+        gender: "נקבה",
+        level: "רופין",
+        parentId1: "208163518",
+        parentId2: "208163528"
+    });
+    // 20. אור אברמוביץ'
+    await createChild({
+        firstName: "אור",
+        lastName: "אברמוביץ'",
+        id: "10020",
+        gamesPassword: "12",
+        phone: "05" + "879226",
+        address: "נתניה, שלום חבר 21",
+        birth: new Date(2014, 1, 14),
+        gender: "זכר",
+        level: "רופין",
+        parentId1: "208163518",
+        parentId2: "208163528"
+    });
+
 }
 
 async function addGames() {
@@ -474,7 +741,7 @@ async function addGames() {
     });
     await createGame({
         title: "חשבון עם דרגון בול",
-        description: "התאמנו על כללי החשבון ושחקו עם הדמויות האהובות עליכן",
+        description: "התאמנו על כללי החשבון ושחקו עם הדמויות האהובות עליכם",
         fieldName: "חשבון",
         icon: "icons/dbz.png",
         link: "./dbz/dbz.html"
@@ -484,15 +751,69 @@ async function addGames() {
         description: "לימדו את הצבע וקלעו את הכדורים בצבע המתאים לתוך הסל",
         fieldName: "צבעים",
         icon: "icons/color2.png",
-        link: "./ColorGame2/ColorGame2.html"
+        link: "./ColorGame2/color2.html"
     });
     await createGame({
         title: "גלגל המזל בשפה העברית",
-        description: "אייתו את שמות החיות בעברית",
+        description: "מצאו את המילה המתאימה לתמונה בעברית",
         fieldName: "עברית",
         icon: "icons/english2.png",
         link: "./hebrew/hebrew.html"
     });
+}
+
+async function addNotes() {
+    let childId = 10000;;
+    let teacher = await Teacher.findOne({
+        id: "201132541"
+    });
+
+    const messageNote = [{
+        date: new Date(2020, 10, 03),
+        teacher: teacher._id,
+        content: "נא לחזור על פעולות חיבור"
+    }, {
+        date: new Date(2020, 10, 04),
+        teacher: teacher._id,
+        content: "כל הכבוד, המשך כך!"
+    }, {
+        date: new Date(2020, 10, 04),
+        teacher: teacher._id,
+        content: "הסבלנות משתלמת!"
+    }, {
+        date: new Date(2020, 10, 12),
+        teacher: teacher._id,
+        content: "צריך לתרגל המון בבית באנגלית!"
+    }, {
+        date: new Date(2020, 11, 14),
+        teacher: teacher._id,
+        content: "רואים שיפור, הילד במגמת עלייה"
+    }];
+
+    const date = [
+        new Date(2020, 10, 03), new Date(2020, 10, 04),
+        new Date(2020, 10, 04), new Date(2020, 10, 12),
+        new Date(2020, 11, 14)
+    ];
+
+    for (let i = 1; i < 20; i++) {
+            childId = childId + 1;
+            let child = await Child.findOne({
+                id: childId.toString()
+            });
+
+        for (let indx = 0; indx < date.length; indx++) {
+            // console.log(childId, child);
+            if (child != null) {
+                await child.notes.push(messageNote[indx]);
+            }
+        }
+
+        // Save to DataBase
+        await child.save();
+    }
+
+    console.log('success');
 }
 
 //#endregion
@@ -511,6 +832,7 @@ async function initDB() {
     await addTeachers();
     await addFields();
     await addGames();
+    await addNotes()
 
     return notes;
 }
@@ -518,18 +840,27 @@ async function initDB() {
 
 async function addStats() {
     notes = [];
-    const date = [new Date(2020, 10, 03), new Date(2020, 10, 04),
+    let str;
+
+    const date = [
+        new Date(2020, 10, 03), new Date(2020, 10, 04),
         new Date(2020, 10, 04), new Date(2020, 10, 12),
         new Date(2020, 11, 14), new Date(2020, 11, 18),
         new Date(2020, 11, 21), new Date(2020, 12, 02),
         new Date(2020, 12, 04), new Date(2020, 12, 06)
     ];
 
-    for (let i = 0; i < date.length; i++) {
-        await addMathStat('10033', date[i]);
-        await addEnglishStat('10033', date[i]);
-        await addMathStat('10011', date[i]);
-        await addEnglishStat('10011', date[i]);
+    for (let i = 1; i < 20; i++) {
+        if (i >= 1 && i < 10) {
+            str = '1000';
+        } else {
+            str = '100';
+        }
+        for (let indx = 0; indx < date.length; indx++) {
+            await addMathStat(str + i, date[indx]);
+            await addEnglishStat(str + i, date[indx]);
+            await addColorStat(str + i, date[indx]);
+        }
     }
 
     notes.push('success');
@@ -566,6 +897,16 @@ async function addEnglishStat(child_id, date) {
     addStat(child_id, date, field, subFields)
 }
 
+async function addColorStat(child_id, date) {
+    const field = 'colors';
+    const subFields = [{
+        eng: 'objectColorToColor',
+        heb: 'התאמת צבע לתמונה'
+    }];
+
+    addStat(child_id, date, field, subFields)
+}
+
 async function addStat(child_id, date, field, subFields) {
     let player_stat = new Stats(field, subFields)
     player_stat.subFields.forEach(subField => {
@@ -590,43 +931,6 @@ function getRandNum(to = 10) {
 function reverseString(str) {
     return str.split('').reverse().join('');
 }
-
-//#region Old Code
-// async function addStat(child_id, stats, game_id) {
-
-//     await save_Data_DB(child_id, stats, game_id);
-
-//     const child = await Child.findOne({
-//         id: childId
-//     });
-//     // Assert Child data
-//     if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
-//     // Try to update the selected document
-//     try {
-//         // res.status(200).send(user);
-//         const parent = await Parent.findOneAndUpdate({
-//             id: parentId
-//         }, {
-//             "$addToSet": {
-//                 children: child._id
-//             }
-//         }, {
-//             new: true,
-//             useFindAndModify: false
-//         }).populate('children', 'id firstName lastName');
-//         // await parent.save();
-//         // Assert update completed successfully
-//         if (!parent) {
-//             notes.push(`Parent ${parentId} was not found.`);
-//             return console.log(reverseString(`Parent ${parentId} was not found.`));
-//         }
-//         // Send response to client
-//         notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
-//     } catch (ex) {
-//         notes.push(`Failed to update.`);
-//         return console.log(reverseString(`Failed to update.`));
-//     }
-// }
 
 
 async function addChild(parentId, childId) {
@@ -668,6 +972,52 @@ async function belongChildrenToParent() {
     await addChild('100', '1002');
     return notes;
 }
+
+
+//#region Old Code
+// async function addStat(child_id, stats, game_id) {
+
+//     await save_Data_DB(child_id, stats, game_id);
+
+//     const child = await Child.findOne({
+//         id: childId
+//     });
+//     // Assert Child data
+//     if (!child) return console.log(reverseString(`ילד בעל ת"ז "${childId}" אינו קיים במערכת.`));
+//     // Try to update the selected document
+//     try {
+//         // res.status(200).send(user);
+//         const parent = await Parent.findOneAndUpdate({
+//             id: parentId
+//         }, {
+//             "$addToSet": {
+//                 children: child._id
+//             }
+//         }, {
+//             new: true,
+//             useFindAndModify: false
+//         }).populate('children', 'id firstName lastName');
+//         // await parent.save();
+//         // Assert update completed successfully
+//         if (!parent) {
+//             notes.push(`Parent ${parentId} was not found.`);
+//             return console.log(reverseString(`Parent ${parentId} was not found.`));
+//         }
+//         // Send response to client
+//         notes.push(`ילד בעל ת"ז "${childId}" נוסף להורה.`);
+//     } catch (ex) {
+//         notes.push(`Failed to update.`);
+//         return console.log(reverseString(`Failed to update.`));
+//     }
+// }
+
+
+
+
+
+
+
+
 // let p_Plus_a = getRandNum();
 // let p_Plus_c = p_Plus_a > 0 ? getRandNum(p_Plus_a + 1) : 0;
 // let p_Minus_a = getRandNum();

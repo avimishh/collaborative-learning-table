@@ -10,7 +10,7 @@ const subFields = [{eng: 'plus', heb: 'חיבור'},
 // @@@@
 
 var questions = [];
-const MAX_ROUNDS = 2;
+const MAX_ROUNDS = 3;
 const P0= 0, P1 = 1;
 
 class MathGame { // @@@@CHANGING
