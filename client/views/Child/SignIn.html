@@ -34,16 +34,17 @@
 </head>
 
 <body dir="rtl">
-  <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
+  <!-- <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
   </audio>
   <audio controls src="/audio/login.mpeg" id="myAudioLogin" style="display: none;">
-  </audio>
+  </audio> -->
 
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div class="w3-display-topleft w3-padding-large w3-xlarge">
       <div class="w3-display-topleft w3-padding-large w3-xlarge">
         <!-- שולחן משחקים שיתופי -->
-        <img src="/images/logo1.jpeg" alt="" style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;"/>
+        <img src="/images/logo1.jpeg" alt=""
+          style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -14px;" />
         <br />
         <button type="button" class="homeBtn" id="btn_goToHome">
           <img id="homeImg" src="/images/homeBtn.png" alt="" />
@@ -53,7 +54,7 @@
         </button>
       </div>
     </div>
-    
+
     <div class="form-box w3-display-middle">
       <h1>התחברות ילד</h1>
 
@@ -87,19 +88,20 @@
     </div>
   </div>
 
-  <script>
-    function returnHomePage() {
-      $("#modal-edition").fadeOut("slow");
-      $("#myAudioReturn").get(0).play();
-    }
+  <!-- <script>
+    // function returnHomePage() {
+    //   $("#modal-edition").fadeOut("slow");
+    //   $("#myAudioReturn").get(0).play();
+    // }
 
-    function loginVoice() {
-      // $("#modal-edition").fadeOut("slow");
-      // $("#myAudioLogin").get(0).play();
-      var audioLogin = new Audio('/audio/login.mpeg');
-      audioLogin.play();
-    }
-  </script>
+    // function loginVoice() {
+    //   // $("#modal-edition").fadeOut("slow");
+    //   // $("#myAudioLogin").get(0).play();
+    //   var audioLogin = new Audio('/audio/login.mpeg');
+    //   audioLogin.play();
+    // }
+
+  </script> -->
 
   <script type="module">
     import { childLoginRequest } from "/api.js";
@@ -108,8 +110,9 @@
 
       $(document).ready(() => {
         init();
-        loginVoice();
-        setTimeout(() => { console.log("stop"); initBtn(); }, 7500);
+        // loginVoice();
+        // setTimeout(() => { console.log("stop"); initBtn(); }, 7500);
+        console.log("stop"); initBtn();
         initSignInPage();
       });
 
@@ -128,12 +131,12 @@
         });
 
         $("#btn_goToHome").on("click", () => {
-          returnHomePage();
+          // returnHomePage();
           document.getElementById("login").disabled = true;
-          setTimeout(() => {
-            window.location.href = URL.HOME;
-          }, 3000);
-          
+          window.location.href = URL.HOME;
+        //   setTimeout(() => {
+        //     window.location.href = URL.HOME;
+        //   }, 3000);
         });
       }
 

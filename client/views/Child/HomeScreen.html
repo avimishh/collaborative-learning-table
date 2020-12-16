@@ -52,17 +52,17 @@
 </head>
 
 <body dir="rtl">
-  <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
-  </audio>
-  <audio controls src="/audio/welcom child.mpeg" id="myWelcomChild" style="display: none;">
+  <!-- <audio controls src="/audio/welcom child.mpeg" id="myWelcomChild" style="display: none;">
   </audio>
 
+  <audio controls src="/audio/return home page.mpeg" id="myAudioReturn" style="display: none;">
+  </audio>
   <audio controls src="/audio/performance child.mpeg" id="myPerformanceChild" style="display: none;">
   </audio>
   <audio controls src="/audio/details child.mpeg" id="myDetailsChild" style="display: none;">
   </audio>
   <audio controls src="/audio/game child.mpeg" id="myGameChild" style="display: none;">
-  </audio>
+  </audio> -->
 
   <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <!-- <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
@@ -74,7 +74,7 @@
         style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -13px;" />
       <br />
       <button type="button" class="homeBtn w3-text-black" id="btn_goToHome"
-      style="border: 1px solid black; font-weight: bold;">
+        style="border: 1px solid black; font-weight: bold;">
         <img id="homeImg" src="/images/homeBtn.png" alt="" />
         חזרה לעמוד
         <br />
@@ -126,36 +126,36 @@
     </div>
   </div>
 
-  <script>
-    function returnHomePage() {
-      $("#myAudioReturn").get(0).play();
-    }
+  <!-- <script>
+    // function returnHomePage() {
+    //   $("#myAudioReturn").get(0).play();
+    // }
 
-    function welcomChildVoice() {
-      // $("#myWelcomChild").get(0).play();
-      var audioWelcomChild = new Audio('/audio/welcom child.mpeg');
-      audioWelcomChild.play();
-    }
+    // function welcomChildVoice() {
+    //   // $("#myWelcomChild").get(0).play();
+    //   var audioWelcomChild = new Audio('/audio/welcom child.mpeg');
+    //   audioWelcomChild.play();
+    // }
 
-    function detailsChildVoice() {
-      $("#myDetailsChild").get(0).play();
-    }
+    // function detailsChildVoice() {
+    //   $("#myDetailsChild").get(0).play();
+    // }
 
-    function performanceChildVoice() {
-      $("#myPerformanceChild").get(0).play();
-    }
+    // function performanceChildVoice() {
+    //   $("#myPerformanceChild").get(0).play();
+    // }
 
-    function gameChildVoice() {
-      $("#myGameChild").get(0).play();
-    }
+    // function gameChildVoice() {
+    //   $("#myGameChild").get(0).play();
+    // }
 
-    function disabledBtn() {
-      $("#btn_performance").prop("disabled", true);
-      $("#btn_game").prop("disabled", true);
-      $("#btn_goToHome").prop("disabled", true);
-      $("#btn_details").prop("disabled", true);
-    }
-  </script>
+    // function disabledBtn() {
+    //   $("#btn_performance").prop("disabled", true);
+    //   $("#btn_game").prop("disabled", true);
+    //   $("#btn_goToHome").prop("disabled", true);
+    //   $("#btn_details").prop("disabled", true);
+    // }
+  </script> -->
 
   <script type="module">
     import {} from "/api.js";
@@ -164,8 +164,9 @@
       var fields = ["אנגלית", "צבעים", "חשבון", "זכרון"];
       $(document).ready(() => {
         init();
-        welcomChildVoice();
-        setTimeout(() => { console.log("stop"); initBtn(); }, 3500);
+        console.log("stop"); initBtn();
+        // welcomChildVoice();
+        // setTimeout(() => { console.log("stop"); initBtn(); }, 3000);
       });
 
       function init() {
@@ -179,33 +180,36 @@
 
       function initBtn() {
         $("#btn_details").on("click", () => {
-          detailsChildVoice();
-          disabledBtn();
-          setTimeout(() => {
-            window.location.href = URL.CHILD.DETAILS;
-          }, 3000);
+          window.location.href = URL.CHILD.DETAILS;
+          // detailsChildVoice();
+          // disabledBtn();
+          // setTimeout(() => {
+          //   window.location.href = URL.CHILD.DETAILS;
+          // }, 3000);
         });
 
         $("#btn_performance").on("click", () => {
-          performanceChildVoice();
-          disabledBtn();
+          // performanceChildVoice();
+          // disabledBtn();
           $("#modal-choose-child").show();
         });
 
         $("#btn_game").on("click", () => {
-          gameChildVoice();
-          disabledBtn();
-          setTimeout(() => {
-            window.location.href = URL.CHILD.GAME;
-          }, 2000);
+          window.location.href = URL.CHILD.GAME;
+          // gameChildVoice();
+          // disabledBtn();
+          // setTimeout(() => {
+          //   window.location.href = URL.CHILD.GAME;
+          // }, 2000);
         });
 
         $("#btn_goToHome").on("click", () => {
-          returnHomePage();
-          disabledBtn();
-          setTimeout(() => {
-            window.location.href = URL.HOME;
-          }, 3000);
+          window.location.href = URL.HOME;
+          // returnHomePage();
+          // disabledBtn();
+          // setTimeout(() => {
+          //   window.location.href = URL.HOME;
+          // }, 3000);
           
         });
 
