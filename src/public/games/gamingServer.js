@@ -112,13 +112,13 @@ async function startGame() {
     await sleep(500);
     // Start a game
     switch (gameToPlay.title) {
-        case 'תרגילי חשבון':
+        case 'תרגול פעולות חשבון':
             playingGame = new MathGame(playerHost, playerGuest, gameToPlay);
             break;
-        case 'התאמת תמונות למילים':
+        case 'התאמת תמונות למילים באנגלית':
             playingGame = new EnglishGame(playerHost, playerGuest, gameToPlay);
             break;
-        case 'ריבועי צבעים':
+        case 'שילוב צבעים':
             playingGame = new ColorsGame(playerHost, playerGuest, gameToPlay);
             break;
         case 'גלגל המזל בשפה העברית':
