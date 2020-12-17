@@ -7,14 +7,22 @@
     src: url('/lib/VarelaRound-Regular.ttf');
 }
 
-*, h1 {
+*,
+h1 {
     font-family: heb_font_Varela;
 }
 
 /* global */
 
-button{
-    padding:0 10px;
+.app-logo {
+    /* border-radius: 50%; */
+    width: 150px;
+    height: 150px;
+    margin: 0px 100px 0 -13px;
+}
+
+button {
+    padding: 0 10px;
 }
 
 * {
@@ -22,7 +30,8 @@ button{
     padding: 0;
 }
 
-body, html {
+body,
+html {
     height: 100%;
 }
 
@@ -74,6 +83,8 @@ body, html {
     align-items: center;
     display: flex;
     justify-content: center;
+    border-radius: 30px;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 1);
 }
 
 /* img inside button box at home screens */
@@ -126,14 +137,14 @@ body, html {
     display: block;
     outline: none;
     padding: 10px 0;
-    border: 2px  burlywood;
+    border: 2px burlywood;
     border: ridge;
     cursor: pointer;
     background: transparent;
     color: #fff;
     font-size: 12px;
     position: absolute;
-left: 10%;
+    left: 10%;
 }
 
 .homeBtn:hover {

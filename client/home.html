@@ -54,6 +54,14 @@
         outline: none;
       } */
 
+    #btn-admin {
+      display: none;
+    }
+
+    #logo-cont:hover #btn-admin {
+      display: block;
+    }
+
     .container div {
       background: rgba(0, 0, 0, 0.8);
       box-shadow: 0 0 20px 2px rgba(0, 0, 0, 1);
@@ -72,14 +80,14 @@
 <body dir="rtl">
   <audio controls src="/audio/welcome.mpeg" id="myAudio" style="display: none;">
   </audio>
-  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+  <div id="logo-wrap-div" class="bgimg w3-display-container w3-animate-opacity w3-text-white">
     <div id="logo-cont" class="w3-display-topleft w3-padding-large w3-xlarge">
       <!-- Make Learning Fun -->
-      <img src="/images/logo1.png" alt="" style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px 0px;"/>
+      <img src="/images/logo1.png" alt="" class="app-logo" />
       <br />
       <button id="btn-admin" style="margin: 0px 100px 10px 0px;">Admin</button>
     </div>
-    
+
     <div class="w3-display-topmiddle" style="margin-top: 100px; margin-right: 100px">
       <h1 class="w3-jumbo w3-animate-top" id="title" style="width: 700px">
         למידה שיתופית

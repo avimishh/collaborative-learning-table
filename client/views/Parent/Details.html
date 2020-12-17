@@ -38,8 +38,7 @@
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
         <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
             <!-- שולחן משחקים שיתופי -->
-            <img src="/images/logo1.png" alt=""
-                style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -13px;" />
+            <img src="/images/logo1.png" alt="" class="app-logo" />
             <br />
             <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
                 <img id="homeImg" src="/images/homeBtn.png" alt="" />
@@ -50,34 +49,34 @@
         </div>
 
         <div class="form-box w3-display-middle">
-            <h1>עדכון פרטים אישיים</h1>
+            <h1 class="title">עדכון פרטים אישיים</h1>
             <div id="err_text"></div>
 
             <div class="mess">
                 <table>
                     <tr>
-                        <td><span>שם פרטי:</span></td>
+                        <td class="fieldNames"><span>שם פרטי:</span></td>
                         <td class="details"><span id="firstName"></span></td>
                     </tr>
                     <tr>
-                        <td><span>שם משפחה:</span></td>
+                        <td class="fieldNames"><span>שם משפחה:</span></td>
                         <td class="details"><span id="lastName"></span></td>
                     </tr>
                     <tr>
-                        <td><span>תעודת זהות:</span></td>
+                        <td class="fieldNames"><span>תעודת זהות:</span></td>
                         <td class="details"><span id="id_parent"></span></td>
                     </tr>
                     <tr>
-                        <td><span>טלפון:</span></td>
+                        <td class="fieldNames"><span>טלפון:</span></td>
                         <td class="details"><span id="phoneNumber"></span></td>
                     </tr>
                     <tr>
-                        <td><span>סיסמה:</span></td>
-                        <td><button id="btn-change-password">לחץ להחלפת סיסמה</button></td>
+                        <td class="fieldNames"><span>סיסמה:</span></td>
+                        <td class="details-btn"><button id="btn-change-password">לחץ להחלפת סיסמה</button></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>
+                        <td class="details-buttons-div">
                             <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
                             <input class="w3-button" type="button" id="btn_update" value="עדכן" />
                         </td>
@@ -100,9 +99,6 @@
                 <h2 style="text-align: center">החלפת סיסמה</h2>
             </div>
             <div class="modal-body">
-                <!-- סיסמה ישנה: 
-              <input type="password" id="input-old-password" placeholder="סיסמה ישנה" /> -->
-                <!-- <br><br> -->
                 סיסמה חדשה:
                 <input type="password" id="input-new-password" placeholder="סיסמה חדשה" />
             </div>
@@ -114,8 +110,13 @@
     </div>
 
     <script type="module">
-        import { updateParentByIdRequest, updateParentPasswordByIdRequest } from '/api.js';
-        import { URL } from '/consts.js';
+        import {
+            updateParentByIdRequest,
+            updateParentPasswordByIdRequest
+        } from '/api.js';
+        import {
+            URL
+        } from '/consts.js';
 
         $(document).ready(function () {
             $('button, input, .details').addClass('w3-animate-zoom');
@@ -147,9 +148,11 @@
             let parent = JSON.parse(localStorage.getItem('parent'));
             // $('#parentName').text(`${parent.firstName} ${parent.lastName}`);
 
-            $('td:nth-child(2)').css('border', '1px solid white');
+            // $('td:nth-child(2)').css('border', '1px solid white');
 
-            $('.details').children().click(function () { spanToInput($(this)); });
+            $('.details').children().click(function () {
+                spanToInput($(this));
+            });
             initModal();
 
         });
@@ -157,12 +160,18 @@
         function spanToInput(elm) {
             let data = $(elm).text();
             let atr_id = $(elm).attr('id');
-            let $new_input = $('<input/>', { 'id': atr_id }).val(data);
+            let $new_input = $('<input/>', {
+                'id': atr_id
+            }).val(data);
             $new_input.focusout(function () {
                 let data = $(this).val();
                 let atr_id = $(this).attr('id');
-                let $new_span = $('<span></span>', { 'id': atr_id }).text(data);
-                $new_span.click(function () { spanToInput($new_span); });
+                let $new_span = $('<span></span>', {
+                    'id': atr_id
+                }).text(data);
+                $new_span.click(function () {
+                    spanToInput($new_span);
+                });
                 $(this).parent().append($new_span);
                 $(this).remove();
             });
@@ -183,26 +192,27 @@
 
         function updateParentPassword() {
             let parent = JSON.parse(localStorage.getItem('parent'));
-            updateParentPasswordByIdRequest(parent.id, $("#input-new-password").val(), showUpdatedDetails, printErrorToUser);
+            updateParentPasswordByIdRequest(parent.id, $("#input-new-password").val(), showUpdatedDetails,
+                printErrorToUser);
         }
 
         function showParentDetails() {
             let parent = JSON.parse(localStorage.getItem('parent'));
             if (parent === null)
                 return printErrorToUser(0, 'לא התקבלו נתונים מהשרת.');
-            $("#firstName").text(parent.firstName);                   // firstName
-            $("#lastName").text(parent.lastName);                     // lastName
-            $("#id_parent").text(parent.id);                          // id
-            $("#phoneNumber").text(parent.phone);                     // phoneNumber
+            $("#firstName").text(parent.firstName); // firstName
+            $("#lastName").text(parent.lastName); // lastName
+            $("#id_parent").text(parent.id); // id
+            $("#phoneNumber").text(parent.phone); // phoneNumber
         }
 
         function showUpdatedDetails() {
             $('#modal-change-password').hide();
             // $(".answer").attr('disabled', true);
-            printErrorToUser(0,'הנתונים עודכנו בהצלחה.');
+            printErrorToUser(0, 'הנתונים עודכנו בהצלחה.');
             showParentDetails();
             setTimeout(() => {
-                    window.location.href = URL.PARENT.HOME;
+                window.location.href = URL.PARENT.HOME;
             }, 2000);
         }
 
@@ -213,15 +223,15 @@
 
         function initModal() {
             $(".btn_exit_modal").on("click", () => {
-            $(".modal").hide();
+                $(".modal").hide();
             });
 
-        $(window).click((event) => {
-          let modalIds = ["modal-change-password"];
-          if(modalIds.includes(event.target.id))
-            $(`#${event.target.id}`).hide();
-        });
-    }
+            $(window).click((event) => {
+                let modalIds = ["modal-change-password"];
+                if (modalIds.includes(event.target.id))
+                    $(`#${event.target.id}`).hide();
+            });
+        }
     </script>
 </body>
 

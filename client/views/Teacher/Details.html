@@ -39,8 +39,7 @@
     <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
         <div class="w3-display-topleft w3-padding-large w3-xlarge" id="btnDiv">
             <!-- שולחן משחקים שיתופי -->
-            <img src="/images/logo1.png" alt=""
-                style="border-radius: 50%; width: 100px; height: 100px; margin: 0px 100px 10px -13px;" />
+            <img src="/images/logo1.png" alt="" class="app-logo" />
             <br />
             <button type="button" class="homeBtn w3-text-black" id="btn_goToHome">
                 <img id="homeImg" src="/images/homeBtn.png" alt="" />
@@ -56,40 +55,30 @@
 
             <div class="mess">
                 <table>
-                    <!--1. First Name-->
                     <tr>
                         <td>
                             <span>שם פרטי:</span>
                         </td>
                         <td class="details">
-                            <!-- <input id="firstName" class="answer" /> -->
                             <span id="firstName"></span>
                         </td>
-
                     </tr>
-                    <!--2. Last Name-->
                     <tr>
                         <td>
                             <span>שם משפחה:</span>
                         </td>
                         <td class="details">
-                            <!-- <input id="lastName" class="answer" /> -->
                             <span id="lastName"></span>
-
                         </td>
                     </tr>
-                    <!--3. id teacher-->
                     <tr>
                         <td>
                             <span>תעודת זהות:</span>
                         </td>
                         <td class="details">
                             <span id="id_teacher"></span>
-
-                            <!-- <input id="id_teacher" class="answer" /> -->
                         </td>
                     </tr>
-                    <!--4. Phone Number-->
                     <tr>
                         <td>
                             <span>טלפון:</span>
@@ -97,22 +86,19 @@
                         <td class="details">
                             <span id="phoneNumber"></span>
 
-                            <!-- <input type="tel" id="phoneNumber" class="answer" /> -->
                         </td>
                     </tr>
-                    <!--5. Password-->
                     <tr>
                         <td>
                             <span>סיסמה:</span>
                         </td>
-                        <td>
+                        <td class="details-btn">
                             <button id="btn-change-password">לחץ להחלפת סיסמה</button>
                         </td>
                     </tr>
-                    <!--6. Update-->
                     <tr>
                         <td></td>
-                        <td>
+                        <td class="details-buttons-div">
                             <input class="w3-button" type="reset" id="btn_rst" value="נקה" />
                             <input class="w3-button" type="button" id="btn_update" value="עדכן" />
                         </td>
@@ -181,8 +167,6 @@
 
             let teacher = JSON.parse(localStorage.getItem('teacher'));
             // $('#teacherName').text(`${teacher.firstName} ${teacher.lastName}`);
-
-            $('td:nth-child(2)').css('border', '1px solid white');
 
             $('.details').children().click(function () { spanToInput($(this)); });
             initModal();

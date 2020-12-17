@@ -120,7 +120,7 @@ function validateChild(child) {
             return customError(errors, 'שם משפחה')
         }),
         id: Joi.string().regex(/[0-9]{2,9}/).min(ID_LEN[0]).max(ID_LEN[1]).required().error(errors => {
-            return customError(errors, 'תעודת זהות')
+            return customError(errors, 'קוד אישי')
         }),
         birth: Joi.date().required(), // YYYY-MM-DD
         gender: Joi.string().valid(...GENDER_ENUM).error(errors => {

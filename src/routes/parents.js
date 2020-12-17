@@ -83,12 +83,18 @@ router.post('/', async (req, res) => {
         path: 'children',
         select: 'id firstName lastName',
     });
-
+    console.log(parent);
     // Password Hash
     const salt = await bcrypt.genSalt(10);
     parent.password = await bcrypt.hash(parent.password, salt);
 
     parent = await parent.save();
+    parent = await Parent.findOne({
+        id: req.body.id
+    }).populate({
+        path: 'children',
+        select: 'id firstName lastName',
+    });
     // In order to login the parent immidiately after registarion, use this
     // for creating token and send back to parent with the header of the response
     const token = parent.generateAuthToken();
