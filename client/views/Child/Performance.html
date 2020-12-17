@@ -7,6 +7,7 @@
   <title></title>
   <script src="/lib/jquery.js"></script>
   <link href="/style/global.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <style>
     .bgimg {
       background-image: url("/images/background/back3.jpg");
@@ -25,7 +26,7 @@
 
     h1 {
       text-align: center;
-      margin-bottom: 40px;
+      /* margin-bottom: 40px; */
     }
 
     table tr td {
@@ -49,7 +50,7 @@
       color: #fff;
       box-shadow: 0 0 20px 2px rgba(100, 100, 200, 1);
       overflow: scroll;
-      height: 80%;
+      height: 90%;
     }
 
     table {
@@ -110,6 +111,68 @@
       height: auto;
       margin-bottom: 10px;
     }
+
+
+    /* Switch Button */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
   </style>
 </head>
 
@@ -127,12 +190,24 @@
         הקודם
       </button>
     </div>
-    
+
     <div class="form-box w3-display-middle">
       <h1>הצגת ציונים וגרף התקדמות <span id="nameChild"></span></h1>
+      <div>
+        <span for="">טבלת ציונים</span>
+        <label class="switch">
+          <input id="switch-button" type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+        <label for="">גרף התקדמות</label>
+        <br><br>
+      </div>
       <div id="err_text"></div>
       <div class="mess" id="data"></div>
+
+      <canvas id="myChart" ></canvas>
     </div>
+
 
     <div class="w3-display-bottomleft w3-padding-large" id="bottomDiv">
       Make Learning Fun
@@ -140,131 +215,230 @@
   </div>
 
   <script type="module">
-    import { getStatsRequest } from "/api.js";
-      import { URL } from "/consts.js";
+    import {
+      getStatsRequest
+    } from "/api.js";
+    import {
+      URL
+    } from "/consts.js";
 
-      $(document).ready(() => {
-        let childId = JSON.parse(localStorage.getItem("child")).id;
-        let fieldName = localStorage.getItem("selectedField");
-        getStatsRequest(childId, fieldName, setData, printErrorToUser);
+    var ctx = document.getElementById('myChart').getContext('2d');
 
-        init();
+    $(document).ready(() => {
+      let childId = JSON.parse(localStorage.getItem("child")).id;
+      let fieldName = localStorage.getItem("selectedField");
+      getStatsRequest(childId, fieldName, setData, printErrorToUser);
+
+      init();
+    });
+
+    function init() {
+      $("#myChart").hide();
+
+      $("#btn_goToHome").on("click", () => {
+        // window.location.href = URL.CHILD.HOME;
+        window.history.back();
       });
 
-      function init() {
-        $("#btn_goToHome").on("click", () => {
-          // window.location.href = URL.CHILD.HOME;
-          window.history.back();
-        });
+      displayNameTitle();
 
-        displayNameTitle();
-        // disableBackBtn();
-      }
-
-      function setData(data) {
-        console.log(data);
-        // check imported data
-        if (data.length === 0)
-          return printErrorToUser(0, "אין תוצאות לילד זה.");
-        // date + numOfQuestions + numOfCorrectAnswers
-        let $h_tr = $("<tr>").append(
-          $("<th>").text("תאריך"),
-          $("<th>").text("סמל משחק"),
-          $("<th>").text("שם משחק"),
-          $("<th>").text("סך הכל שאלות"),
-          $("<th>").text("סך הכל תשובות נכונות")
-        );
-        // append type names ex.: 'חיבור', 'חיסור'...
-        data[0].additionalInfo.forEach((dataCol) => {
-          $h_tr.append($("<th>").text(dataCol.operatorHeb));
-        });
-        $h_tr.append($("<th>").text("ציון")).addClass("tableHead");
-
-        let $table = $("<table>").append($h_tr);
-
-        // let sheets = data[0].sheets;
-        let sheets = data;
-        for (let i = 0; i < sheets.length; i++) {
-          console.log(sheets[i]);
-          // Date
-          let $td0 = $("<td>")
-            .text(formatDate(sheets[i].date.substr(0, 10)))
-            .addClass("dataDate");
-          // Game Id
-          let $td1 = $("<td>")
-            .append(
-              $("<img>")
-                .attr("src", "../gaming/" + sheets[i].game.icon)
-                .addClass("gameIconImg")
-            )
-            // .append($("<div>").text(sheets[i].game.title))
-            .addClass("dataGame");
-          let $td5 = $("<td>").append($("<div>").text(sheets[i].game.title));
-          // Total Questions Data
-          let $td2 = $("<td>").text(sheets[i].numOfQuestions);
-          let $td3 = $("<td>").text(sheets[i].numOfCorrectAnswers);
-          // Specified Data
-          let $tdDynamicData = [];
-          sheets[i].additionalInfo.forEach((dataCol) => {
-            if (dataCol.asked > 0)
-              $tdDynamicData.push(
-                $("<td>").text(`${dataCol.asked} / ${dataCol.correct} `)
-              );
-            else
-              $tdDynamicData.push(
-                $("<td>").text(` - `) /*.addClass('emptyScore')*/
-              );
-          });
-
-          // Score
-          // let score = calculateScore(sheets[i].additionalInfo);
-          let score = calculateScore(sheets[i]);
-          let darkGreen = "#32CD32";
-          let scoreColor = score >= 60 ? darkGreen : "red";
-          let $td4 = $("<td>").text(`% ${score}`).css("color", scoreColor);
-
-          $table.append(
-            $("<tr>")
-              .append($td0, $td1, $td5, $td2, $td3, $tdDynamicData, $td4)
-              .addClass(score >= 60 ? "goodScore" : "badScore")
-          );
+      $("#switch-button").click(() => {
+        if($("#data").css("display") === "none"){
+          $("#data").show();
+        $("#myChart").hide();
+        }else{
+          $("#data").hide();
+        $("#myChart").show();
         }
-        $("#data").append($table);
 
-        // $('tr:even').css('backgroundColor', 'gray');
+      });
+    }
+
+    function setGraphData(data){
+      var colors = ['rgb(255, 99, 132)', 'rgb(75, 192, 192)', 'rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(139, 69, 19)'];
+
+      var subFieldsLabels = [];
+      var subFieldsScores = [];
+
+      data[0].additionalInfo.forEach(info => {
+        subFieldsLabels.push(info.operatorHeb);
+        subFieldsScores[info.operatorHeb] = [];
+      });
+
+      var dates = [];
+      var scores = [];
+
+      data.forEach(stat => {
+        dates.push(formatDate(stat.date.substr(0, 10)));
+        scores.push(calculateScore(stat));
+
+        stat.additionalInfo.forEach(info => {
+          let score = calculateSubFieldScore(info);
+          subFieldsScores[info.operatorHeb].push(score);
+        });
+      });
+      var dataSets = [];
+
+      dataSets.push({
+        label: 'סה"כ ציון',
+          borderColor: 'rgb(255, 99, 132)',
+          data: scores,
+          borderWidth: 5
+      });
+
+      subFieldsLabels.forEach((subFieldLabel,idx) => {
+        dataSets.push({
+        label: subFieldLabel,
+          borderColor: colors[idx+1],
+          data: subFieldsScores[subFieldLabel],
+          borderWidth: 1
+      });
+      });
+
+      var chart = new Chart(ctx, {
+      // The type of chart we want to create
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: dates,
+        datasets: dataSets
+      },
+
+      // Configuration options go here
+      options: {
+        layout: {
+            padding: {
+                left: 50,
+                right: 50,
+                top: 0,
+                bottom: 50
+            }
+          },
+        legend: {
+            labels: {
+                fontColor: 'black',
+                fontSize: 20
+            }
+        },
       }
+    });
+    }
 
-      function calculateScore(sheet) {
-        if(sheet.numOfQuestions <= 0)
-          return 0;
+    function setData(data) {
+      console.log(data);
+      // check imported data
+      if (data.length === 0)
+        return printErrorToUser(0, "אין תוצאות לילד זה.");
+      setGraphData(data);
+      // date + numOfQuestions + numOfCorrectAnswers
+      let $h_tr = $("<tr>").append(
+        $("<th>").text("תאריך"),
+        $("<th>").text("סמל משחק"),
+        $("<th>").text("שם משחק"),
+        $("<th>").text("סך הכל שאלות"),
+        $("<th>").text("סך הכל תשובות נכונות")
+      );
+      // append type names ex.: 'חיבור', 'חיסור'...
+      data[0].additionalInfo.forEach((dataCol) => {
+        $h_tr.append($("<th>").text(dataCol.operatorHeb));
+      });
+      $h_tr.append($("<th>").text("ציון")).addClass("tableHead");
 
-        return parseInt(
-          (sheet.numOfCorrectAnswers * 100) / sheet.numOfQuestions
+      let $table = $("<table>").append($h_tr);
+
+      // let sheets = data[0].sheets;
+      let sheets = data;
+      for (let i = 0; i < sheets.length; i++) {
+        console.log(sheets[i]);
+        // Date
+        let $td0 = $("<td>")
+          .text(formatDate(sheets[i].date.substr(0, 10)))
+          .addClass("dataDate");
+        // Game Id
+        let $td1 = $("<td>")
+          .append(
+            $("<img>")
+            .attr("src", "../gaming/" + sheets[i].game.icon)
+            .addClass("gameIconImg")
+          )
+          // .append($("<div>").text(sheets[i].game.title))
+          .addClass("dataGame");
+        let $td5 = $("<td>").append($("<div>").text(sheets[i].game.title));
+        // Total Questions Data
+        let $td2 = $("<td>").text(sheets[i].numOfQuestions);
+        let $td3 = $("<td>").text(sheets[i].numOfCorrectAnswers);
+        // Specified Data
+        let $tdDynamicData = [];
+        sheets[i].additionalInfo.forEach((dataCol) => {
+          if (dataCol.asked > 0)
+            $tdDynamicData.push(
+              $("<td>").text(`${dataCol.asked} / ${dataCol.correct} `)
+            );
+          else
+            $tdDynamicData.push(
+              $("<td>").text(` - `) /*.addClass('emptyScore')*/
+            );
+        });
+
+        // Score
+        // let score = calculateScore(sheets[i].additionalInfo);
+        let score = calculateScore(sheets[i]);
+        let darkGreen = "#32CD32";
+        let scoreColor = score >= 60 ? darkGreen : "red";
+        let $td4 = $("<td>").text(`% ${score}`).css("color", scoreColor);
+
+        $table.append(
+          $("<tr>")
+          .append($td0, $td1, $td5, $td2, $td3, $tdDynamicData, $td4)
+          .addClass(score >= 60 ? "goodScore" : "badScore")
         );
       }
+      $("#data").append($table);
 
-      function displayNameTitle() {
-        let child = JSON.parse(localStorage.getItem("child"));
-        $("#nameChild").text(`${child.firstName} ${child.lastName}`);
-      }
+      // $('tr:even').css('backgroundColor', 'gray');
+    }
 
-      function formatDate(date) {
-        var d = new Date(date),
-          month = "" + (d.getMonth() + 1),
-          day = "" + d.getDate(),
-          year = d.getFullYear();
+    function calculateScore(sheet) {
+      if (sheet.numOfQuestions <= 0)
+        return 0;
 
-        if (month.length < 2) month = "0" + month;
-        if (day.length < 2) day = "0" + day;
+      return parseInt(
+        (sheet.numOfCorrectAnswers * 100) / sheet.numOfQuestions
+      );
+    }
 
-        return [day, month, year].join("-");
-      }
+    function calculateSubFieldScore(subSheet) {
+      if (subSheet.asked <= 0)
+        return 0;
 
-      function printErrorToUser(code, err) {
-        // popup
-        $("#err_text").text(err);
-      }
-    </script>
+      return parseInt(
+        (subSheet.correct * 100) / subSheet.asked
+      );
+    }
+
+    function displayNameTitle() {
+      let child = JSON.parse(localStorage.getItem("child"));
+      $("#nameChild").text(`${child.firstName} ${child.lastName}`);
+    }
+
+    function formatDate(date) {
+      var d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [day, month, year].join("-");
+    }
+
+    function printErrorToUser(code, err) {
+      // popup
+      $("#err_text").text(err);
+    }
+  </script>
 </body>
 
 </html>
