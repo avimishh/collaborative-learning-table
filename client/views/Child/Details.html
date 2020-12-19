@@ -203,16 +203,16 @@
                 age--;
             }
 
-            $("#firstName").html(data.firstName);                   // firstName
-            $("#lastName").html(data.lastName);                     // lastName
-            $("#ID").html(data.id);                                 // id
-            $("#birthDate").html(day + "/" + month + "/" + year);   // birthDate
-            $("#age").html(age);                                    // age
-            $("#gender").html(data.gender ? "זכר" : "נקבה");       // gender
-            $("#address").html(data.address);                       // address
-            $("#phoneNumber").html(data.phone);                     // phoneNumber
-            $("#classNumber").html(data.level);                     // classNumber
-            $("#password").html(data.gamesPassword);                // password
+            $("#firstName").html(data.firstName);                       // firstName
+            $("#lastName").html(data.lastName);                         // lastName
+            $("#ID").html(data.id);                                     // id
+            $("#birthDate").html(day + "/" + month + "/" + year);       // birthDate
+            $("#age").html(age);                                        // age
+            $("#gender").html((data.gender=="זכר") ? "זכר" : "נקבה");  // gender
+            $("#address").html(data.address);                           // address
+            $("#phoneNumber").html(data.phone);                         // phoneNumber
+            $("#classNumber").html(data.level);                         // classNumber
+            $("#password").html(data.gamesPassword);                    // password
         }
 
         function formatDate(date) {
