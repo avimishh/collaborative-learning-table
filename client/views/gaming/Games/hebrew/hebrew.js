@@ -114,7 +114,7 @@ function initAnswersWordsFrame(chooseQuestions) {
         console.log("---->" + chooseQuestions);
         for (var i = 0; i < question._wrongAnswers.length; i++) {
             let $btn = $("<button>").text(question._wrongAnswers[i]);
-            $btn.addClass("w3-button img_answers w3-card w3-ripple w3-yellow w3-hover-red");
+            $btn.addClass("w3-button img_answers_card w3-card w3-ripple w3-yellow w3-hover-red");
             console.log(question._wrongAnswers[i]);
 
             $btn.on("click", function () {

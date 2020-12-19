@@ -18,12 +18,12 @@ function addAnswerKeys() {
 
     answerkeys.forEach(answerKey => {
         let $btn = $("<button>").text(answerKey);
-        $btn.addClass('w3-button w3-round-xxlarge');
+        $btn.addClass('answerKey w3-button w3-round-xxlarge');
         $btn.click(function () { // append keyText to existing text in answer field
             $('#field-answer').append($(this).text());
         });
         $("#container-answerKeys").append($btn);
-        if ((answerKey % 3) === 0) $("#container-answerKeys").append($("<br>"));
+        if ([3,7].includes(answerKey)) $("#container-answerKeys").append($("<br>"));
     });
 
     setAnswerContainerState('disable');
@@ -41,7 +41,7 @@ function addSubFieldsOperators() {
         $('<button>', {
                 'id': `operator-${subField}`
             })
-            .addClass('w3-button w3-large w3-ripple w3-blue').text(subFieldsSigns[subField])
+            .addClass('operatorsKey w3-button w3-large w3-ripple w3-blue').text(subFieldsSigns[subField])
             .appendTo('#operators-subFields')
             .click(() => {
                 sock.emit('fromClient_toServer_notify_subField_selected', subField)

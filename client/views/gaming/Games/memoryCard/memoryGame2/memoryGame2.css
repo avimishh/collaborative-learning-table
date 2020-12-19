@@ -2,23 +2,31 @@
     box-sizing: border-box;
 }
 
+body {
+    background: no-repeat center center fixed;
+  background-image: url(/images/background/4.jpg);
+  background-size: cover;
+  }
+
 html {
     font-family: Arial;
 }
 
-body {
+/* body {
     margin: 0;
     background: no-repeat center center fixed;
     background-image: url('/images/back1.jpg');
     background-size: cover;
-}
+} */
 
 .page-title {
-    color: #FF6D00;
-    font-family: Arial, serif;
     font-weight: normal;
     text-align: center;
-    font-size: 30px;
+    font-size: 50px;
+    color: chocolate;
+    /* background-color: cadetblue; */
+    border-radius: 20px;
+    padding: 0 30px;
 }
 
 .game-info-container {
@@ -28,12 +36,15 @@ body {
 }
 
 .game-info {
-    color: #FF6D00;
-    font-size: 30px;
+    font-size: 50px;
+    color: chocolate;
+    /* background-color: cadetblue; */
+    border-radius: 20px;
+    padding: 0 30px;
 }
 
 .game-container {
-    margin: 50px auto;
+    /* margin: 50px auto; */
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-gap: 10px;
@@ -42,14 +53,14 @@ body {
 }
 
 img {
-    height: 175px;
-    width: 125px;
+    height: 130px;
+    width: auto;
 }
 
 .card {
     position: relative;
-    height: 175px;
-    width: 125px;
+    height: 180px;
+    width: 280px;
 }
 
 .card-face {

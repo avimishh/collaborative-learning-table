@@ -36,6 +36,7 @@ function levelDown() {
 var questDifficult = 1;
 var questions = [];
 var questType = {"plus":"plus", "minus":"minus", "multi":"multi"};
+var questTypeHeb = {"plus":"חיבור", "minus":"חיסור", "multi":"כפל"};
 var crnt_quest = [];
 // quester();
 
@@ -94,7 +95,7 @@ function generateQuest(){
 }
 
 function displayQuest(quest) {
-    $("#questType").text(quest[0]);
+    $("#questType").text(questTypeHeb[quest[0]]);
     $("#questCounter").text(questions.length+1);
     $("#questText").text(quest[1]);
     $("#questAnswer").empty();

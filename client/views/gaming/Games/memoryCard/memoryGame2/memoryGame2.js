@@ -35,6 +35,7 @@ if (document.readyState == 'loading') {
 function ready() {
     let overlays = Array.from(document.getElementsByClassName('overlay-text'));
     let cards = Array.from(document.getElementsByClassName('card'));
+    $(".card").hide();
     //backCardInsert();
     //frontCardInsert();
 
@@ -47,6 +48,7 @@ function ready() {
     overlays.forEach(overlay => {
         overlay.addEventListener('click', () => {
             overlay.classList.remove('visible');
+
             startGame();
         });
     });
@@ -136,6 +138,7 @@ function audioController() {
 
 // start game
 function startGame() {
+    $(".card").show();
     backCardInsert();
     frontCardInsert();
 

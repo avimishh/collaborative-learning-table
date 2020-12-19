@@ -79,11 +79,11 @@ class EnglishGame { // @@@@CHANGING
     // @@@@CHANGING
     _determineTurn() {
         let playerToPlay = this._players[this._whoseTurn];
-        playerToPlay.send_Message_To_Client('fromServer_toClients_instruction_game', 'תורך לבחור פעולה');
+        playerToPlay.send_Message_To_Client('fromServer_toClients_instruction_game', 'תורך לבחור מילה');
         playerToPlay.set_Questions_Frame_State('enable');
 
         let playerToWait = this._players[(this._whoseTurn === P1) ? P0 : P1];
-        playerToWait.send_Message_To_Client('fromServer_toClients_instruction_game', 'המתן לחברך בבחירת פעולה');
+        playerToWait.send_Message_To_Client('fromServer_toClients_instruction_game', 'המתן לחברך בבחירת המילה');
         playerToWait.set_Questions_Frame_State('disable');
     }
 

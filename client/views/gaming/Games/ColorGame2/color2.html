@@ -1,28 +1,36 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title></title>
     <script src="/lib/jquery.js"></script>
     <link href="/lib/w3.css" rel="stylesheet" />
+    <link href="/style/gaming.css" rel="stylesheet" />
     <style>
+        body {
+            background: no-repeat center center fixed;
+            background-image: url(/images/background/back4.jpg);
+            background-size: cover;
+        }
+
         #frame {
-            background-image: url("../images/back.jpg");
+            /* background-image: url("../images/back.jpg"); */
             background-repeat: no-repeat;
             background-size: cover;
             /* width: 1400px;
             height: 100%;
             position: absolute; */
             margin: auto;
-            top: 20px;
+            /* top: 20px; */
             left: 300px;
         }
 
         #frame {
             position: relative;
             width: 800px;
-            height: 560px;
-            border: 1px solid black;
+            height: 520px;
+            /* border: 1px solid black; */
             float: left;
         }
 
@@ -51,14 +59,16 @@
             font-size: 55px;
         }
 
-        #color_word{
-            border: 2px solid black;
-            background-color: honeydew;
+        #color_word {
+            /* border: 2px solid black; */
+            background-color: white;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-family: cursive; 
-            width: 160px;
+            font-family: cursive;
+            width: 200px;
             display: inline-block;
             text-align: center;
+            border-radius: 30px;
+            font-weight: bold;
         }
 
         .red {
@@ -84,14 +94,19 @@
             width: 30px;
             height: 30px;
         }
+
         .bck_color_score {
-            background-color: cyan;
+            background-color: coral;
+            border-radius: 100%;
+            font-size: 30px;
+            padding: 5px;
         }
     </style>
     <script>
         let $player;
         let killTimeID;
         let arr_color = ["red", "blue", "yellow", "green"];
+        let arr_color_text = ["Red", "Blue", "Yellow", "Green"];
         let colorWord;
 
         $(document).ready(function () {
@@ -103,7 +118,7 @@
 
         // color Ward
         function colorWard() {
-            colorWord = arr_color[Math.floor(Math.random() * 4)]; // Ward match color
+            colorWord = arr_color_text[Math.floor(Math.random() * 4)]; // Ward match color
             $("#color_word").html(colorWord).css("color", colorWord);
         }
 
@@ -158,13 +173,13 @@
             $newColor.attr("src", "../images/" + arr_color[i] + "Color.png");
             $("#frame").append($newColor);
             $newColor.animate({
-                top: "530px" // where the ball color stop from top to bottom
+                top: "490px" // where the ball color stop from top to bottom
             }, {
-                    duration: 3000,
-                    easing: "linear",
-                    progress: checkCollision,
-                    complete: deleteObject
-                });
+                duration: 3000,
+                easing: "linear",
+                progress: checkCollision,
+                complete: deleteObject
+            });
         }
 
         // delete Color ball
@@ -195,7 +210,8 @@
             yRight = yLeft + parseInt($y.css("width"));
             yBottom = yTop + parseInt($y.css("height"));
 
-            return ((xLeft >= yLeft && xLeft <= yRight || yLeft >= xLeft && yLeft <= xRight) && (xTop <= yBottom && xTop >= yTop || yTop <= xBottom && yTop >= xTop));
+            return ((xLeft >= yLeft && xLeft <= yRight || yLeft >= xLeft && yLeft <= xRight) && (xTop <= yBottom &&
+                xTop >= yTop || yTop <= xBottom && yTop >= xTop));
         }
 
         // get ball color Position
@@ -206,11 +222,11 @@
 
         // update Score
         function updateScore($color) {
-            //console.log($color[0].className);
-            //console.log($("#color_word").html());
-            if ($color[0].className == $("#color_word").html()) {
+            // console.log($color[0].className);
+            // console.log($("#color_word").html());
+            if ($color[0].className == $("#color_word").html().toLowerCase()) {
                 $("#score").text(parseInt($("#score").text()) + 1);
-                backgroundFlip("red",$("#color_word").html());
+                backgroundFlip("red", $("#color_word").html());
                 colorWard();
             }
             if (parseInt($("#score").text()) === 10) gameOver();
@@ -233,10 +249,10 @@
                 $("#score").css("background-color", def_clr);
             }, 200);
         }
-
     </script>
 </head>
-<body style="margin:25px;">
+
+<body >
     <div id="frame">
         <div id="player-div">
             <img id="player-image" src="../images/basket.png" />
@@ -245,4 +261,5 @@
     </div>
     <div id="color_word_cont"><span id="color_word"></span></div>
 </body>
+
 </html>

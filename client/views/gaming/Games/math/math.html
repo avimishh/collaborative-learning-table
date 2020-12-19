@@ -12,7 +12,9 @@
     <script src="./math.js"></script>
     <style>
         body {
+            background: no-repeat center center fixed;
             background-image: url('/images/background/board.png');
+            background-size: cover;
         }
 
         #operators-subFields,
@@ -21,22 +23,32 @@
             font-size: 20px;
         }
 
+        #container-answerKeys {
+            margin-top: 20%;
+        }
+
+
         #table-stats-body tr {
             border-bottom: 1px solid black;
         }
 
         #field-answer {
-            /* height: 30px; */
-            border: black 1px solid;
-            padding: 10px;
+            height: 40px;
             margin: 5px;
+            border-style: ridge;
+            /* border: black 1px ; */
+            /* padding: 10px; */
+            border-radius: 30px;
         }
 
         #instruction-top {
             margin-top: 30px;
+            background-color: chocolate;
+            border-radius: 20px;
+            padding: 0 30px;
         }
 
-        #operator{
+        #operator {
             margin-right: 210px;
         }
 
@@ -51,6 +63,24 @@
             /* background: rgb(226, 230, 12); */
             padding: 0 20px;
             box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .answerKey {
+            /* margin: 10px; */
+            margin: 0 30px;
+            font-size: 30px;
+            border-radius: 50px;
+            background-color: cornsilk;
+        }
+
+        #table-stats-body td{
+            text-align: unset;
+        }
+
+        .operatorsKey{
+            border-radius: 100%;
+    border: 1px solid black;
+            margin: 0 10px;
         }
     </style>
 </head>
