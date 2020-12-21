@@ -73,14 +73,24 @@
             background-color: cornsilk;
         }
 
-        #table-stats-body td{
+        #table-stats-body td {
             text-align: unset;
         }
 
-        .operatorsKey{
+        .operatorsKey {
             border-radius: 100%;
-    border: 1px solid black;
+            border: 1px solid black;
             margin: 0 10px;
+        }
+
+        #modal-game-solution-text,
+        #modal-game-solution-answer {
+            display: none;
+        }
+
+        #modal-game-solution-header {
+            background-color: tomato;
+            color: white;
         }
     </style>
 </head>
@@ -123,6 +133,19 @@
             </div>
             <div class="modal-body">
                 <h1 id="modal-game-instruction-text"></h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Solution Modal -->
+    <div id="modal-game-solution" class="modal w3-animate-opacity" onclick="hideSolutionModal()">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-game-solution-header">
+                <h1 id="modal-game-solution-header-text">הפתרון</h1>
+            </div>
+            <div class="modal-body">
+                <h1 id="modal-game-solution-text"></h1>
+                <h1 id="modal-game-solution-answer"></h1>
             </div>
         </div>
     </div>

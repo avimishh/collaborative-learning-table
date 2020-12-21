@@ -64,6 +64,19 @@ function addSocketEvents() {
         chooseQuestions = initQuestionsImagesFrame();
         // initAnswersWordsFrame(chooseQuestions);
     });
+
+    sock.on("fromServer_toClient_show_solution_to_players", (isPlayerAnswerCorrect, question) => {
+        if (isPlayerAnswerCorrect) {
+            showModal("נכון!");
+        } else {
+            showModal("טעות");
+        }
+
+        let questionString = question._word;
+        setTimeout(() => {
+            showSolutionModal(question._word.toLowerCase(), question._answer, 6000);
+        }, 1000);
+    });
 }
 
 
@@ -144,12 +157,12 @@ function initAnswersWordsFrame(chooseQuestions) {
 
 // shuffle cards
 function shuffleCards(arrQuestions, cardsBtn, place) { // Fisher-Yates Shuffle Algorithm.
-    
-        let randIndex = Math.floor(Math.random() * (place + 1));
-        while(arrQuestions[randIndex]){
-            randIndex = Math.floor(Math.random() * (place + 1));
-        }
-        arrQuestions[randIndex] = cardsBtn;
+
+    let randIndex = Math.floor(Math.random() * (place + 1));
+    while (arrQuestions[randIndex]) {
+        randIndex = Math.floor(Math.random() * (place + 1));
+    }
+    arrQuestions[randIndex] = cardsBtn;
 }
 
 function set_answers_frame_state(state) {
@@ -177,7 +190,7 @@ function set_questions_frame_state(state) {
 
 
 // Modal
-function showModal(text, imageName) {
+function showModal(text, imageName = 'NoName') {
     $('#modal-game-instruction-text').text(text);
     if (imageName == 'NoName') {
         $('#modal-game-instruction-img').css('display', 'none');
@@ -193,6 +206,39 @@ function showModal(text, imageName) {
 
 function hideModal() {
     $('#modal-game-instruction').hide();
+}
+
+// Modal Solution
+function showSolutionModal(questionImageName, answer, time = 5000) {
+    $('#img-solution').attr('src', './images/' + questionImageName + '.png');
+
+    setTimeout(() => {
+        $('#img-solution').fadeIn("slow");
+        $('#modal-game-solution-text').fadeIn("slow");
+    }, 500);
+
+    setTimeout(() => {
+        $('#modal-game-solution-text2').fadeIn("slow");
+    }, 1000);
+
+    $('#modal-game-solution-answer').text(answer);
+    setTimeout(() => {
+        $("#modal-game-solution-answer").fadeIn("slow");
+    }, 2000);
+
+    $("#modal-game-solution").fadeIn("slow");
+    setTimeout(() => {
+        $('#img-solution').fadeOut("slow");
+        $('#modal-game-solution-text').fadeOut("slow");
+        $('#modal-game-solution-text2').fadeOut("slow");
+        $("#modal-game-solution-answer").fadeOut("slow");
+        $("#modal-game-solution").fadeOut("slow");
+    }, time);
+}
+
+function hideSolutionModal() {
+    return;
+    $('#modal-game-solution').hide();
 }
 
 var childName = "";

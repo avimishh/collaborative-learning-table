@@ -90,6 +90,36 @@ function addSocketEvents(){
     sock.on('fromServer_toClient_set_answer_frame_state', (state) => {
         setAnswerContainerState(state)
     });
+
+    sock.on("fromServer_toClient_show_solution_to_players", (isPlayerAnswerCorrect, question) => {
+        if (isPlayerAnswerCorrect) {
+            showModal("נכון!", 1000);
+        } else {
+            showModal("טעות", 1000);
+        }
+        let questionString = questionToString(question);
+        setTimeout(() => {
+            showSolutionModal( `${childName}, ${questionString}`, "= " + question._correct_Answer, 6000);
+        }, 1000);
+    });
+}
+
+function questionToString(question) {
+    let op = '+';
+    switch (question._operator) {
+        case 'plus':
+            op = '+';
+            break;
+        case 'minus':
+            op = '-';
+            break;
+        case 'multi':
+            op = '*';
+            break;
+        default:
+            console.log('DEBUG: error in questionToString()');
+    }
+    return `${question._oprnd1} ${op} ${question._oprnd2}`;
 }
 
 
@@ -108,16 +138,41 @@ function setAnswerContainerState(state) {
 }
 
 // Modal
-function showModal(text) {
+function showModal(text,time = 2000) {
     $('#modal-game-instruction-text').text(text);
     $("#modal-game-instruction").fadeIn("slow");
     setTimeout(() => {
         $("#modal-game-instruction").fadeOut("slow");
-    }, 2000);
+    }, time);
 }
 
 function hideModal() {
     $('#modal-game-instruction').hide();
+}
+
+// Modal Solution
+function showSolutionModal(questionString, answerString, time = 5000) {
+    $('#modal-game-solution-text').text(questionString);
+    setTimeout(() => {
+        $('#modal-game-solution-text').fadeIn("slow");
+    }, 500);
+
+    $('#modal-game-solution-answer').text(answerString);
+    setTimeout(() => {
+        $("#modal-game-solution-answer").fadeIn("slow");
+    }, 2000);
+
+    $("#modal-game-solution").fadeIn("slow");
+    setTimeout(() => {
+        $('#modal-game-solution-text').fadeOut("slow");
+        $("#modal-game-solution-answer").fadeOut("slow");
+        $("#modal-game-solution").fadeOut("slow");
+    }, time);
+}
+
+function hideSolutionModal() {
+    return;
+    $('#modal-game-solution').hide();
 }
 
 var childName = "";

@@ -73,6 +73,13 @@
             border-radius: 0;
         }
 
+        #img-solution {
+            width: 50px;
+            height: 50px;
+            display: none;
+            border-radius: 0;
+        }
+
         #modal-game-instruction-img {
             width: 50px;
             height: 50px;
@@ -89,6 +96,22 @@
             background: #e5f6fd;
             padding: 0 20px;
             box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        #modal-game-solution-text,
+        #modal-game-solution-answer {
+            display: none;
+        }
+
+        #modal-game-solution-header {
+            background-color: tomato;
+            color: white;
+        }
+
+        .img_solution {
+            margin: 10px;
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
@@ -134,6 +157,21 @@
                     <br />
                     <img id="modal-game-instruction-img" src="" alt="">
                 </h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Solution Modal -->
+    <div id="modal-game-solution" class="modal w3-animate-opacity" onclick="hideSolutionModal()">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-game-solution-header">
+                <h1 id="modal-game-solution-header-text">הפתרון</h1>
+            </div>
+            <div class="modal-body">
+                <span id="modal-game-solution-text">המילה שמתאימה לתמונה </span>
+                <img id="img-solution" src="" alt="">
+                <span id="modal-game-solution-text2"> היא:</span>
+                <h1 id="modal-game-solution-answer"></h1>
             </div>
         </div>
     </div>

@@ -114,7 +114,16 @@ class MathGame { // @@@@CHANGING
         });
         if (is_Round_End === false) return;
 
-        this._endRound();
+
+        this._showSolution();
+        setTimeout(() => { this._endRound() }, 8000);
+
+        // this._endRound();
+    }
+
+    _showSolution(){
+        let asked_Question = questions[questions.length - 1];
+        this._players.forEach((player,index) => player.send_Solution_To_Client(this._isPlayersAnswerCorrect[index],asked_Question));
     }
 
     _endRound() {
