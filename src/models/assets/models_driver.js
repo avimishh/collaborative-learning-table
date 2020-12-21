@@ -601,7 +601,7 @@ async function addChildren() {
         level: "רופין",
         parentId1: "208163741"
     });
-    // 13. יוחנן גדות
+    // 13. פיני גדות
     await createChild({
         firstName: "פיני",
         lastName: "גדות",
@@ -653,7 +653,7 @@ async function addChildren() {
         level: "רופין",
         parentId1: "208163358"
     });
-    // 17. ציפי רפאלי
+    // 17. ארנון רפאלי
     await createChild({
         firstName: "ארנון",
         lastName: "רפאלי",
