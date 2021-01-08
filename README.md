@@ -1,13 +1,22 @@
 # collaborative-learning-table
 Learn by playing games with friends
 
+## Child Functionality
+
+![Child Functionality](./example/childUI.gif)
+
+## Teacher Functionality
+
+![Parent Functionality](./example/teacherUI.gif)
 
 ## Parent Functionality
 
-![Parent Functionality](./example/parent.gif)
+![Parent Functionality](./example/parentUI.gif)
 
-## Child Functionality
+## Admin Functionality
 
-![Child Functionality](./example/child.gif)
+![Parent Functionality](./example/adminUI.gif)
+
+
 
 
